@@ -122,7 +122,7 @@ const dictionaries = {
       basePtsDesc: "Standard DDNet points. You get them once for finishing.",
       skillPtsTitle: "Skill Bonus (Up to x5)",
       skillPtsDesc: "Awarded for being close to the World Record. The closer you are to Top 1, the more bonus you keep.",
-      leaderboardTitle: "Global rank",
+      leaderboardTitle: "Global Rank",
       tableRank: "Rank",
       tablePlayer: "Player",
       tableBase: "Base PTS",
