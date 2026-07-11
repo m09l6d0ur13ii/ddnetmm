@@ -192,7 +192,7 @@
       document.getElementById('table-skill').textContent = dict.home.tableSkill;
       document.getElementById('table-total').textContent = dict.home.tableTotal;
       document.getElementById('empty-state').textContent = dict.home.empty;
-      document.getElementById('status-message').textContent = currentLang === 'en' ? 'Top 1000' : 'Топ-1000 по всем картам';
+      document.getElementById('status-message').textContent = '';
       document.getElementById('load-more-btn').textContent = currentLang === 'en' ? 'Load Top 100' : 'Загрузить Топ 100';
 
       // Set Icons
@@ -265,7 +265,7 @@
         playersData = await window.api.getTopPlayersLive(displayLimit, (done, total) => {
           document.getElementById('status-message').textContent = `${currentLang === 'en' ? 'Loading' : 'Загрузка'} ${done} / ${total}...`;
         });
-        document.getElementById('status-message').textContent = currentLang === 'en' ? 'Top 1000' : 'Топ-1000 по всем картам';
+        document.getElementById('status-message').textContent = '';
         renderTable();
       } catch (err) {
         document.getElementById('empty-state').textContent = 'Error loading data';
