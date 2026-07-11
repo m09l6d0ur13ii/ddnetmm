@@ -15,11 +15,19 @@ function initLang() {
 }
 
 function setLang(lang) {
-  try {
-    localStorage.setItem('lang', lang);
-  } catch(e) {}
-  document.cookie = `lang=${lang}; path=/; max-age=31536000`;
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
   window.location.reload();
+}
+
+function escapeHtml(unsafe) {
+  if (!unsafe) return '';
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function getDict() {

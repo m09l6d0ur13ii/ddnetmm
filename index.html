@@ -327,7 +327,7 @@
           <td class="p-4">${rankHtml}</td>
           <td class="p-4 font-bold text-lg">
             <a href="player.html?name=${encodeURIComponent(p.name)}" class="text-white hover:text-blue-400 transition-colors">
-              ${p.name}
+              ${escapeHtml(p.name)}
             </a>
           </td>
           <td class="p-4 text-right font-mono text-emerald-400/80">${p.newPtsBase.toLocaleString()}</td>

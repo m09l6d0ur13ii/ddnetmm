@@ -114,7 +114,9 @@
         div.className = "bg-slate-900/50 rounded-xl p-6 border border-slate-800 flex flex-col";
         div.innerHTML = `
           <div class="mb-6">
-            <h2 class="text-xl font-bold text-blue-400 mb-2">${scenario.name}</h2>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="font-bold text-xl text-white">${escapeHtml(scenario.name)}</h3>
+            </div>
             <p class="text-sm text-slate-400">${scenario.desc}</p>
           </div>
           <div class="flex-1 h-64 min-h-[250px] relative">

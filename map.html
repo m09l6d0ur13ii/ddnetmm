@@ -161,9 +161,9 @@
 
             tr.innerHTML = `
               <td class="p-4">${rankHtml}</td>
-              <td class="p-4">
-                <a href="player.html?name=${encodeURIComponent(row.player)}" class="font-bold text-lg text-white hover:text-blue-400 transition-colors">
-                  ${row.player}
+              <td class="p-4 font-bold text-lg">
+                <a href="player.html?name=${encodeURIComponent(row.player)}" class="text-white hover:text-blue-400 transition-colors">
+                  ${escapeHtml(row.player)}
                 </a>
               </td>
               <td class="p-4 font-mono text-slate-300">${formatTime(row.time)}</td>
