@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+  <div id="header-container"></div>
+
+  <main class="min-h-screen p-4 md:p-8 animate-fade-in">
+    <div id="loading" class="text-center py-20">
+      <div id="loader-icon" class="inline-block text-primary"></div>
+      <p class="mt-4 text-slate-400" id="player-loading"></p>
+    </div>
+
+    <div id="error" class="text-center py-20 hidden">
+      <h2 class="text-2xl font-bold text-red-500" id="player-error"></h2>
+    </div>
+
+    <div id="content" class="hidden space-y-8">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between">
+        <div>
+          <a href="index.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors mb-2 inline-block">
+            &larr; <span id="player-back"></span>
+          </a>
+          <header class="space-y-2">
+            <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
+            <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
+          </header>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform">
+            <div class="text-sm text-slate-400 font-medium uppercase tracking-wider" id="stat-base"></div>
+            <div class="text-3xl font-bold font-mono text-emerald-400" id="val-base"></div>
+          </div>
+          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform">
+            <div class="text-sm text-slate-400 font-medium uppercase tracking-wider" id="stat-skill"></div>
+            <div class="text-3xl font-bold font-mono text-purple-400" id="val-skill"></div>
+          </div>
+          <div class="gold-card p-6 rounded-2xl flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(251,191,36,0.15)]">
+            <div class="text-sm text-amber-500 font-bold uppercase tracking-wider" id="stat-total"></div>
+            <div class="text-4xl font-black font-mono text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" id="val-total"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maps List -->
+      <div class="glass-panel overflow-hidden mt-12">
+        <div class="p-6 md:p-8 border-b border-white/[0.05]">
+          <h2 class="text-2xl font-bold flex items-center gap-3" id="player-maps-title"></h2>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse whitespace-nowrap">
+            <thead>
+              <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
+                <th class="p-4 font-semibold" id="table-map"></th>
+                <th class="p-4 font-semibold" id="table-server"></th>
+                <th class="p-4 font-semibold text-right" id="table-time"></th>
+                <th class="p-4 font-semibold text-right" id="table-base-col">Base</th>
+                <th class="p-4 font-semibold text-right" id="table-skill-col">Skill Bonus</th>
+                <th class="p-4 font-semibold text-center" id="table-top-col">Top DDNet</th>
+              </tr>
+            </thead>
+            <tbody id="maps-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="data/leaderboard.js"></script>
+  <script src="data/map_records.js"></script>
+  <script src="data/map_stats.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      renderHeader('player');
+      const dict = getDict();
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const playerName = urlParams.get('name');
+
+      if (!playerName) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.title = `Player: ${playerName} - DDNet Map Mastery`;
+
+      document.getElementById('loader-icon').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
+
+      document.getElementById('player-back').textContent = dict.player.back;
+      document.getElementById('player-loading').textContent = dict.player.loading;
+      document.getElementById('player-error').textContent = dict.player.error;
+      document.getElementById('stat-base').textContent = "Base PTS";
+      document.getElementById('stat-skill').textContent = "Skill PTS";
+      document.getElementById('stat-total').textContent = "Total Mastery";
+      
+      document.getElementById('table-map').textContent = dict.player.mapName;
+      document.getElementById('table-server').textContent = dict.player.mapServer;
+      document.getElementById('table-time').textContent = dict.player.mapTime;
+
+      try {
+        const data = await window.api.fetchPlayerPts(playerName);
+        
+        document.getElementById('player-name').textContent = data.name;
+        document.getElementById('val-base').textContent = data.newPtsBase.toLocaleString();
+        document.getElementById('val-skill').textContent = data.newPtsSkill.toLocaleString();
+        document.getElementById('val-total').textContent = data.newPtsTotal.toLocaleString();
+
+        const resOriginal = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`);
+        const originalData = await resOriginal.json();
+        
+        const mapRecords = await getMapRecords();
+        const mapStats = await getMapStats();
+
+        const finishes = originalData.finishes || [];
+        const processedMaps = new Set();
+        const topMaps = [];
+
+        for (const f of finishes) {
+          const mapName = f.map.name || f.map.map;
+          if (processedMaps.has(mapName)) continue;
+          if (f.map.server === 'Fun') continue;
+          processedMaps.add(mapName);
+
+          const isSoloOrRace = f.map.server === 'Solo' || f.map.server === 'Race';
+          const isTeamRun = f.team_rank && f.rank >= f.team_rank;
+
+          if (isSoloOrRace || isTeamRun) {
+            let tBest = mapRecords[mapName];
+            if (!tBest) {
+              tBest = f.time / (1 + Math.log10(Math.max(1, f.rank || 1)) * 0.5);
+            }
+
+            const s = (mapStats[mapName] || { s: 2.0 }).s;
+            const pBase = f.map.points || 0;
+            const pMaxBonus = pBase * 5.0;
+            const timeRatio = f.time / tBest;
+            const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
+
+            if (pSkill > 0) {
+              topMaps.push({
+                mapName: mapName,
+                server: f.map.server,
+                pBase: pBase,
+                pSkill: pSkill,
+                time: f.time,
+                timeRatio: timeRatio,
+                record: tBest,
+                rank: f.rank || 0
+              });
+            }
+          }
+        }
+
+        topMaps.sort((a, b) => b.pSkill - a.pSkill);
+
+        document.getElementById('player-maps-title').textContent = `${currentLang === 'en' ? 'Maps with Skill Bonus' : 'Карты со Skill Bonus'} (${topMaps.length})`;
+
+        const tbody = document.getElementById('maps-body');
+        
+        const formatTime = (t) => {
+          if (t <= 0) return '-';
+          const m = Math.floor(t / 60);
+          const s = (t % 60).toFixed(2);
+          return `${m}:${s.padStart(5, '0')}`;
+        };
+
+        topMaps.forEach(map => {
+          const tr = document.createElement('tr');
+          tr.className = "premium-table-row hover:bg-white/[0.02] transition-colors";
+          
+          tr.innerHTML = `
+            <td class="p-4 font-bold text-white">${map.mapName}</td>
+            <td class="p-4 text-slate-500">${map.server}</td>
+            <td class="p-4 font-mono text-slate-300 text-right">${formatTime(map.time)}</td>
+            <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
+            <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
+            <td class="p-4 font-bold text-slate-400 text-center">#${map.rank}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+
+      } catch (e) {
+        console.error(e);
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DDNet Map Mastery PTS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6', // blue-500
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+  <div id="header-container"></div>
+
+  <main class="p-4 md:p-8 animate-fade-in">
+    <header class="max-w-7xl mx-auto mb-12 text-center space-y-4">
+      <div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-4" id="icon-trophy">
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight bg-gradient-to-br from-white via-slate-200 to-slate-500 bg-clip-text text-transparent drop-shadow-sm" id="home-title">
+      </h1>
+      <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto" id="home-subtitle">
+      </p>
+      <div class="pt-4 flex flex-wrap justify-center gap-4">
+        <a href="about.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-primary hover:text-primary transition-all text-sm font-medium">
+          <span id="home-about-btn"></span> <span id="icon-arrow-right-1"></span>
+        </a>
+        <a href="compare.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-900/20 border border-blue-500/50 hover:border-blue-400 hover:text-blue-400 transition-all text-sm font-medium">
+          <span id="home-compare-btn"></span> <span id="icon-arrow-right-2"></span>
+        </a>
+      </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto mb-12 glass-panel p-8">
+      <h2 class="text-2xl font-bold mb-6 text-white border-b border-slate-800 pb-4" id="home-how-it-works"></h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="space-y-6 text-slate-300">
+          <div class="bg-slate-900/50 p-4 rounded-lg flex items-center justify-center overflow-x-auto" id="math-1"></div>
+          <div class="space-y-2">
+            <p><strong id="home-base-pts-title"></strong>: <span id="home-base-pts-desc"></span></p>
+            <div class="bg-slate-900/50 p-2 rounded-lg text-center" id="math-2"></div>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-slate-300">
+          <p>
+            <strong id="home-skill-pts-title"></strong>: <span id="home-skill-pts-desc"></span>
+            <span id="math-3"></span> <span id="home-skill-pts-and"></span> <span id="math-4"></span>.
+          </p>
+          <div class="bg-slate-900/50 p-4 rounded-lg overflow-x-auto" id="math-5"></div>
+          <p class="text-sm text-slate-400">
+            <span id="home-skill-pts-where"></span> <span id="math-6"></span> <span id="home-skill-pts-and2"></span> <span id="math-7"></span> — <span id="home-skill-pts-s-desc"></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <section class="glass-panel p-8 h-fit md:col-span-1 space-y-6">
+        <h2 class="text-xl font-bold" id="search-title">Найти игрока</h2>
+        <form id="player-search-form" class="flex gap-2">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="m09l6d0ur13ii.."
+            class="flex-1 bg-white/[0.03] border border-white/10 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-slate-100 placeholder:text-slate-500"
+          />
+          <button
+            type="submit"
+            id="search-btn"
+            class="bg-primary hover:bg-blue-600 transition-colors rounded-md p-2 flex items-center justify-center disabled:opacity-50"
+          >
+          </button>
+        </form>
+
+        <p id="search-error" class="text-red-400 text-sm hidden"></p>
+
+        <div id="search-result" class="bg-white/[0.02] p-4 rounded-lg border border-white/5 space-y-3 hidden">
+          <h3 class="font-bold text-lg text-primary">
+            <a id="search-result-name" href="#" class="hover:text-blue-300 hover:underline transition-colors"></a>
+          </h3>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <span class="text-slate-400">New Base:</span>
+            <span id="search-result-base" class="font-mono text-right text-emerald-400"></span>
+            <span class="text-slate-400">New Skill:</span>
+            <span id="search-result-skill" class="font-mono text-right text-purple-400"></span>
+            <div class="col-span-2 h-px bg-white/10 my-1"></div>
+            <span class="font-bold">Total Map Mastery:</span>
+            <span id="search-result-total" class="font-mono font-bold text-right text-amber-400 text-base"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass-panel p-8 md:col-span-2">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
+          <h2 class="text-2xl font-bold flex items-center gap-3">
+            <span id="home-leaderboard-title"></span>
+            <span id="leaderboard-loader" class="hidden"></span>
+          </h2>
+          <div class="text-sm text-slate-400 max-w-sm text-right" id="status-message">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse whitespace-nowrap">
+            <thead>
+              <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
+                <th class="p-4 font-semibold cursor-pointer hover:text-white transition-colors" onclick="requestSort('rank')">
+                  <div class="flex items-center gap-1" id="table-rank"></div>
+                </th>
+                <th class="p-4 font-semibold" id="table-player"></th>
+                <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors" onclick="requestSort('newPtsBase')">
+                  <div class="flex items-center justify-end gap-1"><span id="table-base"></span> <span id="icon-arrow-1"></span></div>
+                </th>
+                <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors" onclick="requestSort('newPtsSkill')">
+                  <div class="flex items-center justify-end gap-1"><span id="table-skill"></span> <span id="icon-arrow-2"></span></div>
+                </th>
+                <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors" onclick="requestSort('newPtsTotal')">
+                  <div class="flex items-center justify-end gap-1 text-emerald-400"><span id="table-total"></span> <span id="icon-arrow-3"></span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <tr>
+                <td colspan="5" class="p-4 text-center text-slate-500" id="empty-state"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="load-more-container" class="p-4 border-t border-white/[0.05] text-center bg-white/[0.02] mt-4 rounded-xl hidden">
+          <button 
+            id="load-more-btn"
+            class="px-6 py-2 bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30 rounded-full font-semibold transition-colors disabled:opacity-50"
+          >
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="data/leaderboard.js"></script>
+  <script src="data/map_records.js"></script>
+  <script src="data/map_stats.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let playersData = [];
+    let sortConfig = { key: 'newPtsTotal', direction: 'desc' };
+    let displayLimit = 20;
+    let loading = false;
+    let searchLoading = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader('home');
+      
+      const dict = getDict();
+      document.documentElement.lang = currentLang;
+
+      // Set texts
+      document.getElementById('home-title').textContent = dict.home.title;
+      document.getElementById('home-subtitle').textContent = dict.home.subtitle;
+      document.getElementById('home-about-btn').textContent = dict.home.aboutBtn;
+      document.getElementById('home-compare-btn').textContent = dict.home.compareBtn;
+      document.getElementById('home-how-it-works').textContent = dict.home.howItWorks;
+      document.getElementById('home-base-pts-title').textContent = dict.home.basePtsTitle;
+      document.getElementById('home-base-pts-desc').textContent = dict.home.basePtsDesc;
+      document.getElementById('home-skill-pts-title').textContent = dict.home.skillPtsTitle;
+      document.getElementById('home-skill-pts-desc').textContent = dict.home.skillPtsDesc;
+      
+      document.getElementById('home-skill-pts-and').textContent = currentLang === 'en' ? 'and record' : 'и рекорда';
+      document.getElementById('home-skill-pts-where').textContent = currentLang === 'en' ? 'Where' : 'Где';
+      document.getElementById('home-skill-pts-and2').textContent = currentLang === 'en' ? 'and' : 'и';
+      document.getElementById('home-skill-pts-s-desc').textContent = currentLang === 'en' ? 'dynamic strictness coefficient (0.5 to 3.0 based on variance)' : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)';
+
+      document.getElementById('search-title').textContent = currentLang === 'en' ? 'Find Player' : 'Найти игрока';
+      document.getElementById('home-leaderboard-title').textContent = dict.home.leaderboardTitle;
+      document.getElementById('table-rank').textContent = dict.home.tableRank;
+      document.getElementById('table-player').textContent = dict.home.tablePlayer;
+      document.getElementById('table-base').textContent = dict.home.tableBase;
+      document.getElementById('table-skill').textContent = dict.home.tableSkill;
+      document.getElementById('table-total').textContent = dict.home.tableTotal;
+      document.getElementById('empty-state').textContent = dict.home.empty;
+      document.getElementById('status-message').textContent = currentLang === 'en' ? 'Top 1000' : 'Топ-1000 по всем картам';
+      document.getElementById('load-more-btn').textContent = currentLang === 'en' ? 'Load Top 100' : 'Загрузить Топ 100';
+
+      // Set Icons
+      document.getElementById('icon-trophy').innerHTML = icons.trophy;
+      document.getElementById('icon-arrow-right-1').innerHTML = icons.arrowRight;
+      document.getElementById('icon-arrow-right-2').innerHTML = icons.arrowRight;
+      document.getElementById('icon-arrow-1').innerHTML = icons.arrowUpDown;
+      document.getElementById('icon-arrow-2').innerHTML = icons.arrowUpDown;
+      document.getElementById('icon-arrow-3').innerHTML = icons.arrowUpDown;
+      document.getElementById('search-btn').innerHTML = icons.search;
+      document.getElementById('leaderboard-loader').innerHTML = icons.loader;
+
+      // Render Math
+      katex.render("P_{total} = P_{base} + P_{skill}", document.getElementById('math-1'), { displayMode: true });
+      katex.render("P_{base} = P_{DDNet}", document.getElementById('math-2'), { displayMode: false });
+      katex.render("t_{player}", document.getElementById('math-3'), { displayMode: false });
+      katex.render("t_{best}", document.getElementById('math-4'), { displayMode: false });
+      katex.render("P_{skill} = \\lfloor P_{max\\_bonus} \\times e^{-s(\\frac{t_{player}}{t_{best}} - 1)} \\rfloor", document.getElementById('math-5'), { displayMode: true });
+      katex.render("P_{max\\_bonus} = P_{DDNet} \\times 5", document.getElementById('math-6'), { displayMode: false });
+      katex.render("s", document.getElementById('math-7'), { displayMode: false });
+
+      // Search Logic
+      document.getElementById('player-search-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const val = document.getElementById('search-input').value.trim();
+        if (!val) return;
+
+        const btn = document.getElementById('search-btn');
+        btn.innerHTML = icons.loader;
+        btn.disabled = true;
+        document.getElementById('search-error').classList.add('hidden');
+        document.getElementById('search-result').classList.add('hidden');
+
+        let res = playersData.find(p => p.name === val);
+        try {
+          if (!res) {
+            res = await window.api.fetchPlayerPts(val);
+          }
+          document.getElementById('search-result-name').textContent = res.name;
+          document.getElementById('search-result-name').href = `player.html?name=${encodeURIComponent(res.name)}`;
+          document.getElementById('search-result-base').textContent = '+' + res.newPtsBase.toLocaleString();
+          document.getElementById('search-result-skill').textContent = '+' + res.newPtsSkill.toLocaleString();
+          document.getElementById('search-result-total').textContent = res.newPtsTotal.toLocaleString();
+          document.getElementById('search-result').classList.remove('hidden');
+        } catch (err) {
+          const errEl = document.getElementById('search-error');
+          errEl.textContent = currentLang === 'en' ? 'Player not found' : 'Игрок не найден';
+          errEl.classList.remove('hidden');
+        } finally {
+          btn.innerHTML = icons.search;
+          btn.disabled = false;
+        }
+      });
+
+      document.getElementById('load-more-btn').addEventListener('click', () => {
+        displayLimit = 100;
+        loadLeaderboard();
+      });
+
+      loadLeaderboard();
+    });
+
+    async function loadLeaderboard() {
+      loading = true;
+      document.getElementById('leaderboard-loader').classList.remove('hidden');
+      document.getElementById('load-more-btn').disabled = true;
+      document.getElementById('load-more-btn').innerHTML = icons.loader;
+      
+      try {
+        playersData = await window.api.getTopPlayersLive(displayLimit, (done, total) => {
+          document.getElementById('status-message').textContent = `${currentLang === 'en' ? 'Loading' : 'Загрузка'} ${done} / ${total}...`;
+        });
+        document.getElementById('status-message').textContent = currentLang === 'en' ? 'Top 1000' : 'Топ-1000 по всем картам';
+        renderTable();
+      } catch (err) {
+        document.getElementById('empty-state').textContent = 'Error loading data';
+      } finally {
+        loading = false;
+        document.getElementById('leaderboard-loader').classList.add('hidden');
+        document.getElementById('load-more-btn').disabled = false;
+        document.getElementById('load-more-btn').textContent = currentLang === 'en' ? 'Load Top 100' : 'Загрузить Топ 100';
+        
+        if (displayLimit < 100 && playersData.length >= displayLimit) {
+          document.getElementById('load-more-container').classList.remove('hidden');
+        } else {
+          document.getElementById('load-more-container').classList.add('hidden');
+        }
+      }
+    }
+
+    window.requestSort = function(key) {
+      if (key === 'rank') {
+        sortConfig = { key: 'newPtsTotal', direction: 'desc' };
+      } else {
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+          direction = 'asc';
+        }
+        sortConfig = { key, direction };
+      }
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('leaderboard-body');
+      tbody.innerHTML = '';
+      
+      if (playersData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${getDict().home.empty}</td></tr>`;
+        return;
+      }
+
+      const sortedData = [...playersData].sort((a, b) => {
+        const aVal = a[sortConfig.key] || 0;
+        const bVal = b[sortConfig.key] || 0;
+        if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      sortedData.slice(0, displayLimit).forEach((p, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "premium-table-row";
+        
+        // Premium rank styling
+        let rankHtml = `<span class="text-slate-500 font-mono">#${idx + 1}</span>`;
+        if (idx === 0) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+        if (idx === 1) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
+        if (idx === 2) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
+
+        tr.innerHTML = `
+          <td class="p-4">${rankHtml}</td>
+          <td class="p-4 font-bold text-lg">
+            <a href="player.html?name=${encodeURIComponent(p.name)}" class="text-white hover:text-blue-400 transition-colors">
+              ${p.name}
+            </a>
+          </td>
+          <td class="p-4 text-right font-mono text-emerald-400/80">${p.newPtsBase.toLocaleString()}</td>
+          <td class="p-4 text-right font-mono text-purple-400/80">${p.newPtsSkill.toLocaleString()}</td>
+          <td class="p-4 text-right font-mono font-bold text-amber-400 text-lg">${p.newPtsTotal.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>

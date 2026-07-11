@@ -1,0 +1,6502 @@
+[
+  {
+    "name": "Mokou",
+    "oldPts": 33301,
+    "newPtsBase": 33301,
+    "newPtsSkill": 58698,
+    "newPtsTotal": 91999,
+    "seasons": {
+      "2025-H1": 5123,
+      "2025-H2": 2558,
+      "2026-H1": 2836,
+      "2026-H2": 436
+    }
+  },
+  {
+    "name": "Cor",
+    "oldPts": 33495,
+    "newPtsBase": 33495,
+    "newPtsSkill": 55994,
+    "newPtsTotal": 89489,
+    "seasons": {
+      "2025-H1": 8684,
+      "2025-H2": 5032,
+      "2026-H1": 5581,
+      "2026-H2": 227
+    }
+  },
+  {
+    "name": "Cireme",
+    "oldPts": 30504,
+    "newPtsBase": 30504,
+    "newPtsSkill": 55678,
+    "newPtsTotal": 86182,
+    "seasons": {
+      "2025-H1": 1509,
+      "2025-H2": 1361,
+      "2026-H1": 2333,
+      "2026-H2": 66
+    }
+  },
+  {
+    "name": "Freezestyler",
+    "oldPts": 33351,
+    "newPtsBase": 33351,
+    "newPtsSkill": 44715,
+    "newPtsTotal": 78066,
+    "seasons": {
+      "2025-H1": 8557,
+      "2025-H2": 5354,
+      "2026-H1": 5437,
+      "2026-H2": 251
+    }
+  },
+  {
+    "name": "Raryx",
+    "oldPts": 33087,
+    "newPtsBase": 33087,
+    "newPtsSkill": 44550,
+    "newPtsTotal": 77637,
+    "seasons": {
+      "2025-H1": 9822,
+      "2025-H2": 2754,
+      "2026-H1": 3658,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "坤坤",
+    "oldPts": 28697,
+    "newPtsBase": 28697,
+    "newPtsSkill": 45116,
+    "newPtsTotal": 73813,
+    "seasons": {
+      "2025-H1": 3511,
+      "2025-H2": 2088,
+      "2026-H1": 3079,
+      "2026-H2": 436
+    }
+  },
+  {
+    "name": "Pryzed",
+    "oldPts": 33495,
+    "newPtsBase": 33495,
+    "newPtsSkill": 40211,
+    "newPtsTotal": 73706,
+    "seasons": {
+      "2025-H1": 1960,
+      "2025-H2": 2840,
+      "2026-H1": 1170,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "NovaShock",
+    "oldPts": 29956,
+    "newPtsBase": 29956,
+    "newPtsSkill": 39828,
+    "newPtsTotal": 69784,
+    "seasons": {
+      "2025-H1": 3691,
+      "2025-H2": 665,
+      "2026-H1": 1817,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "<BµmM>",
+    "oldPts": 33381,
+    "newPtsBase": 33381,
+    "newPtsSkill": 35342,
+    "newPtsTotal": 68723,
+    "seasons": {
+      "2025-H1": 2474,
+      "2025-H2": 2318,
+      "2026-H1": 1058,
+      "2026-H2": 153
+    }
+  },
+  {
+    "name": "Colo-Colo",
+    "oldPts": 33009,
+    "newPtsBase": 33009,
+    "newPtsSkill": 35643,
+    "newPtsTotal": 68652,
+    "seasons": {
+      "2025-H1": 1586,
+      "2025-H2": 403,
+      "2026-H1": 236,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ZombieTop",
+    "oldPts": 32270,
+    "newPtsBase": 32270,
+    "newPtsSkill": 35262,
+    "newPtsTotal": 67532,
+    "seasons": {
+      "2025-H1": 3643,
+      "2025-H2": 2683,
+      "2026-H1": 1525,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Maleficent",
+    "oldPts": 30154,
+    "newPtsBase": 30154,
+    "newPtsSkill": 34826,
+    "newPtsTotal": 64980,
+    "seasons": {
+      "2025-H1": 7575,
+      "2025-H2": 2564,
+      "2026-H1": 27,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "NANAMAR",
+    "oldPts": 30776,
+    "newPtsBase": 30776,
+    "newPtsSkill": 33477,
+    "newPtsTotal": 64253,
+    "seasons": {
+      "2025-H1": 3363,
+      "2025-H2": 6490,
+      "2026-H1": 5401,
+      "2026-H2": 125
+    }
+  },
+  {
+    "name": "girlkitten :3c",
+    "oldPts": 29948,
+    "newPtsBase": 29948,
+    "newPtsSkill": 34287,
+    "newPtsTotal": 64235,
+    "seasons": {
+      "2025-H1": 2711,
+      "2025-H2": 3635,
+      "2026-H1": 1602,
+      "2026-H2": 55
+    }
+  },
+  {
+    "name": "I.K.U",
+    "oldPts": 33261,
+    "newPtsBase": 33261,
+    "newPtsSkill": 30936,
+    "newPtsTotal": 64197,
+    "seasons": {
+      "2025-H1": 1183,
+      "2025-H2": 56,
+      "2026-H1": 219,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ano :3",
+    "oldPts": 29884,
+    "newPtsBase": 29884,
+    "newPtsSkill": 34258,
+    "newPtsTotal": 64142,
+    "seasons": {
+      "2025-H1": 23,
+      "2025-H2": 100,
+      "2026-H1": 2,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Noctua",
+    "oldPts": 30219,
+    "newPtsBase": 30219,
+    "newPtsSkill": 33166,
+    "newPtsTotal": 63385,
+    "seasons": {
+      "2025-H1": 1242,
+      "2025-H2": 1748,
+      "2026-H1": 261,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "Gloomy",
+    "oldPts": 24479,
+    "newPtsBase": 24479,
+    "newPtsSkill": 36852,
+    "newPtsTotal": 61331,
+    "seasons": {
+      "2025-H1": 5696,
+      "2025-H2": 1759,
+      "2026-H1": 2027,
+      "2026-H2": 277
+    }
+  },
+  {
+    "name": "Aoe",
+    "oldPts": 32817,
+    "newPtsBase": 32817,
+    "newPtsSkill": 28467,
+    "newPtsTotal": 61284,
+    "seasons": {
+      "2025-H1": 344,
+      "2025-H2": 724,
+      "2026-H1": 23,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "PlantKnight",
+    "oldPts": 30648,
+    "newPtsBase": 30648,
+    "newPtsSkill": 29099,
+    "newPtsTotal": 59747,
+    "seasons": {
+      "2025-H1": 2420,
+      "2025-H2": 4040,
+      "2026-H1": 968,
+      "2026-H2": 536
+    }
+  },
+  {
+    "name": "ryu",
+    "oldPts": 30735,
+    "newPtsBase": 30735,
+    "newPtsSkill": 28549,
+    "newPtsTotal": 59284,
+    "seasons": {
+      "2025-H1": 1518,
+      "2025-H2": 265,
+      "2026-H1": 11,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Esckiller",
+    "oldPts": 29563,
+    "newPtsBase": 29563,
+    "newPtsSkill": 28893,
+    "newPtsTotal": 58456,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ℝ𝕦ℕ𝕒.",
+    "oldPts": 22757,
+    "newPtsBase": 22757,
+    "newPtsSkill": 35312,
+    "newPtsTotal": 58069,
+    "seasons": {
+      "2025-H1": 1975,
+      "2025-H2": 953,
+      "2026-H1": 743,
+      "2026-H2": 12
+    }
+  },
+  {
+    "name": "BaumWolle",
+    "oldPts": 27741,
+    "newPtsBase": 27741,
+    "newPtsSkill": 30319,
+    "newPtsTotal": 58060,
+    "seasons": {
+      "2025-H1": 5686,
+      "2025-H2": 6833,
+      "2026-H1": 6310,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Kandiifloss",
+    "oldPts": 33451,
+    "newPtsBase": 33451,
+    "newPtsSkill": 24008,
+    "newPtsTotal": 57459,
+    "seasons": {
+      "2025-H1": 1305,
+      "2025-H2": 928,
+      "2026-H1": 257,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "TyшkaNчuk",
+    "oldPts": 31946,
+    "newPtsBase": 31946,
+    "newPtsSkill": 25483,
+    "newPtsTotal": 57429,
+    "seasons": {
+      "2025-H1": 198,
+      "2025-H2": 3603,
+      "2026-H1": 7609,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Stepfunn",
+    "oldPts": 33061,
+    "newPtsBase": 33061,
+    "newPtsSkill": 24345,
+    "newPtsTotal": 57406,
+    "seasons": {
+      "2025-H1": 614,
+      "2025-H2": 354,
+      "2026-H1": 541,
+      "2026-H2": 30
+    }
+  },
+  {
+    "name": "Knuski",
+    "oldPts": 27838,
+    "newPtsBase": 27838,
+    "newPtsSkill": 29540,
+    "newPtsTotal": 57378,
+    "seasons": {
+      "2025-H1": 1392,
+      "2025-H2": 165,
+      "2026-H1": 428,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Grk0ne",
+    "oldPts": 32511,
+    "newPtsBase": 32511,
+    "newPtsSkill": 22751,
+    "newPtsTotal": 55262,
+    "seasons": {
+      "2025-H1": 2278,
+      "2025-H2": 272,
+      "2026-H1": 445,
+      "2026-H2": 19
+    }
+  },
+  {
+    "name": "spur",
+    "oldPts": 22580,
+    "newPtsBase": 22580,
+    "newPtsSkill": 32505,
+    "newPtsTotal": 55085,
+    "seasons": {
+      "2025-H1": 3627,
+      "2025-H2": 1337,
+      "2026-H1": 1667,
+      "2026-H2": 161
+    }
+  },
+  {
+    "name": "coradax",
+    "oldPts": 19350,
+    "newPtsBase": 19350,
+    "newPtsSkill": 35631,
+    "newPtsTotal": 54981,
+    "seasons": {
+      "2025-H1": 38,
+      "2025-H2": 9,
+      "2026-H1": 116,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Cans",
+    "oldPts": 32827,
+    "newPtsBase": 32827,
+    "newPtsSkill": 21901,
+    "newPtsTotal": 54728,
+    "seasons": {
+      "2025-H1": 964,
+      "2025-H2": 483,
+      "2026-H1": 1545,
+      "2026-H2": 172
+    }
+  },
+  {
+    "name": "Nehr",
+    "oldPts": 27320,
+    "newPtsBase": 27320,
+    "newPtsSkill": 27396,
+    "newPtsTotal": 54716,
+    "seasons": {
+      "2025-H1": 50,
+      "2025-H2": 13,
+      "2026-H1": 54,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "Syllabogramm",
+    "oldPts": 29759,
+    "newPtsBase": 29759,
+    "newPtsSkill": 24830,
+    "newPtsTotal": 54589,
+    "seasons": {
+      "2025-H1": 3895,
+      "2025-H2": 5388,
+      "2026-H1": 8963,
+      "2026-H2": 575
+    }
+  },
+  {
+    "name": ":0",
+    "oldPts": 30214,
+    "newPtsBase": 30214,
+    "newPtsSkill": 23822,
+    "newPtsTotal": 54036,
+    "seasons": {
+      "2025-H1": 3602,
+      "2025-H2": 898,
+      "2026-H1": 5,
+      "2026-H2": 126
+    }
+  },
+  {
+    "name": "HaHAxD*",
+    "oldPts": 32147,
+    "newPtsBase": 32147,
+    "newPtsSkill": 21593,
+    "newPtsTotal": 53740,
+    "seasons": {
+      "2025-H1": 152,
+      "2025-H2": 15,
+      "2026-H1": 57,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Brokecdx-",
+    "oldPts": 21722,
+    "newPtsBase": 21722,
+    "newPtsSkill": 31299,
+    "newPtsTotal": 53021,
+    "seasons": {
+      "2025-H1": 3,
+      "2025-H2": 219,
+      "2026-H1": 72,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "superdial",
+    "oldPts": 30328,
+    "newPtsBase": 30328,
+    "newPtsSkill": 22139,
+    "newPtsTotal": 52467,
+    "seasons": {
+      "2025-H1": 132,
+      "2025-H2": 320,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "n9",
+    "oldPts": 20093,
+    "newPtsBase": 20093,
+    "newPtsSkill": 31851,
+    "newPtsTotal": 51944,
+    "seasons": {
+      "2025-H1": 473,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "YömYöm~",
+    "oldPts": 28036,
+    "newPtsBase": 28036,
+    "newPtsSkill": 23794,
+    "newPtsTotal": 51830,
+    "seasons": {
+      "2025-H1": 4100,
+      "2025-H2": 5563,
+      "2026-H1": 3944,
+      "2026-H2": 432
+    }
+  },
+  {
+    "name": "ScReeNy",
+    "oldPts": 27754,
+    "newPtsBase": 27754,
+    "newPtsSkill": 23908,
+    "newPtsTotal": 51662,
+    "seasons": {
+      "2025-H1": 82,
+      "2025-H2": 6,
+      "2026-H1": 20,
+      "2026-H2": 64
+    }
+  },
+  {
+    "name": "Starkiller",
+    "oldPts": 31101,
+    "newPtsBase": 31101,
+    "newPtsSkill": 20349,
+    "newPtsTotal": 51450,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Gazebr",
+    "oldPts": 28746,
+    "newPtsBase": 28746,
+    "newPtsSkill": 22339,
+    "newPtsTotal": 51085,
+    "seasons": {
+      "2025-H1": 4293,
+      "2025-H2": 150,
+      "2026-H1": 419,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ZChuanY",
+    "oldPts": 32036,
+    "newPtsBase": 32036,
+    "newPtsSkill": 19027,
+    "newPtsTotal": 51063,
+    "seasons": {
+      "2025-H1": 3593,
+      "2025-H2": 1593,
+      "2026-H1": 5826,
+      "2026-H2": 295
+    }
+  },
+  {
+    "name": "Kicker",
+    "oldPts": 29692,
+    "newPtsBase": 29692,
+    "newPtsSkill": 21369,
+    "newPtsTotal": 51061,
+    "seasons": {
+      "2025-H1": 984,
+      "2025-H2": 198,
+      "2026-H1": 295,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Tropo",
+    "oldPts": 28803,
+    "newPtsBase": 28803,
+    "newPtsSkill": 22078,
+    "newPtsTotal": 50881,
+    "seasons": {
+      "2025-H1": 188,
+      "2025-H2": 1733,
+      "2026-H1": 1238,
+      "2026-H2": 238
+    }
+  },
+  {
+    "name": "yo bitch",
+    "oldPts": 31652,
+    "newPtsBase": 31652,
+    "newPtsSkill": 19141,
+    "newPtsTotal": 50793,
+    "seasons": {
+      "2025-H1": 1428,
+      "2025-H2": 1302,
+      "2026-H1": 1794,
+      "2026-H2": 33
+    }
+  },
+  {
+    "name": "DaGiese :>",
+    "oldPts": 27947,
+    "newPtsBase": 27947,
+    "newPtsSkill": 22834,
+    "newPtsTotal": 50781,
+    "seasons": {
+      "2025-H1": 155,
+      "2025-H2": 33,
+      "2026-H1": 384,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Exit",
+    "oldPts": 28469,
+    "newPtsBase": 28469,
+    "newPtsSkill": 21901,
+    "newPtsTotal": 50370,
+    "seasons": {
+      "2025-H1": 733,
+      "2025-H2": 434,
+      "2026-H1": 552,
+      "2026-H2": 26
+    }
+  },
+  {
+    "name": "Smetanolub",
+    "oldPts": 29305,
+    "newPtsBase": 29305,
+    "newPtsSkill": 20309,
+    "newPtsTotal": 49614,
+    "seasons": {
+      "2025-H1": 349,
+      "2025-H2": 347,
+      "2026-H1": 186,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "VéNa",
+    "oldPts": 23549,
+    "newPtsBase": 23549,
+    "newPtsSkill": 25656,
+    "newPtsTotal": 49205,
+    "seasons": {
+      "2025-H1": 749,
+      "2025-H2": 279,
+      "2026-H1": 50,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Forgotten",
+    "oldPts": 26329,
+    "newPtsBase": 26329,
+    "newPtsSkill": 22627,
+    "newPtsTotal": 48956,
+    "seasons": {
+      "2025-H1": 6897,
+      "2025-H2": 5224,
+      "2026-H1": 2524,
+      "2026-H2": 69
+    }
+  },
+  {
+    "name": "AvapiX",
+    "oldPts": 30003,
+    "newPtsBase": 30003,
+    "newPtsSkill": 18269,
+    "newPtsTotal": 48272,
+    "seasons": {
+      "2025-H1": 260,
+      "2025-H2": 0,
+      "2026-H1": 10,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Rexter",
+    "oldPts": 28265,
+    "newPtsBase": 28265,
+    "newPtsSkill": 19532,
+    "newPtsTotal": 47797,
+    "seasons": {
+      "2025-H1": 214,
+      "2025-H2": 50,
+      "2026-H1": 22,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": ".:Danytto:.",
+    "oldPts": 29976,
+    "newPtsBase": 29976,
+    "newPtsSkill": 17796,
+    "newPtsTotal": 47772,
+    "seasons": {
+      "2025-H1": 160,
+      "2025-H2": 191,
+      "2026-H1": 1979,
+      "2026-H2": 4
+    }
+  },
+  {
+    "name": "TX",
+    "oldPts": 22765,
+    "newPtsBase": 22765,
+    "newPtsSkill": 24808,
+    "newPtsTotal": 47573,
+    "seasons": {
+      "2025-H1": 1900,
+      "2025-H2": 4105,
+      "2026-H1": 1726,
+      "2026-H2": 121
+    }
+  },
+  {
+    "name": "nameless tee",
+    "oldPts": 26586,
+    "newPtsBase": 26586,
+    "newPtsSkill": 20957,
+    "newPtsTotal": 47543,
+    "seasons": {
+      "2025-H1": 3002,
+      "2025-H2": 2899,
+      "2026-H1": 1962,
+      "2026-H2": 49
+    }
+  },
+  {
+    "name": "Jimmy Jazz",
+    "oldPts": 21895,
+    "newPtsBase": 21895,
+    "newPtsSkill": 25378,
+    "newPtsTotal": 47273,
+    "seasons": {
+      "2025-H1": 1601,
+      "2025-H2": 367,
+      "2026-H1": 204,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Cendren",
+    "oldPts": 26517,
+    "newPtsBase": 26517,
+    "newPtsSkill": 20563,
+    "newPtsTotal": 47080,
+    "seasons": {
+      "2025-H1": 4,
+      "2025-H2": 3,
+      "2026-H1": 161,
+      "2026-H2": 57
+    }
+  },
+  {
+    "name": "Tokly",
+    "oldPts": 21726,
+    "newPtsBase": 21726,
+    "newPtsSkill": 25289,
+    "newPtsTotal": 47015,
+    "seasons": {
+      "2025-H1": 4993,
+      "2025-H2": 5454,
+      "2026-H1": 4551,
+      "2026-H2": 64
+    }
+  },
+  {
+    "name": "Hav",
+    "oldPts": 32912,
+    "newPtsBase": 32912,
+    "newPtsSkill": 13715,
+    "newPtsTotal": 46627,
+    "seasons": {
+      "2025-H1": 1317,
+      "2025-H2": 1498,
+      "2026-H1": 69,
+      "2026-H2": 18
+    }
+  },
+  {
+    "name": "Exotix",
+    "oldPts": 32344,
+    "newPtsBase": 32344,
+    "newPtsSkill": 14063,
+    "newPtsTotal": 46407,
+    "seasons": {
+      "2025-H1": 271,
+      "2025-H2": 135,
+      "2026-H1": 467,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Infern@L",
+    "oldPts": 32879,
+    "newPtsBase": 32879,
+    "newPtsSkill": 13191,
+    "newPtsTotal": 46070,
+    "seasons": {
+      "2025-H1": 670,
+      "2025-H2": 290,
+      "2026-H1": 501,
+      "2026-H2": 88
+    }
+  },
+  {
+    "name": ".pet",
+    "oldPts": 25424,
+    "newPtsBase": 25424,
+    "newPtsSkill": 20627,
+    "newPtsTotal": 46051,
+    "seasons": {
+      "2025-H1": 2266,
+      "2025-H2": 402,
+      "2026-H1": 341,
+      "2026-H2": 5
+    }
+  },
+  {
+    "name": "Shinoa",
+    "oldPts": 21760,
+    "newPtsBase": 21760,
+    "newPtsSkill": 23914,
+    "newPtsTotal": 45674,
+    "seasons": {
+      "2025-H1": 1617,
+      "2025-H2": 1573,
+      "2026-H1": 793,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ad",
+    "oldPts": 20022,
+    "newPtsBase": 20022,
+    "newPtsSkill": 25640,
+    "newPtsTotal": 45662,
+    "seasons": {
+      "2025-H1": 1653,
+      "2025-H2": 716,
+      "2026-H1": 752,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "\\\\=DLG=//",
+    "oldPts": 20904,
+    "newPtsBase": 20904,
+    "newPtsSkill": 24618,
+    "newPtsTotal": 45522,
+    "seasons": {
+      "2025-H1": 2971,
+      "2025-H2": 2219,
+      "2026-H1": 4608,
+      "2026-H2": 106
+    }
+  },
+  {
+    "name": "rqza",
+    "oldPts": 29280,
+    "newPtsBase": 29280,
+    "newPtsSkill": 16043,
+    "newPtsTotal": 45323,
+    "seasons": {
+      "2025-H1": 582,
+      "2025-H2": 344,
+      "2026-H1": 118,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "猫猫",
+    "oldPts": 27404,
+    "newPtsBase": 27404,
+    "newPtsSkill": 17593,
+    "newPtsTotal": 44997,
+    "seasons": {
+      "2025-H1": 18,
+      "2025-H2": 35,
+      "2026-H1": 9,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "BaconDrink",
+    "oldPts": 24201,
+    "newPtsBase": 24201,
+    "newPtsSkill": 20299,
+    "newPtsTotal": 44500,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "NeveRMinD66 (",
+    "oldPts": 28720,
+    "newPtsBase": 28720,
+    "newPtsSkill": 15692,
+    "newPtsTotal": 44412,
+    "seasons": {
+      "2025-H1": 542,
+      "2025-H2": 116,
+      "2026-H1": 2376,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Natsume",
+    "oldPts": 24359,
+    "newPtsBase": 24359,
+    "newPtsSkill": 20035,
+    "newPtsTotal": 44394,
+    "seasons": {
+      "2025-H1": 2932,
+      "2025-H2": 4256,
+      "2026-H1": 2235,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Laive",
+    "oldPts": 29754,
+    "newPtsBase": 29754,
+    "newPtsSkill": 14427,
+    "newPtsTotal": 44181,
+    "seasons": {
+      "2025-H1": 3666,
+      "2025-H2": 1171,
+      "2026-H1": 3144,
+      "2026-H2": 252
+    }
+  },
+  {
+    "name": "wats",
+    "oldPts": 21702,
+    "newPtsBase": 21702,
+    "newPtsSkill": 21810,
+    "newPtsTotal": 43512,
+    "seasons": {
+      "2025-H1": 5116,
+      "2025-H2": 1870,
+      "2026-H1": 1488,
+      "2026-H2": 10
+    }
+  },
+  {
+    "name": "insolvent",
+    "oldPts": 27068,
+    "newPtsBase": 27068,
+    "newPtsSkill": 16320,
+    "newPtsTotal": 43388,
+    "seasons": {
+      "2025-H1": 498,
+      "2025-H2": 889,
+      "2026-H1": 962,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ZeroMS",
+    "oldPts": 32394,
+    "newPtsBase": 32394,
+    "newPtsSkill": 10913,
+    "newPtsTotal": 43307,
+    "seasons": {
+      "2025-H1": 2691,
+      "2025-H2": 718,
+      "2026-H1": 736,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "Lukov",
+    "oldPts": 20120,
+    "newPtsBase": 20120,
+    "newPtsSkill": 23001,
+    "newPtsTotal": 43121,
+    "seasons": {
+      "2025-H1": 2165,
+      "2025-H2": 1110,
+      "2026-H1": 1744,
+      "2026-H2": 284
+    }
+  },
+  {
+    "name": "Vappy",
+    "oldPts": 25166,
+    "newPtsBase": 25166,
+    "newPtsSkill": 17930,
+    "newPtsTotal": 43096,
+    "seasons": {
+      "2025-H1": 3482,
+      "2025-H2": 3295,
+      "2026-H1": 3797,
+      "2026-H2": 121
+    }
+  },
+  {
+    "name": "Nugget",
+    "oldPts": 25306,
+    "newPtsBase": 25306,
+    "newPtsSkill": 17753,
+    "newPtsTotal": 43059,
+    "seasons": {
+      "2025-H1": 2058,
+      "2025-H2": 144,
+      "2026-H1": 4107,
+      "2026-H2": 196
+    }
+  },
+  {
+    "name": "Cyclic~",
+    "oldPts": 22927,
+    "newPtsBase": 22927,
+    "newPtsSkill": 19920,
+    "newPtsTotal": 42847,
+    "seasons": {
+      "2025-H1": 3271,
+      "2025-H2": 0,
+      "2026-H1": 106,
+      "2026-H2": 4
+    }
+  },
+  {
+    "name": "学妹",
+    "oldPts": 31006,
+    "newPtsBase": 31006,
+    "newPtsSkill": 11607,
+    "newPtsTotal": 42613,
+    "seasons": {
+      "2025-H1": 3276,
+      "2025-H2": 1147,
+      "2026-H1": 6234,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Namzar",
+    "oldPts": 22146,
+    "newPtsBase": 22146,
+    "newPtsSkill": 20435,
+    "newPtsTotal": 42581,
+    "seasons": {
+      "2025-H1": 2095,
+      "2025-H2": 6049,
+      "2026-H1": 4783,
+      "2026-H2": 103
+    }
+  },
+  {
+    "name": "Theon",
+    "oldPts": 22781,
+    "newPtsBase": 22781,
+    "newPtsSkill": 19718,
+    "newPtsTotal": 42499,
+    "seasons": {
+      "2025-H1": 1312,
+      "2025-H2": 492,
+      "2026-H1": 252,
+      "2026-H2": 20
+    }
+  },
+  {
+    "name": "Deeper",
+    "oldPts": 28742,
+    "newPtsBase": 28742,
+    "newPtsSkill": 13407,
+    "newPtsTotal": 42149,
+    "seasons": {
+      "2025-H1": 388,
+      "2025-H2": 0,
+      "2026-H1": 71,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "FUMOFFU",
+    "oldPts": 24158,
+    "newPtsBase": 24158,
+    "newPtsSkill": 17894,
+    "newPtsTotal": 42052,
+    "seasons": {
+      "2025-H1": 1070,
+      "2025-H2": 67,
+      "2026-H1": 44,
+      "2026-H2": 26
+    }
+  },
+  {
+    "name": "LuckyStrike",
+    "oldPts": 28733,
+    "newPtsBase": 28733,
+    "newPtsSkill": 13263,
+    "newPtsTotal": 41996,
+    "seasons": {
+      "2025-H1": 1133,
+      "2025-H2": 504,
+      "2026-H1": 167,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "LanuX",
+    "oldPts": 24081,
+    "newPtsBase": 24081,
+    "newPtsSkill": 17883,
+    "newPtsTotal": 41964,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 5344,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "insolvent troll",
+    "oldPts": 25790,
+    "newPtsBase": 25790,
+    "newPtsSkill": 15582,
+    "newPtsTotal": 41372,
+    "seasons": {
+      "2025-H1": 2595,
+      "2025-H2": 2064,
+      "2026-H1": 3687,
+      "2026-H2": 96
+    }
+  },
+  {
+    "name": "Mystery?",
+    "oldPts": 25744,
+    "newPtsBase": 25744,
+    "newPtsSkill": 15448,
+    "newPtsTotal": 41192,
+    "seasons": {
+      "2025-H1": 22,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Счастье",
+    "oldPts": 21005,
+    "newPtsBase": 21005,
+    "newPtsSkill": 20138,
+    "newPtsTotal": 41143,
+    "seasons": {
+      "2025-H1": 859,
+      "2025-H2": 813,
+      "2026-H1": 2043,
+      "2026-H2": 113
+    }
+  },
+  {
+    "name": "Kelee",
+    "oldPts": 32352,
+    "newPtsBase": 32352,
+    "newPtsSkill": 8740,
+    "newPtsTotal": 41092,
+    "seasons": {
+      "2025-H1": 3523,
+      "2025-H2": 1483,
+      "2026-H1": 753,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Cintilar",
+    "oldPts": 31321,
+    "newPtsBase": 31321,
+    "newPtsSkill": 9755,
+    "newPtsTotal": 41076,
+    "seasons": {
+      "2025-H1": 1836,
+      "2025-H2": 3000,
+      "2026-H1": 3852,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Genex",
+    "oldPts": 22532,
+    "newPtsBase": 22532,
+    "newPtsSkill": 18535,
+    "newPtsTotal": 41067,
+    "seasons": {
+      "2025-H1": 150,
+      "2025-H2": 92,
+      "2026-H1": 738,
+      "2026-H2": 18
+    }
+  },
+  {
+    "name": "Bambikiller",
+    "oldPts": 23039,
+    "newPtsBase": 23039,
+    "newPtsSkill": 17786,
+    "newPtsTotal": 40825,
+    "seasons": {
+      "2025-H1": 439,
+      "2025-H2": 6144,
+      "2026-H1": 7106,
+      "2026-H2": 177
+    }
+  },
+  {
+    "name": "Graves",
+    "oldPts": 25035,
+    "newPtsBase": 25035,
+    "newPtsSkill": 15705,
+    "newPtsTotal": 40740,
+    "seasons": {
+      "2025-H1": 367,
+      "2025-H2": 191,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Gorden",
+    "oldPts": 23097,
+    "newPtsBase": 23097,
+    "newPtsSkill": 17526,
+    "newPtsTotal": 40623,
+    "seasons": {
+      "2025-H1": 71,
+      "2025-H2": 677,
+      "2026-H1": 1629,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Beelzebub.-",
+    "oldPts": 23576,
+    "newPtsBase": 23576,
+    "newPtsSkill": 16805,
+    "newPtsTotal": 40381,
+    "seasons": {
+      "2025-H1": 194,
+      "2025-H2": 111,
+      "2026-H1": 39,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "BisZ",
+    "oldPts": 28604,
+    "newPtsBase": 28604,
+    "newPtsSkill": 11725,
+    "newPtsTotal": 40329,
+    "seasons": {
+      "2025-H1": 276,
+      "2025-H2": 532,
+      "2026-H1": 1001,
+      "2026-H2": 35
+    }
+  },
+  {
+    "name": "DarkDelirium",
+    "oldPts": 25582,
+    "newPtsBase": 25582,
+    "newPtsSkill": 14745,
+    "newPtsTotal": 40327,
+    "seasons": {
+      "2025-H1": 1811,
+      "2025-H2": 978,
+      "2026-H1": 2289,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "Unlocker",
+    "oldPts": 30227,
+    "newPtsBase": 30227,
+    "newPtsSkill": 10021,
+    "newPtsTotal": 40248,
+    "seasons": {
+      "2025-H1": 922,
+      "2025-H2": 1292,
+      "2026-H1": 1494,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Goran",
+    "oldPts": 26066,
+    "newPtsBase": 26066,
+    "newPtsSkill": 14154,
+    "newPtsTotal": 40220,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "tatak",
+    "oldPts": 22691,
+    "newPtsBase": 22691,
+    "newPtsSkill": 17521,
+    "newPtsTotal": 40212,
+    "seasons": {
+      "2025-H1": 36,
+      "2025-H2": 305,
+      "2026-H1": 124,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "晚清",
+    "oldPts": 32747,
+    "newPtsBase": 32747,
+    "newPtsSkill": 7457,
+    "newPtsTotal": 40204,
+    "seasons": {
+      "2025-H1": 1143,
+      "2025-H2": 47,
+      "2026-H1": 1501,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "阳仔i",
+    "oldPts": 30234,
+    "newPtsBase": 30234,
+    "newPtsSkill": 9916,
+    "newPtsTotal": 40150,
+    "seasons": {
+      "2025-H1": 305,
+      "2025-H2": 164,
+      "2026-H1": 6964,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Puffyollɞ",
+    "oldPts": 28531,
+    "newPtsBase": 28531,
+    "newPtsSkill": 11602,
+    "newPtsTotal": 40133,
+    "seasons": {
+      "2025-H1": 1834,
+      "2025-H2": 1540,
+      "2026-H1": 5708,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Soapy Sandwich",
+    "oldPts": 22280,
+    "newPtsBase": 22280,
+    "newPtsSkill": 17758,
+    "newPtsTotal": 40038,
+    "seasons": {
+      "2025-H1": 86,
+      "2025-H2": 92,
+      "2026-H1": 60,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Matrix",
+    "oldPts": 23493,
+    "newPtsBase": 23493,
+    "newPtsSkill": 16520,
+    "newPtsTotal": 40013,
+    "seasons": {
+      "2025-H1": 701,
+      "2025-H2": 17,
+      "2026-H1": 5,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Shiriusu",
+    "oldPts": 26336,
+    "newPtsBase": 26336,
+    "newPtsSkill": 13617,
+    "newPtsTotal": 39953,
+    "seasons": {
+      "2025-H1": 688,
+      "2025-H2": 272,
+      "2026-H1": 286,
+      "2026-H2": 69
+    }
+  },
+  {
+    "name": "=Schulzer=",
+    "oldPts": 23124,
+    "newPtsBase": 23124,
+    "newPtsSkill": 16782,
+    "newPtsTotal": 39906,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "揶揄",
+    "oldPts": 31959,
+    "newPtsBase": 31959,
+    "newPtsSkill": 7870,
+    "newPtsTotal": 39829,
+    "seasons": {
+      "2025-H1": 1787,
+      "2025-H2": 104,
+      "2026-H1": 45,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "moty",
+    "oldPts": 27024,
+    "newPtsBase": 27024,
+    "newPtsSkill": 12668,
+    "newPtsTotal": 39692,
+    "seasons": {
+      "2025-H1": 2286,
+      "2025-H2": 2886,
+      "2026-H1": 2484,
+      "2026-H2": 284
+    }
+  },
+  {
+    "name": "1000_0",
+    "oldPts": 23768,
+    "newPtsBase": 23768,
+    "newPtsSkill": 15698,
+    "newPtsTotal": 39466,
+    "seasons": {
+      "2025-H1": 564,
+      "2025-H2": 331,
+      "2026-H1": 926,
+      "2026-H2": 19
+    }
+  },
+  {
+    "name": "z0rba",
+    "oldPts": 23791,
+    "newPtsBase": 23791,
+    "newPtsSkill": 15635,
+    "newPtsTotal": 39426,
+    "seasons": {
+      "2025-H1": 4347,
+      "2025-H2": 2783,
+      "2026-H1": 808,
+      "2026-H2": 31
+    }
+  },
+  {
+    "name": "见录",
+    "oldPts": 30453,
+    "newPtsBase": 30453,
+    "newPtsSkill": 8803,
+    "newPtsTotal": 39256,
+    "seasons": {
+      "2025-H1": 3181,
+      "2025-H2": 1435,
+      "2026-H1": 2150,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ban+eblan",
+    "oldPts": 28414,
+    "newPtsBase": 28414,
+    "newPtsSkill": 10809,
+    "newPtsTotal": 39223,
+    "seasons": {
+      "2025-H1": 1696,
+      "2025-H2": 688,
+      "2026-H1": 707,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "玄黑",
+    "oldPts": 30636,
+    "newPtsBase": 30636,
+    "newPtsSkill": 8539,
+    "newPtsTotal": 39175,
+    "seasons": {
+      "2025-H1": 1245,
+      "2025-H2": 245,
+      "2026-H1": 63,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": ".x0r*",
+    "oldPts": 22175,
+    "newPtsBase": 22175,
+    "newPtsSkill": 16918,
+    "newPtsTotal": 39093,
+    "seasons": {
+      "2025-H1": 1672,
+      "2025-H2": 1901,
+      "2026-H1": 3422,
+      "2026-H2": 99
+    }
+  },
+  {
+    "name": "淡定",
+    "oldPts": 28058,
+    "newPtsBase": 28058,
+    "newPtsSkill": 11010,
+    "newPtsTotal": 39068,
+    "seasons": {
+      "2025-H1": 3945,
+      "2025-H2": 3165,
+      "2026-H1": 2084,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "cincaoizz",
+    "oldPts": 20176,
+    "newPtsBase": 20176,
+    "newPtsSkill": 18873,
+    "newPtsTotal": 39049,
+    "seasons": {
+      "2025-H1": 2239,
+      "2025-H2": 4990,
+      "2026-H1": 11039,
+      "2026-H2": 497
+    }
+  },
+  {
+    "name": "晚间800",
+    "oldPts": 30384,
+    "newPtsBase": 30384,
+    "newPtsSkill": 8576,
+    "newPtsTotal": 38960,
+    "seasons": {
+      "2025-H1": 1566,
+      "2025-H2": 349,
+      "2026-H1": 565,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "iParano",
+    "oldPts": 21539,
+    "newPtsBase": 21539,
+    "newPtsSkill": 17364,
+    "newPtsTotal": 38903,
+    "seasons": {
+      "2025-H1": 701,
+      "2025-H2": 269,
+      "2026-H1": 239,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "SSS",
+    "oldPts": 30113,
+    "newPtsBase": 30113,
+    "newPtsSkill": 8654,
+    "newPtsTotal": 38767,
+    "seasons": {
+      "2025-H1": 1445,
+      "2025-H2": 1485,
+      "2026-H1": 230,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Paola",
+    "oldPts": 28466,
+    "newPtsBase": 28466,
+    "newPtsSkill": 10253,
+    "newPtsTotal": 38719,
+    "seasons": {
+      "2025-H1": 976,
+      "2025-H2": 554,
+      "2026-H1": 333,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Eternally",
+    "oldPts": 27360,
+    "newPtsBase": 27360,
+    "newPtsSkill": 11340,
+    "newPtsTotal": 38700,
+    "seasons": {
+      "2025-H1": 2262,
+      "2025-H2": 163,
+      "2026-H1": 226,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "sarelemele",
+    "oldPts": 22036,
+    "newPtsBase": 22036,
+    "newPtsSkill": 16294,
+    "newPtsTotal": 38330,
+    "seasons": {
+      "2025-H1": 2293,
+      "2025-H2": 2604,
+      "2026-H1": 856,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "QzBoY",
+    "oldPts": 24305,
+    "newPtsBase": 24305,
+    "newPtsSkill": 14009,
+    "newPtsTotal": 38314,
+    "seasons": {
+      "2025-H1": 197,
+      "2025-H2": 14,
+      "2026-H1": 27,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Black Jack",
+    "oldPts": 21842,
+    "newPtsBase": 21842,
+    "newPtsSkill": 16469,
+    "newPtsTotal": 38311,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Poop",
+    "oldPts": 19525,
+    "newPtsBase": 19525,
+    "newPtsSkill": 18477,
+    "newPtsTotal": 38002,
+    "seasons": {
+      "2025-H1": 1630,
+      "2025-H2": 635,
+      "2026-H1": 115,
+      "2026-H2": 20
+    }
+  },
+  {
+    "name": "acro",
+    "oldPts": 23633,
+    "newPtsBase": 23633,
+    "newPtsSkill": 14237,
+    "newPtsTotal": 37870,
+    "seasons": {
+      "2025-H1": 4263,
+      "2025-H2": 294,
+      "2026-H1": 3217,
+      "2026-H2": 69
+    }
+  },
+  {
+    "name": "Meow~",
+    "oldPts": 22597,
+    "newPtsBase": 22597,
+    "newPtsSkill": 15068,
+    "newPtsTotal": 37665,
+    "seasons": {
+      "2025-H1": 26,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "☯Mڶɴ3☯",
+    "oldPts": 20844,
+    "newPtsBase": 20844,
+    "newPtsSkill": 16747,
+    "newPtsTotal": 37591,
+    "seasons": {
+      "2025-H1": 207,
+      "2025-H2": 0,
+      "2026-H1": 115,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "顾慌",
+    "oldPts": 29199,
+    "newPtsBase": 29199,
+    "newPtsSkill": 8329,
+    "newPtsTotal": 37528,
+    "seasons": {
+      "2025-H1": 611,
+      "2025-H2": 40,
+      "2026-H1": 1963,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "吧唧",
+    "oldPts": 30284,
+    "newPtsBase": 30284,
+    "newPtsSkill": 7226,
+    "newPtsTotal": 37510,
+    "seasons": {
+      "2025-H1": 2470,
+      "2025-H2": 392,
+      "2026-H1": 963,
+      "2026-H2": 26
+    }
+  },
+  {
+    "name": "Pioooooo",
+    "oldPts": 30083,
+    "newPtsBase": 30083,
+    "newPtsSkill": 7264,
+    "newPtsTotal": 37347,
+    "seasons": {
+      "2025-H1": 2678,
+      "2025-H2": 1284,
+      "2026-H1": 316,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "我是黑蛋",
+    "oldPts": 31220,
+    "newPtsBase": 31220,
+    "newPtsSkill": 6081,
+    "newPtsTotal": 37301,
+    "seasons": {
+      "2025-H1": 2420,
+      "2025-H2": 705,
+      "2026-H1": 1269,
+      "2026-H2": 17
+    }
+  },
+  {
+    "name": "DiegoBlaster21",
+    "oldPts": 25485,
+    "newPtsBase": 25485,
+    "newPtsSkill": 11791,
+    "newPtsTotal": 37276,
+    "seasons": {
+      "2025-H1": 1988,
+      "2025-H2": 377,
+      "2026-H1": 1657,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Baran Nashor",
+    "oldPts": 22401,
+    "newPtsBase": 22401,
+    "newPtsSkill": 14768,
+    "newPtsTotal": 37169,
+    "seasons": {
+      "2025-H1": 754,
+      "2025-H2": 884,
+      "2026-H1": 4417,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Novice小慕情",
+    "oldPts": 30038,
+    "newPtsBase": 30038,
+    "newPtsSkill": 7112,
+    "newPtsTotal": 37150,
+    "seasons": {
+      "2025-H1": 13,
+      "2025-H2": 1233,
+      "2026-H1": 2496,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "darkfeather",
+    "oldPts": 21293,
+    "newPtsBase": 21293,
+    "newPtsSkill": 15855,
+    "newPtsTotal": 37148,
+    "seasons": {
+      "2025-H1": 2345,
+      "2025-H2": 2092,
+      "2026-H1": 1656,
+      "2026-H2": 48
+    }
+  },
+  {
+    "name": "sorgaxD",
+    "oldPts": 23010,
+    "newPtsBase": 23010,
+    "newPtsSkill": 14017,
+    "newPtsTotal": 37027,
+    "seasons": {
+      "2025-H1": 485,
+      "2025-H2": 75,
+      "2026-H1": 57,
+      "2026-H2": 46
+    }
+  },
+  {
+    "name": "满月",
+    "oldPts": 29980,
+    "newPtsBase": 29980,
+    "newPtsSkill": 7024,
+    "newPtsTotal": 37004,
+    "seasons": {
+      "2025-H1": 1404,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "CoBa",
+    "oldPts": 24314,
+    "newPtsBase": 24314,
+    "newPtsSkill": 12642,
+    "newPtsTotal": 36956,
+    "seasons": {
+      "2025-H1": 674,
+      "2025-H2": 1096,
+      "2026-H1": 473,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "green_bomb",
+    "oldPts": 31233,
+    "newPtsBase": 31233,
+    "newPtsSkill": 5719,
+    "newPtsTotal": 36952,
+    "seasons": {
+      "2025-H1": 254,
+      "2025-H2": 465,
+      "2026-H1": 634,
+      "2026-H2": 14
+    }
+  },
+  {
+    "name": "淡墨青衫",
+    "oldPts": 30000,
+    "newPtsBase": 30000,
+    "newPtsSkill": 6878,
+    "newPtsTotal": 36878,
+    "seasons": {
+      "2025-H1": 2314,
+      "2025-H2": 948,
+      "2026-H1": 316,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "勾栏听曲",
+    "oldPts": 29251,
+    "newPtsBase": 29251,
+    "newPtsSkill": 7559,
+    "newPtsTotal": 36810,
+    "seasons": {
+      "2025-H1": 2662,
+      "2025-H2": 520,
+      "2026-H1": 2199,
+      "2026-H2": 282
+    }
+  },
+  {
+    "name": "Kenshiro",
+    "oldPts": 29111,
+    "newPtsBase": 29111,
+    "newPtsSkill": 7698,
+    "newPtsTotal": 36809,
+    "seasons": {
+      "2025-H1": 1596,
+      "2025-H2": 61,
+      "2026-H1": 4843,
+      "2026-H2": 95
+    }
+  },
+  {
+    "name": "浅沫",
+    "oldPts": 27408,
+    "newPtsBase": 27408,
+    "newPtsSkill": 9388,
+    "newPtsTotal": 36796,
+    "seasons": {
+      "2025-H1": 2827,
+      "2025-H2": 2489,
+      "2026-H1": 2089,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "MaCRoYale",
+    "oldPts": 19301,
+    "newPtsBase": 19301,
+    "newPtsSkill": 17401,
+    "newPtsTotal": 36702,
+    "seasons": {
+      "2025-H1": 5,
+      "2025-H2": 7,
+      "2026-H1": 1619,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "kayoo",
+    "oldPts": 21172,
+    "newPtsBase": 21172,
+    "newPtsSkill": 15529,
+    "newPtsTotal": 36701,
+    "seasons": {
+      "2025-H1": 1427,
+      "2025-H2": 260,
+      "2026-H1": 446,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Profi",
+    "oldPts": 22689,
+    "newPtsBase": 22689,
+    "newPtsSkill": 13949,
+    "newPtsTotal": 36638,
+    "seasons": {
+      "2025-H1": 1117,
+      "2025-H2": 462,
+      "2026-H1": 369,
+      "2026-H2": 24
+    }
+  },
+  {
+    "name": "тυx",
+    "oldPts": 22722,
+    "newPtsBase": 22722,
+    "newPtsSkill": 13900,
+    "newPtsTotal": 36622,
+    "seasons": {
+      "2025-H1": 517,
+      "2025-H2": 450,
+      "2026-H1": 729,
+      "2026-H2": 23
+    }
+  },
+  {
+    "name": "天然二",
+    "oldPts": 29429,
+    "newPtsBase": 29429,
+    "newPtsSkill": 7166,
+    "newPtsTotal": 36595,
+    "seasons": {
+      "2025-H1": 1620,
+      "2025-H2": 213,
+      "2026-H1": 225,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Baduk",
+    "oldPts": 24406,
+    "newPtsBase": 24406,
+    "newPtsSkill": 12055,
+    "newPtsTotal": 36461,
+    "seasons": {
+      "2025-H1": 874,
+      "2025-H2": 257,
+      "2026-H1": 883,
+      "2026-H2": 12
+    }
+  },
+  {
+    "name": "Sad*Boy",
+    "oldPts": 26821,
+    "newPtsBase": 26821,
+    "newPtsSkill": 9576,
+    "newPtsTotal": 36397,
+    "seasons": {
+      "2025-H1": 1009,
+      "2025-H2": 306,
+      "2026-H1": 1140,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "0717",
+    "oldPts": 22841,
+    "newPtsBase": 22841,
+    "newPtsSkill": 13538,
+    "newPtsTotal": 36379,
+    "seasons": {
+      "2025-H1": 669,
+      "2025-H2": 142,
+      "2026-H1": 121,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "MØtiv",
+    "oldPts": 20593,
+    "newPtsBase": 20593,
+    "newPtsSkill": 15778,
+    "newPtsTotal": 36371,
+    "seasons": {
+      "2025-H1": 46,
+      "2025-H2": 23,
+      "2026-H1": 151,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Coke",
+    "oldPts": 22606,
+    "newPtsBase": 22606,
+    "newPtsSkill": 13699,
+    "newPtsTotal": 36305,
+    "seasons": {
+      "2025-H1": 1735,
+      "2025-H2": 1975,
+      "2026-H1": 4048,
+      "2026-H2": 183
+    }
+  },
+  {
+    "name": "Cøke",
+    "oldPts": 25342,
+    "newPtsBase": 25342,
+    "newPtsSkill": 10952,
+    "newPtsTotal": 36294,
+    "seasons": {
+      "2025-H1": 341,
+      "2025-H2": 31,
+      "2026-H1": 277,
+      "2026-H2": 60
+    }
+  },
+  {
+    "name": "qed",
+    "oldPts": 24846,
+    "newPtsBase": 24846,
+    "newPtsSkill": 11425,
+    "newPtsTotal": 36271,
+    "seasons": {
+      "2025-H1": 134,
+      "2025-H2": 146,
+      "2026-H1": 140,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "琛哥",
+    "oldPts": 30283,
+    "newPtsBase": 30283,
+    "newPtsSkill": 5536,
+    "newPtsTotal": 35819,
+    "seasons": {
+      "2025-H1": 893,
+      "2025-H2": 329,
+      "2026-H1": 986,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "help me",
+    "oldPts": 30117,
+    "newPtsBase": 30117,
+    "newPtsSkill": 5674,
+    "newPtsTotal": 35791,
+    "seasons": {
+      "2025-H1": 2048,
+      "2025-H2": 753,
+      "2026-H1": 470,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Lexin",
+    "oldPts": 20510,
+    "newPtsBase": 20510,
+    "newPtsSkill": 15233,
+    "newPtsTotal": 35743,
+    "seasons": {
+      "2025-H1": 747,
+      "2025-H2": 693,
+      "2026-H1": 231,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "bano",
+    "oldPts": 24621,
+    "newPtsBase": 24621,
+    "newPtsSkill": 11086,
+    "newPtsTotal": 35707,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Maybi",
+    "oldPts": 21299,
+    "newPtsBase": 21299,
+    "newPtsSkill": 14294,
+    "newPtsTotal": 35593,
+    "seasons": {
+      "2025-H1": 407,
+      "2025-H2": 486,
+      "2026-H1": 38,
+      "2026-H2": 64
+    }
+  },
+  {
+    "name": "Necrid",
+    "oldPts": 27010,
+    "newPtsBase": 27010,
+    "newPtsSkill": 8553,
+    "newPtsTotal": 35563,
+    "seasons": {
+      "2025-H1": 742,
+      "2025-H2": 617,
+      "2026-H1": 211,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "美味",
+    "oldPts": 28179,
+    "newPtsBase": 28179,
+    "newPtsSkill": 7363,
+    "newPtsTotal": 35542,
+    "seasons": {
+      "2025-H1": 23,
+      "2025-H2": 46,
+      "2026-H1": 94,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ƤØŢĀŤ0Co",
+    "oldPts": 25972,
+    "newPtsBase": 25972,
+    "newPtsSkill": 9546,
+    "newPtsTotal": 35518,
+    "seasons": {
+      "2025-H1": 1098,
+      "2025-H2": 100,
+      "2026-H1": 479,
+      "2026-H2": 29
+    }
+  },
+  {
+    "name": "Bre3kAcHu",
+    "oldPts": 22448,
+    "newPtsBase": 22448,
+    "newPtsSkill": 13032,
+    "newPtsTotal": 35480,
+    "seasons": {
+      "2025-H1": 1969,
+      "2025-H2": 1881,
+      "2026-H1": 1873,
+      "2026-H2": 13
+    }
+  },
+  {
+    "name": "|Ŗaþŧurę|",
+    "oldPts": 24255,
+    "newPtsBase": 24255,
+    "newPtsSkill": 11223,
+    "newPtsTotal": 35478,
+    "seasons": {
+      "2025-H1": 393,
+      "2025-H2": 156,
+      "2026-H1": 92,
+      "2026-H2": 9
+    }
+  },
+  {
+    "name": "ZimE",
+    "oldPts": 22747,
+    "newPtsBase": 22747,
+    "newPtsSkill": 12610,
+    "newPtsTotal": 35357,
+    "seasons": {
+      "2025-H1": 642,
+      "2025-H2": 268,
+      "2026-H1": 514,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "顾枳",
+    "oldPts": 25788,
+    "newPtsBase": 25788,
+    "newPtsSkill": 9514,
+    "newPtsTotal": 35302,
+    "seasons": {
+      "2025-H1": 1549,
+      "2025-H2": 780,
+      "2026-H1": 2238,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "의리",
+    "oldPts": 20113,
+    "newPtsBase": 20113,
+    "newPtsSkill": 15188,
+    "newPtsTotal": 35301,
+    "seasons": {
+      "2025-H1": 278,
+      "2025-H2": 435,
+      "2026-H1": 479,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "2-Dima_-0-9",
+    "oldPts": 21739,
+    "newPtsBase": 21739,
+    "newPtsSkill": 13554,
+    "newPtsTotal": 35293,
+    "seasons": {
+      "2025-H1": 1242,
+      "2025-H2": 1689,
+      "2026-H1": 3691,
+      "2026-H2": 86
+    }
+  },
+  {
+    "name": "Skaydox",
+    "oldPts": 26070,
+    "newPtsBase": 26070,
+    "newPtsSkill": 9127,
+    "newPtsTotal": 35197,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 19,
+      "2026-H1": 0,
+      "2026-H2": 5
+    }
+  },
+  {
+    "name": "Fluday",
+    "oldPts": 19613,
+    "newPtsBase": 19613,
+    "newPtsSkill": 15452,
+    "newPtsTotal": 35065,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 20,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "SG",
+    "oldPts": 19601,
+    "newPtsBase": 19601,
+    "newPtsSkill": 15312,
+    "newPtsTotal": 34913,
+    "seasons": {
+      "2025-H1": 68,
+      "2025-H2": 1959,
+      "2026-H1": 7669,
+      "2026-H2": 360
+    }
+  },
+  {
+    "name": "ZFrogger",
+    "oldPts": 19720,
+    "newPtsBase": 19720,
+    "newPtsSkill": 15191,
+    "newPtsTotal": 34911,
+    "seasons": {
+      "2025-H1": 1075,
+      "2025-H2": 2229,
+      "2026-H1": 1116,
+      "2026-H2": 87
+    }
+  },
+  {
+    "name": "Joker.♥",
+    "oldPts": 22452,
+    "newPtsBase": 22452,
+    "newPtsSkill": 12453,
+    "newPtsTotal": 34905,
+    "seasons": {
+      "2025-H1": 426,
+      "2025-H2": 1461,
+      "2026-H1": 433,
+      "2026-H2": 33
+    }
+  },
+  {
+    "name": "gyungkusang",
+    "oldPts": 20177,
+    "newPtsBase": 20177,
+    "newPtsSkill": 14530,
+    "newPtsTotal": 34707,
+    "seasons": {
+      "2025-H1": 938,
+      "2025-H2": 1450,
+      "2026-H1": 309,
+      "2026-H2": 48
+    }
+  },
+  {
+    "name": "Diiego:3",
+    "oldPts": 25301,
+    "newPtsBase": 25301,
+    "newPtsSkill": 9362,
+    "newPtsTotal": 34663,
+    "seasons": {
+      "2025-H1": 950,
+      "2025-H2": 1225,
+      "2026-H1": 106,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Klein Blue",
+    "oldPts": 24446,
+    "newPtsBase": 24446,
+    "newPtsSkill": 10215,
+    "newPtsTotal": 34661,
+    "seasons": {
+      "2025-H1": 3573,
+      "2025-H2": 1142,
+      "2026-H1": 3222,
+      "2026-H2": 121
+    }
+  },
+  {
+    "name": "DoubleDipp",
+    "oldPts": 24458,
+    "newPtsBase": 24458,
+    "newPtsSkill": 10145,
+    "newPtsTotal": 34603,
+    "seasons": {
+      "2025-H1": 1423,
+      "2025-H2": 2783,
+      "2026-H1": 1521,
+      "2026-H2": 85
+    }
+  },
+  {
+    "name": "月满",
+    "oldPts": 29048,
+    "newPtsBase": 29048,
+    "newPtsSkill": 5507,
+    "newPtsTotal": 34555,
+    "seasons": {
+      "2025-H1": 537,
+      "2025-H2": 476,
+      "2026-H1": 1011,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "可鲁克兔",
+    "oldPts": 22826,
+    "newPtsBase": 22826,
+    "newPtsSkill": 11660,
+    "newPtsTotal": 34486,
+    "seasons": {
+      "2025-H1": 3703,
+      "2025-H2": 483,
+      "2026-H1": 728,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Elit3N0ob",
+    "oldPts": 19684,
+    "newPtsBase": 19684,
+    "newPtsSkill": 14764,
+    "newPtsTotal": 34448,
+    "seasons": {
+      "2025-H1": 344,
+      "2025-H2": 448,
+      "2026-H1": 1350,
+      "2026-H2": 148
+    }
+  },
+  {
+    "name": "lizikang24",
+    "oldPts": 24535,
+    "newPtsBase": 24535,
+    "newPtsSkill": 9851,
+    "newPtsTotal": 34386,
+    "seasons": {
+      "2025-H1": 1946,
+      "2025-H2": 831,
+      "2026-H1": 737,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "shini❡ami",
+    "oldPts": 20666,
+    "newPtsBase": 20666,
+    "newPtsSkill": 13579,
+    "newPtsTotal": 34245,
+    "seasons": {
+      "2025-H1": 2096,
+      "2025-H2": 5738,
+      "2026-H1": 4909,
+      "2026-H2": 167
+    }
+  },
+  {
+    "name": "木木ゃ゛",
+    "oldPts": 25948,
+    "newPtsBase": 25948,
+    "newPtsSkill": 8268,
+    "newPtsTotal": 34216,
+    "seasons": {
+      "2025-H1": 2022,
+      "2025-H2": 500,
+      "2026-H1": 2271,
+      "2026-H2": 23
+    }
+  },
+  {
+    "name": "UniStyle",
+    "oldPts": 22334,
+    "newPtsBase": 22334,
+    "newPtsSkill": 11839,
+    "newPtsTotal": 34173,
+    "seasons": {
+      "2025-H1": 2647,
+      "2025-H2": 1615,
+      "2026-H1": 1901,
+      "2026-H2": 181
+    }
+  },
+  {
+    "name": "PNCKA_CTPOU",
+    "oldPts": 20535,
+    "newPtsBase": 20535,
+    "newPtsSkill": 13634,
+    "newPtsTotal": 34169,
+    "seasons": {
+      "2025-H1": 2802,
+      "2025-H2": 3099,
+      "2026-H1": 4943,
+      "2026-H2": 38
+    }
+  },
+  {
+    "name": "altf4",
+    "oldPts": 21612,
+    "newPtsBase": 21612,
+    "newPtsSkill": 12550,
+    "newPtsTotal": 34162,
+    "seasons": {
+      "2025-H1": 2272,
+      "2025-H2": 3523,
+      "2026-H1": 5192,
+      "2026-H2": 297
+    }
+  },
+  {
+    "name": "triki",
+    "oldPts": 27711,
+    "newPtsBase": 27711,
+    "newPtsSkill": 6320,
+    "newPtsTotal": 34031,
+    "seasons": {
+      "2025-H1": 14,
+      "2025-H2": 15,
+      "2026-H1": 8,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Zspy",
+    "oldPts": 18960,
+    "newPtsBase": 18960,
+    "newPtsSkill": 15060,
+    "newPtsTotal": 34020,
+    "seasons": {
+      "2025-H1": 2633,
+      "2025-H2": 2312,
+      "2026-H1": 3566,
+      "2026-H2": 118
+    }
+  },
+  {
+    "name": "Reddy",
+    "oldPts": 21030,
+    "newPtsBase": 21030,
+    "newPtsSkill": 12987,
+    "newPtsTotal": 34017,
+    "seasons": {
+      "2025-H1": 2165,
+      "2025-H2": 1247,
+      "2026-H1": 1110,
+      "2026-H2": 154
+    }
+  },
+  {
+    "name": "善人",
+    "oldPts": 27793,
+    "newPtsBase": 27793,
+    "newPtsSkill": 6171,
+    "newPtsTotal": 33964,
+    "seasons": {
+      "2025-H1": 104,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ZameR",
+    "oldPts": 22943,
+    "newPtsBase": 22943,
+    "newPtsSkill": 11007,
+    "newPtsTotal": 33950,
+    "seasons": {
+      "2025-H1": 398,
+      "2025-H2": 760,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ShenFRusH",
+    "oldPts": 23432,
+    "newPtsBase": 23432,
+    "newPtsSkill": 10478,
+    "newPtsTotal": 33910,
+    "seasons": {
+      "2025-H1": 1230,
+      "2025-H2": 730,
+      "2026-H1": 784,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小涵",
+    "oldPts": 25786,
+    "newPtsBase": 25786,
+    "newPtsSkill": 8102,
+    "newPtsTotal": 33888,
+    "seasons": {
+      "2025-H1": 724,
+      "2025-H2": 102,
+      "2026-H1": 678,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "XxDarkNezZ",
+    "oldPts": 22270,
+    "newPtsBase": 22270,
+    "newPtsSkill": 11604,
+    "newPtsTotal": 33874,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 157,
+      "2026-H1": 267,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Skeith",
+    "oldPts": 18974,
+    "newPtsBase": 18974,
+    "newPtsSkill": 14883,
+    "newPtsTotal": 33857,
+    "seasons": {
+      "2025-H1": 287,
+      "2025-H2": 362,
+      "2026-H1": 152,
+      "2026-H2": 2
+    }
+  },
+  {
+    "name": "天书",
+    "oldPts": 25834,
+    "newPtsBase": 25834,
+    "newPtsSkill": 7939,
+    "newPtsTotal": 33773,
+    "seasons": {
+      "2025-H1": 2701,
+      "2025-H2": 603,
+      "2026-H1": 273,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小糖罐",
+    "oldPts": 25921,
+    "newPtsBase": 25921,
+    "newPtsSkill": 7685,
+    "newPtsTotal": 33606,
+    "seasons": {
+      "2025-H1": 527,
+      "2025-H2": 711,
+      "2026-H1": 4286,
+      "2026-H2": 626
+    }
+  },
+  {
+    "name": "Zhady",
+    "oldPts": 22941,
+    "newPtsBase": 22941,
+    "newPtsSkill": 10511,
+    "newPtsTotal": 33452,
+    "seasons": {
+      "2025-H1": 540,
+      "2025-H2": 20,
+      "2026-H1": 17,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Phoenix",
+    "oldPts": 22446,
+    "newPtsBase": 22446,
+    "newPtsSkill": 10993,
+    "newPtsTotal": 33439,
+    "seasons": {
+      "2025-H1": 85,
+      "2025-H2": 129,
+      "2026-H1": 232,
+      "2026-H2": 64
+    }
+  },
+  {
+    "name": "jana",
+    "oldPts": 19901,
+    "newPtsBase": 19901,
+    "newPtsSkill": 13417,
+    "newPtsTotal": 33318,
+    "seasons": {
+      "2025-H1": 1725,
+      "2025-H2": 125,
+      "2026-H1": 3541,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "橘姜",
+    "oldPts": 26702,
+    "newPtsBase": 26702,
+    "newPtsSkill": 6588,
+    "newPtsTotal": 33290,
+    "seasons": {
+      "2025-H1": 867,
+      "2025-H2": 364,
+      "2026-H1": 329,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "milk",
+    "oldPts": 20845,
+    "newPtsBase": 20845,
+    "newPtsSkill": 12432,
+    "newPtsTotal": 33277,
+    "seasons": {
+      "2025-H1": 1315,
+      "2025-H2": 100,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Cheng_li",
+    "oldPts": 25386,
+    "newPtsBase": 25386,
+    "newPtsSkill": 7740,
+    "newPtsTotal": 33126,
+    "seasons": {
+      "2025-H1": 1267,
+      "2025-H2": 1009,
+      "2026-H1": 193,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Imperius",
+    "oldPts": 20441,
+    "newPtsBase": 20441,
+    "newPtsSkill": 12640,
+    "newPtsTotal": 33081,
+    "seasons": {
+      "2025-H1": 63,
+      "2025-H2": 76,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Cherry",
+    "oldPts": 20385,
+    "newPtsBase": 20385,
+    "newPtsSkill": 12570,
+    "newPtsTotal": 32955,
+    "seasons": {
+      "2025-H1": 867,
+      "2025-H2": 284,
+      "2026-H1": 451,
+      "2026-H2": 78
+    }
+  },
+  {
+    "name": "救援-萌新",
+    "oldPts": 28729,
+    "newPtsBase": 28729,
+    "newPtsSkill": 4209,
+    "newPtsTotal": 32938,
+    "seasons": {
+      "2025-H1": 308,
+      "2025-H2": 109,
+      "2026-H1": 131,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ilaK",
+    "oldPts": 29866,
+    "newPtsBase": 29866,
+    "newPtsSkill": 3070,
+    "newPtsTotal": 32936,
+    "seasons": {
+      "2025-H1": 569,
+      "2025-H2": 533,
+      "2026-H1": 100,
+      "2026-H2": 2
+    }
+  },
+  {
+    "name": "danishmod29",
+    "oldPts": 20804,
+    "newPtsBase": 20804,
+    "newPtsSkill": 12015,
+    "newPtsTotal": 32819,
+    "seasons": {
+      "2025-H1": 3407,
+      "2025-H2": 1195,
+      "2026-H1": 1056,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Hesse",
+    "oldPts": 22980,
+    "newPtsBase": 22980,
+    "newPtsSkill": 9793,
+    "newPtsTotal": 32773,
+    "seasons": {
+      "2025-H1": 157,
+      "2025-H2": 77,
+      "2026-H1": 49,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小艺",
+    "oldPts": 23409,
+    "newPtsBase": 23409,
+    "newPtsSkill": 9355,
+    "newPtsTotal": 32764,
+    "seasons": {
+      "2025-H1": 2486,
+      "2025-H2": 3602,
+      "2026-H1": 2554,
+      "2026-H2": 77
+    }
+  },
+  {
+    "name": "旧婪lan",
+    "oldPts": 28152,
+    "newPtsBase": 28152,
+    "newPtsSkill": 4603,
+    "newPtsTotal": 32755,
+    "seasons": {
+      "2025-H1": 471,
+      "2025-H2": 58,
+      "2026-H1": 93,
+      "2026-H2": 10
+    }
+  },
+  {
+    "name": "Splity",
+    "oldPts": 20743,
+    "newPtsBase": 20743,
+    "newPtsSkill": 11882,
+    "newPtsTotal": 32625,
+    "seasons": {
+      "2025-H1": 3259,
+      "2025-H2": 1000,
+      "2026-H1": 833,
+      "2026-H2": 48
+    }
+  },
+  {
+    "name": "SUPER BABY",
+    "oldPts": 20900,
+    "newPtsBase": 20900,
+    "newPtsSkill": 11575,
+    "newPtsTotal": 32475,
+    "seasons": {
+      "2025-H1": 1237,
+      "2025-H2": 943,
+      "2026-H1": 163,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Ɗosʜɪᴋ",
+    "oldPts": 20769,
+    "newPtsBase": 20769,
+    "newPtsSkill": 11521,
+    "newPtsTotal": 32290,
+    "seasons": {
+      "2025-H1": 1093,
+      "2025-H2": 568,
+      "2026-H1": 566,
+      "2026-H2": 3
+    }
+  },
+  {
+    "name": "LIONSNOW",
+    "oldPts": 26967,
+    "newPtsBase": 26967,
+    "newPtsSkill": 5288,
+    "newPtsTotal": 32255,
+    "seasons": {
+      "2025-H1": 628,
+      "2025-H2": 884,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小趴菜鸭",
+    "oldPts": 25542,
+    "newPtsBase": 25542,
+    "newPtsSkill": 6648,
+    "newPtsTotal": 32190,
+    "seasons": {
+      "2025-H1": 3235,
+      "2025-H2": 382,
+      "2026-H1": 97,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "YK",
+    "oldPts": 21369,
+    "newPtsBase": 21369,
+    "newPtsSkill": 10724,
+    "newPtsTotal": 32093,
+    "seasons": {
+      "2025-H1": 70,
+      "2025-H2": 637,
+      "2026-H1": 2911,
+      "2026-H2": 142
+    }
+  },
+  {
+    "name": "apdol",
+    "oldPts": 23052,
+    "newPtsBase": 23052,
+    "newPtsSkill": 9002,
+    "newPtsTotal": 32054,
+    "seasons": {
+      "2025-H1": 3559,
+      "2025-H2": 2542,
+      "2026-H1": 580,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "sl",
+    "oldPts": 25951,
+    "newPtsBase": 25951,
+    "newPtsSkill": 5952,
+    "newPtsTotal": 31903,
+    "seasons": {
+      "2025-H1": 197,
+      "2025-H2": 35,
+      "2026-H1": 4474,
+      "2026-H2": 56
+    }
+  },
+  {
+    "name": "lufu1",
+    "oldPts": 23312,
+    "newPtsBase": 23312,
+    "newPtsSkill": 8553,
+    "newPtsTotal": 31865,
+    "seasons": {
+      "2025-H1": 92,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Holl-F",
+    "oldPts": 27811,
+    "newPtsBase": 27811,
+    "newPtsSkill": 4051,
+    "newPtsTotal": 31862,
+    "seasons": {
+      "2025-H1": 381,
+      "2025-H2": 41,
+      "2026-H1": 100,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Crayzer",
+    "oldPts": 23924,
+    "newPtsBase": 23924,
+    "newPtsSkill": 7894,
+    "newPtsTotal": 31818,
+    "seasons": {
+      "2025-H1": 394,
+      "2025-H2": 10,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "时时啊.",
+    "oldPts": 26797,
+    "newPtsBase": 26797,
+    "newPtsSkill": 4980,
+    "newPtsTotal": 31777,
+    "seasons": {
+      "2025-H1": 316,
+      "2025-H2": 759,
+      "2026-H1": 1312,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Dazz",
+    "oldPts": 18947,
+    "newPtsBase": 18947,
+    "newPtsSkill": 12702,
+    "newPtsTotal": 31649,
+    "seasons": {
+      "2025-H1": 1311,
+      "2025-H2": 1532,
+      "2026-H1": 1377,
+      "2026-H2": 51
+    }
+  },
+  {
+    "name": "twee",
+    "oldPts": 26175,
+    "newPtsBase": 26175,
+    "newPtsSkill": 5468,
+    "newPtsTotal": 31643,
+    "seasons": {
+      "2025-H1": 233,
+      "2025-H2": 115,
+      "2026-H1": 42,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "لارقام✈",
+    "oldPts": 21095,
+    "newPtsBase": 21095,
+    "newPtsSkill": 10526,
+    "newPtsTotal": 31621,
+    "seasons": {
+      "2025-H1": 1240,
+      "2025-H2": 932,
+      "2026-H1": 1355,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "HR.嗜血",
+    "oldPts": 26043,
+    "newPtsBase": 26043,
+    "newPtsSkill": 5499,
+    "newPtsTotal": 31542,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "野织",
+    "oldPts": 24731,
+    "newPtsBase": 24731,
+    "newPtsSkill": 6691,
+    "newPtsTotal": 31422,
+    "seasons": {
+      "2025-H1": 2370,
+      "2025-H2": 1419,
+      "2026-H1": 683,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Ske",
+    "oldPts": 20465,
+    "newPtsBase": 20465,
+    "newPtsSkill": 10888,
+    "newPtsTotal": 31353,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 114,
+      "2026-H2": 180
+    }
+  },
+  {
+    "name": "原批",
+    "oldPts": 22823,
+    "newPtsBase": 22823,
+    "newPtsSkill": 8525,
+    "newPtsTotal": 31348,
+    "seasons": {
+      "2025-H1": 2798,
+      "2025-H2": 1950,
+      "2026-H1": 728,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Coolpanda",
+    "oldPts": 23068,
+    "newPtsBase": 23068,
+    "newPtsSkill": 8161,
+    "newPtsTotal": 31229,
+    "seasons": {
+      "2025-H1": 1238,
+      "2025-H2": 1477,
+      "2026-H1": 760,
+      "2026-H2": 9
+    }
+  },
+  {
+    "name": "阿哲",
+    "oldPts": 22904,
+    "newPtsBase": 22904,
+    "newPtsSkill": 8190,
+    "newPtsTotal": 31094,
+    "seasons": {
+      "2025-H1": 36,
+      "2025-H2": 117,
+      "2026-H1": 6576,
+      "2026-H2": 80
+    }
+  },
+  {
+    "name": "夏一",
+    "oldPts": 25393,
+    "newPtsBase": 25393,
+    "newPtsSkill": 5693,
+    "newPtsTotal": 31086,
+    "seasons": {
+      "2025-H1": 1209,
+      "2025-H2": 582,
+      "2026-H1": 497,
+      "2026-H2": 23
+    }
+  },
+  {
+    "name": "萧无心",
+    "oldPts": 27320,
+    "newPtsBase": 27320,
+    "newPtsSkill": 3672,
+    "newPtsTotal": 30992,
+    "seasons": {
+      "2025-H1": 680,
+      "2025-H2": 1632,
+      "2026-H1": 1193,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Konsti",
+    "oldPts": 22672,
+    "newPtsBase": 22672,
+    "newPtsSkill": 8257,
+    "newPtsTotal": 30929,
+    "seasons": {
+      "2025-H1": 29,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "I See You",
+    "oldPts": 20946,
+    "newPtsBase": 20946,
+    "newPtsSkill": 9972,
+    "newPtsTotal": 30918,
+    "seasons": {
+      "2025-H1": 228,
+      "2025-H2": 223,
+      "2026-H1": 187,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "·蓝蓝蓝蓝",
+    "oldPts": 22341,
+    "newPtsBase": 22341,
+    "newPtsSkill": 8492,
+    "newPtsTotal": 30833,
+    "seasons": {
+      "2025-H1": 5435,
+      "2025-H2": 2071,
+      "2026-H1": 51,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "二然",
+    "oldPts": 21154,
+    "newPtsBase": 21154,
+    "newPtsSkill": 9539,
+    "newPtsTotal": 30693,
+    "seasons": {
+      "2025-H1": 1622,
+      "2025-H2": 2311,
+      "2026-H1": 4786,
+      "2026-H2": 165
+    }
+  },
+  {
+    "name": "mememe",
+    "oldPts": 25073,
+    "newPtsBase": 25073,
+    "newPtsSkill": 5590,
+    "newPtsTotal": 30663,
+    "seasons": {
+      "2025-H1": 41,
+      "2025-H2": 75,
+      "2026-H1": 61,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "dobmax271",
+    "oldPts": 24332,
+    "newPtsBase": 24332,
+    "newPtsSkill": 6231,
+    "newPtsTotal": 30563,
+    "seasons": {
+      "2025-H1": 540,
+      "2025-H2": 135,
+      "2026-H1": 578,
+      "2026-H2": 17
+    }
+  },
+  {
+    "name": "Smurfer",
+    "oldPts": 21589,
+    "newPtsBase": 21589,
+    "newPtsSkill": 8918,
+    "newPtsTotal": 30507,
+    "seasons": {
+      "2025-H1": 272,
+      "2025-H2": 189,
+      "2026-H1": 71,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "murpi",
+    "oldPts": 20973,
+    "newPtsBase": 20973,
+    "newPtsSkill": 9441,
+    "newPtsTotal": 30414,
+    "seasons": {
+      "2025-H1": 346,
+      "2025-H2": 365,
+      "2026-H1": 18,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "花子",
+    "oldPts": 24207,
+    "newPtsBase": 24207,
+    "newPtsSkill": 6150,
+    "newPtsTotal": 30357,
+    "seasons": {
+      "2025-H1": 1039,
+      "2025-H2": 741,
+      "2026-H1": 1901,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Jormy",
+    "oldPts": 24262,
+    "newPtsBase": 24262,
+    "newPtsSkill": 6062,
+    "newPtsTotal": 30324,
+    "seasons": {
+      "2025-H1": 87,
+      "2025-H2": 386,
+      "2026-H1": 1165,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Yvemil",
+    "oldPts": 24227,
+    "newPtsBase": 24227,
+    "newPtsSkill": 6013,
+    "newPtsTotal": 30240,
+    "seasons": {
+      "2025-H1": 2133,
+      "2025-H2": 1040,
+      "2026-H1": 2170,
+      "2026-H2": 191
+    }
+  },
+  {
+    "name": "Solo_hobbyist",
+    "oldPts": 22873,
+    "newPtsBase": 22873,
+    "newPtsSkill": 7244,
+    "newPtsTotal": 30117,
+    "seasons": {
+      "2025-H1": 906,
+      "2025-H2": 1740,
+      "2026-H1": 1963,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "蓝猫",
+    "oldPts": 22055,
+    "newPtsBase": 22055,
+    "newPtsSkill": 8014,
+    "newPtsTotal": 30069,
+    "seasons": {
+      "2025-H1": 2356,
+      "2025-H2": 3322,
+      "2026-H1": 1533,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Xi",
+    "oldPts": 21965,
+    "newPtsBase": 21965,
+    "newPtsSkill": 8048,
+    "newPtsTotal": 30013,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 12,
+      "2026-H1": 11,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "mourn",
+    "oldPts": 23730,
+    "newPtsBase": 23730,
+    "newPtsSkill": 6279,
+    "newPtsTotal": 30009,
+    "seasons": {
+      "2025-H1": 1204,
+      "2025-H2": 146,
+      "2026-H1": 240,
+      "2026-H2": 14
+    }
+  },
+  {
+    "name": "Gwendal",
+    "oldPts": 19021,
+    "newPtsBase": 19021,
+    "newPtsSkill": 10981,
+    "newPtsTotal": 30002,
+    "seasons": {
+      "2025-H1": 225,
+      "2025-H2": 337,
+      "2026-H1": 2940,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "w_w",
+    "oldPts": 21701,
+    "newPtsBase": 21701,
+    "newPtsSkill": 8259,
+    "newPtsTotal": 29960,
+    "seasons": {
+      "2025-H1": 1351,
+      "2025-H2": 1056,
+      "2026-H1": 1062,
+      "2026-H2": 20
+    }
+  },
+  {
+    "name": "娃哈哈",
+    "oldPts": 26506,
+    "newPtsBase": 26506,
+    "newPtsSkill": 3443,
+    "newPtsTotal": 29949,
+    "seasons": {
+      "2025-H1": 57,
+      "2025-H2": 7,
+      "2026-H1": 117,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "枳枳",
+    "oldPts": 24072,
+    "newPtsBase": 24072,
+    "newPtsSkill": 5796,
+    "newPtsTotal": 29868,
+    "seasons": {
+      "2025-H1": 505,
+      "2025-H2": 192,
+      "2026-H1": 94,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "2577张",
+    "oldPts": 23492,
+    "newPtsBase": 23492,
+    "newPtsSkill": 6255,
+    "newPtsTotal": 29747,
+    "seasons": {
+      "2025-H1": 436,
+      "2025-H2": 216,
+      "2026-H1": 205,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "naknem",
+    "oldPts": 19866,
+    "newPtsBase": 19866,
+    "newPtsSkill": 9865,
+    "newPtsTotal": 29731,
+    "seasons": {
+      "2025-H1": 1837,
+      "2025-H2": 3609,
+      "2026-H1": 3986,
+      "2026-H2": 103
+    }
+  },
+  {
+    "name": "Chairn",
+    "oldPts": 20993,
+    "newPtsBase": 20993,
+    "newPtsSkill": 8709,
+    "newPtsTotal": 29702,
+    "seasons": {
+      "2025-H1": 44,
+      "2025-H2": 4,
+      "2026-H1": 48,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "孔子",
+    "oldPts": 24996,
+    "newPtsBase": 24996,
+    "newPtsSkill": 4686,
+    "newPtsTotal": 29682,
+    "seasons": {
+      "2025-H1": 608,
+      "2025-H2": 374,
+      "2026-H1": 437,
+      "2026-H2": 3
+    }
+  },
+  {
+    "name": "Jorginhuuu",
+    "oldPts": 19131,
+    "newPtsBase": 19131,
+    "newPtsSkill": 10551,
+    "newPtsTotal": 29682,
+    "seasons": {
+      "2025-H1": 1738,
+      "2025-H2": 2998,
+      "2026-H1": 1895,
+      "2026-H2": 113
+    }
+  },
+  {
+    "name": "YTCK",
+    "oldPts": 23590,
+    "newPtsBase": 23590,
+    "newPtsSkill": 6084,
+    "newPtsTotal": 29674,
+    "seasons": {
+      "2025-H1": 769,
+      "2025-H2": 1097,
+      "2026-H1": 1488,
+      "2026-H2": 113
+    }
+  },
+  {
+    "name": "大迷糊",
+    "oldPts": 24613,
+    "newPtsBase": 24613,
+    "newPtsSkill": 5035,
+    "newPtsTotal": 29648,
+    "seasons": {
+      "2025-H1": 473,
+      "2025-H2": 709,
+      "2026-H1": 1199,
+      "2026-H2": 10
+    }
+  },
+  {
+    "name": "Dreamless",
+    "oldPts": 21803,
+    "newPtsBase": 21803,
+    "newPtsSkill": 7840,
+    "newPtsTotal": 29643,
+    "seasons": {
+      "2025-H1": 1045,
+      "2025-H2": 678,
+      "2026-H1": 933,
+      "2026-H2": 69
+    }
+  },
+  {
+    "name": "오늘처음함",
+    "oldPts": 19332,
+    "newPtsBase": 19332,
+    "newPtsSkill": 10240,
+    "newPtsTotal": 29572,
+    "seasons": {
+      "2025-H1": 255,
+      "2025-H2": 83,
+      "2026-H1": 333,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "偏执狂",
+    "oldPts": 20268,
+    "newPtsBase": 20268,
+    "newPtsSkill": 9288,
+    "newPtsTotal": 29556,
+    "seasons": {
+      "2025-H1": 4484,
+      "2025-H2": 3038,
+      "2026-H1": 1141,
+      "2026-H2": 51
+    }
+  },
+  {
+    "name": "Markus777777",
+    "oldPts": 21397,
+    "newPtsBase": 21397,
+    "newPtsSkill": 8107,
+    "newPtsTotal": 29504,
+    "seasons": {
+      "2025-H1": 1823,
+      "2025-H2": 1957,
+      "2026-H1": 2485,
+      "2026-H2": 26
+    }
+  },
+  {
+    "name": "Nurxil",
+    "oldPts": 24908,
+    "newPtsBase": 24908,
+    "newPtsSkill": 4494,
+    "newPtsTotal": 29402,
+    "seasons": {
+      "2025-H1": 775,
+      "2025-H2": 651,
+      "2026-H1": 250,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "天然呆萌啊",
+    "oldPts": 25838,
+    "newPtsBase": 25838,
+    "newPtsSkill": 3563,
+    "newPtsTotal": 29401,
+    "seasons": {
+      "2025-H1": 385,
+      "2025-H2": 114,
+      "2026-H1": 430,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Paxtell",
+    "oldPts": 19333,
+    "newPtsBase": 19333,
+    "newPtsSkill": 9951,
+    "newPtsTotal": 29284,
+    "seasons": {
+      "2025-H1": 1965,
+      "2025-H2": 2840,
+      "2026-H1": 1789,
+      "2026-H2": 381
+    }
+  },
+  {
+    "name": "救援普朗克",
+    "oldPts": 23063,
+    "newPtsBase": 23063,
+    "newPtsSkill": 6212,
+    "newPtsTotal": 29275,
+    "seasons": {
+      "2025-H1": 23,
+      "2025-H2": 411,
+      "2026-H1": 2986,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "柒",
+    "oldPts": 25162,
+    "newPtsBase": 25162,
+    "newPtsSkill": 3968,
+    "newPtsTotal": 29130,
+    "seasons": {
+      "2025-H1": 465,
+      "2025-H2": 174,
+      "2026-H1": 78,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "神兽先生",
+    "oldPts": 20236,
+    "newPtsBase": 20236,
+    "newPtsSkill": 8888,
+    "newPtsTotal": 29124,
+    "seasons": {
+      "2025-H1": 1984,
+      "2025-H2": 838,
+      "2026-H1": 854,
+      "2026-H2": 74
+    }
+  },
+  {
+    "name": "David*°Villa",
+    "oldPts": 20553,
+    "newPtsBase": 20553,
+    "newPtsSkill": 8561,
+    "newPtsTotal": 29114,
+    "seasons": {
+      "2025-H1": 402,
+      "2025-H2": 30,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "黄昏丶丿",
+    "oldPts": 23764,
+    "newPtsBase": 23764,
+    "newPtsSkill": 5336,
+    "newPtsTotal": 29100,
+    "seasons": {
+      "2025-H1": 878,
+      "2025-H2": 1260,
+      "2026-H1": 1805,
+      "2026-H2": 209
+    }
+  },
+  {
+    "name": "MPA3b",
+    "oldPts": 25258,
+    "newPtsBase": 25258,
+    "newPtsSkill": 3778,
+    "newPtsTotal": 29036,
+    "seasons": {
+      "2025-H1": 3,
+      "2025-H2": 4,
+      "2026-H1": 105,
+      "2026-H2": 18
+    }
+  },
+  {
+    "name": "ninetynine",
+    "oldPts": 24067,
+    "newPtsBase": 24067,
+    "newPtsSkill": 4768,
+    "newPtsTotal": 28835,
+    "seasons": {
+      "2025-H1": 3881,
+      "2025-H2": 0,
+      "2026-H1": 168,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "meta knight",
+    "oldPts": 19507,
+    "newPtsBase": 19507,
+    "newPtsSkill": 9317,
+    "newPtsTotal": 28824,
+    "seasons": {
+      "2025-H1": 1392,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "星星不点灯",
+    "oldPts": 24751,
+    "newPtsBase": 24751,
+    "newPtsSkill": 4043,
+    "newPtsTotal": 28794,
+    "seasons": {
+      "2025-H1": 1271,
+      "2025-H2": 1350,
+      "2026-H1": 88,
+      "2026-H2": 2
+    }
+  },
+  {
+    "name": "耳",
+    "oldPts": 26166,
+    "newPtsBase": 26166,
+    "newPtsSkill": 2592,
+    "newPtsTotal": 28758,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "（*.*）",
+    "oldPts": 23855,
+    "newPtsBase": 23855,
+    "newPtsSkill": 4860,
+    "newPtsTotal": 28715,
+    "seasons": {
+      "2025-H1": 2211,
+      "2025-H2": 958,
+      "2026-H1": 640,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "QQzz",
+    "oldPts": 24861,
+    "newPtsBase": 24861,
+    "newPtsSkill": 3851,
+    "newPtsTotal": 28712,
+    "seasons": {
+      "2025-H1": 457,
+      "2025-H2": 149,
+      "2026-H1": 178,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "冰块儿",
+    "oldPts": 25789,
+    "newPtsBase": 25789,
+    "newPtsSkill": 2891,
+    "newPtsTotal": 28680,
+    "seasons": {
+      "2025-H1": 605,
+      "2025-H2": 60,
+      "2026-H1": 14,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "BeiKe",
+    "oldPts": 23789,
+    "newPtsBase": 23789,
+    "newPtsSkill": 4889,
+    "newPtsTotal": 28678,
+    "seasons": {
+      "2025-H1": 1940,
+      "2025-H2": 277,
+      "2026-H1": 109,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Lambkin",
+    "oldPts": 21384,
+    "newPtsBase": 21384,
+    "newPtsSkill": 7267,
+    "newPtsTotal": 28651,
+    "seasons": {
+      "2025-H1": 830,
+      "2025-H2": 378,
+      "2026-H1": 115,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "玉子",
+    "oldPts": 24508,
+    "newPtsBase": 24508,
+    "newPtsSkill": 4132,
+    "newPtsTotal": 28640,
+    "seasons": {
+      "2025-H1": 272,
+      "2025-H2": 19,
+      "2026-H1": 38,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "eternal",
+    "oldPts": 23562,
+    "newPtsBase": 23562,
+    "newPtsSkill": 5059,
+    "newPtsTotal": 28621,
+    "seasons": {
+      "2025-H1": 907,
+      "2025-H2": 842,
+      "2026-H1": 1770,
+      "2026-H2": 21
+    }
+  },
+  {
+    "name": "岁岁",
+    "oldPts": 25895,
+    "newPtsBase": 25895,
+    "newPtsSkill": 2720,
+    "newPtsTotal": 28615,
+    "seasons": {
+      "2025-H1": 129,
+      "2025-H2": 0,
+      "2026-H1": 54,
+      "2026-H2": 740
+    }
+  },
+  {
+    "name": "皇帝✖Alifu",
+    "oldPts": 24723,
+    "newPtsBase": 24723,
+    "newPtsSkill": 3867,
+    "newPtsTotal": 28590,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 113,
+      "2026-H1": 176,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "NcTOS",
+    "oldPts": 20642,
+    "newPtsBase": 20642,
+    "newPtsSkill": 7942,
+    "newPtsTotal": 28584,
+    "seasons": {
+      "2025-H1": 1183,
+      "2025-H2": 1456,
+      "2026-H1": 4858,
+      "2026-H2": 182
+    }
+  },
+  {
+    "name": "Akari",
+    "oldPts": 21596,
+    "newPtsBase": 21596,
+    "newPtsSkill": 6969,
+    "newPtsTotal": 28565,
+    "seasons": {
+      "2025-H1": 347,
+      "2025-H2": 936,
+      "2026-H1": 482,
+      "2026-H2": 10
+    }
+  },
+  {
+    "name": "lifelong",
+    "oldPts": 19700,
+    "newPtsBase": 19700,
+    "newPtsSkill": 8763,
+    "newPtsTotal": 28463,
+    "seasons": {
+      "2025-H1": 7776,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "xpx",
+    "oldPts": 22881,
+    "newPtsBase": 22881,
+    "newPtsSkill": 5535,
+    "newPtsTotal": 28416,
+    "seasons": {
+      "2025-H1": 4241,
+      "2025-H2": 380,
+      "2026-H1": 213,
+      "2026-H2": 3
+    }
+  },
+  {
+    "name": "Cancer",
+    "oldPts": 24163,
+    "newPtsBase": 24163,
+    "newPtsSkill": 4251,
+    "newPtsTotal": 28414,
+    "seasons": {
+      "2025-H1": 217,
+      "2025-H2": 183,
+      "2026-H1": 630,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "tortilladmaiz",
+    "oldPts": 19700,
+    "newPtsBase": 19700,
+    "newPtsSkill": 8677,
+    "newPtsTotal": 28377,
+    "seasons": {
+      "2025-H1": 1381,
+      "2025-H2": 184,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "xiao_yang",
+    "oldPts": 21800,
+    "newPtsBase": 21800,
+    "newPtsSkill": 6535,
+    "newPtsTotal": 28335,
+    "seasons": {
+      "2025-H1": 973,
+      "2025-H2": 661,
+      "2026-H1": 88,
+      "2026-H2": 27
+    }
+  },
+  {
+    "name": "SuPerp_",
+    "oldPts": 21503,
+    "newPtsBase": 21503,
+    "newPtsSkill": 6804,
+    "newPtsTotal": 28307,
+    "seasons": {
+      "2025-H1": 2265,
+      "2025-H2": 997,
+      "2026-H1": 108,
+      "2026-H2": 10
+    }
+  },
+  {
+    "name": "猴哥",
+    "oldPts": 25383,
+    "newPtsBase": 25383,
+    "newPtsSkill": 2827,
+    "newPtsTotal": 28210,
+    "seasons": {
+      "2025-H1": 365,
+      "2025-H2": 58,
+      "2026-H1": 333,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "会飞的马啊",
+    "oldPts": 24741,
+    "newPtsBase": 24741,
+    "newPtsSkill": 3447,
+    "newPtsTotal": 28188,
+    "seasons": {
+      "2025-H1": 1064,
+      "2025-H2": 277,
+      "2026-H1": 182,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "明透",
+    "oldPts": 20531,
+    "newPtsBase": 20531,
+    "newPtsSkill": 7648,
+    "newPtsTotal": 28179,
+    "seasons": {
+      "2025-H1": 3224,
+      "2025-H2": 76,
+      "2026-H1": 7,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Anna34",
+    "oldPts": 23142,
+    "newPtsBase": 23142,
+    "newPtsSkill": 4987,
+    "newPtsTotal": 28129,
+    "seasons": {
+      "2025-H1": 389,
+      "2025-H2": 152,
+      "2026-H1": 446,
+      "2026-H2": 36
+    }
+  },
+  {
+    "name": "GZA",
+    "oldPts": 21431,
+    "newPtsBase": 21431,
+    "newPtsSkill": 6600,
+    "newPtsTotal": 28031,
+    "seasons": {
+      "2025-H1": 142,
+      "2025-H2": 570,
+      "2026-H1": 52,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "星冰乐",
+    "oldPts": 24933,
+    "newPtsBase": 24933,
+    "newPtsSkill": 3062,
+    "newPtsTotal": 27995,
+    "seasons": {
+      "2025-H1": 1032,
+      "2025-H2": 719,
+      "2026-H1": 4,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Shrekich",
+    "oldPts": 24634,
+    "newPtsBase": 24634,
+    "newPtsSkill": 3361,
+    "newPtsTotal": 27995,
+    "seasons": {
+      "2025-H1": 475,
+      "2025-H2": 1011,
+      "2026-H1": 584,
+      "2026-H2": 95
+    }
+  },
+  {
+    "name": "3oTo",
+    "oldPts": 22932,
+    "newPtsBase": 22932,
+    "newPtsSkill": 4947,
+    "newPtsTotal": 27879,
+    "seasons": {
+      "2025-H1": 774,
+      "2025-H2": 106,
+      "2026-H1": 2,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "青迎月",
+    "oldPts": 24883,
+    "newPtsBase": 24883,
+    "newPtsSkill": 2747,
+    "newPtsTotal": 27630,
+    "seasons": {
+      "2025-H1": 234,
+      "2025-H2": 19,
+      "2026-H1": 258,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Brezzel",
+    "oldPts": 21819,
+    "newPtsBase": 21819,
+    "newPtsSkill": 5803,
+    "newPtsTotal": 27622,
+    "seasons": {
+      "2025-H1": 387,
+      "2025-H2": 173,
+      "2026-H1": 234,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "褪色",
+    "oldPts": 22286,
+    "newPtsBase": 22286,
+    "newPtsSkill": 5217,
+    "newPtsTotal": 27503,
+    "seasons": {
+      "2025-H1": 228,
+      "2025-H2": 688,
+      "2026-H1": 318,
+      "2026-H2": 12
+    }
+  },
+  {
+    "name": "{;-_Pa!n_-;}",
+    "oldPts": 20831,
+    "newPtsBase": 20831,
+    "newPtsSkill": 6661,
+    "newPtsTotal": 27492,
+    "seasons": {
+      "2025-H1": 263,
+      "2025-H2": 80,
+      "2026-H1": 41,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "kenzo",
+    "oldPts": 19030,
+    "newPtsBase": 19030,
+    "newPtsSkill": 8430,
+    "newPtsTotal": 27460,
+    "seasons": {
+      "2025-H1": 430,
+      "2025-H2": 39,
+      "2026-H1": 61,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "鹿麋",
+    "oldPts": 24410,
+    "newPtsBase": 24410,
+    "newPtsSkill": 3026,
+    "newPtsTotal": 27436,
+    "seasons": {
+      "2025-H1": 32,
+      "2025-H2": 71,
+      "2026-H1": 749,
+      "2026-H2": 53
+    }
+  },
+  {
+    "name": "Angell",
+    "oldPts": 22535,
+    "newPtsBase": 22535,
+    "newPtsSkill": 4798,
+    "newPtsTotal": 27333,
+    "seasons": {
+      "2025-H1": 38,
+      "2025-H2": 182,
+      "2026-H1": 32,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Maria",
+    "oldPts": 19895,
+    "newPtsBase": 19895,
+    "newPtsSkill": 7326,
+    "newPtsTotal": 27221,
+    "seasons": {
+      "2025-H1": 372,
+      "2025-H2": 148,
+      "2026-H1": 111,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "橘子皮萌新",
+    "oldPts": 25412,
+    "newPtsBase": 25412,
+    "newPtsSkill": 1791,
+    "newPtsTotal": 27203,
+    "seasons": {
+      "2025-H1": 540,
+      "2025-H2": 130,
+      "2026-H1": 595,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "'faceless",
+    "oldPts": 19358,
+    "newPtsBase": 19358,
+    "newPtsSkill": 7738,
+    "newPtsTotal": 27096,
+    "seasons": {
+      "2025-H1": 99,
+      "2025-H2": 150,
+      "2026-H1": 116,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Rentom12",
+    "oldPts": 19859,
+    "newPtsBase": 19859,
+    "newPtsSkill": 7208,
+    "newPtsTotal": 27067,
+    "seasons": {
+      "2025-H1": 55,
+      "2025-H2": 27,
+      "2026-H1": 8,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "haohaoma",
+    "oldPts": 20000,
+    "newPtsBase": 20000,
+    "newPtsSkill": 6936,
+    "newPtsTotal": 26936,
+    "seasons": {
+      "2025-H1": 726,
+      "2025-H2": 222,
+      "2026-H1": 41,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": ")erek(",
+    "oldPts": 25516,
+    "newPtsBase": 25516,
+    "newPtsSkill": 1419,
+    "newPtsTotal": 26935,
+    "seasons": {
+      "2025-H1": 102,
+      "2025-H2": 217,
+      "2026-H1": 329,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "M Emile",
+    "oldPts": 19197,
+    "newPtsBase": 19197,
+    "newPtsSkill": 7734,
+    "newPtsTotal": 26931,
+    "seasons": {
+      "2025-H1": 41,
+      "2025-H2": 93,
+      "2026-H1": 225,
+      "2026-H2": 19
+    }
+  },
+  {
+    "name": "钦钦",
+    "oldPts": 20633,
+    "newPtsBase": 20633,
+    "newPtsSkill": 6188,
+    "newPtsTotal": 26821,
+    "seasons": {
+      "2025-H1": 956,
+      "2025-H2": 1177,
+      "2026-H1": 3887,
+      "2026-H2": 6
+    }
+  },
+  {
+    "name": "nekomiao",
+    "oldPts": 22293,
+    "newPtsBase": 22293,
+    "newPtsSkill": 4332,
+    "newPtsTotal": 26625,
+    "seasons": {
+      "2025-H1": 2369,
+      "2025-H2": 269,
+      "2026-H1": 811,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "春风拂槛",
+    "oldPts": 21906,
+    "newPtsBase": 21906,
+    "newPtsSkill": 4698,
+    "newPtsTotal": 26604,
+    "seasons": {
+      "2025-H1": 2653,
+      "2025-H2": 440,
+      "2026-H1": 326,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "元帅",
+    "oldPts": 24012,
+    "newPtsBase": 24012,
+    "newPtsSkill": 2579,
+    "newPtsTotal": 26591,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Keffz",
+    "oldPts": 21211,
+    "newPtsBase": 21211,
+    "newPtsSkill": 5361,
+    "newPtsTotal": 26572,
+    "seasons": {
+      "2025-H1": 23,
+      "2025-H2": 5,
+      "2026-H1": 76,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "携星辰予你",
+    "oldPts": 23125,
+    "newPtsBase": 23125,
+    "newPtsSkill": 3373,
+    "newPtsTotal": 26498,
+    "seasons": {
+      "2025-H1": 1305,
+      "2025-H2": 5,
+      "2026-H1": 355,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Teetanic",
+    "oldPts": 19965,
+    "newPtsBase": 19965,
+    "newPtsSkill": 6441,
+    "newPtsTotal": 26406,
+    "seasons": {
+      "2025-H1": 397,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "媚儿",
+    "oldPts": 22227,
+    "newPtsBase": 22227,
+    "newPtsSkill": 4159,
+    "newPtsTotal": 26386,
+    "seasons": {
+      "2025-H1": 1706,
+      "2025-H2": 18,
+      "2026-H1": 377,
+      "2026-H2": 34
+    }
+  },
+  {
+    "name": "时光如水",
+    "oldPts": 21703,
+    "newPtsBase": 21703,
+    "newPtsSkill": 4594,
+    "newPtsTotal": 26297,
+    "seasons": {
+      "2025-H1": 740,
+      "2025-H2": 1456,
+      "2026-H1": 952,
+      "2026-H2": 58
+    }
+  },
+  {
+    "name": "午夜",
+    "oldPts": 22883,
+    "newPtsBase": 22883,
+    "newPtsSkill": 3410,
+    "newPtsTotal": 26293,
+    "seasons": {
+      "2025-H1": 748,
+      "2025-H2": 751,
+      "2026-H1": 563,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "雪色",
+    "oldPts": 22268,
+    "newPtsBase": 22268,
+    "newPtsSkill": 3998,
+    "newPtsTotal": 26266,
+    "seasons": {
+      "2025-H1": 818,
+      "2025-H2": 1376,
+      "2026-H1": 742,
+      "2026-H2": 28
+    }
+  },
+  {
+    "name": "可鲁克吖",
+    "oldPts": 24060,
+    "newPtsBase": 24060,
+    "newPtsSkill": 2185,
+    "newPtsTotal": 26245,
+    "seasons": {
+      "2025-H1": 104,
+      "2025-H2": 168,
+      "2026-H1": 37,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "LrInory",
+    "oldPts": 21357,
+    "newPtsBase": 21357,
+    "newPtsSkill": 4797,
+    "newPtsTotal": 26154,
+    "seasons": {
+      "2025-H1": 1533,
+      "2025-H2": 1520,
+      "2026-H1": 1044,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "Wombat",
+    "oldPts": 19178,
+    "newPtsBase": 19178,
+    "newPtsSkill": 6972,
+    "newPtsTotal": 26150,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Only♿",
+    "oldPts": 19663,
+    "newPtsBase": 19663,
+    "newPtsSkill": 6465,
+    "newPtsTotal": 26128,
+    "seasons": {
+      "2025-H1": 268,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "子丰",
+    "oldPts": 22422,
+    "newPtsBase": 22422,
+    "newPtsSkill": 3691,
+    "newPtsTotal": 26113,
+    "seasons": {
+      "2025-H1": 735,
+      "2025-H2": 354,
+      "2026-H1": 1113,
+      "2026-H2": 166
+    }
+  },
+  {
+    "name": "Gooran",
+    "oldPts": 20251,
+    "newPtsBase": 20251,
+    "newPtsSkill": 5842,
+    "newPtsTotal": 26093,
+    "seasons": {
+      "2025-H1": 654,
+      "2025-H2": 196,
+      "2026-H1": 269,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "i呀",
+    "oldPts": 23501,
+    "newPtsBase": 23501,
+    "newPtsSkill": 2582,
+    "newPtsTotal": 26083,
+    "seasons": {
+      "2025-H1": 509,
+      "2025-H2": 634,
+      "2026-H1": 382,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "大宝",
+    "oldPts": 19506,
+    "newPtsBase": 19506,
+    "newPtsSkill": 6572,
+    "newPtsTotal": 26078,
+    "seasons": {
+      "2025-H1": 1651,
+      "2025-H2": 493,
+      "2026-H1": 3040,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "绝对白给",
+    "oldPts": 22687,
+    "newPtsBase": 22687,
+    "newPtsSkill": 3317,
+    "newPtsTotal": 26004,
+    "seasons": {
+      "2025-H1": 66,
+      "2025-H2": 8,
+      "2026-H1": 12,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Gumba",
+    "oldPts": 20283,
+    "newPtsBase": 20283,
+    "newPtsSkill": 5719,
+    "newPtsTotal": 26002,
+    "seasons": {
+      "2025-H1": 1266,
+      "2025-H2": 835,
+      "2026-H1": 922,
+      "2026-H2": 90
+    }
+  },
+  {
+    "name": "Skadi",
+    "oldPts": 20073,
+    "newPtsBase": 20073,
+    "newPtsSkill": 5901,
+    "newPtsTotal": 25974,
+    "seasons": {
+      "2025-H1": 218,
+      "2025-H2": 668,
+      "2026-H1": 760,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "KuNao",
+    "oldPts": 22329,
+    "newPtsBase": 22329,
+    "newPtsSkill": 3624,
+    "newPtsTotal": 25953,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "杜杜杜比",
+    "oldPts": 23774,
+    "newPtsBase": 23774,
+    "newPtsSkill": 2136,
+    "newPtsTotal": 25910,
+    "seasons": {
+      "2025-H1": 252,
+      "2025-H2": 110,
+      "2026-H1": 206,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Tezcan",
+    "oldPts": 19180,
+    "newPtsBase": 19180,
+    "newPtsSkill": 6676,
+    "newPtsTotal": 25856,
+    "seasons": {
+      "2025-H1": 36,
+      "2025-H2": 17,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ˢᵉᵡxy Miø",
+    "oldPts": 19874,
+    "newPtsBase": 19874,
+    "newPtsSkill": 5952,
+    "newPtsTotal": 25826,
+    "seasons": {
+      "2025-H1": 366,
+      "2025-H2": 512,
+      "2026-H1": 256,
+      "2026-H2": 37
+    }
+  },
+  {
+    "name": "歪比巴卜",
+    "oldPts": 21935,
+    "newPtsBase": 21935,
+    "newPtsSkill": 3889,
+    "newPtsTotal": 25824,
+    "seasons": {
+      "2025-H1": 25,
+      "2025-H2": 0,
+      "2026-H1": 102,
+      "2026-H2": 5
+    }
+  },
+  {
+    "name": "吟霜品雪",
+    "oldPts": 20291,
+    "newPtsBase": 20291,
+    "newPtsSkill": 5428,
+    "newPtsTotal": 25719,
+    "seasons": {
+      "2025-H1": 1114,
+      "2025-H2": 1267,
+      "2026-H1": 659,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Klocky",
+    "oldPts": 20077,
+    "newPtsBase": 20077,
+    "newPtsSkill": 5584,
+    "newPtsTotal": 25661,
+    "seasons": {
+      "2025-H1": 260,
+      "2025-H2": 138,
+      "2026-H1": 2299,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "不可爱",
+    "oldPts": 22212,
+    "newPtsBase": 22212,
+    "newPtsSkill": 3431,
+    "newPtsTotal": 25643,
+    "seasons": {
+      "2025-H1": 498,
+      "2025-H2": 1171,
+      "2026-H1": 1230,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Barbipen",
+    "oldPts": 21874,
+    "newPtsBase": 21874,
+    "newPtsSkill": 3732,
+    "newPtsTotal": 25606,
+    "seasons": {
+      "2025-H1": 1322,
+      "2025-H2": 88,
+      "2026-H1": 154,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "灰山",
+    "oldPts": 20177,
+    "newPtsBase": 20177,
+    "newPtsSkill": 5407,
+    "newPtsTotal": 25584,
+    "seasons": {
+      "2025-H1": 1182,
+      "2025-H2": 802,
+      "2026-H1": 1217,
+      "2026-H2": 166
+    }
+  },
+  {
+    "name": "知念实也",
+    "oldPts": 22797,
+    "newPtsBase": 22797,
+    "newPtsSkill": 2770,
+    "newPtsTotal": 25567,
+    "seasons": {
+      "2025-H1": 76,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "KLLong",
+    "oldPts": 19838,
+    "newPtsBase": 19838,
+    "newPtsSkill": 5728,
+    "newPtsTotal": 25566,
+    "seasons": {
+      "2025-H1": 258,
+      "2025-H2": 706,
+      "2026-H1": 496,
+      "2026-H2": 46
+    }
+  },
+  {
+    "name": "love",
+    "oldPts": 20059,
+    "newPtsBase": 20059,
+    "newPtsSkill": 5432,
+    "newPtsTotal": 25491,
+    "seasons": {
+      "2025-H1": 53,
+      "2025-H2": 1959,
+      "2026-H1": 413,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "figur",
+    "oldPts": 20778,
+    "newPtsBase": 20778,
+    "newPtsSkill": 4693,
+    "newPtsTotal": 25471,
+    "seasons": {
+      "2025-H1": 1415,
+      "2025-H2": 562,
+      "2026-H1": 922,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "one shadow",
+    "oldPts": 23334,
+    "newPtsBase": 23334,
+    "newPtsSkill": 2098,
+    "newPtsTotal": 25432,
+    "seasons": {
+      "2025-H1": 416,
+      "2025-H2": 204,
+      "2026-H1": 201,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "愉岁",
+    "oldPts": 22372,
+    "newPtsBase": 22372,
+    "newPtsSkill": 3058,
+    "newPtsTotal": 25430,
+    "seasons": {
+      "2025-H1": 736,
+      "2025-H2": 101,
+      "2026-H1": 132,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "踢",
+    "oldPts": 22319,
+    "newPtsBase": 22319,
+    "newPtsSkill": 3008,
+    "newPtsTotal": 25327,
+    "seasons": {
+      "2025-H1": 98,
+      "2025-H2": 77,
+      "2026-H1": 57,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "婧婧",
+    "oldPts": 22741,
+    "newPtsBase": 22741,
+    "newPtsSkill": 2526,
+    "newPtsTotal": 25267,
+    "seasons": {
+      "2025-H1": 497,
+      "2025-H2": 48,
+      "2026-H1": 403,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "麻辣毛蛋",
+    "oldPts": 23298,
+    "newPtsBase": 23298,
+    "newPtsSkill": 1917,
+    "newPtsTotal": 25215,
+    "seasons": {
+      "2025-H1": 820,
+      "2025-H2": 58,
+      "2026-H1": 110,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "过不去啦",
+    "oldPts": 23022,
+    "newPtsBase": 23022,
+    "newPtsSkill": 2192,
+    "newPtsTotal": 25214,
+    "seasons": {
+      "2025-H1": 13,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "淼淼水云中",
+    "oldPts": 21796,
+    "newPtsBase": 21796,
+    "newPtsSkill": 3360,
+    "newPtsTotal": 25156,
+    "seasons": {
+      "2025-H1": 175,
+      "2025-H2": 52,
+      "2026-H1": 700,
+      "2026-H2": 16
+    }
+  },
+  {
+    "name": "VortexSlayer",
+    "oldPts": 22385,
+    "newPtsBase": 22385,
+    "newPtsSkill": 2751,
+    "newPtsTotal": 25136,
+    "seasons": {
+      "2025-H1": 331,
+      "2025-H2": 26,
+      "2026-H1": 530,
+      "2026-H2": 475
+    }
+  },
+  {
+    "name": "Dám7",
+    "oldPts": 19343,
+    "newPtsBase": 19343,
+    "newPtsSkill": 5777,
+    "newPtsTotal": 25120,
+    "seasons": {
+      "2025-H1": 1813,
+      "2025-H2": 312,
+      "2026-H1": 619,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Passing",
+    "oldPts": 23402,
+    "newPtsBase": 23402,
+    "newPtsSkill": 1704,
+    "newPtsTotal": 25106,
+    "seasons": {
+      "2025-H1": 163,
+      "2025-H2": 242,
+      "2026-H1": 12,
+      "2026-H2": 6
+    }
+  },
+  {
+    "name": "Tarzan",
+    "oldPts": 20757,
+    "newPtsBase": 20757,
+    "newPtsSkill": 4331,
+    "newPtsTotal": 25088,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "ddw",
+    "oldPts": 19920,
+    "newPtsBase": 19920,
+    "newPtsSkill": 5143,
+    "newPtsTotal": 25063,
+    "seasons": {
+      "2025-H1": 445,
+      "2025-H2": 116,
+      "2026-H1": 17,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "平凡..",
+    "oldPts": 22495,
+    "newPtsBase": 22495,
+    "newPtsSkill": 2522,
+    "newPtsTotal": 25017,
+    "seasons": {
+      "2025-H1": 58,
+      "2025-H2": 288,
+      "2026-H1": 591,
+      "2026-H2": 26
+    }
+  },
+  {
+    "name": "℡小",
+    "oldPts": 22258,
+    "newPtsBase": 22258,
+    "newPtsSkill": 2738,
+    "newPtsTotal": 24996,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "maoni",
+    "oldPts": 20943,
+    "newPtsBase": 20943,
+    "newPtsSkill": 4038,
+    "newPtsTotal": 24981,
+    "seasons": {
+      "2025-H1": 534,
+      "2025-H2": 473,
+      "2026-H1": 193,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "千城",
+    "oldPts": 21035,
+    "newPtsBase": 21035,
+    "newPtsSkill": 3940,
+    "newPtsTotal": 24975,
+    "seasons": {
+      "2025-H1": 2,
+      "2025-H2": 3,
+      "2026-H1": 1476,
+      "2026-H2": 22
+    }
+  },
+  {
+    "name": "zattttt",
+    "oldPts": 20791,
+    "newPtsBase": 20791,
+    "newPtsSkill": 4166,
+    "newPtsTotal": 24957,
+    "seasons": {
+      "2025-H1": 16,
+      "2025-H2": 13,
+      "2026-H1": 34,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Xeelee",
+    "oldPts": 22805,
+    "newPtsBase": 22805,
+    "newPtsSkill": 2145,
+    "newPtsTotal": 24950,
+    "seasons": {
+      "2025-H1": 280,
+      "2025-H2": 1294,
+      "2026-H1": 145,
+      "2026-H2": 81
+    }
+  },
+  {
+    "name": "遇寒",
+    "oldPts": 21315,
+    "newPtsBase": 21315,
+    "newPtsSkill": 3623,
+    "newPtsTotal": 24938,
+    "seasons": {
+      "2025-H1": 43,
+      "2025-H2": 2,
+      "2026-H1": 1846,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "皮卡不秋秋",
+    "oldPts": 23549,
+    "newPtsBase": 23549,
+    "newPtsSkill": 1361,
+    "newPtsTotal": 24910,
+    "seasons": {
+      "2025-H1": 206,
+      "2025-H2": 200,
+      "2026-H1": 92,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Night_L",
+    "oldPts": 20879,
+    "newPtsBase": 20879,
+    "newPtsSkill": 4005,
+    "newPtsTotal": 24884,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "娇娇睡不饱",
+    "oldPts": 21750,
+    "newPtsBase": 21750,
+    "newPtsSkill": 3124,
+    "newPtsTotal": 24874,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 134,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "躺好鸭",
+    "oldPts": 23194,
+    "newPtsBase": 23194,
+    "newPtsSkill": 1575,
+    "newPtsTotal": 24769,
+    "seasons": {
+      "2025-H1": 58,
+      "2025-H2": 21,
+      "2026-H1": 6,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Ariazz",
+    "oldPts": 20481,
+    "newPtsBase": 20481,
+    "newPtsSkill": 4273,
+    "newPtsTotal": 24754,
+    "seasons": {
+      "2025-H1": 1216,
+      "2025-H2": 499,
+      "2026-H1": 2104,
+      "2026-H2": 55
+    }
+  },
+  {
+    "name": "无所谓暖冬",
+    "oldPts": 21834,
+    "newPtsBase": 21834,
+    "newPtsSkill": 2796,
+    "newPtsTotal": 24630,
+    "seasons": {
+      "2025-H1": 129,
+      "2025-H2": 0,
+      "2026-H1": 43,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "正在输入...",
+    "oldPts": 21547,
+    "newPtsBase": 21547,
+    "newPtsSkill": 3032,
+    "newPtsTotal": 24579,
+    "seasons": {
+      "2025-H1": 43,
+      "2025-H2": 755,
+      "2026-H1": 1572,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "REDCAT",
+    "oldPts": 20155,
+    "newPtsBase": 20155,
+    "newPtsSkill": 4423,
+    "newPtsTotal": 24578,
+    "seasons": {
+      "2025-H1": 1201,
+      "2025-H2": 1142,
+      "2026-H1": 971,
+      "2026-H2": 83
+    }
+  },
+  {
+    "name": "多多",
+    "oldPts": 20797,
+    "newPtsBase": 20797,
+    "newPtsSkill": 3771,
+    "newPtsTotal": 24568,
+    "seasons": {
+      "2025-H1": 306,
+      "2025-H2": 407,
+      "2026-H1": 1040,
+      "2026-H2": 54
+    }
+  },
+  {
+    "name": "遗容遗表",
+    "oldPts": 20371,
+    "newPtsBase": 20371,
+    "newPtsSkill": 4167,
+    "newPtsTotal": 24538,
+    "seasons": {
+      "2025-H1": 251,
+      "2025-H2": 177,
+      "2026-H1": 95,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "情",
+    "oldPts": 21457,
+    "newPtsBase": 21457,
+    "newPtsSkill": 3034,
+    "newPtsTotal": 24491,
+    "seasons": {
+      "2025-H1": 99,
+      "2025-H2": 20,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Hu.",
+    "oldPts": 22537,
+    "newPtsBase": 22537,
+    "newPtsSkill": 1925,
+    "newPtsTotal": 24462,
+    "seasons": {
+      "2025-H1": 59,
+      "2025-H2": 48,
+      "2026-H1": 97,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "玩家2号",
+    "oldPts": 23058,
+    "newPtsBase": 23058,
+    "newPtsSkill": 1397,
+    "newPtsTotal": 24455,
+    "seasons": {
+      "2025-H1": 55,
+      "2025-H2": 29,
+      "2026-H1": 56,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "读白",
+    "oldPts": 21036,
+    "newPtsBase": 21036,
+    "newPtsSkill": 3413,
+    "newPtsTotal": 24449,
+    "seasons": {
+      "2025-H1": 688,
+      "2025-H2": 23,
+      "2026-H1": 279,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "变态",
+    "oldPts": 20054,
+    "newPtsBase": 20054,
+    "newPtsSkill": 4367,
+    "newPtsTotal": 24421,
+    "seasons": {
+      "2025-H1": 251,
+      "2025-H2": 1438,
+      "2026-H1": 1842,
+      "2026-H2": 12
+    }
+  },
+  {
+    "name": "一只懒猫i",
+    "oldPts": 20593,
+    "newPtsBase": 20593,
+    "newPtsSkill": 3779,
+    "newPtsTotal": 24372,
+    "seasons": {
+      "2025-H1": 190,
+      "2025-H2": 170,
+      "2026-H1": 1660,
+      "2026-H2": 16
+    }
+  },
+  {
+    "name": "李佳颖呀",
+    "oldPts": 22167,
+    "newPtsBase": 22167,
+    "newPtsSkill": 2166,
+    "newPtsTotal": 24333,
+    "seasons": {
+      "2025-H1": 704,
+      "2025-H2": 46,
+      "2026-H1": 27,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "摆摆",
+    "oldPts": 22039,
+    "newPtsBase": 22039,
+    "newPtsSkill": 2253,
+    "newPtsTotal": 24292,
+    "seasons": {
+      "2025-H1": 1,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "yqe1717",
+    "oldPts": 20607,
+    "newPtsBase": 20607,
+    "newPtsSkill": 3665,
+    "newPtsTotal": 24272,
+    "seasons": {
+      "2025-H1": 350,
+      "2025-H2": 1846,
+      "2026-H1": 1280,
+      "2026-H2": 189
+    }
+  },
+  {
+    "name": "大橙子",
+    "oldPts": 22030,
+    "newPtsBase": 22030,
+    "newPtsSkill": 2236,
+    "newPtsTotal": 24266,
+    "seasons": {
+      "2025-H1": 115,
+      "2025-H2": 20,
+      "2026-H1": 22,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "shengyan",
+    "oldPts": 20511,
+    "newPtsBase": 20511,
+    "newPtsSkill": 3754,
+    "newPtsTotal": 24265,
+    "seasons": {
+      "2025-H1": 185,
+      "2025-H2": 715,
+      "2026-H1": 319,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "coppy",
+    "oldPts": 20065,
+    "newPtsBase": 20065,
+    "newPtsSkill": 4199,
+    "newPtsTotal": 24264,
+    "seasons": {
+      "2025-H1": 468,
+      "2025-H2": 244,
+      "2026-H1": 747,
+      "2026-H2": 11
+    }
+  },
+  {
+    "name": "bits像素",
+    "oldPts": 21743,
+    "newPtsBase": 21743,
+    "newPtsSkill": 2494,
+    "newPtsTotal": 24237,
+    "seasons": {
+      "2025-H1": 505,
+      "2025-H2": 813,
+      "2026-H1": 1032,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "R41NB0W",
+    "oldPts": 19004,
+    "newPtsBase": 19004,
+    "newPtsSkill": 5207,
+    "newPtsTotal": 24211,
+    "seasons": {
+      "2025-H1": 132,
+      "2025-H2": 253,
+      "2026-H1": 358,
+      "2026-H2": 69
+    }
+  },
+  {
+    "name": "AMG",
+    "oldPts": 21331,
+    "newPtsBase": 21331,
+    "newPtsSkill": 2813,
+    "newPtsTotal": 24144,
+    "seasons": {
+      "2025-H1": 55,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "金刚极霸矛",
+    "oldPts": 19095,
+    "newPtsBase": 19095,
+    "newPtsSkill": 5037,
+    "newPtsTotal": 24132,
+    "seasons": {
+      "2025-H1": 288,
+      "2025-H2": 423,
+      "2026-H1": 113,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Abel Moolman",
+    "oldPts": 19144,
+    "newPtsBase": 19144,
+    "newPtsSkill": 4887,
+    "newPtsTotal": 24031,
+    "seasons": {
+      "2025-H1": 191,
+      "2025-H2": 167,
+      "2026-H1": 303,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "岛风",
+    "oldPts": 22053,
+    "newPtsBase": 22053,
+    "newPtsSkill": 1925,
+    "newPtsTotal": 23978,
+    "seasons": {
+      "2025-H1": 68,
+      "2025-H2": 9,
+      "2026-H1": 249,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "sockii",
+    "oldPts": 20239,
+    "newPtsBase": 20239,
+    "newPtsSkill": 3733,
+    "newPtsTotal": 23972,
+    "seasons": {
+      "2025-H1": 1112,
+      "2025-H2": 824,
+      "2026-H1": 762,
+      "2026-H2": 58
+    }
+  },
+  {
+    "name": "三色刺蝶鱼",
+    "oldPts": 22080,
+    "newPtsBase": 22080,
+    "newPtsSkill": 1865,
+    "newPtsTotal": 23945,
+    "seasons": {
+      "2025-H1": 36,
+      "2025-H2": 45,
+      "2026-H1": 5,
+      "2026-H2": 6
+    }
+  },
+  {
+    "name": "椿雪绒绒",
+    "oldPts": 20969,
+    "newPtsBase": 20969,
+    "newPtsSkill": 2976,
+    "newPtsTotal": 23945,
+    "seasons": {
+      "2025-H1": 1760,
+      "2025-H2": 493,
+      "2026-H1": 379,
+      "2026-H2": 3
+    }
+  },
+  {
+    "name": "坨坨",
+    "oldPts": 21891,
+    "newPtsBase": 21891,
+    "newPtsSkill": 1907,
+    "newPtsTotal": 23798,
+    "seasons": {
+      "2025-H1": 594,
+      "2025-H2": 237,
+      "2026-H1": 735,
+      "2026-H2": 24
+    }
+  },
+  {
+    "name": "微嘉锦",
+    "oldPts": 21483,
+    "newPtsBase": 21483,
+    "newPtsSkill": 2304,
+    "newPtsTotal": 23787,
+    "seasons": {
+      "2025-H1": 238,
+      "2025-H2": 149,
+      "2026-H1": 280,
+      "2026-H2": 7
+    }
+  },
+  {
+    "name": "one",
+    "oldPts": 21878,
+    "newPtsBase": 21878,
+    "newPtsSkill": 1892,
+    "newPtsTotal": 23770,
+    "seasons": {
+      "2025-H1": 474,
+      "2025-H2": 100,
+      "2026-H1": 61,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "男闺蜜",
+    "oldPts": 20645,
+    "newPtsBase": 20645,
+    "newPtsSkill": 3110,
+    "newPtsTotal": 23755,
+    "seasons": {
+      "2025-H1": 268,
+      "2025-H2": 110,
+      "2026-H1": 529,
+      "2026-H2": 9
+    }
+  },
+  {
+    "name": "夏目夏至日",
+    "oldPts": 22092,
+    "newPtsBase": 22092,
+    "newPtsSkill": 1661,
+    "newPtsTotal": 23753,
+    "seasons": {
+      "2025-H1": 101,
+      "2025-H2": 146,
+      "2026-H1": 194,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "henki",
+    "oldPts": 18958,
+    "newPtsBase": 18958,
+    "newPtsSkill": 4748,
+    "newPtsTotal": 23706,
+    "seasons": {
+      "2025-H1": 65,
+      "2025-H2": 314,
+      "2026-H1": 118,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "椰子椰子",
+    "oldPts": 21169,
+    "newPtsBase": 21169,
+    "newPtsSkill": 2514,
+    "newPtsTotal": 23683,
+    "seasons": {
+      "2025-H1": 1100,
+      "2025-H2": 670,
+      "2026-H1": 88,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "欢欢",
+    "oldPts": 21366,
+    "newPtsBase": 21366,
+    "newPtsSkill": 2289,
+    "newPtsTotal": 23655,
+    "seasons": {
+      "2025-H1": 104,
+      "2025-H2": 23,
+      "2026-H1": 110,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "NPWilde",
+    "oldPts": 21125,
+    "newPtsBase": 21125,
+    "newPtsSkill": 2513,
+    "newPtsTotal": 23638,
+    "seasons": {
+      "2025-H1": 33,
+      "2025-H2": 0,
+      "2026-H1": 88,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "伊清巰",
+    "oldPts": 21825,
+    "newPtsBase": 21825,
+    "newPtsSkill": 1810,
+    "newPtsTotal": 23635,
+    "seasons": {
+      "2025-H1": 42,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "F0ld_L1ght",
+    "oldPts": 20645,
+    "newPtsBase": 20645,
+    "newPtsSkill": 2951,
+    "newPtsTotal": 23596,
+    "seasons": {
+      "2025-H1": 405,
+      "2025-H2": 374,
+      "2026-H1": 822,
+      "2026-H2": 143
+    }
+  },
+  {
+    "name": "在等月亮嘛",
+    "oldPts": 21158,
+    "newPtsBase": 21158,
+    "newPtsSkill": 2365,
+    "newPtsTotal": 23523,
+    "seasons": {
+      "2025-H1": 108,
+      "2025-H2": 123,
+      "2026-H1": 617,
+      "2026-H2": 28
+    }
+  },
+  {
+    "name": "yaoyy",
+    "oldPts": 21695,
+    "newPtsBase": 21695,
+    "newPtsSkill": 1793,
+    "newPtsTotal": 23488,
+    "seasons": {
+      "2025-H1": 10,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小电",
+    "oldPts": 20715,
+    "newPtsBase": 20715,
+    "newPtsSkill": 2737,
+    "newPtsTotal": 23452,
+    "seasons": {
+      "2025-H1": 174,
+      "2025-H2": 20,
+      "2026-H1": 279,
+      "2026-H2": 57
+    }
+  },
+  {
+    "name": "fencer",
+    "oldPts": 21586,
+    "newPtsBase": 21586,
+    "newPtsSkill": 1791,
+    "newPtsTotal": 23377,
+    "seasons": {
+      "2025-H1": 346,
+      "2025-H2": 315,
+      "2026-H1": 370,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "拌饭",
+    "oldPts": 19130,
+    "newPtsBase": 19130,
+    "newPtsSkill": 4232,
+    "newPtsTotal": 23362,
+    "seasons": {
+      "2025-H1": 2389,
+      "2025-H2": 423,
+      "2026-H1": 806,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "念兮",
+    "oldPts": 20167,
+    "newPtsBase": 20167,
+    "newPtsSkill": 3154,
+    "newPtsTotal": 23321,
+    "seasons": {
+      "2025-H1": 259,
+      "2025-H2": 1031,
+      "2026-H1": 1380,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Vae",
+    "oldPts": 20987,
+    "newPtsBase": 20987,
+    "newPtsSkill": 2232,
+    "newPtsTotal": 23219,
+    "seasons": {
+      "2025-H1": 22,
+      "2025-H2": 0,
+      "2026-H1": 45,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "片片2号",
+    "oldPts": 20851,
+    "newPtsBase": 20851,
+    "newPtsSkill": 2322,
+    "newPtsTotal": 23173,
+    "seasons": {
+      "2025-H1": 1085,
+      "2025-H2": 20,
+      "2026-H1": 17,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Vetiter",
+    "oldPts": 20747,
+    "newPtsBase": 20747,
+    "newPtsSkill": 2405,
+    "newPtsTotal": 23152,
+    "seasons": {
+      "2025-H1": 560,
+      "2025-H2": 257,
+      "2026-H1": 452,
+      "2026-H2": 73
+    }
+  },
+  {
+    "name": "Master",
+    "oldPts": 19189,
+    "newPtsBase": 19189,
+    "newPtsSkill": 3950,
+    "newPtsTotal": 23139,
+    "seasons": {
+      "2025-H1": 2655,
+      "2025-H2": 363,
+      "2026-H1": 3,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "情痴丶",
+    "oldPts": 19740,
+    "newPtsBase": 19740,
+    "newPtsSkill": 3379,
+    "newPtsTotal": 23119,
+    "seasons": {
+      "2025-H1": 756,
+      "2025-H2": 323,
+      "2026-H1": 331,
+      "2026-H2": 34
+    }
+  },
+  {
+    "name": "02",
+    "oldPts": 20439,
+    "newPtsBase": 20439,
+    "newPtsSkill": 2673,
+    "newPtsTotal": 23112,
+    "seasons": {
+      "2025-H1": 164,
+      "2025-H2": 7,
+      "2026-H1": 24,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "morning",
+    "oldPts": 20560,
+    "newPtsBase": 20560,
+    "newPtsSkill": 2543,
+    "newPtsTotal": 23103,
+    "seasons": {
+      "2025-H1": 2037,
+      "2025-H2": 118,
+      "2026-H1": 130,
+      "2026-H2": 9
+    }
+  },
+  {
+    "name": "口罩坤",
+    "oldPts": 20996,
+    "newPtsBase": 20996,
+    "newPtsSkill": 2088,
+    "newPtsTotal": 23084,
+    "seasons": {
+      "2025-H1": 575,
+      "2025-H2": 137,
+      "2026-H1": 407,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "cjh",
+    "oldPts": 21250,
+    "newPtsBase": 21250,
+    "newPtsSkill": 1824,
+    "newPtsTotal": 23074,
+    "seasons": {
+      "2025-H1": 150,
+      "2025-H2": 174,
+      "2026-H1": 248,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "阳光",
+    "oldPts": 19652,
+    "newPtsBase": 19652,
+    "newPtsSkill": 3414,
+    "newPtsTotal": 23066,
+    "seasons": {
+      "2025-H1": 1123,
+      "2025-H2": 597,
+      "2026-H1": 720,
+      "2026-H2": 59
+    }
+  },
+  {
+    "name": "轻音乐",
+    "oldPts": 21160,
+    "newPtsBase": 21160,
+    "newPtsSkill": 1848,
+    "newPtsTotal": 23008,
+    "seasons": {
+      "2025-H1": 476,
+      "2025-H2": 244,
+      "2026-H1": 27,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "summer",
+    "oldPts": 20153,
+    "newPtsBase": 20153,
+    "newPtsSkill": 2851,
+    "newPtsTotal": 23004,
+    "seasons": {
+      "2025-H1": 184,
+      "2025-H2": 447,
+      "2026-H1": 238,
+      "2026-H2": 9
+    }
+  },
+  {
+    "name": "妳説",
+    "oldPts": 19470,
+    "newPtsBase": 19470,
+    "newPtsSkill": 3472,
+    "newPtsTotal": 22942,
+    "seasons": {
+      "2025-H1": 276,
+      "2025-H2": 154,
+      "2026-H1": 115,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "喔齁",
+    "oldPts": 20177,
+    "newPtsBase": 20177,
+    "newPtsSkill": 2661,
+    "newPtsTotal": 22838,
+    "seasons": {
+      "2025-H1": 111,
+      "2025-H2": 143,
+      "2026-H1": 249,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "moonan",
+    "oldPts": 21192,
+    "newPtsBase": 21192,
+    "newPtsSkill": 1625,
+    "newPtsTotal": 22817,
+    "seasons": {
+      "2025-H1": 48,
+      "2025-H2": 32,
+      "2026-H1": 4,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "雅可",
+    "oldPts": 20515,
+    "newPtsBase": 20515,
+    "newPtsSkill": 2146,
+    "newPtsTotal": 22661,
+    "seasons": {
+      "2025-H1": 345,
+      "2025-H2": 394,
+      "2026-H1": 102,
+      "2026-H2": 40
+    }
+  },
+  {
+    "name": "清脆而古琴",
+    "oldPts": 20952,
+    "newPtsBase": 20952,
+    "newPtsSkill": 1707,
+    "newPtsTotal": 22659,
+    "seasons": {
+      "2025-H1": 614,
+      "2025-H2": 367,
+      "2026-H1": 171,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "狐尼克",
+    "oldPts": 20362,
+    "newPtsBase": 20362,
+    "newPtsSkill": 2268,
+    "newPtsTotal": 22630,
+    "seasons": {
+      "2025-H1": 59,
+      "2025-H2": 18,
+      "2026-H1": 432,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "桂夏",
+    "oldPts": 20951,
+    "newPtsBase": 20951,
+    "newPtsSkill": 1666,
+    "newPtsTotal": 22617,
+    "seasons": {
+      "2025-H1": 283,
+      "2025-H2": 0,
+      "2026-H1": 8,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "古娜拉",
+    "oldPts": 18968,
+    "newPtsBase": 18968,
+    "newPtsSkill": 3648,
+    "newPtsTotal": 22616,
+    "seasons": {
+      "2025-H1": 712,
+      "2025-H2": 713,
+      "2026-H1": 1398,
+      "2026-H2": 2
+    }
+  },
+  {
+    "name": "路痴",
+    "oldPts": 20973,
+    "newPtsBase": 20973,
+    "newPtsSkill": 1601,
+    "newPtsTotal": 22574,
+    "seasons": {
+      "2025-H1": 54,
+      "2025-H2": 155,
+      "2026-H1": 624,
+      "2026-H2": 7
+    }
+  },
+  {
+    "name": "地表最叼咸",
+    "oldPts": 20653,
+    "newPtsBase": 20653,
+    "newPtsSkill": 1835,
+    "newPtsTotal": 22488,
+    "seasons": {
+      "2025-H1": 527,
+      "2025-H2": 239,
+      "2026-H1": 726,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Nappy",
+    "oldPts": 20694,
+    "newPtsBase": 20694,
+    "newPtsSkill": 1776,
+    "newPtsTotal": 22470,
+    "seasons": {
+      "2025-H1": 22,
+      "2025-H2": 3,
+      "2026-H1": 30,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "野原新之助",
+    "oldPts": 20617,
+    "newPtsBase": 20617,
+    "newPtsSkill": 1849,
+    "newPtsTotal": 22466,
+    "seasons": {
+      "2025-H1": 19,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "杏璃",
+    "oldPts": 19607,
+    "newPtsBase": 19607,
+    "newPtsSkill": 2853,
+    "newPtsTotal": 22460,
+    "seasons": {
+      "2025-H1": 769,
+      "2025-H2": 108,
+      "2026-H1": 137,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "lan",
+    "oldPts": 21114,
+    "newPtsBase": 21114,
+    "newPtsSkill": 1267,
+    "newPtsTotal": 22381,
+    "seasons": {
+      "2025-H1": 89,
+      "2025-H2": 53,
+      "2026-H1": 192,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "我杀猪了",
+    "oldPts": 20042,
+    "newPtsBase": 20042,
+    "newPtsSkill": 2289,
+    "newPtsTotal": 22331,
+    "seasons": {
+      "2025-H1": 4,
+      "2025-H2": 795,
+      "2026-H1": 415,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "wink",
+    "oldPts": 20376,
+    "newPtsBase": 20376,
+    "newPtsSkill": 1923,
+    "newPtsTotal": 22299,
+    "seasons": {
+      "2025-H1": 26,
+      "2025-H2": 2,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "eXirus",
+    "oldPts": 18915,
+    "newPtsBase": 18915,
+    "newPtsSkill": 3367,
+    "newPtsTotal": 22282,
+    "seasons": {
+      "2025-H1": 364,
+      "2025-H2": 225,
+      "2026-H1": 104,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "白大鹅",
+    "oldPts": 19580,
+    "newPtsBase": 19580,
+    "newPtsSkill": 2668,
+    "newPtsTotal": 22248,
+    "seasons": {
+      "2025-H1": 758,
+      "2025-H2": 182,
+      "2026-H1": 1227,
+      "2026-H2": 18
+    }
+  },
+  {
+    "name": "A开启",
+    "oldPts": 19517,
+    "newPtsBase": 19517,
+    "newPtsSkill": 2703,
+    "newPtsTotal": 22220,
+    "seasons": {
+      "2025-H1": 167,
+      "2025-H2": 273,
+      "2026-H1": 233,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "日向",
+    "oldPts": 20464,
+    "newPtsBase": 20464,
+    "newPtsSkill": 1742,
+    "newPtsTotal": 22206,
+    "seasons": {
+      "2025-H1": 89,
+      "2025-H2": 149,
+      "2026-H1": 35,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "直叶",
+    "oldPts": 20156,
+    "newPtsBase": 20156,
+    "newPtsSkill": 2030,
+    "newPtsTotal": 22186,
+    "seasons": {
+      "2025-H1": 9,
+      "2025-H2": 8,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "灰色幽默",
+    "oldPts": 20640,
+    "newPtsBase": 20640,
+    "newPtsSkill": 1475,
+    "newPtsTotal": 22115,
+    "seasons": {
+      "2025-H1": 361,
+      "2025-H2": 103,
+      "2026-H1": 204,
+      "2026-H2": 6
+    }
+  },
+  {
+    "name": "雨鱼",
+    "oldPts": 20395,
+    "newPtsBase": 20395,
+    "newPtsSkill": 1720,
+    "newPtsTotal": 22115,
+    "seasons": {
+      "2025-H1": 430,
+      "2025-H2": 172,
+      "2026-H1": 667,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "楼下XIAO黑",
+    "oldPts": 20165,
+    "newPtsBase": 20165,
+    "newPtsSkill": 1906,
+    "newPtsTotal": 22071,
+    "seasons": {
+      "2025-H1": 568,
+      "2025-H2": 16,
+      "2026-H1": 44,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "云华",
+    "oldPts": 19328,
+    "newPtsBase": 19328,
+    "newPtsSkill": 2734,
+    "newPtsTotal": 22062,
+    "seasons": {
+      "2025-H1": 576,
+      "2025-H2": 87,
+      "2026-H1": 928,
+      "2026-H2": 12
+    }
+  },
+  {
+    "name": "公仔",
+    "oldPts": 20525,
+    "newPtsBase": 20525,
+    "newPtsSkill": 1530,
+    "newPtsTotal": 22055,
+    "seasons": {
+      "2025-H1": 186,
+      "2025-H2": 13,
+      "2026-H1": 84,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Sunshine",
+    "oldPts": 19780,
+    "newPtsBase": 19780,
+    "newPtsSkill": 2265,
+    "newPtsTotal": 22045,
+    "seasons": {
+      "2025-H1": 0,
+      "2025-H2": 124,
+      "2026-H1": 91,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "兔",
+    "oldPts": 20481,
+    "newPtsBase": 20481,
+    "newPtsSkill": 1541,
+    "newPtsTotal": 22022,
+    "seasons": {
+      "2025-H1": 105,
+      "2025-H2": 127,
+      "2026-H1": 121,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "diejob",
+    "oldPts": 20028,
+    "newPtsBase": 20028,
+    "newPtsSkill": 1969,
+    "newPtsTotal": 21997,
+    "seasons": {
+      "2025-H1": 198,
+      "2025-H2": 5,
+      "2026-H1": 113,
+      "2026-H2": 15
+    }
+  },
+  {
+    "name": "被强煎的蛋",
+    "oldPts": 20000,
+    "newPtsBase": 20000,
+    "newPtsSkill": 1974,
+    "newPtsTotal": 21974,
+    "seasons": {
+      "2025-H1": 15,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "lll",
+    "oldPts": 18973,
+    "newPtsBase": 18973,
+    "newPtsSkill": 2989,
+    "newPtsTotal": 21962,
+    "seasons": {
+      "2025-H1": 124,
+      "2025-H2": 130,
+      "2026-H1": 416,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "又又叒白给",
+    "oldPts": 19782,
+    "newPtsBase": 19782,
+    "newPtsSkill": 2121,
+    "newPtsTotal": 21903,
+    "seasons": {
+      "2025-H1": 358,
+      "2025-H2": 102,
+      "2026-H1": 1200,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "群猛男",
+    "oldPts": 20272,
+    "newPtsBase": 20272,
+    "newPtsSkill": 1620,
+    "newPtsTotal": 21892,
+    "seasons": {
+      "2025-H1": 120,
+      "2025-H2": 81,
+      "2026-H1": 870,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "发发",
+    "oldPts": 20595,
+    "newPtsBase": 20595,
+    "newPtsSkill": 1213,
+    "newPtsTotal": 21808,
+    "seasons": {
+      "2025-H1": 256,
+      "2025-H2": 196,
+      "2026-H1": 355,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "偏爱",
+    "oldPts": 19291,
+    "newPtsBase": 19291,
+    "newPtsSkill": 2493,
+    "newPtsTotal": 21784,
+    "seasons": {
+      "2025-H1": 405,
+      "2025-H2": 220,
+      "2026-H1": 15,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "麻将小天才",
+    "oldPts": 20068,
+    "newPtsBase": 20068,
+    "newPtsSkill": 1694,
+    "newPtsTotal": 21762,
+    "seasons": {
+      "2025-H1": 293,
+      "2025-H2": 80,
+      "2026-H1": 22,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "呼呼呼",
+    "oldPts": 19490,
+    "newPtsBase": 19490,
+    "newPtsSkill": 2175,
+    "newPtsTotal": 21665,
+    "seasons": {
+      "2025-H1": 439,
+      "2025-H2": 287,
+      "2026-H1": 178,
+      "2026-H2": 5
+    }
+  },
+  {
+    "name": "蓝鸳丶",
+    "oldPts": 19752,
+    "newPtsBase": 19752,
+    "newPtsSkill": 1751,
+    "newPtsTotal": 21503,
+    "seasons": {
+      "2025-H1": 201,
+      "2025-H2": 441,
+      "2026-H1": 499,
+      "2026-H2": 56
+    }
+  },
+  {
+    "name": "Moon Pie",
+    "oldPts": 19778,
+    "newPtsBase": 19778,
+    "newPtsSkill": 1617,
+    "newPtsTotal": 21395,
+    "seasons": {
+      "2025-H1": 591,
+      "2025-H2": 242,
+      "2026-H1": 429,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "depravity",
+    "oldPts": 19728,
+    "newPtsBase": 19728,
+    "newPtsSkill": 1530,
+    "newPtsTotal": 21258,
+    "seasons": {
+      "2025-H1": 142,
+      "2025-H2": 181,
+      "2026-H1": 268,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "三木西子",
+    "oldPts": 19868,
+    "newPtsBase": 19868,
+    "newPtsSkill": 1377,
+    "newPtsTotal": 21245,
+    "seasons": {
+      "2025-H1": 171,
+      "2025-H2": 76,
+      "2026-H1": 254,
+      "2026-H2": 49
+    }
+  },
+  {
+    "name": "终究",
+    "oldPts": 19987,
+    "newPtsBase": 19987,
+    "newPtsSkill": 1255,
+    "newPtsTotal": 21242,
+    "seasons": {
+      "2025-H1": 225,
+      "2025-H2": 43,
+      "2026-H1": 23,
+      "2026-H2": 34
+    }
+  },
+  {
+    "name": "传丨说",
+    "oldPts": 19579,
+    "newPtsBase": 19579,
+    "newPtsSkill": 1617,
+    "newPtsTotal": 21196,
+    "seasons": {
+      "2025-H1": 353,
+      "2025-H2": 81,
+      "2026-H1": 1149,
+      "2026-H2": 3
+    }
+  },
+  {
+    "name": "戒色",
+    "oldPts": 19826,
+    "newPtsBase": 19826,
+    "newPtsSkill": 1319,
+    "newPtsTotal": 21145,
+    "seasons": {
+      "2025-H1": 61,
+      "2025-H2": 11,
+      "2026-H1": 399,
+      "2026-H2": 2
+    }
+  },
+  {
+    "name": "白海星",
+    "oldPts": 19283,
+    "newPtsBase": 19283,
+    "newPtsSkill": 1848,
+    "newPtsTotal": 21131,
+    "seasons": {
+      "2025-H1": 9,
+      "2025-H2": 0,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "今天不喝奶",
+    "oldPts": 19650,
+    "newPtsBase": 19650,
+    "newPtsSkill": 1467,
+    "newPtsTotal": 21117,
+    "seasons": {
+      "2025-H1": 97,
+      "2025-H2": 47,
+      "2026-H1": 43,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "老司机",
+    "oldPts": 20082,
+    "newPtsBase": 20082,
+    "newPtsSkill": 1000,
+    "newPtsTotal": 21082,
+    "seasons": {
+      "2025-H1": 152,
+      "2025-H2": 113,
+      "2026-H1": 406,
+      "2026-H2": 5
+    }
+  },
+  {
+    "name": "西无射",
+    "oldPts": 19881,
+    "newPtsBase": 19881,
+    "newPtsSkill": 1192,
+    "newPtsTotal": 21073,
+    "seasons": {
+      "2025-H1": 51,
+      "2025-H2": 61,
+      "2026-H1": 266,
+      "2026-H2": 39
+    }
+  },
+  {
+    "name": "大熊猫",
+    "oldPts": 19566,
+    "newPtsBase": 19566,
+    "newPtsSkill": 1485,
+    "newPtsTotal": 21051,
+    "seasons": {
+      "2025-H1": 556,
+      "2025-H2": 577,
+      "2026-H1": 54,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "万圣节",
+    "oldPts": 19465,
+    "newPtsBase": 19465,
+    "newPtsSkill": 1559,
+    "newPtsTotal": 21024,
+    "seasons": {
+      "2025-H1": 120,
+      "2025-H2": 18,
+      "2026-H1": 53,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "老蒋蒋",
+    "oldPts": 19019,
+    "newPtsBase": 19019,
+    "newPtsSkill": 1995,
+    "newPtsTotal": 21014,
+    "seasons": {
+      "2025-H1": 394,
+      "2025-H2": 709,
+      "2026-H1": 264,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "冬之月",
+    "oldPts": 20046,
+    "newPtsBase": 20046,
+    "newPtsSkill": 931,
+    "newPtsTotal": 20977,
+    "seasons": {
+      "2025-H1": 274,
+      "2025-H2": 82,
+      "2026-H1": 385,
+      "2026-H2": 95
+    }
+  },
+  {
+    "name": "我超能吃的",
+    "oldPts": 19479,
+    "newPtsBase": 19479,
+    "newPtsSkill": 1364,
+    "newPtsTotal": 20843,
+    "seasons": {
+      "2025-H1": 102,
+      "2025-H2": 73,
+      "2026-H1": 539,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "好大儿",
+    "oldPts": 19014,
+    "newPtsBase": 19014,
+    "newPtsSkill": 1777,
+    "newPtsTotal": 20791,
+    "seasons": {
+      "2025-H1": 665,
+      "2025-H2": 156,
+      "2026-H1": 183,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "与有荣焉",
+    "oldPts": 18988,
+    "newPtsBase": 18988,
+    "newPtsSkill": 1580,
+    "newPtsTotal": 20568,
+    "seasons": {
+      "2025-H1": 105,
+      "2025-H2": 25,
+      "2026-H1": 15,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "夏季玩",
+    "oldPts": 19023,
+    "newPtsBase": 19023,
+    "newPtsSkill": 1458,
+    "newPtsTotal": 20481,
+    "seasons": {
+      "2025-H1": 498,
+      "2025-H2": 236,
+      "2026-H1": 147,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "雾起春华",
+    "oldPts": 19008,
+    "newPtsBase": 19008,
+    "newPtsSkill": 1434,
+    "newPtsTotal": 20442,
+    "seasons": {
+      "2025-H1": 750,
+      "2025-H2": 304,
+      "2026-H1": 243,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "Shadou",
+    "oldPts": 19022,
+    "newPtsBase": 19022,
+    "newPtsSkill": 1410,
+    "newPtsTotal": 20432,
+    "seasons": {
+      "2025-H1": 121,
+      "2025-H2": 131,
+      "2026-H1": 15,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "fuukei",
+    "oldPts": 19198,
+    "newPtsBase": 19198,
+    "newPtsSkill": 1165,
+    "newPtsTotal": 20363,
+    "seasons": {
+      "2025-H1": 252,
+      "2025-H2": 7,
+      "2026-H1": 18,
+      "2026-H2": 7
+    }
+  },
+  {
+    "name": "脉脉不得语",
+    "oldPts": 18947,
+    "newPtsBase": 18947,
+    "newPtsSkill": 1225,
+    "newPtsTotal": 20172,
+    "seasons": {
+      "2025-H1": 130,
+      "2025-H2": 0,
+      "2026-H1": 7,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "四",
+    "oldPts": 19039,
+    "newPtsBase": 19039,
+    "newPtsSkill": 856,
+    "newPtsTotal": 19895,
+    "seasons": {
+      "2025-H1": 311,
+      "2025-H2": 106,
+      "2026-H1": 22,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "欧金金",
+    "oldPts": 18991,
+    "newPtsBase": 18991,
+    "newPtsSkill": 889,
+    "newPtsTotal": 19880,
+    "seasons": {
+      "2025-H1": 30,
+      "2025-H2": 121,
+      "2026-H1": 0,
+      "2026-H2": 0
+    }
+  },
+  {
+    "name": "小小小一",
+    "oldPts": 18932,
+    "newPtsBase": 18932,
+    "newPtsSkill": 797,
+    "newPtsTotal": 19729,
+    "seasons": {
+      "2025-H1": 208,
+      "2025-H2": 18,
+      "2026-H1": 79,
+      "2026-H2": 1
+    }
+  },
+  {
+    "name": "不火",
+    "oldPts": 18979,
+    "newPtsBase": 18979,
+    "newPtsSkill": 639,
+    "newPtsTotal": 19618,
+    "seasons": {
+      "2025-H1": 161,
+      "2025-H2": 15,
+      "2026-H1": 227,
+      "2026-H2": 0
+    }
+  }
+]

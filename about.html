@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - DDNet Map Mastery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+  <div id="header-container"></div>
+
+  <main class="min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <a href="index.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg> 
+        <span id="about-back"></span>
+      </a>
+
+      <header class="space-y-4">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white" id="about-title-container">
+        </h1>
+        <p class="text-lg text-slate-400" id="about-intro">
+        </p>
+      </header>
+
+      <div class="space-y-6">
+        <!-- Section 1: Problems with old system -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
+          <h2 class="text-2xl font-bold flex items-center gap-2 text-red-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+            <span id="card1-title"></span>
+          </h2>
+          
+          <div class="space-y-4 text-slate-300">
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <p class="text-sm" id="card1-p1"></p>
+              <p class="text-sm" id="card1-p2"></p>
+              <p class="text-sm text-red-400 mt-2 font-bold" id="card1-p3"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: New System Benefits -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
+          <h2 class="text-2xl font-bold flex items-center gap-2 text-green-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+            <span id="card2-title"></span>
+          </h2>
+          
+          <div class="space-y-4 text-slate-300">
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <p class="text-sm" id="card2-p1"></p>
+              <p class="text-sm" id="card2-p2"></p>
+              <p class="text-sm text-green-400 mt-2 font-bold" id="card2-p3"></p>
+            </div>
+
+            <div class="space-y-4 mt-6">
+              <div class="flex gap-4 items-start">
+                <div class="bg-primary/20 p-2 rounded-lg mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-primary"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-lg" id="f1-title"></h3>
+                  <p class="text-sm text-slate-400 mt-1" id="f1-desc"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Technical Failsafes -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
+          <h2 class="text-2xl font-bold text-white" id="tech-title"></h2>
+          <div class="space-y-4">
+            
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <h3 class="font-bold text-primary mb-2" id="f2-title"></h3>
+              <p class="text-sm text-slate-300 mb-2" id="f2-desc"></p>
+              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+                $$ time\_ratio = \frac{player\_time}{world\_record} $$
+              </div>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <h3 class="font-bold text-primary mb-2" id="f3-title"></h3>
+              <p class="text-sm text-slate-300 mb-2" id="f3-desc"></p>
+              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+                $$ P_{skill} = (P_{base} \times 5) \cdot e^{-s \cdot \max(0, time\_ratio - 1)} $$
+              </div>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <h3 class="font-bold text-primary mb-2" id="f4-title"></h3>
+              <p class="text-sm text-slate-300 mb-2" id="f4-desc"></p>
+              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+                $$ s = \text{variance coefficient based on Top 50} $$
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <footer class="text-center text-slate-500 py-8 text-sm bg-slate-900/50 rounded-lg border border-slate-800">
+          <p><strong id="footer-summary"></strong></p>
+        </footer>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="data/leaderboard.js"></script>
+  <script src="data/map_records.js"></script>
+  <script src="data/map_stats.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader('about');
+      
+      const dict = getDict();
+      document.documentElement.lang = currentLang;
+
+      document.getElementById('about-back').textContent = dict.about.back;
+      
+      const titlePrefix = currentLang === 'en' ? 'Why is the new system ' : 'Почему новая система ';
+      const titleSuffix = currentLang === 'en' ? 'better?' : 'лучше?';
+      document.getElementById('about-title-container').innerHTML = `${titlePrefix}<span class="text-primary">${titleSuffix}</span>`;
+      
+      document.getElementById('about-intro').textContent = dict.about.intro;
+      
+      document.getElementById('card1-title').textContent = dict.about.card1.title;
+      document.getElementById('card1-p1').textContent = dict.about.card1.p1;
+      document.getElementById('card1-p2').textContent = dict.about.card1.p2;
+      document.getElementById('card1-p3').textContent = dict.about.card1.p3;
+      
+      document.getElementById('card2-title').textContent = dict.about.card2.title;
+      document.getElementById('card2-p1').textContent = dict.about.card2.p1;
+      document.getElementById('card2-p2').textContent = dict.about.card2.p2;
+      document.getElementById('card2-p3').textContent = dict.about.card2.p3;
+
+      document.getElementById('tech-title').textContent = dict.about.techTitle;
+      document.getElementById('f1-title').textContent = dict.about.formula1Title;
+      document.getElementById('f1-desc').textContent = dict.about.formula1Desc;
+      document.getElementById('f2-title').textContent = dict.about.formula2Title;
+      document.getElementById('f2-desc').textContent = dict.about.formula2Desc;
+      document.getElementById('f3-title').textContent = dict.about.formula3Title;
+      document.getElementById('f3-desc').textContent = dict.about.formula3Desc;
+      document.getElementById('f4-title').textContent = dict.about.formula4Title;
+      document.getElementById('f4-desc').textContent = dict.about.formula4Desc;
+
+      document.getElementById('footer-summary').textContent = dict.about.footerSummary;
+
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+</body>
+</html>
