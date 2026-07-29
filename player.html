@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Player Profile</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
   <script>
@@ -11,14 +12,14 @@
       theme: {
         extend: {
           colors: {
-            primary: '#3b82f6',
+            primary: '#ffa500',
           }
         }
       }
     }
   </script>
 </head>
-<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+<body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
@@ -34,11 +35,31 @@
     <div id="content" class="hidden space-y-8">
       
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <a href="index.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors mb-2 inline-block">
-            &larr; <span id="player-back"></span>
-          </a>
+          <div class="flex items-center gap-3 mb-2 flex-wrap">
+            <a href="index.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-block whitespace-nowrap">
+              &larr; <span id="player-back"></span>
+            </a>
+            <span class="text-slate-600">|</span>
+            <!-- Quick Player Search Form -->
+            <form id="inline-player-search-form" class="flex items-center gap-1">
+              <input
+                type="text"
+                id="inline-player-search-input"
+                placeholder="Найти игрока..."
+                style="padding:0.35em 0.7em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;width:15em;box-sizing:border-box;font-weight:600;"
+              />
+              <button
+                type="submit"
+                id="inline-player-search-btn"
+                style="padding:0.35em 0.8em;font-size:0.85em;background:#ffa500;color:#111;border:none;font-weight:bold;cursor:pointer;white-space:nowrap;"
+              >
+                Найти
+              </button>
+            </form>
+          </div>
+
           <header class="space-y-2">
             <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
             <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
@@ -47,17 +68,17 @@
         
         <!-- Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform">
-            <div class="text-sm text-slate-400 font-medium uppercase tracking-wider" id="stat-base"></div>
-            <div class="text-3xl font-bold font-mono text-emerald-400" id="val-base"></div>
+          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2">
+            <div class="text-sm text-slate-300 font-bold uppercase tracking-wider" id="stat-base"></div>
+            <div class="text-3xl font-black font-mono text-emerald-400" id="val-base"></div>
           </div>
-          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform">
-            <div class="text-sm text-slate-400 font-medium uppercase tracking-wider" id="stat-skill"></div>
-            <div class="text-3xl font-bold font-mono text-purple-400" id="val-skill"></div>
+          <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2">
+            <div class="text-sm text-slate-300 font-bold uppercase tracking-wider" id="stat-skill"></div>
+            <div class="text-3xl font-black font-mono text-purple-400" id="val-skill"></div>
           </div>
-          <div class="gold-card p-6 rounded-2xl flex flex-col justify-center items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(251,191,36,0.15)]">
-            <div class="text-sm text-amber-500 font-bold uppercase tracking-wider" id="stat-total"></div>
-            <div class="text-4xl font-black font-mono text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" id="val-total"></div>
+          <div class="gold-card p-6 flex flex-col justify-center items-center gap-2">
+            <div class="text-sm text-amber-400 font-bold uppercase tracking-wider" id="stat-total"></div>
+            <div class="text-4xl font-black font-mono text-amber-400" id="val-total"></div>
           </div>
         </div>
       </div>
@@ -89,9 +110,12 @@
     </div>
   </main>
 
+  <script src="data/maps.js"></script>
+  <script src="data/unique_players.js"></script>
   <script src="data/leaderboard.js"></script>
   <script src="data/map_records.js"></script>
   <script src="data/map_stats.js"></script>
+  <script src="data/blacklist.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
@@ -122,6 +146,32 @@
       document.getElementById('table-map').textContent = dict.player.mapName;
       document.getElementById('table-server').textContent = dict.player.mapServer;
       document.getElementById('table-time').textContent = dict.player.mapTime;
+
+      document.getElementById('inline-player-search-input').placeholder = currentLang === 'ru' ? 'Найти игрока...' : 'Search player...';
+      document.getElementById('inline-player-search-btn').textContent = currentLang === 'ru' ? 'Найти' : 'Search';
+
+      document.getElementById('inline-player-search-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const target = document.getElementById('inline-player-search-input').value.trim();
+        if (target) {
+          window.location.href = `player.html?name=${encodeURIComponent(target)}`;
+        }
+      });
+
+      setupPlayerAutocomplete('inline-player-search-input');
+
+      if (window.isBlacklisted && window.isBlacklisted(playerName)) {
+        document.getElementById('loading').classList.add('hidden');
+        const errorEl = document.getElementById('error');
+        document.getElementById('player-error').innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; padding: 1.5rem; text-align: center; margin: 1.5rem 0;">
+            <h2 style="font-size: 1.5rem; font-weight: bold; color: #f87171; margin-bottom: 0.5rem;">${currentLang === 'en' ? 'Player Banned' : 'Игрок заблокирован'}</h2>
+            <p style="color: #fca5a5; font-weight: 500;">${currentLang === 'en' ? 'This player is blacklisted in Map Mastery system (TAS / Cheating).' : 'Этот никнейм находится в чёрном списке системы Map Mastery (TAS / Читы).'}</p>
+          </div>
+        `;
+        errorEl.classList.remove('hidden');
+        return;
+      }
 
       try {
         const data = await window.api.fetchPlayerPts(playerName);
@@ -190,17 +240,34 @@
           return `${m}:${s.padStart(5, '0')}`;
         };
 
+        const getServerBadgeClass = (server) => {
+          if (!server) return 'server-default';
+          const s = server.toLowerCase();
+          if (s.includes('novice')) return 'server-novice';
+          if (s.includes('moderate')) return 'server-moderate';
+          if (s.includes('brutal')) return 'server-brutal';
+          if (s.includes('insane')) return 'server-insane';
+          if (s.includes('solo')) return 'server-solo';
+          if (s.includes('dummy')) return 'server-dummy';
+          if (s.includes('oldschool')) return 'server-oldschool';
+          return 'server-ddmax';
+        };
+
         topMaps.forEach(map => {
           const tr = document.createElement('tr');
-          tr.className = "premium-table-row hover:bg-white/[0.02] transition-colors";
+          tr.className = "premium-table-row transition-colors";
           
           tr.innerHTML = `
-            <td class="p-4 font-bold text-white">${map.mapName}</td>
-            <td class="p-4 text-slate-500">${map.server}</td>
-            <td class="p-4 font-mono text-slate-300 text-right">${formatTime(map.time)}</td>
+            <td class="p-4 font-bold">
+              <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
+                ${escapeHtml(map.mapName)}
+              </a>
+            </td>
+            <td class="p-4"><span class="server-badge ${getServerBadgeClass(map.server)}">${escapeHtml(map.server)}</span></td>
+            <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
             <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
             <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-            <td class="p-4 font-bold text-slate-400 text-center">#${map.rank}</td>
+            <td class="p-4 font-bold text-amber-300 text-center">#${map.rank}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -217,3 +284,4 @@
   </script>
 </body>
 </html>
+

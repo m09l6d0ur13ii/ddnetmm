@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DDNet Map Mastery PTS</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -13,29 +14,30 @@
       theme: {
         extend: {
           colors: {
-            primary: '#3b82f6', // blue-500
+            primary: '#ffa500', // DDNet orange
           }
         }
       }
     }
   </script>
 </head>
-<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+<body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
   <main class="p-4 md:p-8 animate-fade-in">
     <header class="max-w-7xl mx-auto mb-12 text-center space-y-4">
-      <div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-4" id="icon-trophy">
+      <div style="display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;" id="icon-trophy">
+        <img src="icon.png" alt="Logo" style="width:64px;height:64px;object-fit:contain;">
       </div>
       <h1 class="text-5xl md:text-7xl font-black tracking-tight bg-gradient-to-br from-white via-slate-200 to-slate-500 bg-clip-text text-transparent drop-shadow-sm" id="home-title">
       </h1>
       <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto" id="home-subtitle">
       </p>
       <div class="pt-4 flex flex-wrap justify-center gap-4">
-        <a href="about.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-800/50 border border-slate-700 hover:border-primary hover:text-primary transition-all text-sm font-medium">
+        <a href="about.html" style="display:inline-flex;align-items:center;gap:0.5em;padding:0.6em 1.4em;border:1px solid rgba(255,255,255,0.15);font-size:0.875em;font-weight:500;color:#dfdede;text-decoration:none;" onmouseover="this.style.borderColor='#ffa500';this.style.color='#ffa500'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='#dfdede'">
           <span id="home-about-btn"></span> <span id="icon-arrow-right-1"></span>
         </a>
-        <a href="compare.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-900/20 border border-blue-500/50 hover:border-blue-400 hover:text-blue-400 transition-all text-sm font-medium">
+        <a href="compare.html" style="display:inline-flex;align-items:center;gap:0.5em;padding:0.6em 1.4em;border:1px solid rgba(255,165,0,0.5);font-size:0.875em;font-weight:500;color:#ffa500;text-decoration:none;" onmouseover="this.style.borderColor='#ffa500'" onmouseout="this.style.borderColor='rgba(255,165,0,0.5)'">
           <span id="home-compare-btn"></span> <span id="icon-arrow-right-2"></span>
         </a>
       </div>
@@ -85,35 +87,52 @@
 
         <p id="search-error" class="text-red-400 text-sm hidden"></p>
 
-        <div id="search-result" class="bg-white/[0.02] p-4 rounded-lg border border-white/5 space-y-3 hidden">
-          <h3 class="font-bold text-lg text-primary">
-            <a id="search-result-name" href="#" class="hover:text-blue-300 hover:underline transition-colors"></a>
+        <div id="search-result" style="background:#222222;border:2px solid #ffa500;padding:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,0.6);" class="space-y-3 hidden">
+          <h3 class="font-bold text-xl">
+            <a id="search-result-name" href="#" class="text-primary hover:text-amber-300 hover:underline transition-colors"></a>
           </h3>
           <div class="grid grid-cols-2 gap-2 text-sm">
-            <span class="text-slate-400">New Base:</span>
-            <span id="search-result-base" class="font-mono text-right text-emerald-400"></span>
-            <span class="text-slate-400">New Skill:</span>
-            <span id="search-result-skill" class="font-mono text-right text-purple-400"></span>
+            <span class="text-slate-200 font-semibold">New Base:</span>
+            <span id="search-result-base" class="font-mono text-right text-emerald-400 font-bold"></span>
+            <span class="text-slate-200 font-semibold">New Skill:</span>
+            <span id="search-result-skill" class="font-mono text-right text-purple-400 font-bold"></span>
             <div class="col-span-2 h-px bg-white/10 my-1"></div>
-            <span class="font-bold">Total Map Mastery:</span>
-            <span id="search-result-total" class="font-mono font-bold text-right text-amber-400 text-base"></span>
+            <span class="font-bold text-white">Total Map Mastery:</span>
+            <span id="search-result-total" class="font-mono font-bold text-right text-amber-400 text-lg"></span>
           </div>
         </div>
       </section>
 
       <section class="glass-panel p-8 md:col-span-2">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
-          <h2 class="text-2xl font-bold flex items-center gap-3">
-            <span id="home-leaderboard-title"></span>
-            <span id="leaderboard-loader" class="hidden"></span>
-          </h2>
+          <div class="flex items-center gap-3 flex-wrap">
+            <!-- Global Rank Tab Button -->
+            <button
+              id="tab-btn-global"
+              onclick="switchMainTab('global')"
+              style="padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:#ffa500;color:#111111;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;box-shadow:0 2px 8px rgba(0,0,0,0.4);"
+            >
+              <span id="home-leaderboard-title"></span>
+              <span id="leaderboard-loader" class="hidden"></span>
+            </button>
+
+            <!-- TAS Ban List Tab Button -->
+            <button
+              id="tab-btn-banlist"
+              onclick="switchMainTab('banlist')"
+              style="padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:rgba(255,255,255,0.05);color:#9a9a9a;border:1px solid rgba(255,255,255,0.15);cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;"
+            >
+              TAS Ban List (<span id="banlist-count">0</span>)
+            </button>
+          </div>
+
           <div class="text-sm text-slate-400 max-w-sm text-right" id="status-message">
           </div>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse whitespace-nowrap">
-            <thead>
+            <thead id="table-header-global">
               <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
                 <th class="p-4 font-semibold cursor-pointer hover:text-white transition-colors" onclick="requestSort('rank')">
                   <div class="flex items-center gap-1" id="table-rank"></div>
@@ -130,6 +149,15 @@
                 </th>
               </tr>
             </thead>
+
+            <thead id="table-header-banlist" class="hidden">
+              <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
+                <th class="p-4 font-semibold">#</th>
+                <th class="p-4 font-semibold" id="table-banned-player">Заблокированный игрок</th>
+                <th class="p-4 font-semibold text-right" id="table-banned-status">Статус</th>
+              </tr>
+            </thead>
+
             <tbody id="leaderboard-body">
               <tr>
                 <td colspan="5" class="p-4 text-center text-slate-500" id="empty-state"></td>
@@ -149,18 +177,32 @@
     </div>
   </main>
 
+  <script src="data/maps.js"></script>
+  <script src="data/unique_players.js"></script>
   <script src="data/leaderboard.js"></script>
   <script src="data/map_records.js"></script>
   <script src="data/map_stats.js"></script>
+  <script src="data/blacklist.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
   <script>
     let playersData = [];
     let sortConfig = { key: 'newPtsTotal', direction: 'desc' };
-    let displayLimit = 20;
+    let displayLimit = 10;
     let loading = false;
     let searchLoading = false;
+
+    function getLoadMoreBtnText(limit) {
+      if (limit < 20) {
+        return currentLang === 'en' ? 'Load 10 to 20' : 'Загрузить с 10 до 20';
+      } else if (limit < 40) {
+        return currentLang === 'en' ? 'Load 20 to 40' : 'Загрузить с 20 до 40';
+      } else if (limit < 100) {
+        return currentLang === 'en' ? 'Load 40 to 100' : 'Загрузить с 40 до 100';
+      }
+      return '';
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       renderHeader('home');
@@ -193,10 +235,9 @@
       document.getElementById('table-total').textContent = dict.home.tableTotal;
       document.getElementById('empty-state').textContent = dict.home.empty;
       document.getElementById('status-message').textContent = '';
-      document.getElementById('load-more-btn').textContent = currentLang === 'en' ? 'Load Top 100' : 'Загрузить Топ 100';
+      document.getElementById('load-more-btn').textContent = getLoadMoreBtnText(displayLimit);
 
       // Set Icons
-      document.getElementById('icon-trophy').innerHTML = icons.trophy;
       document.getElementById('icon-arrow-right-1').innerHTML = icons.arrowRight;
       document.getElementById('icon-arrow-right-2').innerHTML = icons.arrowRight;
       document.getElementById('icon-arrow-1').innerHTML = icons.arrowUpDown;
@@ -239,7 +280,13 @@
           document.getElementById('search-result').classList.remove('hidden');
         } catch (err) {
           const errEl = document.getElementById('search-error');
-          errEl.textContent = currentLang === 'en' ? 'Player not found' : 'Игрок не найден';
+          if (err.isBlacklisted || (window.isBlacklisted && window.isBlacklisted(val))) {
+            errEl.textContent = currentLang === 'en' 
+              ? 'Player is blacklisted (TAS / Cheating)' 
+              : 'Игрок заблокирован в системе (TAS / Читы)';
+          } else {
+            errEl.textContent = currentLang === 'en' ? 'Player not found' : 'Игрок не найден';
+          }
           errEl.classList.remove('hidden');
         } finally {
           btn.innerHTML = icons.search;
@@ -248,12 +295,105 @@
       });
 
       document.getElementById('load-more-btn').addEventListener('click', () => {
-        displayLimit = 100;
+        if (displayLimit < 20) {
+          displayLimit = 20;
+        } else if (displayLimit < 40) {
+          displayLimit = 40;
+        } else {
+          displayLimit = 100;
+        }
         loadLeaderboard();
       });
 
+      setupPlayerAutocomplete('search-input', (selectedPlayer) => {
+        const form = document.getElementById('player-search-form');
+        if (form) {
+          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        }
+      });
+
+      const banlist = window.blacklistData || [];
+      document.getElementById('banlist-count').textContent = banlist.length;
+
       loadLeaderboard();
     });
+
+    let currentTab = 'global';
+
+    window.switchMainTab = function(tab) {
+      currentTab = tab;
+      const btnGlobal = document.getElementById('tab-btn-global');
+      const btnBanlist = document.getElementById('tab-btn-banlist');
+      const headGlobal = document.getElementById('table-header-global');
+      const headBanlist = document.getElementById('table-header-banlist');
+      const loadMoreContainer = document.getElementById('load-more-container');
+
+      if (tab === 'global') {
+        btnGlobal.style.background = '#ffa500';
+        btnGlobal.style.color = '#111111';
+        btnGlobal.style.border = 'none';
+
+        btnBanlist.style.background = 'rgba(255,255,255,0.05)';
+        btnBanlist.style.color = '#9a9a9a';
+        btnBanlist.style.border = '1px solid rgba(255,255,255,0.15)';
+
+        headGlobal.classList.remove('hidden');
+        headBanlist.classList.add('hidden');
+
+        if (displayLimit < 100 && playersData.length >= displayLimit) {
+          loadMoreContainer.classList.remove('hidden');
+        }
+        renderTable();
+      } else {
+        btnBanlist.style.background = '#ef4444';
+        btnBanlist.style.color = '#ffffff';
+        btnBanlist.style.border = 'none';
+
+        btnGlobal.style.background = 'rgba(255,255,255,0.05)';
+        btnGlobal.style.color = '#9a9a9a';
+        btnGlobal.style.border = '1px solid rgba(255,255,255,0.15)';
+
+        headGlobal.classList.add('hidden');
+        headBanlist.classList.remove('hidden');
+
+        loadMoreContainer.classList.add('hidden');
+        renderBanlistTable();
+      }
+    };
+
+    function renderBanlistTable() {
+      const tbody = document.getElementById('leaderboard-body');
+      tbody.innerHTML = '';
+
+      const list = window.blacklistData || [];
+      document.getElementById('banlist-count').textContent = list.length;
+      document.getElementById('table-banned-player').textContent = currentLang === 'en' ? 'Banned Player' : 'Заблокированный игрок';
+      document.getElementById('table-banned-status').textContent = currentLang === 'en' ? 'Status' : 'Статус';
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No banned players' : 'Список бана пуст'}</td></tr>`;
+        return;
+      }
+
+      list.forEach((name, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "premium-table-row transition-colors";
+        tr.innerHTML = `
+          <td class="p-4 font-mono text-slate-400 text-sm">#${idx + 1}</td>
+          <td class="p-4 font-bold">
+            <a href="player.html?name=${encodeURIComponent(name)}" class="text-red-400 hover:text-red-300 transition-colors">
+              ${escapeHtml(name)}
+            </a>
+          </td>
+          <td class="p-4 text-right">
+            <span class="px-2.5 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-bold uppercase tracking-wider">
+              ${currentLang === 'en' ? 'Banned' : 'Заблокирован'}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
     async function loadLeaderboard() {
       loading = true;
@@ -273,7 +413,7 @@
         loading = false;
         document.getElementById('leaderboard-loader').classList.add('hidden');
         document.getElementById('load-more-btn').disabled = false;
-        document.getElementById('load-more-btn').textContent = currentLang === 'en' ? 'Load Top 100' : 'Загрузить Топ 100';
+        document.getElementById('load-more-btn').textContent = getLoadMoreBtnText(displayLimit);
         
         if (displayLimit < 100 && playersData.length >= displayLimit) {
           document.getElementById('load-more-container').classList.remove('hidden');
@@ -297,6 +437,7 @@
     }
 
     function renderTable() {
+      if (currentTab !== 'global') return;
       const tbody = document.getElementById('leaderboard-body');
       tbody.innerHTML = '';
       
@@ -340,3 +481,4 @@
   </script>
 </body>
 </html>
+

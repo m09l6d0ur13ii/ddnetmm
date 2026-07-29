@@ -90,6 +90,20 @@ const dictionaries = {
       formula3Desc: "Ограничитель, защищающий систему от взрыва очков при рассинхронах рекордов.",
       formula4Title: "Статистический коэффициент (s)",
       formula4Desc: "Формула высчитывает дисперсию (стандартное отклонение) времен Топ-50 игроков. Если конкуренция плотная — алгоритм делает 's' строгим. Если результаты растянуты на часы — делает 's' мягким. Баланс настраивается сам!",
+      antiTas: {
+        title: "Многоуровневая система защиты от ТАС-ботов и читеров",
+        desc: "Публичные серверы DDStats часто подвергаются атакам ТАС-ботов и сомнительных скриптов, забивающих первые места в таблицах. В Map Mastery внедрена 5-ступенчатая система очистки данных и обогащения рекордов.",
+        l1Title: "1. Глобальный Черный Список (Blacklist)",
+        l1Desc: "Известные ТАСеры и читеры заносятся в blacklist.txt и полностью исключаются из глобального Топ-500 и таблиц всех карт.",
+        l2Title: "2. Порог минимального времени (Map Min Times)",
+        l2Desc: "Для сложных или забагованных карт задаётся минимально физически возможный порог времени (например 2 Days in the back | 7:30). Любой финиш быстрее этого времени отбрасывается без бана игрока на других картах.",
+        l3Title: "3. Исключения конкретных финишей (Ignored Finishes)",
+        l3Desc: "Точечное аннулирование фейковых результатов на конкретной карте (например .x0r* | 2 Days in the back), когда читер поставил фейковый результат под именем честного игрока.",
+        l4Title: "4. Кастомные Мировые Рекорды (Custom Map Records)",
+        l4Desc: "Возможность вручную задать настоящий Мировой Рекорд (например 2 Days in the back | 08:07 | Xardas), если топ-100 DDStats забит ТАС-ботами, а истинный рекордсмен находится за пределами глобального Топ-500.",
+        l5Title: "5. Автоматический алгоритм обогащения карт (Map Enrichment Engine)",
+        l5Desc: "Скрипт сканирует верифицированные профили всех легитимных игроков из Топ-500 и автоматически восстанавливает честные места и рекорды на сломанных картах."
+      },
       footerSummary: "Итог: Новая система наказывает тех, кто просто собирает легкие топы с плохим временем, и невероятно щедро награждает тех, кто ставит действительно мощные времена!"
     },
     map: {
@@ -104,7 +118,8 @@ const dictionaries = {
       tableTime: "Время",
       tableGap: "Отставание",
       tablePts: "Skill PTS",
-      loading: "Загрузка..."
+      loading: "Загрузка...",
+      enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats"
     }
   },
   en: {
@@ -198,6 +213,20 @@ const dictionaries = {
       formula3Desc: "A limiter that protects the system from points explosion during record desyncs.",
       formula4Title: "Statistical coefficient (s)",
       formula4Desc: "The formula calculates the variance of Top 50 times. If competition is dense — the algorithm makes 's' strict. If results are spread across hours — it makes 's' forgiving. The balance auto-tunes itself!",
+      antiTas: {
+        title: "Multi-Layer Anti-TAS & Cheat Protection System",
+        desc: "Public DDStats servers are often targeted by TAS bots and suspicious scripts that flood leaderboard tables. Map Mastery features a 5-stage data cleanup and map enrichment engine.",
+        l1Title: "1. Global Blacklist",
+        l1Desc: "Known TASers and cheaters are listed in blacklist.txt and completely excluded from global Top 500 and all map leaderboards.",
+        l2Title: "2. Minimum Map Time Thresholds (Map Min Times)",
+        l2Desc: "Configures minimum realistic finish time thresholds per map (e.g. 2 Days in the back | 7:30). Any finish faster than the threshold is filtered as TAS without banning the player globally.",
+        l3Title: "3. Specific Ignored Finishes",
+        l3Desc: "Per-player per-map exceptions to remove individual fake finishes set under a legitimate player's nickname.",
+        l4Title: "4. Custom World Records",
+        l4Desc: "Allows manual specification of true legal World Records (e.g. 2 Days in the back | 08:07 | Xardas) when DDStats top 100 is flooded and the legitimate record holder is outside global Top 500.",
+        l5Title: "5. Automated Map Enrichment Engine",
+        l5Desc: "Scans verified profiles of all legitimate top players and automatically reconstructs accurate map leaderboards and World Records."
+      },
       footerSummary: "Conclusion: The new system punishes those who collect easy tops with bad times, and incredibly generously rewards those who set truly powerful times!"
     },
     map: {
@@ -212,7 +241,8 @@ const dictionaries = {
       tableTime: "Time",
       tableGap: "Gap",
       tablePts: "Skill PTS",
-      loading: "Loading..."
+      loading: "Loading...",
+      enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats"
     }
   }
 };

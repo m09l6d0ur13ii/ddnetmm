@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Map Leaderboard</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
   <script>
@@ -11,14 +12,14 @@
       theme: {
         extend: {
           colors: {
-            primary: '#3b82f6',
+            primary: '#ffa500',
           }
         }
       }
     }
   </script>
 </head>
-<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+<body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
@@ -45,19 +46,24 @@
         <p class="text-primary font-medium tracking-wide uppercase text-sm" id="map-leaderboard-title"></p>
       </header>
 
+      <div id="enriched-banner" class="hidden glass-panel p-4 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-center gap-3 text-amber-300 text-sm font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 shrink-0"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span id="enriched-banner-text"></span>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-panel p-6 flex items-center gap-6 hover:scale-105 transition-transform cursor-default">
-          <div class="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div class="glass-panel p-6 flex items-center gap-6 transition-transform cursor-default">
+          <div style="padding:0.75rem;background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ffa500;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           </div>
           <div>
             <div class="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-1" id="stat-record"></div>
             <div class="text-3xl font-bold font-mono text-white drop-shadow-md" id="val-tbest"></div>
           </div>
         </div>
-        <div class="glass-panel p-6 flex items-center gap-6 hover:scale-105 transition-transform cursor-default">
-          <div class="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+        <div class="glass-panel p-6 flex items-center gap-6 transition-transform cursor-default">
+          <div style="padding:0.75rem;background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ffa500;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
           </div>
           <div>
             <div class="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-1" id="stat-s"></div>
@@ -89,9 +95,15 @@
     </div>
   </main>
 
+  <script src="data/maps.js"></script>
   <script src="data/leaderboard.js"></script>
   <script src="data/map_records.js"></script>
+  <script src="data/map_rankings.js"></script>
+  <script src="data/map_enriched.js"></script>
+  <script src="data/map_min_times.js"></script>
+  <script src="data/ignored_finishes.js"></script>
   <script src="data/map_stats.js"></script>
+  <script src="data/blacklist.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
@@ -136,6 +148,40 @@
         return `${m}:${s.padStart(5, '0')}`;
       };
 
+      const getGapBadgeHtml = (gapPct) => {
+        const gapStr = '+' + gapPct.toFixed(1) + '%';
+        let bg, color, border;
+        
+        if (gapPct <= 5.0) {
+          // Green (0% - 5%)
+          bg = 'rgba(16, 185, 129, 0.25)';
+          color = '#34d399';
+          border = '1px solid rgba(16, 185, 129, 0.5)';
+        } else if (gapPct <= 25.0) {
+          // Lime / Yellow (5% - 25%)
+          bg = 'rgba(234, 179, 8, 0.25)';
+          color = '#fde047';
+          border = '1px solid rgba(234, 179, 8, 0.5)';
+        } else if (gapPct <= 60.0) {
+          // Orange (25% - 60%)
+          bg = 'rgba(249, 115, 22, 0.25)';
+          color = '#ffab70';
+          border = '1px solid rgba(249, 115, 22, 0.5)';
+        } else if (gapPct <= 100.0) {
+          // Coral / Soft Red-Orange (60% - 100%)
+          bg = 'rgba(244, 63, 94, 0.25)';
+          color = '#fca5a5';
+          border = '1px solid rgba(244, 63, 94, 0.5)';
+        } else {
+          // Soft Muted Red (>= 100%)
+          bg = 'rgba(239, 68, 68, 0.25)';
+          color = '#f87171';
+          border = '1px solid rgba(239, 68, 68, 0.5)';
+        }
+
+        return `<span style="background:${bg};color:${color};border:${border};padding:0.2em 0.6em;border-radius:2px;font-weight:700;font-family:monospace;font-size:0.85em;display:inline-block;">${gapStr}</span>`;
+      };
+
       const loadMapData = async (limit) => {
         try {
           const data = await window.api.getMapLeaderboardLive(mapQuery, limit);
@@ -144,31 +190,40 @@
           document.getElementById('val-tbest').textContent = formatTime(data.tBest);
           document.getElementById('val-s').textContent = data.s.toFixed(2);
 
+          const isEnriched = window.enrichedMapsData && (window.enrichedMapsData[data.mapName] || window.enrichedMapsData[mapQuery]);
+          const bannerEl = document.getElementById('enriched-banner');
+          if (isEnriched && bannerEl) {
+            document.getElementById('enriched-banner-text').textContent = dict.map.enrichedBanner;
+            bannerEl.classList.remove('hidden');
+          } else if (bannerEl) {
+            bannerEl.classList.add('hidden');
+          }
+
           const tbody = document.getElementById('map-body');
           tbody.innerHTML = '';
           
           data.leaderboard.forEach((row, idx) => {
             const tr = document.createElement('tr');
-            tr.className = "premium-table-row hover:bg-white/[0.02] transition-colors";
+            tr.className = "premium-table-row transition-colors";
             
-            const gapStr = '+' + ((row.timeRatio - 1) * 100).toFixed(1) + '%';
+            const gapPct = Math.max(0, (row.timeRatio - 1) * 100);
             
             // Premium rank styling
-            let rankHtml = `<span class="text-slate-500 font-mono">#${idx + 1}</span>`;
-            if (idx === 0) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-            if (idx === 1) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
-            if (idx === 2) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
+            let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${idx + 1}</span>`;
+            if (idx === 0) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+            if (idx === 1) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
+            if (idx === 2) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
 
             tr.innerHTML = `
               <td class="p-4">${rankHtml}</td>
               <td class="p-4 font-bold text-lg">
-                <a href="player.html?name=${encodeURIComponent(row.player)}" class="text-white hover:text-blue-400 transition-colors">
+                <a href="player.html?name=${encodeURIComponent(row.player)}" class="text-white hover:text-amber-400 transition-colors">
                   ${escapeHtml(row.player)}
                 </a>
               </td>
-              <td class="p-4 font-mono text-slate-300">${formatTime(row.time)}</td>
-              <td class="p-4 text-slate-400 text-sm">
-                <span class="bg-white/5 px-2 py-1 rounded text-slate-300">${gapStr}</span>
+              <td class="p-4 font-mono text-slate-100 font-medium">${formatTime(row.time)}</td>
+              <td class="p-4">
+                ${getGapBadgeHtml(gapPct)}
               </td>
               <td class="p-4 font-bold text-emerald-400 text-right text-lg">${row.pSkill}</td>
             `;
@@ -203,3 +258,4 @@
   </script>
 </body>
 </html>
+

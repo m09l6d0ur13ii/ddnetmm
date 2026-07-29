@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About - DDNet Map Mastery</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -14,14 +15,14 @@
       theme: {
         extend: {
           colors: {
-            primary: '#3b82f6',
+            primary: '#ffa500',
           }
         }
       }
     }
   </script>
 </head>
-<body class="antialiased text-slate-200 bg-[#0A0E17] font-sans selection:bg-primary/30 min-h-screen">
+<body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
   <main class="min-h-screen p-4 md:p-8">
@@ -89,30 +90,69 @@
           <h2 class="text-2xl font-bold text-white" id="tech-title"></h2>
           <div class="space-y-4">
             
-            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+            <div class="bg-slate-900/50 p-4 border border-slate-700">
               <h3 class="font-bold text-primary mb-2" id="f2-title"></h3>
               <p class="text-sm text-slate-300 mb-2" id="f2-desc"></p>
-              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
                 $$ time\_ratio = \frac{player\_time}{world\_record} $$
               </div>
             </div>
 
-            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+            <div class="bg-slate-900/50 p-4 border border-slate-700">
               <h3 class="font-bold text-primary mb-2" id="f3-title"></h3>
               <p class="text-sm text-slate-300 mb-2" id="f3-desc"></p>
-              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
                 $$ P_{skill} = (P_{base} \times 5) \cdot e^{-s \cdot \max(0, time\_ratio - 1)} $$
               </div>
             </div>
 
-            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+            <div class="bg-slate-900/50 p-4 border border-slate-700">
               <h3 class="font-bold text-primary mb-2" id="f4-title"></h3>
               <p class="text-sm text-slate-300 mb-2" id="f4-desc"></p>
-              <div class="bg-slate-950 p-2 rounded text-center overflow-x-auto text-slate-300 font-mono text-sm">
+              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
                 $$ s = \text{variance coefficient based on Top 50} $$
               </div>
             </div>
 
+          </div>
+        </section>
+
+        <!-- Section 4: Anti-TAS Protection & Map Enrichment -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
+          <h2 class="text-2xl font-bold text-amber-400 flex items-center gap-2" id="antitas-title"></h2>
+          <p class="text-slate-300 text-sm" id="antitas-desc"></p>
+
+          <!-- Banner Preview Container -->
+          <div style="background:rgba(234, 179, 8, 0.15);border:1px solid rgba(234, 179, 8, 0.4);color:#fde047;padding:0.75rem 1rem;font-weight:600;font-size:0.9em;display:flex;align-items:center;gap:0.6rem;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+            <span style="font-size:1.2em;">⚡</span>
+            <span id="antitas-banner-text"></span>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 pt-2">
+            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+              <h3 class="font-bold text-amber-300 text-sm" id="antitas-l1-title"></h3>
+              <p class="text-xs text-slate-300" id="antitas-l1-desc"></p>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+              <h3 class="font-bold text-amber-300 text-sm" id="antitas-l2-title"></h3>
+              <p class="text-xs text-slate-300" id="antitas-l2-desc"></p>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+              <h3 class="font-bold text-amber-300 text-sm" id="antitas-l3-title"></h3>
+              <p class="text-xs text-slate-300" id="antitas-l3-desc"></p>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+              <h3 class="font-bold text-amber-300 text-sm" id="antitas-l4-title"></h3>
+              <p class="text-xs text-slate-300" id="antitas-l4-desc"></p>
+            </div>
+
+            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1 md:col-span-2">
+              <h3 class="font-bold text-amber-300 text-sm" id="antitas-l5-title"></h3>
+              <p class="text-xs text-slate-300" id="antitas-l5-desc"></p>
+            </div>
           </div>
         </section>
 
@@ -127,6 +167,8 @@
   <script src="data/leaderboard.js"></script>
   <script src="data/map_records.js"></script>
   <script src="data/map_stats.js"></script>
+  <script src="data/maps.js"></script>
+  <script src="data/blacklist.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
@@ -165,6 +207,21 @@
       document.getElementById('f4-title').textContent = dict.about.formula4Title;
       document.getElementById('f4-desc').textContent = dict.about.formula4Desc;
 
+      document.getElementById('antitas-title').textContent = dict.about.antiTas.title;
+      document.getElementById('antitas-desc').textContent = dict.about.antiTas.desc;
+      document.getElementById('antitas-banner-text').textContent = dict.map.enrichedBanner;
+
+      document.getElementById('antitas-l1-title').textContent = dict.about.antiTas.l1Title;
+      document.getElementById('antitas-l1-desc').textContent = dict.about.antiTas.l1Desc;
+      document.getElementById('antitas-l2-title').textContent = dict.about.antiTas.l2Title;
+      document.getElementById('antitas-l2-desc').textContent = dict.about.antiTas.l2Desc;
+      document.getElementById('antitas-l3-title').textContent = dict.about.antiTas.l3Title;
+      document.getElementById('antitas-l3-desc').textContent = dict.about.antiTas.l3Desc;
+      document.getElementById('antitas-l4-title').textContent = dict.about.antiTas.l4Title;
+      document.getElementById('antitas-l4-desc').textContent = dict.about.antiTas.l4Desc;
+      document.getElementById('antitas-l5-title').textContent = dict.about.antiTas.l5Title;
+      document.getElementById('antitas-l5-desc').textContent = dict.about.antiTas.l5Desc;
+
       document.getElementById('footer-summary').textContent = dict.about.footerSummary;
 
       renderMathInElement(document.body, {
@@ -178,3 +235,4 @@
   </script>
 </body>
 </html>
+
