@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="icon.png">
 
   <link rel="icon" type="image/png" href="icon.png">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindcss.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css">
@@ -176,9 +176,21 @@
 
             <thead id="table-header-banlist" class="hidden">
               <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
-                <th class="p-4 font-semibold">#</th>
-                <th class="p-4 font-semibold" id="table-banned-player"></th>
-                <th class="p-4 font-semibold text-right" id="table-banned-status"></th>
+                <th class="p-4 font-semibold cursor-pointer hover:text-white transition-colors" onclick="requestBanlistSort('count')">
+                  <div class="flex items-center gap-1"># <span id="icon-ban-rank-arrow"></span></div>
+                </th>
+                <th class="p-4 font-semibold cursor-pointer hover:text-white transition-colors" onclick="requestBanlistSort('name')">
+                  <div class="flex items-center gap-1"><span id="table-banned-player"></span> <span id="icon-ban-name-arrow"></span></div>
+                </th>
+                <th class="p-4 font-semibold text-right">
+                  <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                    <span id="table-banned-status" class="mr-1"></span>
+                    <button onclick="requestBanlistSort('count')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-count">Total ▾</button>
+                    <button onclick="requestBanlistSort('wr1')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-wr1">#1 WRs ▾</button>
+                    <button onclick="requestBanlistSort('top10')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-top10">#2-10 ▾</button>
+                    <button onclick="requestBanlistSort('top50')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-top50">#11-50 ▾</button>
+                  </div>
+                </th>
               </tr>
             </thead>
 

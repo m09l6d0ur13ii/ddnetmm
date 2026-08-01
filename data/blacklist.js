@@ -1,20 +1,6 @@
 // Blacklist of cheaters/TASers loaded locally with deleted record counts
 window.blacklistData = [
   {
-    "name": "学妹",
-    "count": 2302,
-    "wr1": 0,
-    "top10": 23,
-    "top50": 131
-  },
-  {
-    "name": "阳仔i",
-    "count": 2209,
-    "wr1": 1,
-    "top10": 22,
-    "top50": 114
-  },
-  {
     "name": "nameless tee",
     "count": 2126,
     "wr1": 5,
@@ -573,6 +559,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 0,
     "top50": 0
+  },
+  {
+    "name": "dora :3",
+    "count": 113,
+    "wr1": 8,
+    "top10": 40,
+    "top50": 15
   },
   {
     "name": "[D] kisesひ",

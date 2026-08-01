@@ -5,15 +5,11 @@
 
   let playersData = [];
   let sortConfig = { key: 'newPtsTotal', direction: 'desc' };
-  let displayLimit = 10;
+  let displayLimit = Infinity;
   let loading = false;
   let currentTab = 'global';
 
   function getLoadMoreBtnText(limit) {
-    const dict = getDict();
-    if (limit < 20) return currentLang === 'en' ? 'Load 10 → 20' : 'Загрузить с 10 до 20';
-    if (limit < 40) return currentLang === 'en' ? 'Load 20 → 40' : 'Загрузить с 20 до 40';
-    if (limit < 100) return currentLang === 'en' ? 'Load 40 → 100' : 'Загрузить с 40 до 100';
     return '';
   }
 
@@ -38,10 +34,7 @@
 
       headGlobal.classList.remove('hidden');
       headBanlist.classList.add('hidden');
-
-      if (displayLimit < 100 && playersData.length >= displayLimit) {
-        loadMoreContainer.classList.remove('hidden');
-      }
+      loadMoreContainer.classList.add('hidden');
       renderTable();
     } else {
       btnBanlist.style.background = '#ef4444';
@@ -85,19 +78,30 @@
     const sortedData = [...playersData].sort((a, b) => {
       const aVal = a[sortConfig.key] || 0;
       const bVal = b[sortConfig.key] || 0;
-      if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
+      if (aVal !== bVal) {
+        return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
+      }
+      return (b.newPtsTotal || 0) - (a.newPtsTotal || 0);
     });
 
+    let currentDisplayRank = 1;
     sortedData.slice(0, displayLimit).forEach((p, idx) => {
+      if (idx > 0) {
+        const prevP = sortedData[idx - 1];
+        const prevVal = prevP[sortConfig.key] || 0;
+        const curVal = p[sortConfig.key] || 0;
+        if (curVal !== prevVal) {
+          currentDisplayRank++;
+        }
+      }
+
       const tr = document.createElement('tr');
       tr.className = 'premium-table-row';
 
-      let rankHtml = `<span class="text-slate-500 font-mono">#${idx + 1}</span>`;
-      if (idx === 0) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-      if (idx === 1) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
-      if (idx === 2) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
+      let rankHtml = `<span class="text-slate-500 font-mono">#${currentDisplayRank}</span>`;
+      if (currentDisplayRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+      else if (currentDisplayRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
+      else if (currentDisplayRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
 
       const staticBadge = p.isStatic ? `<span title="${currentLang === 'en' ? 'Cached data' : 'Кэшированные данные'}" style="font-size:0.7em;color:#9a9a9a;margin-left:4px;">📦</span>` : '';
 
@@ -117,6 +121,34 @@
   }
 
   // ── Render ban list table ─────────────────────────────────────────────────
+  let banlistSortConfig = { key: 'count', direction: 'desc' };
+
+  window.requestBanlistSort = function (key) {
+    if (banlistSortConfig.key === key) {
+      banlistSortConfig.direction = banlistSortConfig.direction === 'desc' ? 'asc' : 'desc';
+    } else {
+      banlistSortConfig = { key, direction: 'desc' };
+    }
+    renderBanlistTable();
+  };
+
+  function updateBanlistSortUI() {
+    const keys = ['count', 'wr1', 'top10', 'top50'];
+    keys.forEach(k => {
+      const btn = document.getElementById(`sort-btn-${k}`);
+      if (!btn) return;
+      const label = k === 'count' ? 'Total' : k === 'wr1' ? '#1 WRs' : k === 'top10' ? '#2-10' : '#11-50';
+      if (banlistSortConfig.key === k) {
+        const arrow = banlistSortConfig.direction === 'desc' ? '▾' : '▴';
+        btn.className = 'px-2.5 py-1 rounded text-xs border border-red-500 bg-red-500/20 text-red-300 font-bold transition-all';
+        btn.textContent = `${label} ${arrow}`;
+      } else {
+        btn.className = 'px-2.5 py-1 rounded text-xs border border-white/10 text-slate-400 hover:bg-white/10 transition-all';
+        btn.textContent = `${label} ▾`;
+      }
+    });
+  }
+
   function renderBanlistTable() {
     const tbody = document.getElementById('leaderboard-body');
     tbody.innerHTML = '';
@@ -126,15 +158,47 @@
     document.getElementById('table-banned-player').textContent = currentLang === 'en' ? 'Banned Player' : 'Заблокированный игрок';
     document.getElementById('table-banned-status').textContent = currentLang === 'en' ? 'Deleted Records' : 'Удалено рекордов';
 
+    updateBanlistSortUI();
+
     if (rawList.length === 0) {
       tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No banned players' : 'Список бана пуст'}</td></tr>`;
       return;
     }
 
-    // Support both string array and object array { name, count }
-    const list = rawList.map(item => typeof item === 'string' ? { name: item, count: 0 } : item);
+    // Support both string array and object array { name, count, wr1, top10, top50 }
+    const list = rawList.map(item => typeof item === 'string' ? { name: item, count: 0, wr1: 0, top10: 0, top50: 0 } : item);
 
+    list.sort((a, b) => {
+      let aVal = a[banlistSortConfig.key];
+      let bVal = b[banlistSortConfig.key];
+
+      if (typeof aVal === 'string') {
+        aVal = aVal.toLowerCase();
+        bVal = (bVal || '').toLowerCase();
+        if (aVal < bVal) return banlistSortConfig.direction === 'asc' ? -1 : 1;
+        if (aVal > bVal) return banlistSortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+
+      aVal = aVal || 0;
+      bVal = bVal || 0;
+      if (aVal !== bVal) {
+        return banlistSortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
+      }
+      return (b.count || 0) - (a.count || 0);
+    });
+
+    let currentDisplayRank = 1;
     list.forEach((item, idx) => {
+      if (idx > 0) {
+        const prevItem = list[idx - 1];
+        const prevVal = prevItem[banlistSortConfig.key] || 0;
+        const curVal = item[banlistSortConfig.key] || 0;
+        if (curVal !== prevVal) {
+          currentDisplayRank++;
+        }
+      }
+
       const name = item.name;
       const count = item.count || 0;
       const wr1 = item.wr1 || 0;
@@ -144,10 +208,10 @@
       const isTgAd = /t\.me\//i.test(name);
       const blurStyle = isTgAd ? 'filter: blur(5px); user-select: none; display: inline-block; cursor: not-allowed;' : '';
 
-      let rankBadge = `<span class="text-slate-500 font-mono">#${idx + 1}</span>`;
-      if (idx === 0) rankBadge = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-      else if (idx === 1) rankBadge = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
-      else if (idx === 2) rankBadge = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
+      let rankBadge = `<span class="text-slate-500 font-mono">#${currentDisplayRank}</span>`;
+      if (currentDisplayRank === 1) rankBadge = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+      else if (currentDisplayRank === 2) rankBadge = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
+      else if (currentDisplayRank === 3) rankBadge = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
 
       let badgeContent = currentLang === 'en' ? 'Banned' : 'Заблокирован';
       if (count > 0) {

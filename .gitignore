@@ -1,0 +1,9 @@
+# Ignore monolithic ranking files that exceed GitHub 100MB limit
+data/map_rankings.json
+data/map_rankings.js
+
+# Ignore temp & local build cache files
+*.tmp
+node_modules/
+data/maps_cache/
+data/players/

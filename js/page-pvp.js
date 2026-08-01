@@ -171,7 +171,6 @@
     document.getElementById('score-p1').textContent = p1Wins;
     document.getElementById('score-p2').textContent = p2Wins;
     document.getElementById('common-count').textContent = commonMaps.length;
-    document.getElementById('table-common-total').textContent = commonMaps.length;
     document.getElementById('pvp-table-heading').innerHTML = `${pvp.duelTable || 'Дуэль на общих картах'} (<span id="table-common-total">${commonMaps.length}</span>)`;
 
     const card1 = document.getElementById('p1-card');

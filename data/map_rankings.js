@@ -1,3 +1,0 @@
-// Legacy file — kept for backward compatibility.
-// Per-map ranking data is now in data/rankings/*.js
-// window.mapRankingsData is NOT populated to save memory.

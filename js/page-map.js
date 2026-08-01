@@ -165,7 +165,10 @@
           const mapBasePts = mapInfo ? (mapInfo.points || 0) : 0;
           const pMaxBonus = mapBasePts * 5.0;
 
-          let currentRank = 1;
+          // displayRank = our sequential rank (1, 2, 3 ...) regardless of group size
+          // ddnetRank = proper DDNet rank accounting for ties (for tooltip/display option)
+          let displayRank = 1;
+          let ddnetRank = 1;
           grouped.forEach((group) => {
             const tr = document.createElement('tr');
             tr.className = 'premium-table-row transition-colors';
@@ -174,10 +177,10 @@
             const gapPct = Math.max(0, (timeRatio - 1) * 100);
             const pSkill = Math.floor(pMaxBonus * Math.exp(-data.s * (Math.max(1, timeRatio) - 1)));
 
-            let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${currentRank}</span>`;
-            if (currentRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-            else if (currentRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
-            else if (currentRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
+            let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${displayRank}</span>`;
+            if (displayRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+            else if (displayRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
+            else if (displayRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
 
             const playersHtml = group.players.map(pName =>
               `<a href="player.html?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`
@@ -196,7 +199,10 @@
             `;
             tbody.appendChild(tr);
 
-            currentRank += group.players.length;
+            // Sequential rank: each group (even ties) gets next number
+            displayRank++;
+            // DDNet rank: advances by actual player count in group (for reference)
+            ddnetRank += group.players.length;
           });
         };
 

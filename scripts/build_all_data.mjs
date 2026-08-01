@@ -44,9 +44,13 @@ const MAP_ENRICHED_JS = path.join(DATA_DIR, 'map_enriched.js');
 const CUSTOM_MAP_RECORDS_TXT = path.join(ROOT_DIR, 'custom_map_records.txt');
 const CUSTOM_MAP_RECORDS_JS = path.join(DATA_DIR, 'custom_map_records.js');
 
-if (!fs.existsSync(DATA_DIR))    fs.mkdirSync(DATA_DIR,    { recursive: true });
-if (!fs.existsSync(PLAYERS_DIR)) fs.mkdirSync(PLAYERS_DIR, { recursive: true });
-if (!fs.existsSync(RANKINGS_DIR)) fs.mkdirSync(RANKINGS_DIR, { recursive: true });
+const PLAYER_LIST_TXT = path.join(ROOT_DIR, 'player_list.txt');
+const MAPS_CACHE_DIR = path.join(DATA_DIR, 'maps_cache');
+
+if (!fs.existsSync(DATA_DIR))       fs.mkdirSync(DATA_DIR,       { recursive: true });
+if (!fs.existsSync(PLAYERS_DIR))    fs.mkdirSync(PLAYERS_DIR,    { recursive: true });
+if (!fs.existsSync(RANKINGS_DIR))   fs.mkdirSync(RANKINGS_DIR,   { recursive: true });
+if (!fs.existsSync(MAPS_CACHE_DIR)) fs.mkdirSync(MAPS_CACHE_DIR, { recursive: true });
 
 
 function sanitizeFilename(name) {
@@ -68,6 +72,42 @@ function loadBlacklist() {
         .filter(line => line && !line.startsWith('//'))
         .map(name => name.toLowerCase());
     return new Set(list);
+}
+
+function loadPlayerList(blacklistSet) {
+    if (!fs.existsSync(PLAYER_LIST_TXT)) {
+        console.warn('⚠ player_list.txt not found — falling back to leaderboard.json');
+        if (fs.existsSync(LEADERBOARD_FILE)) {
+            const lb = JSON.parse(fs.readFileSync(LEADERBOARD_FILE, 'utf8'));
+            return lb.filter(p => !blacklistSet.has(p.name.toLowerCase())).slice(0, 500).map(p => ({ name: p.name }));
+        }
+        return [];
+    }
+    const text = fs.readFileSync(PLAYER_LIST_TXT, 'utf8');
+    const lines = text.split('\n');
+    let removedCount = 0;
+
+    const cleanedLines = lines.filter(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('//')) return true;
+        if (blacklistSet.has(trimmed.toLowerCase())) {
+            removedCount++;
+            return false;
+        }
+        return true;
+    });
+
+    if (removedCount > 0) {
+        fs.writeFileSync(PLAYER_LIST_TXT, cleanedLines.join('\n'));
+        console.log(`🧹 Automatically removed ${removedCount} blacklisted player(s) directly from player_list.txt!`);
+    }
+
+    const names = cleanedLines
+        .map(line => line.trim())
+        .filter(line => line && !line.startsWith('#') && !line.startsWith('//'))
+        .filter((name, idx, arr) => arr.indexOf(name) === idx);
+
+    return names.map(name => ({ name }));
 }
 
 function parseTimeToSeconds(timeStr) {
@@ -147,7 +187,10 @@ function loadCustomMapRecords() {
     return customRecords;
 }
 
+let apiCallCount = 0;
+
 function fetchJson(url) {
+    apiCallCount++;
     return new Promise((resolve) => {
         const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 MapMastery Crawler' }, timeout: 6000 }, (res) => {
             if (res.statusCode !== 200) return resolve(null);
@@ -281,12 +324,32 @@ async function run() {
     const mapRankings = {};
     const mapRawTopFlooded = {};
     const CONCURRENCY = 10;
+    const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
 
     for (let i = 0; i < allMaps.length; i += CONCURRENCY) {
         const batch = allMaps.slice(i, i + CONCURRENCY);
         const promises = batch.map(async (m) => {
             const mapName = m.map;
-            const data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
+            const safeName = safeRankingFilename(mapName);
+            const localCacheFile = path.join(MAPS_CACHE_DIR, `${safeName}.json`);
+
+            let data = null;
+            if (fs.existsSync(localCacheFile)) {
+                try {
+                    const stats = fs.statSync(localCacheFile);
+                    if (Date.now() - stats.mtimeMs < THREE_DAYS_MS) {
+                        data = JSON.parse(fs.readFileSync(localCacheFile, 'utf8'));
+                    }
+                } catch (e) {}
+            }
+
+            if (!data) {
+                data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
+                if (data) {
+                    try { fs.writeFileSync(localCacheFile, JSON.stringify(data)); } catch (e) {}
+                }
+            }
+
             if (!data || !data.rankings) return;
 
             // Prefer team_rankings for team category maps
@@ -368,29 +431,40 @@ async function run() {
     fs.writeFileSync(MAP_RANKINGS_JS, 'window.mapRankingsData = ' + JSON.stringify(mapRankings) + ';');
     console.log(`Saved map_records and map_rankings for ${Object.keys(mapRecords).length} maps`);
 
-    console.log("\n=== 3.5. Enriching Maps Flooded by TASers with Top Players Finishes ===");
+    console.log("\n=== 3.5. Enriching Maps Flooded by TASers with Trusted Players Finishes ===");
     const args = process.argv.slice(2);
     const isFastMode = args.includes('--fast');
 
     const enrichedMaps = {};
+    let enrichedCount = 0;
     if (isFastMode) {
         console.log("⚡ [--fast mode] Skipping player enrichment scan.");
-    } else if (fs.existsSync(LEADERBOARD_FILE)) {
-        const lb = JSON.parse(fs.readFileSync(LEADERBOARD_FILE, 'utf8'));
-        const topPlayers = lb.filter(p => !blacklistSet.has(p.name.toLowerCase())).slice(0, 150);
+    } else {
+        // Load from player_list.txt (trusted ~1500 players) instead of top-150 leaderboard
+        const topPlayers = loadPlayerList(blacklistSet);
+        console.log(`Enrichment source: ${fs.existsSync(PLAYER_LIST_TXT) ? 'player_list.txt' : 'leaderboard.json (fallback)'} — ${topPlayers.length} players`);
         
         console.log(`Fetching finishes for ${topPlayers.length} legitimate players...`);
-        let enrichedCount = 0;
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
             const batch = topPlayers.slice(i, i + CONCURRENCY);
             await Promise.all(batch.map(async (p) => {
                 const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`);
+                const ONE_DAY_MS = 24 * 60 * 60 * 1000;
                 let pData = null;
+                let isCacheValid = false;
+
                 if (fs.existsSync(localFile)) {
-                    try { pData = JSON.parse(fs.readFileSync(localFile, 'utf8')); } catch (e) {}
+                    try {
+                        const fileStats = fs.statSync(localFile);
+                        if (Date.now() - fileStats.mtimeMs < ONE_DAY_MS) {
+                            pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+                            isCacheValid = true;
+                        }
+                    } catch (e) {}
                 }
-                if (!pData) {
+
+                if (!isCacheValid || !pData) {
                     pData = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(p.name)}`);
                     if (pData) {
                         try { fs.writeFileSync(localFile, JSON.stringify(pData)); } catch (e) {}
@@ -415,11 +489,13 @@ async function run() {
                     });
                 }
             }));
+            if (i % 100 === 0 && i > 0) console.log(`   Enrichment: ${i}/${topPlayers.length} players scanned...`);
         }
+    }
 
-        // Clean, deduplicate, sort, and re-rank all map rankings
-        for (const mName in mapRankings) {
-            let list = mapRankings[mName] || [];
+    // Clean, deduplicate, sort, and re-rank all map rankings
+    for (const mName in mapRankings) {
+        let list = mapRankings[mName] || [];
             
             // Filter blacklisted players & rules
             list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
@@ -479,29 +555,34 @@ async function run() {
                 enrichedMaps[mName] = true;
             }
 
+            const updatedMapNames = [];
             if (hasCustomRecord) {
                 mapRecords[mName] = customMapRecords[mLower].time;
+                updatedMapNames.push(`${mName} (Custom Record)`);
             } else if (cleanList.length > 0) {
                 const newWr = cleanList[0].time;
                 if (mapRecords[mName] !== newWr) {
                     mapRecords[mName] = newWr;
                     enrichedCount++;
+                    updatedMapNames.push(`${mName} (New WR by ${cleanList[0].player})`);
                 }
             } else {
                 mapRecords[mName] = null;
             }
         }
 
-        console.log(`Enriched and re-ranked ${Object.keys(mapRankings).length} maps (${enrichedCount} records updated)!`);
-
-        fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
-        fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
-
-        // Write monolithic map_rankings.js for backward compat
-        fs.writeFileSync(MAP_RANKINGS_FILE, JSON.stringify(mapRankings, null, 2));
-        fs.writeFileSync(MAP_ENRICHED_JSON, JSON.stringify(enrichedMaps, null, 2));
-        fs.writeFileSync(MAP_ENRICHED_JS, 'window.enrichedMapsData = ' + JSON.stringify(enrichedMaps, null, 2) + ';\n');
+    console.log(`\n✨ Enriched and re-ranked ${Object.keys(mapRankings).length} maps (${enrichedCount} records updated)!`);
+    if (Object.keys(enrichedMaps).length > 0) {
+        console.log(`📋 Enriched Maps count: ${Object.keys(enrichedMaps).length}`);
     }
+
+    fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
+    fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
+
+    // Write monolithic map_rankings.js for backward compat
+    fs.writeFileSync(MAP_RANKINGS_FILE, JSON.stringify(mapRankings, null, 2));
+    fs.writeFileSync(MAP_ENRICHED_JSON, JSON.stringify(enrichedMaps, null, 2));
+    fs.writeFileSync(MAP_ENRICHED_JS, 'window.enrichedMapsData = ' + JSON.stringify(enrichedMaps, null, 2) + ';\n');
 
     // Write per-map ranking files into data/rankings/ unconditionally
     let perMapCount = 0;
@@ -517,29 +598,46 @@ async function run() {
 
     console.log("\n=== 4. Re-calculating Global Leaderboard ===");
     let leaderboard = [];
-    if (fs.existsSync(LEADERBOARD_FILE)) {
-        const existingLb = JSON.parse(fs.readFileSync(LEADERBOARD_FILE, 'utf8'));
-        const mapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
-        
-        for (const p of existingLb) {
-            if (blacklistSet.has(String(p.name).toLowerCase())) continue;
-            leaderboard.push(p);
-        }
+    const topPlayers = loadPlayerList(blacklistSet);
+    const mapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
+
+    for (const p of topPlayers) {
+        const pName = p.name;
+        if (blacklistSet.has(pName.toLowerCase())) continue;
+
+        const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(pName)}.json`);
+        if (!fs.existsSync(localFile)) continue;
+
+        try {
+            const pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+            const pts = calculatePlayerPoints(pData, mapRecords, mapStats, blacklistSet);
+            if (pts.newPtsTotal > 0) {
+                leaderboard.push({
+                    name: pName,
+                    ...pts
+                });
+            }
+        } catch (e) {}
     }
+
     leaderboard.sort((a, b) => b.newPtsTotal - a.newPtsTotal);
     fs.writeFileSync(LEADERBOARD_FILE, JSON.stringify(leaderboard, null, 2));
     fs.writeFileSync(LEADERBOARD_JS, 'window.leaderboardData = ' + JSON.stringify(leaderboard) + ';');
 
     if (fs.existsSync(UNIQUE_PLAYERS_JSON)) {
         const uniquePlayers = JSON.parse(fs.readFileSync(UNIQUE_PLAYERS_JSON, 'utf8'));
-        fs.writeFileSync(UNIQUE_PLAYERS_JS, 'window.uniquePlayersData = ' + JSON.stringify(uniquePlayers) + ';');
-        console.log(`Saved ${uniquePlayers.length} unique players into unique_players.js`);
+        const cleanUnique = uniquePlayers.filter(name => !blacklistSet.has(String(name).toLowerCase().trim()));
+        fs.writeFileSync(UNIQUE_PLAYERS_JS, 'window.uniquePlayersData = ' + JSON.stringify(cleanUnique) + ';');
+        console.log(`Saved ${cleanUnique.length} unique players into unique_players.js`);
     }
 
     console.log("\n=== 5. Updating Blacklist Data & Removed Finish Counts ===");
     await updateBlacklistData();
 
     console.log(`Finished! Final leaderboard size: ${leaderboard.length} players.`);
+    console.log(`\n📡 Total API requests made: ${apiCallCount.toLocaleString()}`);
+    console.log(`   ≈ Maps fetch: ~${Object.keys(mapRecords).length} requests`);
+    console.log(`   ≈ Player enrichment: ~${apiCallCount - Object.keys(mapRecords).length - 1} requests`);
 }
 
 run();
