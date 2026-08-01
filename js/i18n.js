@@ -24,7 +24,8 @@ const dictionaries = {
       empty: "Нет данных",
       searchResultBase: "New Base:",
       searchResultSkill: "New Skill:",
-      searchResultTotal: "Total Map Mastery:"
+      searchResultTotal: "Total Map Mastery:",
+      copyBtn: "Копировать"
     },
     player: {
       title: "Профиль игрока",
@@ -49,7 +50,9 @@ const dictionaries = {
       mapsWithSkillBonus: "Карты со Skill Bonus",
       tableBase: "Base",
       tableSkill: "Skill Bonus",
-      tableTopDDNet: "Top DDNet"
+      tableTopDDNet: "Top DDNet",
+      shareBtn: "Поделиться профилем",
+      copied: "Скопировано!"
     },
     compare: {
       title: "Сравнение систем: Ранг vs Время",
@@ -116,6 +119,26 @@ const dictionaries = {
         l5Title: "5. Автоматический алгоритм обогащения карт (Map Enrichment Engine)",
         l5Desc: "Скрипт сканирует верифицированные профили всех легитимных игроков из Топ-500 и автоматически восстанавливает честные места и рекорды на сломанных картах."
       },
+      dummySec: {
+        title: "Особенности карт категории Dummy (Solo vs Team)",
+        intro: "На картах сервера Dummy игроки проходят карту как в одиночку (1 игрок/тишка), так и в командах через кнопки и системные баги. В отличие от стандартных серверов, здесь действуют два независимых режима:",
+        soloDesc: "Учитывает только одиночные финиши. Мировой рекорд (WR) и распределение Skill PTS рассчитываются относительно лучшего времени среди соло-игроков.",
+        teamDesc: "Учитывает командные финиши с кнопками. Мировой рекорд и Skill PTS рассчитываются относительно лучшего времени среди командных прохождений.",
+        bonusTitle: "⭐ Двойной Skill Bonus",
+        bonusDesc: "Игроки получают баллы за оба вида прохождений! Соло-финиш начисляет Skill PTS относительно Solo WR, а командный финиш дополнительно дает Skill PTS относительно Team WR."
+      },
+      calc: {
+        title: "Интерактивный калькулятор PTS",
+        desc: "Подвигайте ползунки, чтобы в реальном времени увидеть, сколько очков выдает формула Map Mastery.",
+        base: "Базовые очки карты (Base PTS)",
+        wr: "Мировой рекорд (t_best)",
+        playerTime: "Ваше время (t_player)",
+        strictness: "Коэффициент строгости (s)",
+        resultMaxBonus: "Макс. Скилл Бонус (x5)",
+        resultRatio: "Соотношение времени",
+        resultSkill: "Итоговый Skill PTS",
+        resultTotal: "Итоговый Total Mastery"
+      },
       footerSummary: "Итог: Новая система наказывает тех, кто просто собирает легкие топы с плохим временем, и невероятно щедро награждает тех, кто ставит действительно мощные времена!"
     },
     map: {
@@ -133,6 +156,31 @@ const dictionaries = {
       loading: "Загрузка...",
       enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats",
       loadTop100: "Загрузить Топ 100"
+    },
+    pvp: {
+      title: "Player vs Player ⚔️",
+      subtitle: "Введите никнеймы двух игроков для сравнения результатов на общих картах.",
+      back: "На главную",
+      player1: "Игрок 1",
+      player2: "Игрок 2",
+      compareBtn: "Сравнить ⚔️",
+      wins: "Побед на картах",
+      h2hScore: "СЧЕТ ДУЭЛИ",
+      commonMaps: "Общих карт",
+      leadsBy: "лидирует с преимуществом в",
+      maps: "карт",
+      tie: "🤝 Ничья на общих картах!",
+      duelTable: "Дуэль на общих картах",
+      searchPlaceholder: "Поиск карты...",
+      winner: "ПОБЕДИТЕЛЬ 👑",
+      map: "Карта",
+      server: "Сервер",
+      equal: "Ничья",
+      loading: "Загрузка статистик игроков...",
+      errorDiff: "Выберите двух разных игроков",
+      errorBlacklist: "Один из игроков находится в чёрном списке (TAS / Читы)",
+      errorFetch: "Не удалось загрузить данные игроков",
+      noCommon: "Нет общих карт или совпадений поиска"
     }
   },
   en: {
@@ -160,7 +208,8 @@ const dictionaries = {
       empty: "No data",
       searchResultBase: "New Base:",
       searchResultSkill: "New Skill:",
-      searchResultTotal: "Total Map Mastery:"
+      searchResultTotal: "Total Map Mastery:",
+      copyBtn: "Copy"
     },
     player: {
       title: "Player Profile",
@@ -185,7 +234,9 @@ const dictionaries = {
       mapsWithSkillBonus: "Maps with Skill Bonus",
       tableBase: "Base",
       tableSkill: "Skill Bonus",
-      tableTopDDNet: "Top DDNet"
+      tableTopDDNet: "Top DDNet",
+      shareBtn: "Share Profile",
+      copied: "Copied!"
     },
     compare: {
       title: "System Comparison: Rank vs Time",
@@ -252,6 +303,26 @@ const dictionaries = {
         l5Title: "5. Automated Map Enrichment Engine",
         l5Desc: "Scans verified profiles of all legitimate top players and automatically reconstructs accurate map leaderboards and World Records."
       },
+      dummySec: {
+        title: "Dummy Category Maps & Dual Skill PTS System",
+        intro: "On Dummy server maps, players complete runs both solo (1 tee) and in teams using buttons or mechanics. Unlike standard categories, Dummy maps feature two independent leaderboards:",
+        soloDesc: "Tracks solo finishes only. World Record (WR) and Skill PTS are calculated relative to the fastest solo player's time.",
+        teamDesc: "Tracks team finishes with buttons. World Record and Skill PTS are calculated relative to the fastest team run time.",
+        bonusTitle: "⭐ Dual Skill Bonus",
+        bonusDesc: "Players receive points for both finish types! A solo finish grants Skill PTS relative to Solo WR, and a team finish grants additional Skill PTS relative to Team WR."
+      },
+      calc: {
+        title: "Interactive PTS Calculator",
+        desc: "Move the sliders to see in real-time how many points the Map Mastery formula awards.",
+        base: "Base Map Points (Base PTS)",
+        wr: "World Record (t_best)",
+        playerTime: "Your Time (t_player)",
+        strictness: "Strictness Coefficient (s)",
+        resultMaxBonus: "Max Skill Bonus (x5)",
+        resultRatio: "Time Ratio",
+        resultSkill: "Earned Skill PTS",
+        resultTotal: "Earned Total Mastery"
+      },
       footerSummary: "Conclusion: The new system punishes those who collect easy tops with bad times, and incredibly generously rewards those who set truly powerful times!"
     },
     map: {
@@ -269,6 +340,33 @@ const dictionaries = {
       loading: "Loading...",
       enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats",
       loadTop100: "Load Top 100"
+    },
+    pvp: {
+      title: "Player vs Player ⚔️",
+      subtitle: "Enter two player nicknames to compare head-to-head performance on common maps.",
+      back: "Back to Top",
+      player1: "Player 1",
+      player2: "Player 2",
+      compareBtn: "Compare ⚔️",
+      wins: "Map Wins",
+      h2hScore: "HEAD-TO-HEAD SCORE",
+      commonMaps: "Common Maps",
+      leadsBy: "leads with an advantage of",
+      maps: "maps",
+      tie: "🤝 Tie on common maps!",
+      duelTable: "Head-to-Head Common Maps",
+      searchPlaceholder: "Search map...",
+      winner: "WINNER 👑",
+      map: "Map",
+      server: "Server",
+      equal: "Tie",
+      loading: "Loading player stats...",
+      errorDiff: "Please choose two different players",
+      errorBlacklist: "One of the players is blacklisted (TAS / Cheating)",
+      errorFetch: "Failed to fetch player data",
+      noCommon: "No common maps found or search mismatch",
+      filterAll: "All Maps",
+      filterTie: "Ties"
     }
   }
 };

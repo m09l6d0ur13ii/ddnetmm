@@ -5,10 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DDNet Map Mastery PTS</title>
   <meta name="description" content="DDNet Map Mastery — альтернативный рейтинг DDNet игроков. Система очков основана на вашем времени и Skill Bonus (до x5), а не количестве пройденных карт.">
+  
+  <!-- Open Graph / Facebook / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DDNet Map Mastery — Alternative Ranking System">
+  <meta property="og:description" content="DDNet Map Mastery — альтернативный рейтинг DDNet игроков. Система очков основана на вашем времени и Skill Bonus (до x5), а не количестве пройденных карт.">
+  <meta property="og:image" content="icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DDNet Map Mastery — Alternative Ranking System">
+  <meta name="twitter:description" content="DDNet Map Mastery — альтернативный рейтинг DDNet игроков. Система очков основана на вашем времени и Skill Bonus (до x5), а не количестве пройденных карт.">
+  <meta name="twitter:image" content="icon.png">
+
   <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css">
   <script>
     tailwind.config = {
@@ -89,9 +102,21 @@
         <p id="search-error" class="text-red-400 text-sm hidden"></p>
 
         <div id="search-result" style="background:#222222;border:2px solid #ffa500;padding:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,0.6);" class="space-y-3 hidden">
-          <h3 class="font-bold text-xl">
-            <a id="search-result-name" href="#" class="text-primary hover:text-amber-300 hover:underline transition-colors"></a>
-          </h3>
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-bold text-xl overflow-hidden text-ellipsis">
+              <a id="search-result-name" href="#" class="text-primary hover:text-amber-300 hover:underline transition-colors"></a>
+            </h3>
+            <button
+              id="search-result-copy-btn"
+              title="Копировать карточку / Copy card"
+              style="padding:0.25em 0.65em;font-size:0.8em;background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.5);font-weight:bold;cursor:pointer;display:inline-flex;align-items:center;gap:0.35em;flex-shrink:0;transition:all 0.2s;"
+              onmouseover="this.style.background='#ffa500';this.style.color='#111';"
+              onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+              <span id="search-result-copy-text"></span>
+            </button>
+          </div>
           <div class="grid grid-cols-2 gap-2 text-sm">
             <span class="text-slate-200 font-semibold" id="search-result-base-label"></span>
             <span id="search-result-base" class="font-mono text-right text-emerald-400 font-bold"></span>
@@ -176,15 +201,15 @@
     </div>
   </main>
 
-  <script src="data/maps.js"></script>
-  <script src="data/unique_players.js"></script>
-  <script src="data/leaderboard.js"></script>
-  <script src="data/map_records.js"></script>
-  <script src="data/map_stats.js"></script>
-  <script src="data/blacklist.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/page-index.js"></script>
+  <script defer src="data/maps.js"></script>
+  <script defer src="data/unique_players.js"></script>
+  <script defer src="data/leaderboard.js"></script>
+  <script defer src="data/map_records.js"></script>
+  <script defer src="data/map_stats.js"></script>
+  <script defer src="data/blacklist.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/page-index.js"></script>
 </body>
 </html>

@@ -26,41 +26,44 @@ function fetchJson(url) {
     });
 }
 
+function isQualifyingRun(server, rank, teamRank) {
+    if (!server) return false;
+    const s = String(server).trim();
+    if (s.toLowerCase() === 'fun') return false;
+    if (s === 'Solo' || s === 'Race' || s === 'Dummy') {
+        return true;
+    }
+    return Boolean(teamRank && rank >= teamRank);
+}
+
 function calculatePoints(playerData, mapRecords) {
     let oldPts = 0;
     let newPtsBase = 0;
     let newPtsSkill = 0;
 
-    const types = ['points', 'team_points'];
-    for (const type of types) {
-        if (!playerData[type]) continue;
-        const servers = Object.keys(playerData[type]);
-        for (const srv of servers) {
-            if (!playerData[type][srv] || !playerData[type][srv].finishes) continue;
-            // Exclude Fun category
-            if (srv === 'Fun') continue;
+    const finishes = playerData.finishes || [];
+    const processedMaps = new Set();
 
-            const finishes = playerData[type][srv].finishes;
-            for (const finish of finishes) {
-                const mapPts = finish.map.points || 0;
-                oldPts += mapPts;
-                newPtsBase += mapPts;
+    for (const finish of finishes) {
+        const mapName = finish.map.name || finish.map.map;
+        const server = finish.map.server;
+        if (!server || server.toLowerCase() === 'fun') continue;
+        if (processedMaps.has(mapName)) continue;
+        processedMaps.add(mapName);
 
-                const isSoloOrRace = finish.map.server === 'Solo' || finish.map.server === 'Race';
-                if (isSoloOrRace || finish.team) {
-                    const tBest = mapRecords[finish.map.name] || finish.time; // fallback
-                    const pMaxBonus = mapPts * 0.8;
-                    const timeRatio = finish.time / tBest;
-                    const strictness = 2.0;
-                    const skillBonus = Math.floor(pMaxBonus * Math.exp(-strictness * (Math.max(1, timeRatio) - 1)));
-                    newPtsSkill += skillBonus;
-                }
-            }
+        const mapPts = finish.map.points || 0;
+        oldPts += mapPts;
+        newPtsBase += mapPts;
+
+        if (isQualifyingRun(server, finish.rank, finish.team_rank)) {
+            const tBest = mapRecords[mapName] || finish.time;
+            const pMaxBonus = mapPts * 5.0;
+            const timeRatio = finish.time / tBest;
+            const strictness = 2.0;
+            const skillBonus = Math.floor(pMaxBonus * Math.exp(-strictness * (Math.max(1, timeRatio) - 1)));
+            newPtsSkill += skillBonus;
         }
     }
-    
-    // adjust for duplicate finishes in points and team_points?
-    // ddstats separates them, but oldPts is total. Actually oldPts usually matches.
 
     return {
         oldPts,

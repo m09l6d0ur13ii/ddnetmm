@@ -12,6 +12,16 @@ async function getMapStats() {
   return window.mapStatsData || {};
 }
 
+function isQualifyingRun(server, rank, teamRank) {
+  if (!server) return false;
+  const s = String(server).trim();
+  if (s.toLowerCase() === 'fun') return false;
+  if (s === 'Solo' || s === 'Race' || s === 'Dummy') {
+    return true;
+  }
+  return Boolean(teamRank && rank >= teamRank);
+}
+
 const playerCache = new Map();
 
 // Fetch player data from DDStats and calculate Map Mastery PTS
@@ -26,9 +36,29 @@ async function fetchPlayerPts(playerName) {
     return playerCache.get(playerName);
   }
   try {
-    const response = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`);
-    if (!response.ok) throw new Error(`Failed to fetch player data: ${response.status}`);
-    const data = await response.json();
+    let data = null;
+
+    try {
+      const response = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`);
+      if (response.ok) {
+        data = await response.json();
+      }
+    } catch (e) {
+      console.warn(`DDStats live fetch failed for ${playerName}, trying local data/players/ fallback...`, e);
+    }
+
+    if (!data || !data.finishes) {
+      try {
+        const localRes = await fetch(`data/players/${encodeURIComponent(playerName)}.json`);
+        if (localRes.ok) {
+          data = await localRes.json();
+        }
+      } catch (localErr) {}
+    }
+
+    if (!data || !data.finishes) {
+      throw new Error(`Failed to fetch player data for "${playerName}"`);
+    }
 
     const mapRecords = await getMapRecords();
     const mapStats = await getMapStats();
@@ -45,12 +75,11 @@ async function fetchPlayerPts(playerName) {
 
     for (const finish of finishes) {
       const mapName = finish.map.name || finish.map.map;
+      const server = finish.map.server;
 
+      if (!server || server.toLowerCase() === 'fun') continue;
       // Only count each map once
       if (processedMaps.has(mapName)) continue;
-      // Exclude Fun category explicitly
-      if (finish.map.server === 'Fun') continue;
-
       processedMaps.add(mapName);
 
       const mapPts = finish.map.points || 0;
@@ -59,19 +88,17 @@ async function fetchPlayerPts(playerName) {
       const pBase = mapPts;
       newPtsBase += pBase;
 
-      const isSoloOrRace = finish.map.server === 'Solo' || finish.map.server === 'Race';
-      const isTeamRun = finish.team_rank && finish.rank >= finish.team_rank;
       let pSkill = 0;
-      let tBest = null;
-      let timeRatio = 1;
+      let timeRatio = 0;
+      let tBest = mapRecords[mapName] || finish.time;
 
-      if (isSoloOrRace || isTeamRun) {
+      if (isQualifyingRun(server, finish.rank, finish.team_rank)) {
         const playerTime = finish.time;
-        tBest = mapRecords[mapName];
-
-        if (!tBest) {
+        if (!mapRecords[mapName]) {
           const rank = finish.rank || 1;
           tBest = playerTime / (1 + Math.log10(Math.max(1, rank)) * 0.5);
+        } else {
+          tBest = mapRecords[mapName];
         }
 
         const stats = mapStats[mapName] || { s: 2.0 };
@@ -81,22 +108,19 @@ async function fetchPlayerPts(playerName) {
         const pMaxBonus = pBase * 5.0;
         pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
 
-        // Only include maps with skill bonus in the details list
-        if (pSkill > 0) {
-          finishDetails.push({
-            mapName,
-            server: finish.map.server,
-            pBase,
-            pSkill,
-            time: finish.time,
-            timeRatio,
-            record: tBest,
-            rank: finish.rank || 0,
-          });
-        }
+        newPtsSkill += pSkill;
       }
 
-      newPtsSkill += pSkill;
+      finishDetails.push({
+        mapName,
+        server,
+        pBase,
+        pSkill,
+        time: finish.time,
+        timeRatio,
+        record: tBest,
+        rank: finish.rank || 0,
+      });
     }
 
     // Sort by skill bonus descending
@@ -182,61 +206,94 @@ async function getTopPlayersLive(limit = 20, onProgress = null) {
 // Sets window.mapRankingCurrent, returns the array
 function loadMapRankingFile(mapName) {
   return new Promise((resolve) => {
-    // Check if per-map file exists by attempting to load it
     const safe = mapName.replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
     const src = `data/rankings/${encodeURIComponent(safe)}.js`;
 
-    // Remove any previously loaded ranking script to avoid conflicts
     const old = document.getElementById('map-ranking-script');
     if (old) old.remove();
     window.mapRankingCurrent = null;
 
+    let timer = setTimeout(() => resolve([]), 3000);
+
     const script = document.createElement('script');
     script.id = 'map-ranking-script';
     script.src = src;
-    script.onload = () => resolve(window.mapRankingCurrent || []);
-    script.onerror = () => resolve([]); // file doesn't exist — empty array
+    script.onload = () => {
+      clearTimeout(timer);
+      resolve(window.mapRankingCurrent || []);
+    };
+    script.onerror = () => {
+      clearTimeout(timer);
+      resolve([]);
+    };
     document.head.appendChild(script);
   });
 }
 
 // Map leaderboard logic
-async function getMapLeaderboardLive(mapQuery, limit = 20) {
+async function getMapLeaderboardLive(mapQuery, limit = 999999) {
   try {
     const mapRecords = await getMapRecords();
     const mapStats = await getMapStats();
 
-    let realMapName = mapQuery;
-    let pBase = 0;
+    // Find canonical map name from window.mapsData (exact case)
+    const mapsList = window.mapsData || [];
+    const foundInMaps = mapsList.find(m => (m.map || m.name || '').toLowerCase() === mapQuery.toLowerCase());
 
-    try {
-      const mapRes = await fetch(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapQuery)}`);
-      if (mapRes.ok) {
-        const mapData = await mapRes.json();
-        if (mapData.info && mapData.info.map) {
-          realMapName = mapData.info.map.map;
-          pBase = mapData.info.map.points || 0;
+    let realMapName = foundInMaps ? (foundInMaps.map || foundInMaps.name) : mapQuery;
+    let pBase = foundInMaps ? (foundInMaps.points || 0) : 0;
+
+    // Optional DDStats online refresh if pBase is unknown
+    if (pBase === 0) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 2000);
+        const mapRes = await fetch(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapQuery)}`, { signal: controller.signal });
+        clearTimeout(timer);
+        if (mapRes.ok) {
+          const mapData = await mapRes.json();
+          if (mapData.info && mapData.info.map) {
+            realMapName = mapData.info.map.map || realMapName;
+            pBase = mapData.info.map.points || pBase;
+          }
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+    }
 
-    // Try per-map ranking file first (split from map_rankings.js)
+    // Load per-map ranking file
     let rankings = await loadMapRankingFile(realMapName);
+    if (rankings.length === 0 && realMapName.toLowerCase() !== mapQuery.toLowerCase()) {
+      rankings = await loadMapRankingFile(mapQuery);
+    }
 
-    // Fallback: try legacy window.mapRankingsData (if old file still loaded)
+    // Fallback: try legacy window.mapRankingsData
     if (rankings.length === 0 && window.mapRankingsData) {
-      const legacy = window.mapRankingsData[realMapName] || window.mapRankingsData[mapQuery] || [];
-      rankings = legacy.filter(r => r && (r.player || r.name) && !(window.isBlacklisted && window.isBlacklisted(r.player || r.name)));
+      const legacyKey = Object.keys(window.mapRankingsData).find(k => k.toLowerCase() === realMapName.toLowerCase());
+      if (legacyKey && window.mapRankingsData[legacyKey]) {
+        rankings = window.mapRankingsData[legacyKey];
+      }
     }
 
     // Last resort: live DDStats rankings
     if (rankings.length === 0) {
       try {
-        const mapRes = await fetch(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapQuery)}`);
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 2500);
+        const mapRes = await fetch(`https://ddstats.tw/map/json?map=${encodeURIComponent(realMapName)}`, { signal: controller.signal });
+        clearTimeout(timer);
         if (mapRes.ok) {
           const mapData = await mapRes.json();
-          const rawRankings = mapData.rankings || [];
-          rankings = rawRankings.filter(r => r && r.name && !(window.isBlacklisted && window.isBlacklisted(r.name)));
+          const isDummy = foundInMaps && (foundInMaps.server === 'Dummy');
+          if (isDummy) {
+            const rawSolo = (mapData.rankings || []).map(r => ({ player: r.name, time: r.time, timestamp: r.timestamp || null, isTeamRank: false }));
+            const rawTeam = (mapData.team_rankings || []).map(r => ({ player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name), time: r.time, timestamp: r.timestamp || null, isTeamRank: true }));
+            rankings = [...rawSolo, ...rawTeam].sort((a, b) => a.time - b.time);
+          } else if (mapData.team_rankings && mapData.team_rankings.length > 0 && foundInMaps && foundInMaps.server !== 'Solo' && foundInMaps.server !== 'Race') {
+            rankings = mapData.team_rankings.map(r => ({ player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name), time: r.time, timestamp: r.timestamp || null, isTeamRank: true }));
+          } else {
+            const rawRankings = mapData.rankings || [];
+            rankings = rawRankings.filter(r => r && r.name);
+          }
         }
       } catch (e) {}
     }
@@ -247,9 +304,22 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
     const topPlayers = rankings.slice(0, limit);
     const leaderboard = [];
 
-    const tBest = mapRecords[realMapName] || (rankings.length > 0 ? rankings[0].time : 0);
-    const stats = mapStats[realMapName] || { s: 2.0 };
-    const s = stats.s;
+    // Case-insensitive lookup for tBest & s
+    let tBest = mapRecords[realMapName];
+    if (tBest === undefined) {
+      const recKey = Object.keys(mapRecords).find(k => k.toLowerCase() === realMapName.toLowerCase());
+      if (recKey) tBest = mapRecords[recKey];
+    }
+    if (!tBest && rankings.length > 0) {
+      tBest = rankings[0].time;
+    }
+
+    let statsObj = mapStats[realMapName];
+    if (!statsObj) {
+      const statKey = Object.keys(mapStats).find(k => k.toLowerCase() === realMapName.toLowerCase());
+      if (statKey) statsObj = mapStats[statKey];
+    }
+    const s = (statsObj && statsObj.s) ? statsObj.s : 2.0;
     const pMaxBonus = pBase * 5.0;
 
     for (const rankItem of topPlayers) {
@@ -260,12 +330,13 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
       leaderboard.push({
         player: playerName,
         time: playerTime,
+        timestamp: rankItem.timestamp || null,
         timeRatio,
         pSkill,
       });
     }
 
-    return { mapName: realMapName, tBest, s, leaderboard };
+    return { mapName: realMapName, tBest: tBest || 0, s, leaderboard };
   } catch (err) {
     console.error('Map leaderboard error:', err);
     throw err;

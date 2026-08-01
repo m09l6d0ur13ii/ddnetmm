@@ -5,12 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — DDNet Map Mastery</title>
   <meta name="description" content="Почему DDNet Map Mastery лучше оригинальной системы — математическая формула, экспоненциальная кривая Skill Bonus и 5-уровневая защита от TAS-ботов.">
+  
+  <!-- Open Graph / Facebook / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About — DDNet Map Mastery">
+  <meta property="og:description" content="Почему DDNet Map Mastery лучше оригинальной системы — математическая формула, экспоненциальная кривая Skill Bonus и 5-уровневая защита от TAS-ботов.">
+  <meta property="og:image" content="icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="About — DDNet Map Mastery">
+  <meta name="twitter:description" content="Почему DDNet Map Mastery лучше оригинальной системы — математическая формула, экспоненциальная кривая Skill Bonus и 5-уровневая защита от TAS-ботов.">
+  <meta name="twitter:image" content="icon.png">
+
   <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -26,11 +39,11 @@
 <body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
-  <main class="min-h-screen p-4 md:p-8">
+  <main class="min-h-screen p-4 md:p-8 animate-fade-in">
     <div class="max-w-4xl mx-auto space-y-8">
       
       <a href="index.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg> 
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg> 
         <span id="about-back"></span>
       </a>
 
@@ -41,76 +54,78 @@
         </p>
       </header>
 
-      <div class="space-y-6">
-        <!-- Section 1: Problems with old system -->
-        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
-          <h2 class="text-2xl font-bold flex items-center gap-2 text-red-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
-            <span id="card1-title"></span>
-          </h2>
-          
-          <div class="space-y-4 text-slate-300">
-            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-              <p class="text-sm" id="card1-p1"></p>
-              <p class="text-sm" id="card1-p2"></p>
-              <p class="text-sm text-red-400 mt-2 font-bold" id="card1-p3"></p>
+      <div class="space-y-8">
+        
+        <!-- Section 1: Problems with old system vs New System -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 rounded-xl border border-white/10 shadow-xl">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
             </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight" id="card2-title"></h2>
           </div>
-        </section>
-
-        <!-- Section 2: New System Benefits -->
-        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
-          <h2 class="text-2xl font-bold flex items-center gap-2 text-green-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-            <span id="card2-title"></span>
-          </h2>
           
-          <div class="space-y-4 text-slate-300">
-            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-              <p class="text-sm" id="card2-p1"></p>
-              <p class="text-sm" id="card2-p2"></p>
-              <p class="text-sm text-green-400 mt-2 font-bold" id="card2-p3"></p>
-            </div>
-
-            <div class="space-y-4 mt-6">
-              <div class="flex gap-4 items-start">
-                <div class="bg-primary/20 p-2 rounded-lg mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-primary"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-                </div>
-                <div>
-                  <h3 class="font-bold text-white text-lg" id="f1-title"></h3>
-                  <p class="text-sm text-slate-400 mt-1" id="f1-desc"></p>
-                </div>
+          <div class="grid md:grid-cols-2 gap-6 text-slate-300">
+            <!-- Original DDNet -->
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-red-500/20 space-y-3">
+              <div class="flex items-center gap-2 text-red-400 font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span id="card1-title"></span>
               </div>
+              <p class="text-sm text-slate-400" id="card1-p1"></p>
+              <p class="text-sm text-slate-400" id="card1-p2"></p>
+              <p class="text-sm text-red-400 font-semibold pt-1" id="card1-p3"></p>
+            </div>
+
+            <!-- Map Mastery -->
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-emerald-500/20 space-y-3">
+              <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Map Mastery Solution</span>
+              </div>
+              <p class="text-sm text-slate-400" id="card2-p1"></p>
+              <p class="text-sm text-slate-400" id="card2-p2"></p>
+              <p class="text-sm text-emerald-400 font-semibold pt-1" id="card2-p3"></p>
             </div>
           </div>
         </section>
 
-        <!-- Section 3: Technical Failsafes -->
-        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
-          <h2 class="text-2xl font-bold text-white" id="tech-title"></h2>
+        <!-- Section 2: Technical Math & Formulas -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 rounded-xl border border-white/10 shadow-xl">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight" id="tech-title"></h2>
+          </div>
+
           <div class="space-y-4">
             
-            <div class="bg-slate-900/50 p-4 border border-slate-700">
-              <h3 class="font-bold text-primary mb-2" id="f2-title"></h3>
-              <p class="text-sm text-slate-300 mb-2" id="f2-desc"></p>
-              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+              <h3 class="font-bold text-amber-400 text-sm" id="f1-title"></h3>
+              <p class="text-xs text-slate-300" id="f1-desc"></p>
+            </div>
+
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+              <h3 class="font-bold text-amber-400 text-sm" id="f2-title"></h3>
+              <p class="text-xs text-slate-300 mb-2" id="f2-desc"></p>
+              <div class="bg-black/40 p-4 rounded-lg text-center overflow-x-auto text-amber-300 font-mono text-base border border-amber-500/20 shadow-inner">
                 $$ time\_ratio = \frac{player\_time}{world\_record} $$
               </div>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700">
-              <h3 class="font-bold text-primary mb-2" id="f3-title"></h3>
-              <p class="text-sm text-slate-300 mb-2" id="f3-desc"></p>
-              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+              <h3 class="font-bold text-amber-400 text-sm" id="f3-title"></h3>
+              <p class="text-xs text-slate-300 mb-2" id="f3-desc"></p>
+              <div class="bg-black/40 p-4 rounded-lg text-center overflow-x-auto text-amber-300 font-mono text-base border border-amber-500/20 shadow-inner">
                 $$ P_{skill} = (P_{base} \times 5) \cdot e^{-s \cdot \max(0, time\_ratio - 1)} $$
               </div>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700">
-              <h3 class="font-bold text-primary mb-2" id="f4-title"></h3>
-              <p class="text-sm text-slate-300 mb-2" id="f4-desc"></p>
-              <div class="bg-slate-900/50 p-3 text-center overflow-x-auto text-white font-mono text-sm border border-black/30">
+            <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+              <h3 class="font-bold text-amber-400 text-sm" id="f4-title"></h3>
+              <p class="text-xs text-slate-300 mb-2" id="f4-desc"></p>
+              <div class="bg-black/40 p-4 rounded-lg text-center overflow-x-auto text-amber-300 font-mono text-base border border-amber-500/20 shadow-inner">
                 $$ s = \text{variance coefficient based on Top 50} $$
               </div>
             </div>
@@ -118,46 +133,164 @@
           </div>
         </section>
 
-        <!-- Section 4: Anti-TAS Protection & Map Enrichment -->
-        <section class="glass-panel p-6 md:p-8 space-y-6 border border-slate-800">
-          <h2 class="text-2xl font-bold text-amber-400 flex items-center gap-2" id="antitas-title"></h2>
+        <!-- Section 3: Anti-TAS Protection System -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 rounded-xl border border-white/10 shadow-xl">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight" id="antitas-title"></h2>
+          </div>
+
           <p class="text-slate-300 text-sm" id="antitas-desc"></p>
 
           <!-- Banner Preview Container -->
-          <div style="background:rgba(234, 179, 8, 0.15);border:1px solid rgba(234, 179, 8, 0.4);color:#fde047;padding:0.75rem 1rem;font-weight:600;font-size:0.9em;display:flex;align-items:center;gap:0.6rem;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+          <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg flex items-center gap-3 text-amber-300 text-sm font-semibold">
             <span style="font-size:1.2em;">⚡</span>
             <span id="antitas-banner-text"></span>
           </div>
 
           <div class="grid md:grid-cols-2 gap-4 pt-2">
-            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+            <div class="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06] space-y-1">
               <h3 class="font-bold text-amber-300 text-sm" id="antitas-l1-title"></h3>
-              <p class="text-xs text-slate-300" id="antitas-l1-desc"></p>
+              <p class="text-xs text-slate-400" id="antitas-l1-desc"></p>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+            <div class="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06] space-y-1">
               <h3 class="font-bold text-amber-300 text-sm" id="antitas-l2-title"></h3>
-              <p class="text-xs text-slate-300" id="antitas-l2-desc"></p>
+              <p class="text-xs text-slate-400" id="antitas-l2-desc"></p>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+            <div class="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06] space-y-1">
               <h3 class="font-bold text-amber-300 text-sm" id="antitas-l3-title"></h3>
-              <p class="text-xs text-slate-300" id="antitas-l3-desc"></p>
+              <p class="text-xs text-slate-400" id="antitas-l3-desc"></p>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1">
+            <div class="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06] space-y-1">
               <h3 class="font-bold text-amber-300 text-sm" id="antitas-l4-title"></h3>
-              <p class="text-xs text-slate-300" id="antitas-l4-desc"></p>
+              <p class="text-xs text-slate-400" id="antitas-l4-desc"></p>
             </div>
 
-            <div class="bg-slate-900/50 p-4 border border-slate-700 space-y-1 md:col-span-2">
+            <div class="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06] space-y-1 md:col-span-2">
               <h3 class="font-bold text-amber-300 text-sm" id="antitas-l5-title"></h3>
-              <p class="text-xs text-slate-300" id="antitas-l5-desc"></p>
+              <p class="text-xs text-slate-400" id="antitas-l5-desc"></p>
             </div>
           </div>
         </section>
 
-        <footer class="text-center text-slate-500 py-8 text-sm bg-slate-900/50 rounded-lg border border-slate-800">
+        <!-- Section 4: Dummy Category Maps & Dual Skill PTS -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 rounded-xl border border-white/10 shadow-xl">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight" id="dummy-sec-title"></h2>
+          </div>
+          
+          <div class="space-y-4 text-slate-300">
+            <p class="text-sm" id="dummy-sec-intro"></p>
+            
+            <div class="grid md:grid-cols-2 gap-4 pt-2">
+              <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+                <h3 class="font-bold text-amber-300 text-sm flex items-center gap-2">
+                  <span>👤 Solo Runs Leaderboard</span>
+                </h3>
+                <p class="text-xs text-slate-400" id="dummy-sec-solo-desc"></p>
+              </div>
+
+              <div class="bg-white/[0.02] p-5 rounded-lg border border-white/[0.06] space-y-2">
+                <h3 class="font-bold text-amber-300 text-sm flex items-center gap-2">
+                  <span>👥 Team Runs Leaderboard</span>
+                </h3>
+                <p class="text-xs text-slate-400" id="dummy-sec-team-desc"></p>
+              </div>
+            </div>
+
+            <div class="bg-amber-500/10 p-4 rounded-lg border border-amber-500/30 text-sm text-amber-200">
+              <strong id="dummy-sec-bonus-title"></strong>: <span id="dummy-sec-bonus-desc"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Interactive PTS Calculator -->
+        <section class="glass-panel p-6 md:p-8 space-y-6 rounded-xl border border-white/10 shadow-xl">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight" id="calc-title"></h2>
+          </div>
+
+          <p class="text-slate-300 text-sm" id="calc-desc"></p>
+
+          <div class="grid md:grid-cols-2 gap-8 pt-2">
+            <!-- Sliders -->
+            <div class="space-y-6 bg-white/[0.02] p-6 rounded-lg border border-white/[0.06]">
+              
+              <!-- Base PTS Slider -->
+              <div>
+                <div class="flex justify-between text-sm font-semibold mb-1">
+                  <span id="label-calc-base" class="text-slate-200"></span>
+                  <span id="val-calc-base" class="text-emerald-400 font-mono font-bold">100 PTS</span>
+                </div>
+                <input type="range" id="slider-base" min="1" max="1000" step="1" value="100" class="w-full accent-primary cursor-pointer">
+              </div>
+
+              <!-- World Record Slider -->
+              <div>
+                <div class="flex justify-between text-sm font-semibold mb-1">
+                  <span id="label-calc-wr" class="text-slate-200"></span>
+                  <span id="val-calc-wr" class="text-amber-400 font-mono font-bold">01:00</span>
+                </div>
+                <input type="range" id="slider-wr" min="10" max="3600" step="5" value="60" class="w-full accent-primary cursor-pointer">
+              </div>
+
+              <!-- Player Time Slider -->
+              <div>
+                <div class="flex justify-between text-sm font-semibold mb-1">
+                  <span id="label-calc-player-time" class="text-slate-200"></span>
+                  <span id="val-calc-player-time" class="text-amber-400 font-mono font-bold">01:05</span>
+                </div>
+                <input type="range" id="slider-player-time" min="10" max="7200" step="5" value="65" class="w-full accent-primary cursor-pointer">
+              </div>
+
+              <!-- Strictness Slider -->
+              <div>
+                <div class="flex justify-between text-sm font-semibold mb-1">
+                  <span id="label-calc-strictness" class="text-slate-200"></span>
+                  <span id="val-calc-strictness" class="text-purple-400 font-mono font-bold">2.00</span>
+                </div>
+                <input type="range" id="slider-strictness" min="0.5" max="3.0" step="0.1" value="2.0" class="w-full accent-primary cursor-pointer">
+              </div>
+
+            </div>
+
+            <!-- Calculation Output Card -->
+            <div class="bg-white/[0.03] p-6 rounded-lg border border-amber-500/30 flex flex-col justify-between space-y-4 shadow-lg">
+              <div class="space-y-3">
+                <div class="flex justify-between items-center text-sm border-b border-white/10 pb-2">
+                  <span class="text-slate-400" id="res-label-max-bonus"></span>
+                  <span id="res-val-max-bonus" class="font-mono text-slate-200 font-bold">+500</span>
+                </div>
+                <div class="flex justify-between items-center text-sm border-b border-white/10 pb-2">
+                  <span class="text-slate-400" id="res-label-ratio"></span>
+                  <span id="res-val-ratio" class="font-mono text-slate-200 font-bold">1.08x (+8.3%)</span>
+                </div>
+                <div class="flex justify-between items-center text-sm border-b border-white/10 pb-2">
+                  <span class="text-slate-400 font-semibold" id="res-label-skill"></span>
+                  <span id="res-val-skill" class="font-mono text-purple-400 font-bold text-lg">+423</span>
+                </div>
+              </div>
+
+              <div class="bg-amber-500/20 border border-amber-500/50 p-4 rounded-lg text-center space-y-1 shadow-[0_0_15px_rgba(255,165,0,0.2)]">
+                <div class="text-xs uppercase tracking-wider text-amber-300 font-bold" id="res-label-total"></div>
+                <div class="text-4xl font-black font-mono text-amber-400" id="res-val-total">523 PTS</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="text-center text-slate-400 p-6 text-sm bg-white/[0.02] rounded-xl border border-white/10 shadow-md">
           <p><strong id="footer-summary"></strong></p>
         </footer>
 
@@ -165,14 +298,9 @@
     </div>
   </main>
 
-  <script src="data/leaderboard.js"></script>
-  <script src="data/map_records.js"></script>
-  <script src="data/map_stats.js"></script>
-  <script src="data/maps.js"></script>
-  <script src="data/blacklist.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderHeader('about');
@@ -222,6 +350,65 @@
       document.getElementById('antitas-l4-desc').textContent = dict.about.antiTas.l4Desc;
       document.getElementById('antitas-l5-title').textContent = dict.about.antiTas.l5Title;
       document.getElementById('antitas-l5-desc').textContent = dict.about.antiTas.l5Desc;
+
+      if (dict.about.dummySec) {
+        document.getElementById('dummy-sec-title').textContent = dict.about.dummySec.title;
+        document.getElementById('dummy-sec-intro').textContent = dict.about.dummySec.intro;
+        document.getElementById('dummy-sec-solo-desc').textContent = dict.about.dummySec.soloDesc;
+        document.getElementById('dummy-sec-team-desc').textContent = dict.about.dummySec.teamDesc;
+        document.getElementById('dummy-sec-bonus-title').textContent = dict.about.dummySec.bonusTitle;
+        document.getElementById('dummy-sec-bonus-desc').textContent = dict.about.dummySec.bonusDesc;
+      }
+
+      // Calculator text
+      if (dict.about.calc) {
+        document.getElementById('calc-title').textContent = dict.about.calc.title;
+        document.getElementById('calc-desc').textContent  = dict.about.calc.desc;
+        document.getElementById('label-calc-base').textContent = dict.about.calc.base;
+        document.getElementById('label-calc-wr').textContent = dict.about.calc.wr;
+        document.getElementById('label-calc-player-time').textContent = dict.about.calc.playerTime;
+        document.getElementById('label-calc-strictness').textContent = dict.about.calc.strictness;
+        document.getElementById('res-label-max-bonus').textContent = dict.about.calc.resultMaxBonus;
+        document.getElementById('res-label-ratio').textContent = dict.about.calc.resultRatio;
+        document.getElementById('res-label-skill').textContent = dict.about.calc.resultSkill;
+        document.getElementById('res-label-total').textContent = dict.about.calc.resultTotal;
+      }
+
+      // Calculator Logic
+      const formatCalcTime = (t) => {
+        const m = Math.floor(t / 60);
+        const s = Math.floor(t % 60);
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      };
+
+      const updateCalculator = () => {
+        const base = parseInt(document.getElementById('slider-base').value, 10);
+        const wr = parseInt(document.getElementById('slider-wr').value, 10);
+        const pTime = parseInt(document.getElementById('slider-player-time').value, 10);
+        const s = parseFloat(document.getElementById('slider-strictness').value);
+
+        document.getElementById('val-calc-base').textContent = `${base} PTS`;
+        document.getElementById('val-calc-wr').textContent = formatCalcTime(wr);
+        document.getElementById('val-calc-player-time').textContent = formatCalcTime(pTime);
+        document.getElementById('val-calc-strictness').textContent = s.toFixed(2);
+
+        const pMaxBonus = base * 5.0;
+        const timeRatio = pTime / wr;
+        const gapPct = Math.max(0, (timeRatio - 1) * 100);
+        const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
+        const pTotal = base + pSkill;
+
+        document.getElementById('res-val-max-bonus').textContent = `+${pMaxBonus.toLocaleString()}`;
+        document.getElementById('res-val-ratio').textContent = `${timeRatio.toFixed(2)}x (+${gapPct.toFixed(1)}%)`;
+        document.getElementById('res-val-skill').textContent = `+${pSkill.toLocaleString()}`;
+        document.getElementById('res-val-total').textContent = `${pTotal.toLocaleString()} PTS`;
+      };
+
+      ['slider-base', 'slider-wr', 'slider-player-time', 'slider-strictness'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', updateCalculator);
+      });
+      updateCalculator();
 
       document.getElementById('footer-summary').textContent = dict.about.footerSummary;
 

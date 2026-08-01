@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Player Profile — DDNet Map Mastery</title>
   <meta name="description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
+  
+  <!-- Open Graph / Facebook / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Player Profile — DDNet Map Mastery">
+  <meta property="og:description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
+  <meta property="og:image" content="icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Player Profile — DDNet Map Mastery">
+  <meta name="twitter:description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
+  <meta name="twitter:image" content="icon.png">
+
   <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
@@ -61,7 +74,18 @@
           </div>
 
           <header class="space-y-2">
-            <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
+            <div class="flex items-center gap-3 flex-wrap">
+              <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
+              <button
+                id="share-profile-btn"
+                style="padding:0.4em 0.8em;font-size:0.85em;background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.5);font-weight:bold;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;transition:all 0.2s;"
+                onmouseover="this.style.background='#ffa500';this.style.color='#111';"
+                onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                <span id="share-profile-text"></span>
+              </button>
+            </div>
             <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
           </header>
         </div>
@@ -85,8 +109,42 @@
 
       <!-- Maps List -->
       <div class="glass-panel overflow-hidden mt-12">
-        <div class="p-6 md:p-8 border-b border-white/[0.05]">
+        <div class="p-6 md:p-8 border-b border-white/[0.05] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <h2 class="text-2xl font-bold flex items-center gap-3" id="player-maps-title"></h2>
+
+          <!-- Control Panel: Filter, Search, Sort -->
+          <div class="flex items-center gap-3 flex-wrap w-full md:w-auto">
+            <!-- Server Category Filter -->
+            <select id="map-filter-server" style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;font-weight:600;outline:none;">
+              <option value="ALL">Все категории / All</option>
+              <option value="Novice">Novice</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Brutal">Brutal</option>
+              <option value="Insane">Insane</option>
+              <option value="Solo">Solo</option>
+              <option value="Race">Race</option>
+              <option value="Dummy">Dummy</option>
+              <option value="Oldschool">Oldschool</option>
+              <option value="DDmaX">DDmaX</option>
+            </select>
+
+            <!-- Search Map Input -->
+            <input
+              type="text"
+              id="map-search-input"
+              placeholder="Поиск карты / Search map..."
+              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);width:12em;box-sizing:border-box;font-weight:600;"
+            />
+
+            <!-- Sort Option -->
+            <select id="map-sort-order" style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);font-weight:600;outline:none;">
+              <option value="skill-desc">Skill Bonus ↓</option>
+              <option value="skill-asc">Skill Bonus ↑</option>
+              <option value="time-asc">Время / Time ↑</option>
+              <option value="time-desc">Время / Time ↓</option>
+              <option value="name-asc">Название A-Z</option>
+            </select>
+          </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -110,15 +168,15 @@
     </div>
   </main>
 
-  <script src="data/maps.js"></script>
-  <script src="data/unique_players.js"></script>
-  <script src="data/leaderboard.js"></script>
-  <script src="data/map_records.js"></script>
-  <script src="data/map_stats.js"></script>
-  <script src="data/blacklist.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/page-player.js"></script>
+  <script defer src="data/maps.js"></script>
+  <script defer src="data/unique_players.js"></script>
+  <script defer src="data/leaderboard.js"></script>
+  <script defer src="data/map_records.js"></script>
+  <script defer src="data/map_stats.js"></script>
+  <script defer src="data/blacklist.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/page-player.js"></script>
 </body>
 </html>

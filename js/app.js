@@ -17,6 +17,9 @@ function initLang() {
     }
   } catch (e) { }
   currentLang = lang === 'en' ? 'en' : 'ru';
+  if (document.documentElement) {
+    document.documentElement.lang = currentLang;
+  }
 }
 
 function setLang(lang) {
@@ -50,6 +53,10 @@ function renderHeader(activePage = 'home') {
           <a href="index.html" style="display:flex;align-items:center;gap:0.5em;text-decoration:none;color:#ffa500;font-weight:bold;font-size:1.1em;white-space:nowrap;">
             <img src="icon.png" alt="Logo" style="width:24px;height:24px;object-fit:contain;">
             <span>Map Mastery</span>
+          </a>
+          <span style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
+          <a href="pvp.html" style="display:inline-flex;align-items:center;gap:0.35em;color:${activePage === 'pvp' ? '#ffa500' : '#dfdede'};font-weight:bold;font-size:0.9em;text-decoration:none;transition:color 0.2s;">
+            <span>⚔️ Player vs Player</span>
           </a>
           <span style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
           <a href="https://discord.gg/d5FyWS7Tpv" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.35em;color:#5865F2;font-weight:bold;font-size:0.95em;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import { fileURLToPath } from 'url';
+import { updateBlacklistData } from './build_blacklist_data.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -131,9 +132,15 @@ function loadCustomMapRecords() {
         if (parts.length >= 2) {
             const mName = parts[0].trim().toLowerCase();
             const timeSec = parseTimeToSeconds(parts[1]);
-            const pName = parts[2] ? parts[2].trim() : 'Unknown';
+            const pStr = parts[2] ? parts[2].trim() : 'Unknown';
+            const players = pStr.split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
             if (timeSec > 0) {
-                customRecords[mName] = { time: timeSec, player: pName, mapName: parts[0].trim() };
+                customRecords[mName] = {
+                    time: timeSec,
+                    player: pStr,
+                    players: players.length ? players : [pStr],
+                    mapName: parts[0].trim()
+                };
             }
         }
     }
@@ -169,6 +176,16 @@ function calcMapStats(times) {
     return { mean, stdev, cv, s };
 }
 
+function isQualifyingRun(server, rank, teamRank) {
+    if (!server) return false;
+    const s = String(server).trim();
+    if (s.toLowerCase() === 'fun') return false;
+    if (s === 'Solo' || s === 'Race' || s === 'Dummy') {
+        return true;
+    }
+    return Boolean(teamRank && rank >= teamRank);
+}
+
 function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
     let oldPts = 0;
     let newPtsBase = 0;
@@ -178,18 +195,16 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
     const finishes = playerData.finishes || [];
     for (const finish of finishes) {
         const mapName = finish.map.name || finish.map.map;
+        const server = finish.map.server;
+        if (!server || server.toLowerCase() === 'fun') continue;
         if (processedMaps.has(mapName)) continue;
-        if (finish.map.server === 'Fun') continue;
         processedMaps.add(mapName);
 
         const mapPts = finish.map.points || 0;
         oldPts += mapPts;
         newPtsBase += mapPts;
 
-        const isSoloOrRace = finish.map.server === 'Solo' || finish.map.server === 'Race';
-        const isTeamRun = finish.team_rank && finish.rank >= finish.team_rank;
-        
-        if (isSoloOrRace || isTeamRun) {
+        if (isQualifyingRun(server, finish.rank, finish.team_rank)) {
             let tBest = mapRecords[mapName];
             if (!tBest) {
                 const rank = finish.rank || 1;
@@ -274,21 +289,66 @@ async function run() {
             const data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
             if (!data || !data.rankings) return;
 
-            // Check if DDStats raw top rankings were heavily filtered out
-            const raw = data.rankings || [];
-            const validRankings = raw.filter(r => r && r.name && isFinishAllowed(r.name, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
+            // Prefer team_rankings for team category maps
+            const rawTeam = data.team_rankings || [];
+            const validTeamRankings = rawTeam.filter(r => {
+                if (!r) return false;
+                const playerList = r.players || [r.name || r.player];
+                return playerList.every(p => p && isFinishAllowed(p, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
+            });
 
-            if (raw.length > 0 && validRankings.length < Math.min(raw.length, 10)) {
+            const rawSolo = data.rankings || [];
+            const validSoloRankings = rawSolo.filter(r => r && r.name && isFinishAllowed(r.name, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
+
+            if (rawSolo.length > 0 && validSoloRankings.length < Math.min(rawSolo.length, 10)) {
                 mapRawTopFlooded[mapName] = true;
             }
             
-            if (validRankings.length > 0) {
-                mapRecords[mapName] = validRankings[0].time;
-                mapRankings[mapName] = validRankings.slice(0, 100).map((r, index) => ({
-                    rank: index + 1,
-                    player: r.name,
-                    time: r.time
-                }));
+            if (validSoloRankings.length > 0 || validTeamRankings.length > 0) {
+                if (m.server === 'Dummy') {
+                    // Combine both solo and team rankings for Dummy category maps
+                    const combined = [
+                        ...validSoloRankings.map(r => ({
+                            player: r.name,
+                            time: r.time,
+                            timestamp: r.timestamp || null,
+                            isTeamRank: false
+                        })),
+                        ...validTeamRankings.map(r => ({
+                            player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name),
+                            time: r.time,
+                            timestamp: r.timestamp || null,
+                            isTeamRank: true
+                        }))
+                    ];
+                    combined.sort((a, b) => a.time - b.time);
+
+                    mapRecords[mapName] = combined[0] ? combined[0].time : null;
+                    mapRankings[mapName] = combined.slice(0, 500).map((r, index) => ({
+                        rank: index + 1,
+                        player: r.player,
+                        time: r.time,
+                        timestamp: r.timestamp,
+                        isTeamRank: r.isTeamRank
+                    }));
+                } else if (validTeamRankings.length > 0 && m.server !== 'Solo' && m.server !== 'Race') {
+                    mapRecords[mapName] = validTeamRankings[0].time;
+                    mapRankings[mapName] = validTeamRankings.slice(0, 500).map((r, index) => ({
+                        rank: r.rank || index + 1,
+                        player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name),
+                        time: r.time,
+                        timestamp: r.timestamp || null,
+                        isTeamRank: true
+                    }));
+                } else {
+                    mapRecords[mapName] = validSoloRankings[0] ? validSoloRankings[0].time : null;
+                    mapRankings[mapName] = validSoloRankings.slice(0, 500).map((r, index) => ({
+                        rank: index + 1,
+                        player: r.name,
+                        time: r.time,
+                        timestamp: r.timestamp || null
+                    }));
+                }
             } else {
                 mapRecords[mapName] = null;
                 mapRankings[mapName] = [];
@@ -309,8 +369,13 @@ async function run() {
     console.log(`Saved map_records and map_rankings for ${Object.keys(mapRecords).length} maps`);
 
     console.log("\n=== 3.5. Enriching Maps Flooded by TASers with Top Players Finishes ===");
+    const args = process.argv.slice(2);
+    const isFastMode = args.includes('--fast');
+
     const enrichedMaps = {};
-    if (fs.existsSync(LEADERBOARD_FILE)) {
+    if (isFastMode) {
+        console.log("⚡ [--fast mode] Skipping player enrichment scan.");
+    } else if (fs.existsSync(LEADERBOARD_FILE)) {
         const lb = JSON.parse(fs.readFileSync(LEADERBOARD_FILE, 'utf8'));
         const topPlayers = lb.filter(p => !blacklistSet.has(p.name.toLowerCase())).slice(0, 150);
         
@@ -345,7 +410,8 @@ async function run() {
                     mapRankings[mName].push({
                         player: p.name,
                         name: p.name,
-                        time: pTime
+                        time: pTime,
+                        timestamp: f.timestamp || null
                     });
                 }
             }));
@@ -358,25 +424,39 @@ async function run() {
             // Filter blacklisted players & rules
             list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
 
-            // Deduplicate by player (keep fastest time)
-            const playerBest = new Map();
-            for (const r of list) {
-                const pname = (r.player || r.name).toLowerCase();
-                if (!playerBest.has(pname) || r.time < playerBest.get(pname).time) {
-                    playerBest.set(pname, r);
+            let cleanList = [];
+            const hasTeamRanks = list.some(r => r.isTeamRank);
+            if (hasTeamRanks) {
+                const seenTeams = new Set();
+                for (const r of list) {
+                    const key = `${(r.player || r.name).toLowerCase()}|${r.time}`;
+                    if (!seenTeams.has(key)) {
+                        seenTeams.add(key);
+                        cleanList.push(r);
+                    }
                 }
+            } else {
+                const playerBest = new Map();
+                for (const r of list) {
+                    const pname = (r.player || r.name).toLowerCase();
+                    if (!playerBest.has(pname) || r.time < playerBest.get(pname).time) {
+                        playerBest.set(pname, r);
+                    }
+                }
+                cleanList = Array.from(playerBest.values());
             }
-
-            let cleanList = Array.from(playerBest.values());
             
             const mLower = mName.toLowerCase();
             if (customMapRecords[mLower]) {
                 const custom = customMapRecords[mLower];
-                const existingIdx = cleanList.findIndex(r => (r.player || r.name).toLowerCase() === custom.player.toLowerCase());
-                if (existingIdx !== -1) {
-                    cleanList[existingIdx].time = custom.time;
-                } else {
-                    cleanList.push({ player: custom.player, time: custom.time });
+                const teamPlayers = custom.players && custom.players.length ? custom.players : [custom.player];
+                for (const pName of teamPlayers) {
+                    const existingIdx = cleanList.findIndex(r => (r.player || r.name).toLowerCase() === pName.toLowerCase());
+                    if (existingIdx !== -1) {
+                        cleanList[existingIdx].time = custom.time;
+                    } else {
+                        cleanList.push({ player: pName, time: custom.time });
+                    }
                 }
             }
 
@@ -419,23 +499,21 @@ async function run() {
 
         // Write monolithic map_rankings.js for backward compat
         fs.writeFileSync(MAP_RANKINGS_FILE, JSON.stringify(mapRankings, null, 2));
-        fs.writeFileSync(MAP_RANKINGS_JS, '// Legacy file kept for backward compatibility. Use data/rankings/*.js instead.\n// window.mapRankingsData is NOT populated to save memory.\n');
-
-        // Write per-map ranking files into data/rankings/
-        let perMapCount = 0;
-        for (const [mName, rankings] of Object.entries(mapRankings)) {
-            if (!rankings || rankings.length === 0) continue;
-            const safe = safeRankingFilename(mName);
-            const filePath = path.join(RANKINGS_DIR, `${safe}.js`);
-            const content = `window.mapRankingCurrent = ${JSON.stringify(rankings)};\n`;
-            fs.writeFileSync(filePath, content);
-            perMapCount++;
-        }
-        console.log(`Written ${perMapCount} per-map ranking files into data/rankings/`);
-
         fs.writeFileSync(MAP_ENRICHED_JSON, JSON.stringify(enrichedMaps, null, 2));
         fs.writeFileSync(MAP_ENRICHED_JS, 'window.enrichedMapsData = ' + JSON.stringify(enrichedMaps, null, 2) + ';\n');
     }
+
+    // Write per-map ranking files into data/rankings/ unconditionally
+    let perMapCount = 0;
+    for (const [mName, rankings] of Object.entries(mapRankings)) {
+        if (!rankings || rankings.length === 0) continue;
+        const safe = safeRankingFilename(mName);
+        const filePath = path.join(RANKINGS_DIR, `${safe}.js`);
+        const content = `window.mapRankingCurrent = ${JSON.stringify(rankings)};\n`;
+        fs.writeFileSync(filePath, content);
+        perMapCount++;
+    }
+    console.log(`Written ${perMapCount} per-map ranking files into data/rankings/`);
 
     console.log("\n=== 4. Re-calculating Global Leaderboard ===");
     let leaderboard = [];
@@ -457,6 +535,9 @@ async function run() {
         fs.writeFileSync(UNIQUE_PLAYERS_JS, 'window.uniquePlayersData = ' + JSON.stringify(uniquePlayers) + ';');
         console.log(`Saved ${uniquePlayers.length} unique players into unique_players.js`);
     }
+
+    console.log("\n=== 5. Updating Blacklist Data & Removed Finish Counts ===");
+    await updateBlacklistData();
 
     console.log(`Finished! Final leaderboard size: ${leaderboard.length} players.`);
 }

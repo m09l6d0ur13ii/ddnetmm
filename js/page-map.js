@@ -10,6 +10,19 @@
     return `${m}:${s.padStart(5, '0')}`;
   };
 
+  const getServerBadgeClass = (server) => {
+    if (!server) return 'server-default';
+    const s = server.toLowerCase();
+    if (s.includes('novice'))    return 'server-novice';
+    if (s.includes('moderate'))  return 'server-moderate';
+    if (s.includes('brutal'))    return 'server-brutal';
+    if (s.includes('insane'))    return 'server-insane';
+    if (s.includes('solo'))      return 'server-solo';
+    if (s.includes('dummy'))     return 'server-dummy';
+    if (s.includes('oldschool')) return 'server-oldschool';
+    return 'server-ddmax';
+  };
+
   const getGapBadgeHtml = (gapPct) => {
     const gapStr = '+' + gapPct.toFixed(1) + '%';
     let bg, color, border;
@@ -47,18 +60,23 @@
     document.getElementById('loader-icon').innerHTML =
       '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
 
-    document.getElementById('map-back').textContent         = dict.map.back;
-    document.getElementById('map-back-err').textContent     = dict.map.back;
-    document.getElementById('map-loading').textContent      = dict.map.loading;
-    document.getElementById('map-error').textContent        = dict.map.mapNotFound;
-    document.getElementById('stat-record').textContent      = dict.map.statRecord;
-    document.getElementById('stat-s').textContent           = dict.map.statS;
-    document.getElementById('map-leaderboard-title').textContent = dict.map.title;
-    document.getElementById('table-rank').textContent       = dict.map.tableRank;
-    document.getElementById('table-player').textContent     = dict.map.tablePlayer;
-    document.getElementById('table-time').textContent       = dict.map.tableTime;
-    document.getElementById('table-gap').textContent        = dict.map.tableGap;
-    document.getElementById('table-pts').textContent        = dict.map.tablePts;
+    const setElemText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
+
+    setElemText('map-back', dict.map.back);
+    setElemText('map-back-err', dict.map.back);
+    setElemText('map-loading', dict.map.loading);
+    setElemText('map-error', dict.map.mapNotFound);
+    setElemText('stat-record', dict.map.statRecord);
+    setElemText('stat-s', dict.map.statS);
+    setElemText('map-leaderboard-title', dict.map.title);
+    setElemText('table-rank', dict.map.tableRank);
+    setElemText('table-player', dict.map.tablePlayer);
+    setElemText('table-time', dict.map.tableTime);
+    setElemText('table-gap', dict.map.tableGap);
+    setElemText('table-pts', dict.map.tablePts);
 
     const loadMapData = async (limit) => {
       try {
@@ -75,6 +93,25 @@
         document.getElementById('val-tbest').textContent    = formatTime(data.tBest);
         document.getElementById('val-s').textContent        = data.s.toFixed(2);
 
+        // Map Meta Tags (Server category, Base PTS, Mapper)
+        const metaTagsContainer = document.getElementById('map-meta-tags');
+        if (metaTagsContainer) {
+          const mapInfo = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
+          let tagsHtml = '';
+          if (mapInfo) {
+            if (mapInfo.server) {
+              tagsHtml += `<span class="server-badge ${getServerBadgeClass(mapInfo.server)}">${escapeHtml(mapInfo.server)}</span>`;
+            }
+            if (mapInfo.points) {
+              tagsHtml += `<span class="text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2.5 py-0.5 border border-emerald-500/30 text-xs">Base: ${mapInfo.points} PTS</span>`;
+            }
+            if (mapInfo.mapper) {
+              tagsHtml += `<span class="text-slate-400 text-xs font-medium">by <strong class="text-slate-200">${escapeHtml(mapInfo.mapper)}</strong></span>`;
+            }
+          }
+          metaTagsContainer.innerHTML = tagsHtml;
+        }
+
         const isEnriched = window.enrichedMapsData &&
           (window.enrichedMapsData[data.mapName] || window.enrichedMapsData[mapQuery]);
         const bannerEl = document.getElementById('enriched-banner');
@@ -85,45 +122,121 @@
           bannerEl.classList.add('hidden');
         }
 
-        const tbody = document.getElementById('map-body');
-        tbody.innerHTML = '';
+        const mapInfo = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
+        const isDummy = mapInfo && (mapInfo.server === 'Dummy');
+        const dummyTabsContainer = document.getElementById('dummy-tabs-container');
 
-        data.leaderboard.forEach((row, idx) => {
-          const tr = document.createElement('tr');
-          tr.className = 'premium-table-row transition-colors';
+        const renderLeaderboardRows = (rowsList) => {
+          const grouped = [];
+          rowsList.forEach((row) => {
+            const rowNames = String(row.player).split(/[,&]+/).map(n => n.trim()).filter(Boolean);
+            const last = grouped[grouped.length - 1];
 
-          const gapPct = Math.max(0, (row.timeRatio - 1) * 100);
+            const isSameTeam = last &&
+              Math.abs(last.time - row.time) < 0.001 &&
+              (!last.timestamp || !row.timestamp || last.timestamp === row.timestamp);
 
-          let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${idx + 1}</span>`;
-          if (idx === 0) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-          if (idx === 1) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
-          if (idx === 2) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
+            if (isSameTeam) {
+              rowNames.forEach(name => {
+                if (!last.players.includes(name)) last.players.push(name);
+              });
+            } else {
+              grouped.push({
+                time: row.time,
+                timestamp: row.timestamp || null,
+                players: rowNames
+              });
+            }
+          });
 
-          tr.innerHTML = `
-            <td class="p-4">${rankHtml}</td>
-            <td class="p-4 font-bold text-lg">
-              <a href="player.html?name=${encodeURIComponent(row.player)}" class="text-white hover:text-amber-400 transition-colors">
-                ${escapeHtml(row.player)}
-              </a>
-            </td>
-            <td class="p-4 font-mono text-slate-100 font-medium">${formatTime(row.time)}</td>
-            <td class="p-4">${getGapBadgeHtml(gapPct)}</td>
-            <td class="p-4 font-bold text-emerald-400 text-right text-lg">${row.pSkill}</td>
-          `;
-          tbody.appendChild(tr);
-        });
+          // Fastest time for current view mode
+          const modeTBest = grouped.length > 0 ? grouped[0].time : data.tBest;
+          document.getElementById('val-tbest').textContent = formatTime(modeTBest);
 
-        if (limit < 100 && data.leaderboard.length >= limit) {
-          document.getElementById('load-more-container').classList.remove('hidden');
-          const btn = document.getElementById('btn-load-more');
-          btn.textContent = dict.map.loadTop100;
-          btn.onclick = () => {
-            btn.textContent = '...';
-            loadMapData(100);
+          const tbody = document.getElementById('map-body');
+          tbody.innerHTML = '';
+
+          if (grouped.length === 0) {
+            const noRecText = (typeof getLang === 'function' && getLang() === 'en') ? 'No records in this category' : 'Нет рекордов в этой категории';
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${noRecText}</td></tr>`;
+            return;
+          }
+
+          const mapBasePts = mapInfo ? (mapInfo.points || 0) : 0;
+          const pMaxBonus = mapBasePts * 5.0;
+
+          let currentRank = 1;
+          grouped.forEach((group) => {
+            const tr = document.createElement('tr');
+            tr.className = 'premium-table-row transition-colors';
+
+            const timeRatio = modeTBest > 0 ? group.time / modeTBest : 1;
+            const gapPct = Math.max(0, (timeRatio - 1) * 100);
+            const pSkill = Math.floor(pMaxBonus * Math.exp(-data.s * (Math.max(1, timeRatio) - 1)));
+
+            let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${currentRank}</span>`;
+            if (currentRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
+            else if (currentRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
+            else if (currentRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
+
+            const playersHtml = group.players.map(pName =>
+              `<a href="player.html?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`
+            ).join(' <span class="text-amber-400 font-bold px-0.5">&amp;</span> ');
+
+            tr.innerHTML = `
+              <td class="p-4">${rankHtml}</td>
+              <td class="p-4 font-bold text-lg whitespace-normal">
+                <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
+                  ${playersHtml}
+                </div>
+              </td>
+              <td class="p-4 font-mono text-slate-100 font-medium">${formatTime(group.time)}</td>
+              <td class="p-4">${getGapBadgeHtml(gapPct)}</td>
+              <td class="p-4 font-bold text-emerald-400 text-right text-lg">${pSkill}</td>
+            `;
+            tbody.appendChild(tr);
+
+            currentRank += group.players.length;
+          });
+        };
+
+        if (isDummy && dummyTabsContainer) {
+          dummyTabsContainer.classList.remove('hidden');
+
+          const soloList = data.leaderboard.filter(item => !item.isTeamRank && !String(item.player).includes(' & '));
+          const teamList = data.leaderboard.filter(item => item.isTeamRank || String(item.player).includes(' & '));
+
+          document.getElementById('count-dummy-solo').textContent = soloList.length;
+          document.getElementById('count-dummy-team').textContent = teamList.length;
+
+          const btnSolo = document.getElementById('tab-dummy-solo');
+          const btnTeam = document.getElementById('tab-dummy-team');
+
+          const switchTab = (mode) => {
+            const activeStyle = 'padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:#ffa500;color:#000;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;';
+            const inactiveStyle = 'padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:rgba(255,255,255,0.05);color:#9a9a9a;border:1px solid rgba(255,255,255,0.15);cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;';
+
+            if (mode === 'solo') {
+              btnSolo.setAttribute('style', activeStyle);
+              btnTeam.setAttribute('style', inactiveStyle);
+              renderLeaderboardRows(soloList);
+            } else {
+              btnTeam.setAttribute('style', activeStyle);
+              btnSolo.setAttribute('style', inactiveStyle);
+              renderLeaderboardRows(teamList);
+            }
           };
+
+          btnSolo.onclick = () => switchTab('solo');
+          btnTeam.onclick = () => switchTab('team');
+
+          switchTab('solo');
         } else {
-          document.getElementById('load-more-container').classList.add('hidden');
+          if (dummyTabsContainer) dummyTabsContainer.classList.add('hidden');
+          renderLeaderboardRows(data.leaderboard);
         }
+
+        document.getElementById('load-more-container').classList.add('hidden');
 
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('error').classList.add('hidden');
@@ -136,6 +249,6 @@
       }
     };
 
-    loadMapData(20);
+    loadMapData(999999);
   });
 })();

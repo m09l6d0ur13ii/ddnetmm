@@ -57,6 +57,9 @@
     document.getElementById('table-skill-col').textContent         = dict.player.tableSkill;
     document.getElementById('table-top-col').textContent           = dict.player.tableTopDDNet;
 
+    const shareTextEl = document.getElementById('share-profile-text');
+    if (shareTextEl) shareTextEl.textContent = dict.player.shareBtn || 'Share Profile';
+
     // Inline player search
     document.getElementById('inline-player-search-input').placeholder = dict.player.searchPlaceholder;
     document.getElementById('inline-player-search-btn').textContent   = dict.player.searchBtn;
@@ -95,30 +98,98 @@
       document.getElementById('val-skill').textContent    = data.newPtsSkill.toLocaleString();
       document.getElementById('val-total').textContent    = data.newPtsTotal.toLocaleString();
 
-      const topMaps = data.finishDetails || [];
+      const shareBtn = document.getElementById('share-profile-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+          const cardText = `${data.name} | base: ${data.newPtsBase} | skill: ${data.newPtsSkill} | total: ${data.newPtsTotal} | https://m09l6d0ur13ii.github.io/ddnetmm`;
+          navigator.clipboard.writeText(cardText).then(() => {
+            if (shareTextEl) {
+              const origText = dict.player.shareBtn || 'Share Profile';
+              shareTextEl.textContent = dict.player.copied || 'Скопировано!';
+              setTimeout(() => {
+                shareTextEl.textContent = origText;
+              }, 2000);
+            }
+          }).catch(err => {
+            console.error('Copy failed:', err);
+          });
+        });
+      }
 
-      document.getElementById('player-maps-title').textContent =
-        `${dict.player.mapsWithSkillBonus} (${topMaps.length})`;
+      const allMaps = data.finishDetails || [];
 
-      const tbody = document.getElementById('maps-body');
+      const renderFilteredMaps = () => {
+        const catFilter = document.getElementById('map-filter-server')?.value || 'ALL';
+        const searchQuery = (document.getElementById('map-search-input')?.value || '').toLowerCase().trim();
+        const sortOrder = document.getElementById('map-sort-order')?.value || 'skill-desc';
 
-      topMaps.forEach(map => {
-        const tr = document.createElement('tr');
-        tr.className = 'premium-table-row transition-colors';
-        tr.innerHTML = `
-          <td class="p-4 font-bold">
-            <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
-              ${escapeHtml(map.mapName)}
-            </a>
-          </td>
-          <td class="p-4"><span class="server-badge ${getServerBadgeClass(map.server)}">${escapeHtml(map.server)}</span></td>
-          <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
-          <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
-          <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-          <td class="p-4 font-bold text-amber-300 text-center">#${map.rank}</td>
-        `;
-        tbody.appendChild(tr);
+        let list = allMaps.filter(m => {
+          if (catFilter !== 'ALL') {
+            const s = (m.server || '').toLowerCase();
+            if (catFilter.toLowerCase() === 'ddmax') {
+              if (!s.includes('ddmax')) return false;
+            } else if (s !== catFilter.toLowerCase()) {
+              return false;
+            }
+          }
+          if (searchQuery) {
+            if (!m.mapName.toLowerCase().includes(searchQuery)) return false;
+          }
+          return true;
+        });
+
+        // Sorting
+        list.sort((a, b) => {
+          if (sortOrder === 'skill-desc') return b.pSkill - a.pSkill;
+          if (sortOrder === 'skill-asc')  return a.pSkill - b.pSkill;
+          if (sortOrder === 'time-asc')   return a.time - b.time;
+          if (sortOrder === 'time-desc')  return b.time - a.time;
+          if (sortOrder === 'name-asc')   return a.mapName.localeCompare(b.mapName);
+          return 0;
+        });
+
+        const countText = list.length === allMaps.length
+          ? `(${allMaps.length})`
+          : `(${list.length} / ${allMaps.length})`;
+
+        document.getElementById('player-maps-title').textContent =
+          `${dict.player.mapsWithSkillBonus} ${countText}`;
+
+        const tbody = document.getElementById('maps-body');
+        tbody.innerHTML = '';
+
+        if (list.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No maps match filter' : 'Нет карт, соответствующих фильтру'}</td></tr>`;
+          return;
+        }
+
+        list.forEach(map => {
+          const tr = document.createElement('tr');
+          tr.className = 'premium-table-row transition-colors';
+          tr.innerHTML = `
+            <td class="p-4 font-bold">
+              <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
+                ${escapeHtml(map.mapName)}
+              </a>
+            </td>
+            <td class="p-4"><span class="server-badge ${getServerBadgeClass(map.server)}">${escapeHtml(map.server)}</span></td>
+            <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
+            <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
+            <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
+            <td class="p-4 font-bold text-amber-300 text-center">#${map.rank}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      };
+
+      ['map-filter-server', 'map-sort-order'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', renderFilteredMaps);
       });
+      const searchInput = document.getElementById('map-search-input');
+      if (searchInput) searchInput.addEventListener('input', renderFilteredMaps);
+
+      renderFilteredMaps();
 
       document.getElementById('loading').classList.add('hidden');
       document.getElementById('content').classList.remove('hidden');
