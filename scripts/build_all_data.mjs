@@ -192,7 +192,7 @@ let apiCallCount = 0;
 function fetchJson(url) {
     apiCallCount++;
     return new Promise((resolve) => {
-        const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 MapMastery Crawler' }, timeout: 6000 }, (res) => {
+        const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 MapMastery Crawler' }, timeout: 3000 }, (res) => {
             if (res.statusCode !== 200) return resolve(null);
             let data = '';
             res.on('data', chunk => data += chunk);
@@ -324,7 +324,7 @@ async function run() {
     const mapRankings = {};
     const mapRawTopFlooded = {};
     const CONCURRENCY = 10;
-    const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+    const harvestedTeammates = new Set();
 
     for (let i = 0; i < allMaps.length; i += CONCURRENCY) {
         const batch = allMaps.slice(i, i + CONCURRENCY);
@@ -333,7 +333,9 @@ async function run() {
             const safeName = safeRankingFilename(mapName);
             const localCacheFile = path.join(MAPS_CACHE_DIR, `${safeName}.json`);
 
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
             let data = null;
+
             if (fs.existsSync(localCacheFile)) {
                 try {
                     const stats = fs.statSync(localCacheFile);
@@ -359,6 +361,18 @@ async function run() {
                 const playerList = r.players || [r.name || r.player];
                 return playerList.every(p => p && isFinishAllowed(p, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
             });
+
+            // Harvest valid non-blacklisted team partners
+            for (const r of validTeamRankings) {
+                if (r.players && Array.isArray(r.players)) {
+                    for (const p of r.players) {
+                        const cleanP = p.trim();
+                        if (cleanP && !blacklistSet.has(cleanP.toLowerCase())) {
+                            harvestedTeammates.add(cleanP);
+                        }
+                    }
+                }
+            }
 
             const rawSolo = data.rankings || [];
             const validSoloRankings = rawSolo.filter(r => r && r.name && isFinishAllowed(r.name, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
@@ -424,6 +438,22 @@ async function run() {
         }
     }
 
+    if (fs.existsSync(PLAYER_LIST_TXT) && harvestedTeammates.size > 0) {
+        const existingLines = fs.readFileSync(PLAYER_LIST_TXT, 'utf8').split('\n').map(l => l.trim()).filter(Boolean);
+        const existingSet = new Set(existingLines.map(l => l.toLowerCase()));
+        const newAdded = [];
+        for (const pName of harvestedTeammates) {
+            if (!existingSet.has(pName.toLowerCase())) {
+                existingSet.add(pName.toLowerCase());
+                newAdded.push(pName);
+            }
+        }
+        if (newAdded.length > 0) {
+            fs.appendFileSync(PLAYER_LIST_TXT, '\n' + newAdded.join('\n'));
+            console.log(`➕ Auto-harvested ${newAdded.length} legitimate teammates into player_list.txt!`);
+        }
+    }
+
     fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
     fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
 
@@ -440,11 +470,10 @@ async function run() {
     if (isFastMode) {
         console.log("⚡ [--fast mode] Skipping player enrichment scan.");
     } else {
-        // Load from player_list.txt (trusted ~1500 players) instead of top-150 leaderboard
-        const topPlayers = loadPlayerList(blacklistSet);
-        console.log(`Enrichment source: ${fs.existsSync(PLAYER_LIST_TXT) ? 'player_list.txt' : 'leaderboard.json (fallback)'} — ${topPlayers.length} players`);
-        
-        console.log(`Fetching finishes for ${topPlayers.length} legitimate players...`);
+        const allLegitPlayers = loadPlayerList(blacklistSet);
+        const cachedPlayers = allLegitPlayers.filter(p => fs.existsSync(path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`)));
+        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 600)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
+        console.log(`Enrichment source: player_list.txt (${allLegitPlayers.length} total harvested, ${topPlayers.length} active scanned)`);
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
             const batch = topPlayers.slice(i, i + CONCURRENCY);
@@ -494,56 +523,77 @@ async function run() {
     }
 
     // Clean, deduplicate, sort, and re-rank all map rankings
+    const mapsRawMap = {};
+    for (const m of allMaps) { mapsRawMap[m.map] = m; }
+
     for (const mName in mapRankings) {
         let list = mapRankings[mName] || [];
             
-            // Filter blacklisted players & rules
-            list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
+        // Filter blacklisted players & rules
+        list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
 
-            let cleanList = [];
-            const hasTeamRanks = list.some(r => r.isTeamRank);
-            if (hasTeamRanks) {
-                const seenTeams = new Set();
-                for (const r of list) {
-                    const key = `${(r.player || r.name).toLowerCase()}|${r.time}`;
-                    if (!seenTeams.has(key)) {
-                        seenTeams.add(key);
-                        cleanList.push(r);
-                    }
-                }
-            } else {
-                const playerBest = new Map();
-                for (const r of list) {
-                    const pname = (r.player || r.name).toLowerCase();
-                    if (!playerBest.has(pname) || r.time < playerBest.get(pname).time) {
-                        playerBest.set(pname, r);
-                    }
-                }
-                cleanList = Array.from(playerBest.values());
-            }
-            
-            const mLower = mName.toLowerCase();
-            if (customMapRecords[mLower]) {
-                const custom = customMapRecords[mLower];
-                const teamPlayers = custom.players && custom.players.length ? custom.players : [custom.player];
-                for (const pName of teamPlayers) {
-                    const existingIdx = cleanList.findIndex(r => (r.player || r.name).toLowerCase() === pName.toLowerCase());
-                    if (existingIdx !== -1) {
-                        cleanList[existingIdx].time = custom.time;
-                    } else {
-                        cleanList.push({ player: pName, time: custom.time });
-                    }
+        let cleanList = [];
+        const isTeamCategory = mapsRawMap[mName] && mapsRawMap[mName].server !== 'Solo' && mapsRawMap[mName].server !== 'Race';
+
+        if (isTeamCategory) {
+            // Group finishes by time + timestamp to form team entries (PlayerA & PlayerB)
+            // AND allow a player to appear in multiple distinct team ranks with different teams/times!
+            const teamMap = new Map();
+            for (const r of list) {
+                const timeKey = `${r.time.toFixed(2)}|${r.timestamp || ''}`;
+                if (!teamMap.has(timeKey)) {
+                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+                    teamMap.set(timeKey, { ...r, playersSet: new Set(pNames) });
+                } else {
+                    const existing = teamMap.get(timeKey);
+                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+                    pNames.forEach(p => existing.playersSet.add(p));
                 }
             }
 
-            cleanList.sort((a, b) => a.time - b.time);
-
-            // Re-assign ranks 1, 2, 3...
-            cleanList.forEach((item, idx) => {
-                item.rank = idx + 1;
-                item.player = item.name || item.player;
-                delete item.name;
+            cleanList = Array.from(teamMap.values()).map(r => {
+                const pArray = Array.from(r.playersSet);
+                return {
+                    player: pArray.join(' & '),
+                    time: r.time,
+                    timestamp: r.timestamp || null,
+                    isTeamRank: true
+                };
             });
+        } else {
+            // Solo map: keep player's single best time
+            const playerBest = new Map();
+            for (const r of list) {
+                const pname = (r.player || r.name).toLowerCase();
+                if (!playerBest.has(pname) || r.time < playerBest.get(pname).time) {
+                    playerBest.set(pname, r);
+                }
+            }
+            cleanList = Array.from(playerBest.values());
+        }
+            
+        const mLower = mName.toLowerCase();
+        if (customMapRecords[mLower]) {
+            const custom = customMapRecords[mLower];
+            const teamPlayers = custom.players && custom.players.length ? custom.players : [custom.player];
+            for (const pName of teamPlayers) {
+                const existingIdx = cleanList.findIndex(r => (r.player || r.name).toLowerCase() === pName.toLowerCase());
+                if (existingIdx !== -1) {
+                    cleanList[existingIdx].time = custom.time;
+                } else {
+                    cleanList.push({ player: pName, time: custom.time });
+                }
+            }
+        }
+
+        cleanList.sort((a, b) => a.time - b.time);
+
+        // Re-assign ranks 1, 2, 3...
+        cleanList.forEach((item, idx) => {
+            item.rank = idx + 1;
+            item.player = item.name || item.player;
+            delete item.name;
+        });
 
             mapRankings[mName] = cleanList;
 

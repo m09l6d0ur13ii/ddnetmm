@@ -188,3 +188,20 @@ a:hover { color: var(--accent-hover); }
 
 .hover\:scale-105:hover { transform: none !important; }
 
+/* ========================= Mobile Responsiveness ========================= */
+@media (max-width: 640px) {
+  table th, table td {
+    padding: 0.5rem 0.6rem !important;
+    font-size: 0.82em !important;
+  }
+  .mobile-hide {
+    display: none !important;
+  }
+  main {
+    padding: 0.75rem !important;
+  }
+  .glass-panel {
+    padding: 1rem !important;
+  }
+}
+

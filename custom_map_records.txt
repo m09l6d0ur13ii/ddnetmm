@@ -1,2 +1,2 @@
-# Format: MapName | Time (e.g. 08:07 or 487) | PlayerName
-2 Days in the back | 08:07 | Xardas
+# Format: MapName | Time (e.g. 08:07 or 487) | PlayerName(s) (e.g. Xardas, tw1zenn)
+2 Days in the back | 08:07 | Xardas, tw1zenn
