@@ -12,24 +12,15 @@ async function getMapStats() {
   return window.mapStatsData || {};
 }
 
-function getSeason(timestampStr) {
-  if (!timestampStr) return null;
-  const d = new Date(timestampStr);
-  const year = d.getFullYear();
-  const month = d.getMonth(); // 0-11
-  
-  if (year === 2025) return month < 6 ? '2025-H1' : '2025-H2';
-  if (year === 2026) return month < 6 ? '2026-H1' : '2026-H2';
-  
-  return null;
-}
-
 const playerCache = new Map();
 
 // Fetch player data from DDStats and calculate Map Mastery PTS
+// Returns: { name, oldPts, newPtsBase, newPtsSkill, newPtsTotal, finishDetails }
 async function fetchPlayerPts(playerName) {
   if (window.isBlacklisted && window.isBlacklisted(playerName)) {
-    throw new Error(`Player ${playerName} is blacklisted`);
+    const err = new Error(`Player ${playerName} is blacklisted`);
+    err.isBlacklisted = true;
+    throw err;
   }
   if (playerCache.has(playerName)) {
     return playerCache.get(playerName);
@@ -45,20 +36,16 @@ async function fetchPlayerPts(playerName) {
     let oldPts = 0;
     let newPtsBase = 0;
     let newPtsSkill = 0;
-    
-    let seasons = {
-      '2025-H1': 0,
-      '2025-H2': 0,
-      '2026-H1': 0,
-      '2026-H2': 0,
-    };
 
     const finishes = data.finishes || [];
     const processedMaps = new Set();
 
+    // finishDetails: per-map breakdown for player profile page
+    const finishDetails = [];
+
     for (const finish of finishes) {
       const mapName = finish.map.name || finish.map.map;
-      
+
       // Only count each map once
       if (processedMaps.has(mapName)) continue;
       // Exclude Fun category explicitly
@@ -69,16 +56,18 @@ async function fetchPlayerPts(playerName) {
       const mapPts = finish.map.points || 0;
       oldPts += mapPts;
 
-      const pBase = mapPts; // Full DDNet points as base
+      const pBase = mapPts;
       newPtsBase += pBase;
 
       const isSoloOrRace = finish.map.server === 'Solo' || finish.map.server === 'Race';
       const isTeamRun = finish.team_rank && finish.rank >= finish.team_rank;
       let pSkill = 0;
-      
+      let tBest = null;
+      let timeRatio = 1;
+
       if (isSoloOrRace || isTeamRun) {
         const playerTime = finish.time;
-        let tBest = mapRecords[mapName];
+        tBest = mapRecords[mapName];
 
         if (!tBest) {
           const rank = finish.rank || 1;
@@ -88,18 +77,30 @@ async function fetchPlayerPts(playerName) {
         const stats = mapStats[mapName] || { s: 2.0 };
         const s = stats.s;
 
-        const timeRatio = playerTime / tBest;
-        const pMaxBonus = pBase * 5.0; // x5 multiplier
+        timeRatio = playerTime / tBest;
+        const pMaxBonus = pBase * 5.0;
         pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
+
+        // Only include maps with skill bonus in the details list
+        if (pSkill > 0) {
+          finishDetails.push({
+            mapName,
+            server: finish.map.server,
+            pBase,
+            pSkill,
+            time: finish.time,
+            timeRatio,
+            record: tBest,
+            rank: finish.rank || 0,
+          });
+        }
       }
 
       newPtsSkill += pSkill;
-      
-      const season = getSeason(finish.timestamp);
-      if (season && seasons[season] !== undefined) {
-        seasons[season] += pSkill;
-      }
     }
+
+    // Sort by skill bonus descending
+    finishDetails.sort((a, b) => b.pSkill - a.pSkill);
 
     const newPtsTotal = newPtsBase + newPtsSkill;
 
@@ -109,46 +110,65 @@ async function fetchPlayerPts(playerName) {
       newPtsBase,
       newPtsSkill,
       newPtsTotal,
-      seasons
+      finishDetails,
     };
 
     playerCache.set(playerName, result);
     return result;
   } catch (error) {
-    console.error("Player points error:", error);
+    console.error('Player points error:', error);
     throw error;
   }
 }
 
-// Fetch top players, replacing server-side top-players/route.ts
+// Fetch top players from static leaderboard with live refresh via DDStats
+// Returns players array; each item has isStatic=true if DDStats was unreachable
 async function getTopPlayersLive(limit = 20, onProgress = null) {
   const staticLeaderboard = await getLeaderboardData();
   const topCandidates = staticLeaderboard.slice(0, limit);
-  
+
   if (topCandidates.length === 0) return [];
 
+  // Quick connectivity check — try to fetch one player
+  let ddstatsReachable = true;
+  try {
+    const probe = await Promise.race([
+      fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(topCandidates[0].name)}`),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
+    ]);
+    if (!probe.ok) ddstatsReachable = false;
+  } catch {
+    ddstatsReachable = false;
+  }
+
+  // If DDStats is down — return static data immediately with a flag
+  if (!ddstatsReachable) {
+    if (onProgress) onProgress(topCandidates.length, topCandidates.length);
+    return topCandidates.map(p => ({ ...p, isStatic: true }));
+  }
+
   const livePlayers = [];
-  
-  // We process sequentially or in small batches to not overload browser
+
+  // Process in batches to avoid flooding the browser
   const batchSize = 5;
   for (let i = 0; i < topCandidates.length; i += batchSize) {
     const batch = topCandidates.slice(i, i + batchSize);
     const results = await Promise.all(batch.map(async p => {
       try {
         return await fetchPlayerPts(p.name);
-      } catch(e) {
+      } catch (e) {
         return null;
       }
     }));
-    
+
     for (let j = 0; j < results.length; j++) {
       if (results[j]) {
         livePlayers.push(results[j]);
       } else {
-        livePlayers.push(batch[j]); // fallback to static
+        livePlayers.push({ ...batch[j], isStatic: true }); // fallback to static
       }
     }
-    
+
     if (onProgress) {
       onProgress(Math.min(i + batchSize, topCandidates.length), topCandidates.length);
     }
@@ -158,6 +178,28 @@ async function getTopPlayersLive(limit = 20, onProgress = null) {
   return livePlayers;
 }
 
+// Load map rankings from a per-map JS file (data/rankings/{safe}.js)
+// Sets window.mapRankingCurrent, returns the array
+function loadMapRankingFile(mapName) {
+  return new Promise((resolve) => {
+    // Check if per-map file exists by attempting to load it
+    const safe = mapName.replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
+    const src = `data/rankings/${encodeURIComponent(safe)}.js`;
+
+    // Remove any previously loaded ranking script to avoid conflicts
+    const old = document.getElementById('map-ranking-script');
+    if (old) old.remove();
+    window.mapRankingCurrent = null;
+
+    const script = document.createElement('script');
+    script.id = 'map-ranking-script';
+    script.src = src;
+    script.onload = () => resolve(window.mapRankingCurrent || []);
+    script.onerror = () => resolve([]); // file doesn't exist — empty array
+    document.head.appendChild(script);
+  });
+}
+
 // Map leaderboard logic
 async function getMapLeaderboardLive(mapQuery, limit = 20) {
   try {
@@ -165,7 +207,6 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
     const mapStats = await getMapStats();
 
     let realMapName = mapQuery;
-    let mapServer = 'Novice';
     let pBase = 0;
 
     try {
@@ -174,17 +215,21 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
         const mapData = await mapRes.json();
         if (mapData.info && mapData.info.map) {
           realMapName = mapData.info.map.map;
-          mapServer = mapData.info.map.server;
           pBase = mapData.info.map.points || 0;
         }
       }
     } catch (e) {}
 
-    // Prefer pre-enriched clean rankings from data/map_rankings.js
-    const staticRankings = window.mapRankingsData ? (window.mapRankingsData[realMapName] || window.mapRankingsData[mapQuery] || []) : [];
-    let rankings = staticRankings.filter(r => r && (r.player || r.name) && !(window.isBlacklisted && window.isBlacklisted(r.player || r.name)));
+    // Try per-map ranking file first (split from map_rankings.js)
+    let rankings = await loadMapRankingFile(realMapName);
 
-    // Fallback to live DDStats rankings if static is empty
+    // Fallback: try legacy window.mapRankingsData (if old file still loaded)
+    if (rankings.length === 0 && window.mapRankingsData) {
+      const legacy = window.mapRankingsData[realMapName] || window.mapRankingsData[mapQuery] || [];
+      rankings = legacy.filter(r => r && (r.player || r.name) && !(window.isBlacklisted && window.isBlacklisted(r.player || r.name)));
+    }
+
+    // Last resort: live DDStats rankings
     if (rankings.length === 0) {
       try {
         const mapRes = await fetch(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapQuery)}`);
@@ -196,10 +241,13 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
       } catch (e) {}
     }
 
+    // Filter blacklisted players
+    rankings = rankings.filter(r => r && (r.player || r.name) && !(window.isBlacklisted && window.isBlacklisted(r.player || r.name)));
+
     const topPlayers = rankings.slice(0, limit);
     const leaderboard = [];
 
-    let tBest = mapRecords[realMapName] || (rankings.length > 0 ? rankings[0].time : 0);
+    const tBest = mapRecords[realMapName] || (rankings.length > 0 ? rankings[0].time : 0);
     const stats = mapStats[realMapName] || { s: 2.0 };
     const s = stats.s;
     const pMaxBonus = pBase * 5.0;
@@ -213,18 +261,13 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
         player: playerName,
         time: playerTime,
         timeRatio,
-        pSkill
+        pSkill,
       });
     }
 
-    return {
-      mapName: realMapName,
-      tBest,
-      s,
-      leaderboard
-    };
+    return { mapName: realMapName, tBest, s, leaderboard };
   } catch (err) {
-    console.error("Map leaderboard error:", err);
+    console.error('Map leaderboard error:', err);
     throw err;
   }
 }
@@ -232,5 +275,5 @@ async function getMapLeaderboardLive(mapQuery, limit = 20) {
 window.api = {
   fetchPlayerPts,
   getTopPlayersLive,
-  getMapLeaderboardLive
+  getMapLeaderboardLive,
 };

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Profile</title>
+  <title>Player Profile — DDNet Map Mastery</title>
+  <meta name="description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
   <link rel="icon" type="image/png" href="icon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
@@ -33,7 +34,7 @@
     </div>
 
     <div id="content" class="hidden space-y-8">
-      
+
       <!-- Header -->
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
@@ -47,7 +48,7 @@
               <input
                 type="text"
                 id="inline-player-search-input"
-                placeholder="Найти игрока..."
+                placeholder=""
                 style="padding:0.35em 0.7em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;width:15em;box-sizing:border-box;font-weight:600;"
               />
               <button
@@ -55,7 +56,6 @@
                 id="inline-player-search-btn"
                 style="padding:0.35em 0.8em;font-size:0.85em;background:#ffa500;color:#111;border:none;font-weight:bold;cursor:pointer;white-space:nowrap;"
               >
-                Найти
               </button>
             </form>
           </div>
@@ -65,7 +65,7 @@
             <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
           </header>
         </div>
-        
+
         <!-- Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="glass-panel p-6 flex flex-col justify-center items-center gap-2">
@@ -88,7 +88,7 @@
         <div class="p-6 md:p-8 border-b border-white/[0.05]">
           <h2 class="text-2xl font-bold flex items-center gap-3" id="player-maps-title"></h2>
         </div>
-        
+
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse whitespace-nowrap">
             <thead>
@@ -96,9 +96,9 @@
                 <th class="p-4 font-semibold" id="table-map"></th>
                 <th class="p-4 font-semibold" id="table-server"></th>
                 <th class="p-4 font-semibold text-right" id="table-time"></th>
-                <th class="p-4 font-semibold text-right" id="table-base-col">Base</th>
-                <th class="p-4 font-semibold text-right" id="table-skill-col">Skill Bonus</th>
-                <th class="p-4 font-semibold text-center" id="table-top-col">Top DDNet</th>
+                <th class="p-4 font-semibold text-right" id="table-base-col"></th>
+                <th class="p-4 font-semibold text-right" id="table-skill-col"></th>
+                <th class="p-4 font-semibold text-center" id="table-top-col"></th>
               </tr>
             </thead>
             <tbody id="maps-body">
@@ -119,169 +119,6 @@
   <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      renderHeader('player');
-      const dict = getDict();
-      
-      const urlParams = new URLSearchParams(window.location.search);
-      const playerName = urlParams.get('name');
-
-      if (!playerName) {
-        window.location.href = 'index.html';
-        return;
-      }
-
-      document.title = `Player: ${playerName} - DDNet Map Mastery`;
-
-      document.getElementById('loader-icon').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
-
-      document.getElementById('player-back').textContent = dict.player.back;
-      document.getElementById('player-loading').textContent = dict.player.loading;
-      document.getElementById('player-error').textContent = dict.player.error;
-      document.getElementById('stat-base').textContent = "Base PTS";
-      document.getElementById('stat-skill').textContent = "Skill PTS";
-      document.getElementById('stat-total').textContent = "Total Mastery";
-      
-      document.getElementById('table-map').textContent = dict.player.mapName;
-      document.getElementById('table-server').textContent = dict.player.mapServer;
-      document.getElementById('table-time').textContent = dict.player.mapTime;
-
-      document.getElementById('inline-player-search-input').placeholder = currentLang === 'ru' ? 'Найти игрока...' : 'Search player...';
-      document.getElementById('inline-player-search-btn').textContent = currentLang === 'ru' ? 'Найти' : 'Search';
-
-      document.getElementById('inline-player-search-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const target = document.getElementById('inline-player-search-input').value.trim();
-        if (target) {
-          window.location.href = `player.html?name=${encodeURIComponent(target)}`;
-        }
-      });
-
-      setupPlayerAutocomplete('inline-player-search-input');
-
-      if (window.isBlacklisted && window.isBlacklisted(playerName)) {
-        document.getElementById('loading').classList.add('hidden');
-        const errorEl = document.getElementById('error');
-        document.getElementById('player-error').innerHTML = `
-          <div style="background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; padding: 1.5rem; text-align: center; margin: 1.5rem 0;">
-            <h2 style="font-size: 1.5rem; font-weight: bold; color: #f87171; margin-bottom: 0.5rem;">${currentLang === 'en' ? 'Player Banned' : 'Игрок заблокирован'}</h2>
-            <p style="color: #fca5a5; font-weight: 500;">${currentLang === 'en' ? 'This player is blacklisted in Map Mastery system (TAS / Cheating).' : 'Этот никнейм находится в чёрном списке системы Map Mastery (TAS / Читы).'}</p>
-          </div>
-        `;
-        errorEl.classList.remove('hidden');
-        return;
-      }
-
-      try {
-        const data = await window.api.fetchPlayerPts(playerName);
-        
-        document.getElementById('player-name').textContent = data.name;
-        document.getElementById('val-base').textContent = data.newPtsBase.toLocaleString();
-        document.getElementById('val-skill').textContent = data.newPtsSkill.toLocaleString();
-        document.getElementById('val-total').textContent = data.newPtsTotal.toLocaleString();
-
-        const resOriginal = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`);
-        const originalData = await resOriginal.json();
-        
-        const mapRecords = await getMapRecords();
-        const mapStats = await getMapStats();
-
-        const finishes = originalData.finishes || [];
-        const processedMaps = new Set();
-        const topMaps = [];
-
-        for (const f of finishes) {
-          const mapName = f.map.name || f.map.map;
-          if (processedMaps.has(mapName)) continue;
-          if (f.map.server === 'Fun') continue;
-          processedMaps.add(mapName);
-
-          const isSoloOrRace = f.map.server === 'Solo' || f.map.server === 'Race';
-          const isTeamRun = f.team_rank && f.rank >= f.team_rank;
-
-          if (isSoloOrRace || isTeamRun) {
-            let tBest = mapRecords[mapName];
-            if (!tBest) {
-              tBest = f.time / (1 + Math.log10(Math.max(1, f.rank || 1)) * 0.5);
-            }
-
-            const s = (mapStats[mapName] || { s: 2.0 }).s;
-            const pBase = f.map.points || 0;
-            const pMaxBonus = pBase * 5.0;
-            const timeRatio = f.time / tBest;
-            const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
-
-            if (pSkill > 0) {
-              topMaps.push({
-                mapName: mapName,
-                server: f.map.server,
-                pBase: pBase,
-                pSkill: pSkill,
-                time: f.time,
-                timeRatio: timeRatio,
-                record: tBest,
-                rank: f.rank || 0
-              });
-            }
-          }
-        }
-
-        topMaps.sort((a, b) => b.pSkill - a.pSkill);
-
-        document.getElementById('player-maps-title').textContent = `${currentLang === 'en' ? 'Maps with Skill Bonus' : 'Карты со Skill Bonus'} (${topMaps.length})`;
-
-        const tbody = document.getElementById('maps-body');
-        
-        const formatTime = (t) => {
-          if (t <= 0) return '-';
-          const m = Math.floor(t / 60);
-          const s = (t % 60).toFixed(2);
-          return `${m}:${s.padStart(5, '0')}`;
-        };
-
-        const getServerBadgeClass = (server) => {
-          if (!server) return 'server-default';
-          const s = server.toLowerCase();
-          if (s.includes('novice')) return 'server-novice';
-          if (s.includes('moderate')) return 'server-moderate';
-          if (s.includes('brutal')) return 'server-brutal';
-          if (s.includes('insane')) return 'server-insane';
-          if (s.includes('solo')) return 'server-solo';
-          if (s.includes('dummy')) return 'server-dummy';
-          if (s.includes('oldschool')) return 'server-oldschool';
-          return 'server-ddmax';
-        };
-
-        topMaps.forEach(map => {
-          const tr = document.createElement('tr');
-          tr.className = "premium-table-row transition-colors";
-          
-          tr.innerHTML = `
-            <td class="p-4 font-bold">
-              <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
-                ${escapeHtml(map.mapName)}
-              </a>
-            </td>
-            <td class="p-4"><span class="server-badge ${getServerBadgeClass(map.server)}">${escapeHtml(map.server)}</span></td>
-            <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
-            <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
-            <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-            <td class="p-4 font-bold text-amber-300 text-center">#${map.rank}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('content').classList.remove('hidden');
-
-      } catch (e) {
-        console.error(e);
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('error').classList.remove('hidden');
-      }
-    });
-  </script>
+  <script src="js/page-player.js"></script>
 </body>
 </html>
-

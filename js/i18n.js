@@ -21,7 +21,10 @@ const dictionaries = {
       tableSkill: "Skill PTS",
       tableTotal: "Total Mastery",
       loading: "Загрузка...",
-      empty: "Нет данных"
+      empty: "Нет данных",
+      searchResultBase: "New Base:",
+      searchResultSkill: "New Skill:",
+      searchResultTotal: "Total Map Mastery:"
     },
     player: {
       title: "Профиль игрока",
@@ -37,7 +40,16 @@ const dictionaries = {
       mapGap: "Отставание",
       mapEarned: "Заработано",
       loading: "Загрузка...",
-      error: "Игрок не найден"
+      error: "Игрок не найден",
+      statBase: "Base PTS",
+      statSkill: "Skill PTS",
+      statTotal: "Total Mastery",
+      searchBtn: "Найти",
+      searchPlaceholder: "Найти игрока...",
+      mapsWithSkillBonus: "Карты со Skill Bonus",
+      tableBase: "Base",
+      tableSkill: "Skill Bonus",
+      tableTopDDNet: "Top DDNet"
     },
     compare: {
       title: "Сравнение систем: Ранг vs Время",
@@ -119,7 +131,8 @@ const dictionaries = {
       tableGap: "Отставание",
       tablePts: "Skill PTS",
       loading: "Загрузка...",
-      enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats"
+      enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats",
+      loadTop100: "Загрузить Топ 100"
     }
   },
   en: {
@@ -144,7 +157,10 @@ const dictionaries = {
       tableSkill: "Skill PTS",
       tableTotal: "Total Mastery",
       loading: "Loading...",
-      empty: "No data"
+      empty: "No data",
+      searchResultBase: "New Base:",
+      searchResultSkill: "New Skill:",
+      searchResultTotal: "Total Map Mastery:"
     },
     player: {
       title: "Player Profile",
@@ -160,7 +176,16 @@ const dictionaries = {
       mapGap: "Gap",
       mapEarned: "Earned",
       loading: "Loading...",
-      error: "Player not found"
+      error: "Player not found",
+      statBase: "Base PTS",
+      statSkill: "Skill PTS",
+      statTotal: "Total Mastery",
+      searchBtn: "Search",
+      searchPlaceholder: "Search player...",
+      mapsWithSkillBonus: "Maps with Skill Bonus",
+      tableBase: "Base",
+      tableSkill: "Skill Bonus",
+      tableTopDDNet: "Top DDNet"
     },
     compare: {
       title: "System Comparison: Rank vs Time",
@@ -242,7 +267,8 @@ const dictionaries = {
       tableGap: "Gap",
       tablePts: "Skill PTS",
       loading: "Loading...",
-      enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats"
+      enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats",
+      loadTop100: "Load Top 100"
     }
   }
 };

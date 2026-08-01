@@ -22,7 +22,8 @@ const MAP_STATS_FILE = path.join(DATA_DIR, 'map_stats.json');
 const MAP_STATS_JS = path.join(DATA_DIR, 'map_stats.js');
 
 const MAP_RANKINGS_FILE = path.join(DATA_DIR, 'map_rankings.json');
-const MAP_RANKINGS_JS = path.join(DATA_DIR, 'map_rankings.js');
+const MAP_RANKINGS_JS   = path.join(DATA_DIR, 'map_rankings.js');
+const RANKINGS_DIR      = path.join(DATA_DIR, 'rankings');
 
 const LEADERBOARD_FILE = path.join(DATA_DIR, 'leaderboard.json');
 const LEADERBOARD_JS = path.join(DATA_DIR, 'leaderboard.js');
@@ -42,12 +43,20 @@ const MAP_ENRICHED_JS = path.join(DATA_DIR, 'map_enriched.js');
 const CUSTOM_MAP_RECORDS_TXT = path.join(ROOT_DIR, 'custom_map_records.txt');
 const CUSTOM_MAP_RECORDS_JS = path.join(DATA_DIR, 'custom_map_records.js');
 
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(DATA_DIR))    fs.mkdirSync(DATA_DIR,    { recursive: true });
 if (!fs.existsSync(PLAYERS_DIR)) fs.mkdirSync(PLAYERS_DIR, { recursive: true });
+if (!fs.existsSync(RANKINGS_DIR)) fs.mkdirSync(RANKINGS_DIR, { recursive: true });
+
 
 function sanitizeFilename(name) {
     return name.replace(/[<>:"/\\|?*]/g, '_');
 }
+
+// Safe filename for per-map ranking files (replaces spaces and special chars)
+function safeRankingFilename(mapName) {
+    return mapName.replace(/[^a-zA-Z0-9_\-.]/g, '_');
+}
+
 
 function loadBlacklist() {
     if (!fs.existsSync(BLACKLIST_TXT)) return new Set();
@@ -164,7 +173,6 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
     let oldPts = 0;
     let newPtsBase = 0;
     let newPtsSkill = 0;
-    let seasons = { '2025-H1': 0, '2025-H2': 0, '2026-H1': 0, '2026-H2': 0 };
     const processedMaps = new Set();
 
     const finishes = playerData.finishes || [];
@@ -202,7 +210,6 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
         newPtsBase,
         newPtsSkill,
         newPtsTotal: newPtsBase + newPtsSkill,
-        seasons
     };
 }
 
@@ -296,7 +303,7 @@ async function run() {
 
     fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
     fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
-    
+
     fs.writeFileSync(MAP_RANKINGS_FILE, JSON.stringify(mapRankings, null, 2));
     fs.writeFileSync(MAP_RANKINGS_JS, 'window.mapRankingsData = ' + JSON.stringify(mapRankings) + ';');
     console.log(`Saved map_records and map_rankings for ${Object.keys(mapRecords).length} maps`);
@@ -410,8 +417,21 @@ async function run() {
         fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
         fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
 
+        // Write monolithic map_rankings.js for backward compat
         fs.writeFileSync(MAP_RANKINGS_FILE, JSON.stringify(mapRankings, null, 2));
-        fs.writeFileSync(MAP_RANKINGS_JS, 'window.mapRankingsData = ' + JSON.stringify(mapRankings) + ';');
+        fs.writeFileSync(MAP_RANKINGS_JS, '// Legacy file kept for backward compatibility. Use data/rankings/*.js instead.\n// window.mapRankingsData is NOT populated to save memory.\n');
+
+        // Write per-map ranking files into data/rankings/
+        let perMapCount = 0;
+        for (const [mName, rankings] of Object.entries(mapRankings)) {
+            if (!rankings || rankings.length === 0) continue;
+            const safe = safeRankingFilename(mName);
+            const filePath = path.join(RANKINGS_DIR, `${safe}.js`);
+            const content = `window.mapRankingCurrent = ${JSON.stringify(rankings)};\n`;
+            fs.writeFileSync(filePath, content);
+            perMapCount++;
+        }
+        console.log(`Written ${perMapCount} per-map ranking files into data/rankings/`);
 
         fs.writeFileSync(MAP_ENRICHED_JSON, JSON.stringify(enrichedMaps, null, 2));
         fs.writeFileSync(MAP_ENRICHED_JS, 'window.enrichedMapsData = ' + JSON.stringify(enrichedMaps, null, 2) + ';\n');
