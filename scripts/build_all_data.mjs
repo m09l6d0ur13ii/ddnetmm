@@ -23,8 +23,8 @@ const MAP_STATS_FILE = path.join(DATA_DIR, 'map_stats.json');
 const MAP_STATS_JS = path.join(DATA_DIR, 'map_stats.js');
 
 const MAP_RANKINGS_FILE = path.join(DATA_DIR, 'map_rankings.json');
-const MAP_RANKINGS_JS   = path.join(DATA_DIR, 'map_rankings.js');
-const RANKINGS_DIR      = path.join(DATA_DIR, 'rankings');
+const MAP_RANKINGS_JS = path.join(DATA_DIR, 'map_rankings.js');
+const RANKINGS_DIR = path.join(DATA_DIR, 'rankings');
 
 const LEADERBOARD_FILE = path.join(DATA_DIR, 'leaderboard.json');
 const LEADERBOARD_JS = path.join(DATA_DIR, 'leaderboard.js');
@@ -47,9 +47,9 @@ const CUSTOM_MAP_RECORDS_JS = path.join(DATA_DIR, 'custom_map_records.js');
 const PLAYER_LIST_TXT = path.join(ROOT_DIR, 'player_list.txt');
 const MAPS_CACHE_DIR = path.join(DATA_DIR, 'maps_cache');
 
-if (!fs.existsSync(DATA_DIR))       fs.mkdirSync(DATA_DIR,       { recursive: true });
-if (!fs.existsSync(PLAYERS_DIR))    fs.mkdirSync(PLAYERS_DIR,    { recursive: true });
-if (!fs.existsSync(RANKINGS_DIR))   fs.mkdirSync(RANKINGS_DIR,   { recursive: true });
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(PLAYERS_DIR)) fs.mkdirSync(PLAYERS_DIR, { recursive: true });
+if (!fs.existsSync(RANKINGS_DIR)) fs.mkdirSync(RANKINGS_DIR, { recursive: true });
 if (!fs.existsSync(MAPS_CACHE_DIR)) fs.mkdirSync(MAPS_CACHE_DIR, { recursive: true });
 
 
@@ -209,8 +209,8 @@ function calcMapStats(times) {
     const n = times.length;
     if (n === 0) return { s: 2.0 };
     if (n === 1) return { s: 3.0 };
-    const mean = times.reduce((a,b)=>a+b,0) / n;
-    const variance = times.reduce((a,b)=>a + Math.pow(b - mean, 2), 0) / n;
+    const mean = times.reduce((a, b) => a + b, 0) / n;
+    const variance = times.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / n;
     const stdev = Math.sqrt(variance);
     const cv = stdev / mean;
     let s = 3.0 - ((cv - 0.01) / 0.49) * 2.5;
@@ -253,7 +253,7 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
                 const rank = finish.rank || 1;
                 tBest = finish.time / (1 + Math.log10(Math.max(1, rank)) * 0.5);
             }
-            
+
             const stats = mapStats[mapName] || { s: 2.0 };
             const s = stats.s;
             const pMaxBonus = mapPts * 5.0;
@@ -262,7 +262,7 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
             newPtsSkill += pSkill;
         }
     }
-    
+
     return {
         oldPts,
         newPtsBase,
@@ -303,7 +303,7 @@ async function run() {
     fs.writeFileSync(BLACKLIST_JS, blacklistJsContent);
 
     fs.writeFileSync(MAP_MIN_TIMES_JS, `window.mapMinTimesData = ${JSON.stringify(mapMinTimes, null, 2)};\n`);
-    
+
     const ignoredArray = Array.from(ignoredFinishesSet);
     fs.writeFileSync(IGNORED_FINISHES_JS, `window.ignoredFinishesData = ${JSON.stringify(ignoredArray, null, 2)};\n\nwindow.isIgnoredFinish = function(player, map) {\n  if (!player || !map) return false;\n  const key = String(player).trim().toLowerCase() + '|' + String(map).trim().toLowerCase();\n  return window.ignoredFinishesData && window.ignoredFinishesData.includes(key);\n};\n`);
 
@@ -342,13 +342,13 @@ async function run() {
                     if (Date.now() - stats.mtimeMs < THREE_DAYS_MS) {
                         data = JSON.parse(fs.readFileSync(localCacheFile, 'utf8'));
                     }
-                } catch (e) {}
+                } catch (e) { }
             }
 
             if (!data) {
                 data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
                 if (data) {
-                    try { fs.writeFileSync(localCacheFile, JSON.stringify(data)); } catch (e) {}
+                    try { fs.writeFileSync(localCacheFile, JSON.stringify(data)); } catch (e) { }
                 }
             }
 
@@ -380,7 +380,7 @@ async function run() {
             if (rawSolo.length > 0 && validSoloRankings.length < Math.min(rawSolo.length, 10)) {
                 mapRawTopFlooded[mapName] = true;
             }
-            
+
             if (validSoloRankings.length > 0 || validTeamRankings.length > 0) {
                 if (m.server === 'Dummy') {
                     // Combine both solo and team rankings for Dummy category maps
@@ -471,8 +471,9 @@ async function run() {
         console.log("⚡ [--fast mode] Skipping player enrichment scan.");
     } else {
         const allLegitPlayers = loadPlayerList(blacklistSet);
+        // Prioritize cached profiles and top 1500 players for high-speed, high-coverage enrichment
         const cachedPlayers = allLegitPlayers.filter(p => fs.existsSync(path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`)));
-        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 600)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
+        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 1500)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
         console.log(`Enrichment source: player_list.txt (${allLegitPlayers.length} total harvested, ${topPlayers.length} active scanned)`);
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
@@ -490,13 +491,13 @@ async function run() {
                             pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
                             isCacheValid = true;
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 }
 
                 if (!isCacheValid || !pData) {
                     pData = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(p.name)}`);
                     if (pData) {
-                        try { fs.writeFileSync(localFile, JSON.stringify(pData)); } catch (e) {}
+                        try { fs.writeFileSync(localFile, JSON.stringify(pData)); } catch (e) { }
                     }
                 }
                 if (!pData || !pData.finishes) return;
@@ -509,7 +510,7 @@ async function run() {
                     if (!isFinishAllowed(p.name, mName, pTime, blacklistSet, mapMinTimes, ignoredFinishesSet)) continue;
 
                     if (!mapRankings[mName]) mapRankings[mName] = [];
-                    
+
                     mapRankings[mName].push({
                         player: p.name,
                         name: p.name,
@@ -528,7 +529,7 @@ async function run() {
 
     for (const mName in mapRankings) {
         let list = mapRankings[mName] || [];
-            
+
         // Filter blacklisted players & rules
         list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
 
@@ -571,7 +572,7 @@ async function run() {
             }
             cleanList = Array.from(playerBest.values());
         }
-            
+
         const mLower = mName.toLowerCase();
         if (customMapRecords[mLower]) {
             const custom = customMapRecords[mLower];
@@ -595,31 +596,31 @@ async function run() {
             delete item.name;
         });
 
-            mapRankings[mName] = cleanList;
+        mapRankings[mName] = cleanList;
 
-            // Flag map as enriched if it had min times, ignored finishes, custom records, or raw top flooded
-            const hasCustomRecord = !!customMapRecords[mLower];
-            const hasMinTimeLimit = !!mapMinTimes[mLower];
-            const hasIgnoredFinish = Array.from(ignoredFinishesSet).some(s => s.endsWith(`|${mLower}`));
-            if (hasMinTimeLimit || hasIgnoredFinish || hasCustomRecord || mapRawTopFlooded[mName]) {
-                enrichedMaps[mName] = true;
-            }
-
-            const updatedMapNames = [];
-            if (hasCustomRecord) {
-                mapRecords[mName] = customMapRecords[mLower].time;
-                updatedMapNames.push(`${mName} (Custom Record)`);
-            } else if (cleanList.length > 0) {
-                const newWr = cleanList[0].time;
-                if (mapRecords[mName] !== newWr) {
-                    mapRecords[mName] = newWr;
-                    enrichedCount++;
-                    updatedMapNames.push(`${mName} (New WR by ${cleanList[0].player})`);
-                }
-            } else {
-                mapRecords[mName] = null;
-            }
+        // Flag map as enriched if it had min times, ignored finishes, custom records, or raw top flooded
+        const hasCustomRecord = !!customMapRecords[mLower];
+        const hasMinTimeLimit = !!mapMinTimes[mLower];
+        const hasIgnoredFinish = Array.from(ignoredFinishesSet).some(s => s.endsWith(`|${mLower}`));
+        if (hasMinTimeLimit || hasIgnoredFinish || hasCustomRecord || mapRawTopFlooded[mName]) {
+            enrichedMaps[mName] = true;
         }
+
+        const updatedMapNames = [];
+        if (hasCustomRecord) {
+            mapRecords[mName] = customMapRecords[mLower].time;
+            updatedMapNames.push(`${mName} (Custom Record)`);
+        } else if (cleanList.length > 0) {
+            const newWr = cleanList[0].time;
+            if (mapRecords[mName] !== newWr) {
+                mapRecords[mName] = newWr;
+                enrichedCount++;
+                updatedMapNames.push(`${mName} (New WR by ${cleanList[0].player})`);
+            }
+        } else {
+            mapRecords[mName] = null;
+        }
+    }
 
     console.log(`\n✨ Enriched and re-ranked ${Object.keys(mapRankings).length} maps (${enrichedCount} records updated)!`);
     if (Object.keys(enrichedMaps).length > 0) {
@@ -667,7 +668,7 @@ async function run() {
                     ...pts
                 });
             }
-        } catch (e) {}
+        } catch (e) { }
     }
 
     leaderboard.sort((a, b) => b.newPtsTotal - a.newPtsTotal);
