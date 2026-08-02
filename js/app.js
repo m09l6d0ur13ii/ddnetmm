@@ -45,28 +45,28 @@ function getDict() {
 function renderHeader(activePage = 'home') {
   const dict = getDict().header;
   const headerHtml = `
-    <header style="background:#222222;border-bottom:2px solid #ffa500;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.6);">
-      <div style="max-width:1280px;margin:0 auto;padding:0 0.25em 0 1em;height:3em;display:flex;align-items:center;justify-content:space-between;gap:0.75em;">
+    <header class="site-header" style="background:#222222;border-bottom:2px solid #ffa500;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.6);">
+      <div class="site-header-inner">
 
         <!-- Logo & Discord -->
-        <div style="display:flex;align-items:center;gap:0.6em;flex-wrap:nowrap;">
-          <a href="index.html" style="display:flex;align-items:center;gap:0.5em;text-decoration:none;color:#ffa500;font-weight:bold;font-size:1.1em;white-space:nowrap;">
+        <div class="site-nav">
+          <a href="index.html" class="site-logo" style="display:flex;align-items:center;gap:0.5em;text-decoration:none;color:#ffa500;font-weight:bold;font-size:1.1em;white-space:nowrap;">
             <img src="icon.png" alt="Logo" style="width:24px;height:24px;object-fit:contain;">
             <span>Map Mastery</span>
           </a>
-          <span style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
-          <a href="pvp.html" style="display:inline-flex;align-items:center;gap:0.35em;color:${activePage === 'pvp' ? '#ffa500' : '#dfdede'};font-weight:bold;font-size:0.9em;text-decoration:none;transition:color 0.2s;">
-            <span>⚔️ Player vs Player</span>
+          <span class="site-nav-divider" style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
+          <a href="pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}" style="display:inline-flex;align-items:center;gap:0.35em;color:${activePage === 'pvp' ? '#111111' : '#ffa500'};font-weight:bold;text-decoration:none;">
+            <span>Player vs Player</span>
           </a>
-          <span style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
-          <a href="https://discord.gg/d5FyWS7Tpv" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.35em;color:#5865F2;font-weight:bold;font-size:0.95em;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          <span class="site-nav-divider" style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
+          <a href="https://discord.gg/d5FyWS7Tpv" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.35em;color:#5865F2;font-weight:bold;font-size:0.95em;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 127.14 96.36" fill="#5865F2"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.68 1.76 1.36 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44zm42.24 0c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44z"/></svg>
             <span>teeproject discord</span>
           </a>
         </div>
 
         <!-- Language Toggles & Map Search -->
-        <div style="display:flex;align-items:center;gap:0.75em;flex:1;justify-content:flex-end;">
+        <div class="site-header-tools">
           <!-- Language Toggles -->
           <div style="display:flex;gap:2px;background:#1a1a1a;border:1px solid rgba(0,0,0,0.6);padding:2px;flex-shrink:0;">
             <button onclick="setLang('ru')" style="padding:0.25em 0.7em;font-size:0.8em;font-weight:bold;background:${currentLang === 'ru' ? '#ffa500' : 'transparent'};color:${currentLang === 'ru' ? '#111' : '#9a9a9a'};border:none;">RU</button>
@@ -74,7 +74,7 @@ function renderHeader(activePage = 'home') {
           </div>
 
           <!-- Map Search -->
-          <form id="header-map-search-form" style="width:100%;max-width:28em;display:none;margin-right:0;" class="sm-show">
+          <form id="header-map-search-form" style="width:100%;max-width:28em;margin-right:0;">
             <div style="position:relative;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#9a9a9a;pointer-events:none;"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
               <input
@@ -89,9 +89,6 @@ function renderHeader(activePage = 'home') {
 
       </div>
     </header>
-    <style>
-      @media(min-width:600px){ .sm-show{ display:block !important; } }
-    </style>
   `;
   document.getElementById('header-container').innerHTML = headerHtml;
 
@@ -158,15 +155,14 @@ function renderHeader(activePage = 'home') {
         <div
           class="ac-item"
           data-idx="${i}"
-          style="padding:0.45em 0.75em;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;gap:0.5em;color:#e2e8f0;"
         >
-          <div style="display:flex;flex-direction:column;overflow:hidden;">
-            <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${highlightMatch(m.map, query)}</span>
-            ${m.mapper ? `<span style="font-size:0.75em;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">by ${highlightMatch(m.mapper, query)}</span>` : ''}
+          <div class="ac-map-info">
+            <span class="ac-map-name">${highlightMatch(m.map, query)}</span>
+            ${m.mapper ? `<span class="ac-map-mapper">by ${highlightMatch(m.mapper, query)}</span>` : ''}
           </div>
-          <div style="display:flex;align-items:center;gap:0.4em;white-space:nowrap;flex-shrink:0;">
-            <span style="font-size:0.75em;padding:0.1em 0.4em;border-radius:3px;background:rgba(255,255,255,0.08);color:#cbd5e1;border:1px solid rgba(255,255,255,0.1);">${escHtml(m.server)}</span>
-            <span style="font-size:0.8em;color:#ffa500;font-weight:bold;">${m.points}pts</span>
+          <div class="ac-map-meta">
+            <span class="ac-map-server">${escHtml(m.server)}</span>
+            <span class="ac-map-points">${m.points} PTS</span>
           </div>
         </div>
       `).join('');

@@ -20,6 +20,7 @@
     const btnBanlist = document.getElementById('tab-btn-banlist');
     const headGlobal = document.getElementById('table-header-global');
     const headBanlist = document.getElementById('table-header-banlist');
+    const mobileBanlistSort = document.getElementById('banlist-mobile-sort');
     const loadMoreContainer = document.getElementById('load-more-container');
     const dict = getDict();
 
@@ -34,6 +35,7 @@
 
       headGlobal.classList.remove('hidden');
       headBanlist.classList.add('hidden');
+      mobileBanlistSort.classList.add('hidden');
       loadMoreContainer.classList.add('hidden');
       renderTable();
     } else {
@@ -47,6 +49,7 @@
 
       headGlobal.classList.add('hidden');
       headBanlist.classList.remove('hidden');
+      mobileBanlistSort.classList.remove('hidden');
 
       loadMoreContainer.classList.add('hidden');
       renderBanlistTable();
@@ -68,6 +71,7 @@
   function renderTable() {
     if (currentTab !== 'global') return;
     const tbody = document.getElementById('leaderboard-body');
+    tbody.classList.remove('banlist-mode');
     tbody.innerHTML = '';
 
     if (playersData.length === 0) {
@@ -98,10 +102,8 @@
       const tr = document.createElement('tr');
       tr.className = 'premium-table-row';
 
-      let rankHtml = `<span class="text-slate-500 font-mono">#${currentDisplayRank}</span>`;
-      if (currentDisplayRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-      else if (currentDisplayRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
-      else if (currentDisplayRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
+      let rankHtml = `<span class="global-rank-badge">#${currentDisplayRank}</span>`;
+      if (currentDisplayRank <= 3) rankHtml = `<span class="global-rank-badge ranking-position-${currentDisplayRank}">#${currentDisplayRank}</span>`;
 
       const staticBadge = p.isStatic ? `<span title="${currentLang === 'en' ? 'Cached data' : 'Кэшированные данные'}" style="font-size:0.7em;color:#9a9a9a;margin-left:4px;">📦</span>` : '';
 
@@ -135,28 +137,31 @@
   function updateBanlistSortUI() {
     const keys = ['count', 'wr1', 'top10', 'top50'];
     keys.forEach(k => {
-      const btn = document.getElementById(`sort-btn-${k}`);
-      if (!btn) return;
       const label = k === 'count' ? 'Total' : k === 'wr1' ? '#1 WRs' : k === 'top10' ? '#2-10' : '#11-50';
-      if (banlistSortConfig.key === k) {
-        const arrow = banlistSortConfig.direction === 'desc' ? '▾' : '▴';
-        btn.className = 'px-2.5 py-1 rounded text-xs border border-red-500 bg-red-500/20 text-red-300 font-bold transition-all';
-        btn.textContent = `${label} ${arrow}`;
-      } else {
-        btn.className = 'px-2.5 py-1 rounded text-xs border border-white/10 text-slate-400 hover:bg-white/10 transition-all';
-        btn.textContent = `${label} ▾`;
-      }
+      const buttons = document.querySelectorAll(`#sort-btn-${k}, [data-banlist-sort="${k}"]`);
+      buttons.forEach(btn => {
+        if (banlistSortConfig.key === k) {
+          const arrow = banlistSortConfig.direction === 'desc' ? '▾' : '▴';
+          btn.className = 'px-2.5 py-1 rounded text-xs border border-red-500 bg-red-500/20 text-red-300 font-bold transition-all';
+          btn.textContent = `${label} ${arrow}`;
+        } else {
+          btn.className = 'px-2.5 py-1 rounded text-xs border border-white/10 text-slate-400 hover:bg-white/10 transition-all';
+          btn.textContent = `${label} ▾`;
+        }
+      });
     });
   }
 
   function renderBanlistTable() {
     const tbody = document.getElementById('leaderboard-body');
+    tbody.classList.add('banlist-mode');
     tbody.innerHTML = '';
 
     const rawList = window.blacklistData || [];
     document.getElementById('banlist-count').textContent = rawList.length;
     document.getElementById('table-banned-player').textContent = currentLang === 'en' ? 'Banned Player' : 'Заблокированный игрок';
     document.getElementById('table-banned-status').textContent = currentLang === 'en' ? 'Deleted Records' : 'Удалено рекордов';
+    document.getElementById('banlist-mobile-sort-label').textContent = currentLang === 'en' ? 'Deleted records:' : 'Удалено рекордов:';
 
     updateBanlistSortUI();
 

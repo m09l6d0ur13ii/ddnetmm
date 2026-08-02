@@ -56,7 +56,7 @@
     }
   </script>
 </head>
-<body class="antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
+<body class="page-home antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
   <div id="header-container"></div>
 
   <main class="p-4 md:p-8 animate-fade-in">
@@ -152,7 +152,7 @@
 
       <section class="glass-panel p-8 md:col-span-2">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
-          <div class="flex items-center gap-3 flex-wrap">
+          <div class="main-ranking-tabs">
             <button
               id="tab-btn-global"
               onclick="switchMainTab('global')"
@@ -172,6 +172,16 @@
           </div>
 
           <div class="text-sm text-slate-400 max-w-sm text-right" id="status-message">
+          </div>
+        </div>
+
+        <div id="banlist-mobile-sort" class="banlist-mobile-sort hidden" aria-label="Сортировка удаленных рекордов">
+          <span id="banlist-mobile-sort-label" class="banlist-mobile-sort-label"></span>
+          <div class="banlist-mobile-sort-buttons">
+            <button type="button" data-banlist-sort="count" onclick="requestBanlistSort('count')">Total ▾</button>
+            <button type="button" data-banlist-sort="wr1" onclick="requestBanlistSort('wr1')">#1 WRs ▾</button>
+            <button type="button" data-banlist-sort="top10" onclick="requestBanlistSort('top10')">#2-10 ▾</button>
+            <button type="button" data-banlist-sort="top50" onclick="requestBanlistSort('top50')">#11-50 ▾</button>
           </div>
         </div>
 
