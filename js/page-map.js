@@ -103,10 +103,10 @@
               tagsHtml += `<span class="server-badge ${getServerBadgeClass(mapInfo.server)}">${escapeHtml(mapInfo.server)}</span>`;
             }
             if (mapInfo.points) {
-              tagsHtml += `<span class="text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2.5 py-0.5 border border-emerald-500/30 text-xs">Base: ${mapInfo.points} PTS</span>`;
+              tagsHtml += `<span class="map-meta-points">Base: ${mapInfo.points} PTS</span>`;
             }
             if (mapInfo.mapper) {
-              tagsHtml += `<span class="text-slate-400 text-xs font-medium">by <strong class="text-slate-200">${escapeHtml(mapInfo.mapper)}</strong></span>`;
+              tagsHtml += `<span class="map-meta-mapper">by <strong>${escapeHtml(mapInfo.mapper)}</strong></span>`;
             }
           }
           metaTagsContainer.innerHTML = tagsHtml;
@@ -177,10 +177,8 @@
             const gapPct = Math.max(0, (timeRatio - 1) * 100);
             const pSkill = Math.floor(pMaxBonus * Math.exp(-data.s * (Math.max(1, timeRatio) - 1)));
 
-            let rankHtml = `<span class="text-slate-400 font-mono font-bold">#${displayRank}</span>`;
-            if (displayRank === 1) rankHtml = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-            else if (displayRank === 2) rankHtml = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded font-bold text-sm">#2</span>`;
-            else if (displayRank === 3) rankHtml = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded font-bold text-sm">#3</span>`;
+            let rankHtml = `<span class="ranking-position-badge">#${displayRank}</span>`;
+            if (displayRank <= 3) rankHtml = `<span class="ranking-position-badge ranking-position-${displayRank}">#${displayRank}</span>`;
 
             const playersHtml = group.players.map(pName =>
               `<a href="player.html?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`

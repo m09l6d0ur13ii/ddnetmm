@@ -176,7 +176,7 @@
             <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
             <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
             <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-            <td class="p-4 font-bold text-amber-300 text-center">#${map.rank}</td>
+            <td class="p-4 font-bold text-amber-300 text-center"><span class="ranking-position-badge ranking-position-${map.rank <= 3 ? map.rank : 'other'}">#${map.rank}</span></td>
           `;
           tbody.appendChild(tr);
         });
