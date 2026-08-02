@@ -129,7 +129,11 @@
         const renderLeaderboardRows = (rowsList) => {
           const grouped = [];
           rowsList.forEach((row) => {
-            const rowNames = String(row.player).split(/[,&]+/).map(n => n.trim()).filter(Boolean);
+            const cleanName = (n) => String(n).replace(/[\u200B-\u200D\uFEFF\uDB40\uDC00-\uDC7F]/g, '').trim();
+            const rowNames = String(row.player)
+              .split(/[,&]+/)
+              .map(n => n.trim())
+              .filter(n => n && cleanName(n).length > 0);
             const last = grouped[grouped.length - 1];
 
             const isSameTeam = last &&

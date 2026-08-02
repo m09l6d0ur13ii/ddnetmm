@@ -111,6 +111,22 @@ async function fetchPlayerPts(playerName) {
         newPtsSkill += pSkill;
       }
 
+      // Pick rank: team_rank.rank on team maps if available, or finish.rank
+      const rawRank = (finish.team_rank && finish.team_rank.rank) ? finish.team_rank.rank : (finish.rank || 0);
+
+      // Check cleaned MapMastery rank if window.mapRankingsData is present
+      let mmRank = rawRank;
+      if (window.mapRankingsData && window.mapRankingsData[mapName]) {
+        const rankings = window.mapRankingsData[mapName];
+        const idx = rankings.findIndex(r => {
+          const pNames = String(r.player || r.name || '').toLowerCase().split(/[,/&]+/).map(s => s.trim());
+          return pNames.includes(playerName.toLowerCase());
+        });
+        if (idx !== -1) {
+          mmRank = rankings[idx].rank || (idx + 1);
+        }
+      }
+
       finishDetails.push({
         mapName,
         server,
@@ -119,7 +135,7 @@ async function fetchPlayerPts(playerName) {
         time: finish.time,
         timeRatio,
         record: tBest,
-        rank: finish.rank || 0,
+        rank: mmRank,
       });
     }
 

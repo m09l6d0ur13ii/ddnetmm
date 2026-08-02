@@ -505,17 +505,39 @@ async function run() {
                 for (const f of pData.finishes) {
                     if (!f.map || !f.map.map || !f.time) continue;
                     const mName = f.map.map;
+                    const mLower = mName.toLowerCase();
                     const pTime = f.time;
+
+                    // Selective enrichment: only enrich maps that are flooded by TASers or have custom/min time rules
+                    const needsEnrichment = mapRawTopFlooded[mName] || customMapRecords[mLower] || mapMinTimes[mLower] || Array.from(ignoredFinishesSet).some(s => s.endsWith(`|${mLower}`));
+                    if (!needsEnrichment) continue;
+
+                    const mapInfo = mapsRawMap[mName];
+                    const isTeamCat = mapInfo && mapInfo.server !== 'Solo' && mapInfo.server !== 'Race' && mapInfo.server !== 'Dummy';
+
+                    let teamPlayers = [p.name];
+                    let isTeamRank = false;
+
+                    if (f.team_rank && Array.isArray(f.team_rank.players) && f.team_rank.players.length > 0) {
+                        teamPlayers = f.team_rank.players.map(n => String(n).trim()).filter(Boolean);
+                        isTeamRank = true;
+                    }
+
+                    // Reject solo finishes on team category maps
+                    if (isTeamCat && (!isTeamRank || teamPlayers.length < 2)) continue;
+
+                    const playerStr = teamPlayers.join(' & ');
 
                     if (!isFinishAllowed(p.name, mName, pTime, blacklistSet, mapMinTimes, ignoredFinishesSet)) continue;
 
                     if (!mapRankings[mName]) mapRankings[mName] = [];
 
                     mapRankings[mName].push({
-                        player: p.name,
-                        name: p.name,
+                        player: playerStr,
+                        name: playerStr,
                         time: pTime,
-                        timestamp: f.timestamp || null
+                        timestamp: f.timestamp || null,
+                        isTeamRank
                     });
                 }
             }));
@@ -534,33 +556,40 @@ async function run() {
         list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
 
         let cleanList = [];
-        const isTeamCategory = mapsRawMap[mName] && mapsRawMap[mName].server !== 'Solo' && mapsRawMap[mName].server !== 'Race';
+        const isTeamCategory = mapsRawMap[mName] && mapsRawMap[mName].server !== 'Solo' && mapsRawMap[mName].server !== 'Race' && mapsRawMap[mName].server !== 'Dummy';
 
         if (isTeamCategory) {
             // Group finishes by time + timestamp to form team entries (PlayerA & PlayerB)
             // AND allow a player to appear in multiple distinct team ranks with different teams/times!
             const teamMap = new Map();
+            const cleanNameStr = (n) => String(n).replace(/[\u200B-\u200D\uFEFF\uDB40\uDC00-\uDC7F]/g, '').trim();
             for (const r of list) {
                 const timeKey = `${r.time.toFixed(2)}|${r.timestamp || ''}`;
                 if (!teamMap.has(timeKey)) {
-                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(n => n && cleanNameStr(n).length > 0);
                     teamMap.set(timeKey, { ...r, playersSet: new Set(pNames) });
                 } else {
                     const existing = teamMap.get(timeKey);
-                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+                    const pNames = (r.player || r.name || '').split(/[,/&]+/).map(p => p.trim()).filter(n => n && cleanNameStr(n).length > 0);
                     pNames.forEach(p => existing.playersSet.add(p));
                 }
             }
 
-            cleanList = Array.from(teamMap.values()).map(r => {
-                const pArray = Array.from(r.playersSet);
-                return {
-                    player: pArray.join(' & '),
-                    time: r.time,
-                    timestamp: r.timestamp || null,
-                    isTeamRank: true
-                };
-            });
+            cleanList = Array.from(teamMap.values())
+                .map(r => {
+                    const pArray = Array.from(r.playersSet);
+                    return {
+                        player: pArray.join(' & '),
+                        time: r.time,
+                        timestamp: r.timestamp || null,
+                        isTeamRank: true
+                    };
+                })
+                .filter(r => {
+                    // Reject single player entries on team category maps
+                    const pArray = r.player.split(' & ').map(p => p.trim()).filter(Boolean);
+                    return pArray.length >= 2;
+                });
         } else {
             // Solo map: keep player's single best time
             const playerBest = new Map();
