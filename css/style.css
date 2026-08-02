@@ -1048,28 +1048,5 @@ a:hover { color: var(--accent-hover); }
   }
 }
 
-/* Unsupported screen height overlay (< 250px) */
-@media (max-height: 249px) {
-  html::before {
-    content: "Сайт не поддерживается на вашем устройстве";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000000;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    z-index: 2147483647;
-    padding: 1rem;
-    box-sizing: border-box;
-  }
-}
 
 
