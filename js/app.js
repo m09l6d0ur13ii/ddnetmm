@@ -50,12 +50,12 @@ function renderHeader(activePage = 'home') {
 
         <!-- Logo & Discord -->
         <div class="site-nav">
-          <a href="./" class="site-logo">
-            <span class="site-logo-mark"><img src="icon.png" alt="Logo"></span>
+          <a href="/" class="site-logo">
+            <span class="site-logo-mark"><img src="/icon.png" alt="Logo"></span>
             <span class="site-logo-type"><strong>MAP MASTERY</strong><small>DDNET // PTS</small></span>
           </a>
           <span class="site-nav-divider">/</span>
-          <a href="pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
+          <a href="/pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
             <span>Player vs Player</span>
           </a>
           <span class="site-nav-divider">/</span>
@@ -138,7 +138,7 @@ function renderHeader(activePage = 'home') {
       if (!items.length) { dropdown.style.display = 'none'; return; }
 
       dropdown.innerHTML = items.map((m, i) => `
-        <a class="ac-item" data-idx="${i}" href="map.html?name=${encodeURIComponent(m.map)}">
+        <a class="ac-item" data-idx="${i}" href="/map.html?name=${encodeURIComponent(m.map)}">
           <div class="ac-map-info">
             <span class="ac-map-name">${highlightMatch(m.map, query)}</span>
             ${m.mapper ? `<span class="ac-map-mapper">by ${highlightMatch(m.mapper, query)}</span>` : ''}
@@ -280,7 +280,7 @@ function setupPlayerAutocomplete(inputId, onSelect = null) {
       items.forEach((pName, idx) => {
         const itemEl = document.createElement('a');
         itemEl.className = 'ac-player-item';
-        itemEl.href = `player.html?name=${encodeURIComponent(pName)}`;
+        itemEl.href = `/player.html?name=${encodeURIComponent(pName)}`;
 
         const pLower = pName.toLowerCase();
         const matchIndex = pLower.indexOf(lowerQ);
