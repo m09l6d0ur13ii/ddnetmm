@@ -31,7 +31,7 @@
     const playerName = urlParams.get('name');
 
     if (!playerName) {
-      window.location.href = 'index.html';
+      window.location.href = './';
       return;
     }
 

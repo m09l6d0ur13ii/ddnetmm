@@ -48,7 +48,7 @@
     const mapQuery  = urlParams.get('name');
 
     if (!mapQuery) {
-      window.location.href = 'index.html';
+      window.location.href = './';
       return;
     }
 

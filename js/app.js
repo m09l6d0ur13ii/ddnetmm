@@ -50,7 +50,7 @@ function renderHeader(activePage = 'home') {
 
         <!-- Logo & Discord -->
         <div class="site-nav">
-          <a href="index.html" class="site-logo">
+          <a href="./" class="site-logo">
             <span class="site-logo-mark"><img src="icon.png" alt="Logo"></span>
             <span class="site-logo-type"><strong>MAP MASTERY</strong><small>DDNET // PTS</small></span>
           </a>
