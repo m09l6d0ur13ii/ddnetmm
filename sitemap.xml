@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/</loc>
+    <loc>https://ddnetmm.ru/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/about.html</loc>
+    <loc>https://ddnetmm.ru/about.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/map.html</loc>
+    <loc>https://ddnetmm.ru/map.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/player.html</loc>
+    <loc>https://ddnetmm.ru/player.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/pvp.html</loc>
+    <loc>https://ddnetmm.ru/pvp.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://m09l6d0ur13ii.github.io/ddnetmm/compare.html</loc>
+    <loc>https://ddnetmm.ru/compare.html</loc>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ddnetmm.ru/privacy.html</loc>
+    <priority>0.5</priority>
   </url>
 </urlset>
