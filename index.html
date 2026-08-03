@@ -43,7 +43,7 @@
   <script src="js/tailwindcss.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20260803-30">
   <script>
     tailwind.config = {
       theme: {
@@ -56,32 +56,40 @@
     }
   </script>
 </head>
-<body class="page-home antialiased text-slate-200 font-sans min-h-screen" style="background-color:#2d2d2d;">
+<body class="page-home antialiased text-slate-200 font-sans min-h-screen">
   <div id="header-container"></div>
 
-  <main class="p-4 md:p-8 animate-fade-in">
-    <header class="max-w-7xl mx-auto mb-12 text-center space-y-4">
-      <div style="display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;" id="icon-trophy">
-        <img src="icon.png" alt="Logo" style="width:64px;height:64px;object-fit:contain;">
+  <main class="home-shell p-4 md:p-8 animate-fade-in">
+    <header class="home-hero max-w-7xl mx-auto mb-12 text-center space-y-4">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-orbit" id="icon-trophy">
+        <span class="hero-orbit-ring" aria-hidden="true"></span>
+        <img src="icon.png" alt="Logo">
       </div>
+      <div class="hero-kicker"><span></span> DDNET PERFORMANCE INDEX <span></span></div>
       <h1 class="text-5xl md:text-7xl font-black tracking-tight bg-gradient-to-br from-white via-slate-200 to-slate-500 bg-clip-text text-transparent drop-shadow-sm" id="home-title">
       </h1>
       <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto" id="home-subtitle">
       </p>
-      <div class="pt-4 flex flex-wrap justify-center gap-4">
-        <a href="about.html" style="display:inline-flex;align-items:center;gap:0.5em;padding:0.6em 1.4em;border:1px solid rgba(255,255,255,0.15);font-size:0.875em;font-weight:500;color:#dfdede;text-decoration:none;" onmouseover="this.style.borderColor='#ffa500';this.style.color='#ffa500'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='#dfdede'">
+      <div class="hero-actions pt-4 flex flex-wrap justify-center gap-4">
+        <a href="about.html" class="hero-button hero-button-muted">
           <span id="home-about-btn"></span> <span id="icon-arrow-right-1"></span>
         </a>
-        <a href="compare.html" style="display:inline-flex;align-items:center;gap:0.5em;padding:0.6em 1.4em;border:1px solid rgba(255,165,0,0.5);font-size:0.875em;font-weight:500;color:#ffa500;text-decoration:none;" onmouseover="this.style.borderColor='#ffa500'" onmouseout="this.style.borderColor='rgba(255,165,0,0.5)'">
+        <a href="compare.html" class="hero-button hero-button-primary">
           <span id="home-compare-btn"></span> <span id="icon-arrow-right-2"></span>
         </a>
       </div>
     </header>
 
-    <section class="max-w-7xl mx-auto mb-12 glass-panel p-8">
-      <h2 class="text-2xl font-bold mb-6 text-white border-b border-slate-800 pb-4" id="home-how-it-works"></h2>
+    <section class="formula-panel max-w-7xl mx-auto mb-12 glass-panel p-8" data-reveal>
+      <div class="section-heading">
+        <span class="section-index">01</span>
+        <h2 class="text-2xl font-bold text-white" id="home-how-it-works"></h2>
+        <span class="section-line"></span>
+        <span class="section-tag" id="scoring-logic-label"></span>
+      </div>
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="space-y-6 text-slate-300">
+        <div class="formula-column space-y-6 text-slate-300">
           <div class="bg-slate-900/50 p-4 rounded-lg flex items-center justify-center overflow-x-auto" id="math-1"></div>
           <div class="space-y-2">
             <p><strong id="home-base-pts-title"></strong>: <span id="home-base-pts-desc"></span></p>
@@ -89,7 +97,7 @@
           </div>
         </div>
 
-        <div class="space-y-4 text-slate-300">
+        <div class="formula-column space-y-4 text-slate-300">
           <p>
             <strong id="home-skill-pts-title"></strong>: <span id="home-skill-pts-desc"></span>
             <span id="math-3"></span> <span id="home-skill-pts-and"></span> <span id="math-4"></span>.
@@ -102,8 +110,9 @@
       </div>
     </section>
 
-    <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      <section class="glass-panel p-8 h-fit md:col-span-1 space-y-6">
+    <div class="home-dashboard grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
+      <section class="player-search-panel glass-panel p-8 h-fit md:col-span-1 space-y-6" data-reveal>
+        <div class="panel-label" id="player-scan-label"></div>
         <h2 class="text-xl font-bold" id="search-title"></h2>
         <form id="player-search-form" class="flex gap-2">
           <input
@@ -122,7 +131,7 @@
 
         <p id="search-error" class="text-red-400 text-sm hidden"></p>
 
-        <div id="search-result" style="background:#222222;border:2px solid #ffa500;padding:1.1rem;box-shadow:0 4px 16px rgba(0,0,0,0.6);" class="space-y-3 hidden">
+        <div id="search-result" class="search-result-card space-y-3 hidden">
           <div class="flex items-center justify-between gap-2">
             <h3 class="font-bold text-xl overflow-hidden text-ellipsis">
               <a id="search-result-name" href="#" class="text-primary hover:text-amber-300 hover:underline transition-colors"></a>
@@ -150,8 +159,9 @@
         </div>
       </section>
 
-      <section class="glass-panel p-8 md:col-span-2">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
+      <section class="leaderboard-panel glass-panel p-8 md:col-span-2">
+        <div class="panel-label" id="global-telemetry-label"></div>
+        <div class="leaderboard-toolbar flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
           <div class="main-ranking-tabs">
             <button
               id="tab-btn-global"
@@ -177,11 +187,11 @@
 
         <div id="banlist-mobile-sort" class="banlist-mobile-sort hidden" aria-label="Сортировка удаленных рекордов">
           <span id="banlist-mobile-sort-label" class="banlist-mobile-sort-label"></span>
-          <div class="banlist-mobile-sort-buttons">
-            <button type="button" data-banlist-sort="count" onclick="requestBanlistSort('count')">Total ▾</button>
-            <button type="button" data-banlist-sort="wr1" onclick="requestBanlistSort('wr1')">#1 WRs ▾</button>
-            <button type="button" data-banlist-sort="top10" onclick="requestBanlistSort('top10')">#2-10 ▾</button>
-            <button type="button" data-banlist-sort="top50" onclick="requestBanlistSort('top50')">#11-50 ▾</button>
+          <div class="banlist-sort-grid banlist-mobile-sort-buttons">
+            <button type="button" class="banlist-sort-btn" data-banlist-sort="count" onclick="requestBanlistSort('count')">Total ▾</button>
+            <button type="button" class="banlist-sort-btn" data-banlist-sort="wr1" onclick="requestBanlistSort('wr1')">#1 WRs ▾</button>
+            <button type="button" class="banlist-sort-btn" data-banlist-sort="top10" onclick="requestBanlistSort('top10')">#2-10 ▾</button>
+            <button type="button" class="banlist-sort-btn" data-banlist-sort="top50" onclick="requestBanlistSort('top50')">#11-50 ▾</button>
           </div>
         </div>
 
@@ -214,12 +224,14 @@
                   <div class="flex items-center gap-1"><span id="table-banned-player"></span> <span id="icon-ban-name-arrow"></span></div>
                 </th>
                 <th class="p-4 font-semibold text-right">
-                  <div class="flex items-center justify-end gap-1.5 flex-wrap">
-                    <span id="table-banned-status" class="mr-1"></span>
-                    <button onclick="requestBanlistSort('count')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-count">Total ▾</button>
-                    <button onclick="requestBanlistSort('wr1')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-wr1">#1 WRs ▾</button>
-                    <button onclick="requestBanlistSort('top10')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-top10">#2-10 ▾</button>
-                    <button onclick="requestBanlistSort('top50')" class="px-2.5 py-1 rounded text-xs border transition-all" id="sort-btn-top50">#11-50 ▾</button>
+                  <div class="banlist-head-controls">
+                    <span id="table-banned-status"></span>
+                    <div class="banlist-sort-grid">
+                      <button onclick="requestBanlistSort('count')" class="banlist-sort-btn" id="sort-btn-count">Total ▾</button>
+                      <button onclick="requestBanlistSort('wr1')" class="banlist-sort-btn" id="sort-btn-wr1">#1 WRs ▾</button>
+                      <button onclick="requestBanlistSort('top10')" class="banlist-sort-btn" id="sort-btn-top10">#2-10 ▾</button>
+                      <button onclick="requestBanlistSort('top50')" class="banlist-sort-btn" id="sort-btn-top50">#11-50 ▾</button>
+                    </div>
                   </div>
                 </th>
               </tr>
@@ -242,17 +254,18 @@
         </div>
       </section>
     </div>
+
   </main>
 
-  <script defer src="data/maps.js"></script>
-  <script defer src="data/unique_players.js"></script>
-  <script defer src="data/leaderboard.js"></script>
-  <script defer src="data/map_records.js"></script>
-  <script defer src="data/map_stats.js"></script>
-  <script defer src="data/blacklist.js"></script>
+  <script defer src="data/maps.js?v=a1601ea"></script>
+  <script defer src="data/unique_players.js?v=a1601ea"></script>
+  <script defer src="data/leaderboard.js?v=a1601ea"></script>
+  <script defer src="data/map_records.js?v=a1601ea"></script>
+  <script defer src="data/map_stats.js?v=a1601ea"></script>
+  <script defer src="data/blacklist.js?v=a1601ea"></script>
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/api.js"></script>
-  <script defer src="js/app.js"></script>
-  <script defer src="js/page-index.js"></script>
+  <script defer src="js/api.js?v=a1601ea"></script>
+  <script defer src="js/app.js?v=20260803-9"></script>
+  <script defer src="js/page-index.js?v=20260803-26"></script>
 </body>
 </html>

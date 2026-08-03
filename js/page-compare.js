@@ -56,21 +56,21 @@
 
     const container = document.getElementById('scenarios-container');
 
-    Chart.defaults.color = '#94a3b8';
-    Chart.defaults.font.family = 'sans-serif';
+    Chart.defaults.color = '#85878d';
+    Chart.defaults.font.family = 'Arial Narrow, Segoe UI, sans-serif';
 
     scenarios.forEach((scenario, i) => {
       const div = document.createElement('div');
-      div.style.cssText =
-        'background:#3e3e3e;border:1px solid rgba(0,0,0,0.6);padding:1.5em;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(0,0,0,0.5);';
+      div.className = 'compare-scenario glass-panel p-6 md:p-8 space-y-6';
       div.innerHTML = `
-        <div class="mb-6">
-          <div class="flex items-center gap-2 mb-2">
+        <div class="compare-scenario-heading">
+          <div class="compare-scenario-number">${String(i + 1).padStart(2, '0')}</div>
+          <div class="min-w-0">
             <h3 class="font-bold text-xl text-white">${escapeHtml(scenario.name)}</h3>
+            <p class="text-sm text-slate-400">${scenario.desc}</p>
           </div>
-          <p class="text-sm text-slate-400">${scenario.desc}</p>
         </div>
-        <div class="flex-1 h-64 min-h-[250px] relative">
+        <div class="compare-chart-surface h-64 min-h-[250px] relative">
           <canvas id="chart-${i}"></canvas>
         </div>
       `;
@@ -85,8 +85,8 @@
             {
               label: 'Vanilla DDNet',
               data: scenario.ddnetData,
-              borderColor: '#ef4444',
-              backgroundColor: '#ef4444',
+              borderColor: '#f06b62',
+              backgroundColor: '#f06b62',
               stepped: true,
               borderWidth: 2,
               pointRadius: 4,
@@ -95,8 +95,8 @@
             {
               label: 'Map Mastery',
               data: scenario.masteryData,
-              borderColor: '#10b981',
-              backgroundColor: '#10b981',
+              borderColor: '#ff9d2e',
+              backgroundColor: '#ff9d2e',
               tension: 0.4,
               borderWidth: 3,
               pointRadius: 4,
@@ -108,19 +108,19 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'top', labels: { color: '#cbd5e1' } },
+            legend: { position: 'top', align: 'end', labels: { color: '#b7b5b0', usePointStyle: true, boxWidth: 8, padding: 18 } },
             tooltip: {
-              backgroundColor: '#2a2a2a',
-              borderColor: '#555',
+              backgroundColor: '#111215',
+              borderColor: 'rgba(255,157,46,.35)',
               borderWidth: 1,
-              titleColor: '#9a9a9a',
-              bodyColor: '#dfdede',
+              titleColor: '#85878d',
+              bodyColor: '#f2f0e9',
               padding: 10,
             },
           },
           scales: {
-            x: { grid: { color: '#334155', tickColor: 'transparent' }, ticks: { color: '#64748b' } },
-            y: { grid: { color: '#334155' }, ticks: { color: '#64748b' } },
+            x: { grid: { color: 'rgba(255,255,255,.055)', tickColor: 'transparent' }, ticks: { color: '#686a70' } },
+            y: { grid: { color: 'rgba(255,255,255,.055)' }, ticks: { color: '#686a70' } },
           },
         },
       });

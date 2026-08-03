@@ -66,7 +66,7 @@
     const pvp = dict.pvp || {};
 
     document.getElementById('pvp-back').textContent = pvp.back || 'На главную';
-    document.getElementById('pvp-title').textContent = pvp.title || 'Player vs Player ⚔️';
+    document.getElementById('pvp-title-text').textContent = (pvp.title || 'Player vs Player').replace(/\s*⚔️?\s*/g, ' ').trim();
     document.getElementById('pvp-subtitle').textContent = pvp.subtitle || '';
     document.getElementById('lbl-pvp-p1').textContent = pvp.player1 || 'Игрок 1';
     document.getElementById('lbl-pvp-p2').textContent = pvp.player2 || 'Игрок 2';
@@ -229,6 +229,13 @@
     let currentFilter = 'all';
     const ties = commonMaps.length - p1Wins - p2Wins;
 
+    const mapSuggestions = document.getElementById('pvp-map-suggestions');
+    if (mapSuggestions) {
+      mapSuggestions.innerHTML = commonMaps
+        .map(m => `<option value="${escapeHtml(m.mapName)}"></option>`)
+        .join('');
+    }
+
     // Filter Buttons Labels & Setup
     const btnAll = document.getElementById('btn-pvp-filter-all');
     const btnP1  = document.getElementById('btn-pvp-filter-p1');
@@ -312,7 +319,9 @@
       });
     };
 
-    document.getElementById('pvp-map-search').addEventListener('input', renderTable);
+    const mapSearch = document.getElementById('pvp-map-search');
+    mapSearch.addEventListener('input', renderTable);
+    mapSearch.addEventListener('change', renderTable);
     renderTable();
 
     document.getElementById('pvp-results').classList.remove('hidden');

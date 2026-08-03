@@ -259,7 +259,7 @@ async function getTopPlayersLive(limit = Infinity, onProgress = null) {
 function loadMapRankingFile(mapName) {
   return new Promise((resolve) => {
     const safe = mapName.replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
-    const src = `data/rankings/${encodeURIComponent(safe)}.js`;
+  const src = `data/rankings/${encodeURIComponent(safe)}.js?v=a1601ea`;
 
     const old = document.getElementById('map-ranking-script');
     if (old) old.remove();

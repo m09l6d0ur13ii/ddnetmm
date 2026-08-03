@@ -45,21 +45,21 @@ function getDict() {
 function renderHeader(activePage = 'home') {
   const dict = getDict().header;
   const headerHtml = `
-    <header class="site-header" style="background:#222222;border-bottom:2px solid #ffa500;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.6);">
+    <header class="site-header">
       <div class="site-header-inner">
 
         <!-- Logo & Discord -->
         <div class="site-nav">
-          <a href="index.html" class="site-logo" style="display:flex;align-items:center;gap:0.5em;text-decoration:none;color:#ffa500;font-weight:bold;font-size:1.1em;white-space:nowrap;">
-            <img src="icon.png" alt="Logo" style="width:24px;height:24px;object-fit:contain;">
-            <span>Map Mastery</span>
+          <a href="index.html" class="site-logo">
+            <span class="site-logo-mark"><img src="icon.png" alt="Logo"></span>
+            <span class="site-logo-type"><strong>MAP MASTERY</strong><small>DDNET // PTS</small></span>
           </a>
-          <span class="site-nav-divider" style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
-          <a href="pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}" style="display:inline-flex;align-items:center;gap:0.35em;color:${activePage === 'pvp' ? '#111111' : '#ffa500'};font-weight:bold;text-decoration:none;">
+          <span class="site-nav-divider">/</span>
+          <a href="pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
             <span>Player vs Player</span>
           </a>
-          <span class="site-nav-divider" style="color:#555555;font-weight:bold;font-size:1em;user-select:none;">|</span>
-          <a href="https://discord.gg/d5FyWS7Tpv" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.35em;color:#5865F2;font-weight:bold;font-size:0.95em;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          <span class="site-nav-divider">/</span>
+          <a href="https://discord.gg/d5FyWS7Tpv" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 127.14 96.36" fill="#5865F2"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.68 1.76 1.36 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44zm42.24 0c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44z"/></svg>
             <span>teeproject discord</span>
           </a>
@@ -68,20 +68,20 @@ function renderHeader(activePage = 'home') {
         <!-- Language Toggles & Map Search -->
         <div class="site-header-tools">
           <!-- Language Toggles -->
-          <div style="display:flex;gap:2px;background:#1a1a1a;border:1px solid rgba(0,0,0,0.6);padding:2px;flex-shrink:0;">
-            <button onclick="setLang('ru')" style="padding:0.25em 0.7em;font-size:0.8em;font-weight:bold;background:${currentLang === 'ru' ? '#ffa500' : 'transparent'};color:${currentLang === 'ru' ? '#111' : '#9a9a9a'};border:none;">RU</button>
-            <button onclick="setLang('en')" style="padding:0.25em 0.7em;font-size:0.8em;font-weight:bold;background:${currentLang === 'en' ? '#ffa500' : 'transparent'};color:${currentLang === 'en' ? '#111' : '#9a9a9a'};border:none;">EN</button>
+          <div class="language-toggle">
+            <button onclick="setLang('ru')" class="${currentLang === 'ru' ? 'is-active' : ''}">RU</button>
+            <button onclick="setLang('en')" class="${currentLang === 'en' ? 'is-active' : ''}">EN</button>
           </div>
 
           <!-- Map Search -->
-          <form id="header-map-search-form" style="width:100%;max-width:28em;margin-right:0;">
-            <div style="position:relative;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#9a9a9a;pointer-events:none;"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <form id="header-map-search-form">
+            <div class="header-search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
               <input
                 type="text"
                 id="header-map-search-input"
                 placeholder="${currentLang === 'ru' ? 'Поиск карты (напр: Kintaro)' : 'Search map (e.g. Kintaro)'}"
-                style="width:100%;padding:0.35em 0.75em 0.35em 2.2em;font-size:0.9em;box-sizing:border-box;background:#ffffff;color:#000000;border:2px solid rgba(0,0,0,0.4);font-weight:600;"
+                autocomplete="off"
               />
             </div>
           </form>
@@ -114,21 +114,7 @@ function renderHeader(activePage = 'home') {
 
     const dropdown = document.createElement('div');
     dropdown.id = 'map-autocomplete';
-    dropdown.style.cssText = [
-      'display:none',
-      'position:absolute',
-      'top:calc(100% + 4px)',
-      'left:0',
-      'right:0',
-      'background:#1e1e1e',
-      'border:1px solid rgba(255,165,0,0.6)',
-      'border-radius:4px',
-      'max-height:280px',
-      'overflow-y:auto',
-      'z-index:9999',
-      'box-shadow:0 8px 24px rgba(0,0,0,0.8)',
-      'font-size:0.88em'
-    ].join(';');
+    dropdown.style.display = 'none';
     wrap.appendChild(dropdown);
 
     let activeIdx = -1;
@@ -152,10 +138,7 @@ function renderHeader(activePage = 'home') {
       if (!items.length) { dropdown.style.display = 'none'; return; }
 
       dropdown.innerHTML = items.map((m, i) => `
-        <div
-          class="ac-item"
-          data-idx="${i}"
-        >
+        <a class="ac-item" data-idx="${i}" href="map.html?name=${encodeURIComponent(m.map)}">
           <div class="ac-map-info">
             <span class="ac-map-name">${highlightMatch(m.map, query)}</span>
             ${m.mapper ? `<span class="ac-map-mapper">by ${highlightMatch(m.mapper, query)}</span>` : ''}
@@ -164,7 +147,7 @@ function renderHeader(activePage = 'home') {
             <span class="ac-map-server">${escHtml(m.server)}</span>
             <span class="ac-map-points">${m.points} PTS</span>
           </div>
-        </div>
+        </a>
       `).join('');
 
       dropdown.style.display = 'block';
@@ -172,10 +155,6 @@ function renderHeader(activePage = 'home') {
       dropdown.querySelectorAll('.ac-item').forEach(el => {
         el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
         el.addEventListener('mouseleave', () => setActive(-1));
-        el.addEventListener('mousedown', (e) => {
-          e.preventDefault();
-          selectItem(+el.dataset.idx);
-        });
       });
     }
 
@@ -183,8 +162,7 @@ function renderHeader(activePage = 'home') {
       activeIdx = idx;
       dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
         const isAct = i === idx;
-        el.style.background = isAct ? '#ffa500' : 'transparent';
-        el.style.color      = isAct ? '#111111' : '#e2e8f0';
+        el.classList.toggle('is-active', isAct);
         
         const hls = el.querySelectorAll('.ac-hl');
         hls.forEach(h => {
@@ -278,10 +256,12 @@ function setupPlayerAutocomplete(inputId, onSelect = null) {
       input.style.width = '100%';
       input.style.boxSizing = 'border-box';
     }
+    wrap.classList.add('player-autocomplete-wrap');
 
     const dropdown = document.createElement('div');
     dropdown.id = inputId + '-autocomplete';
-    dropdown.style.cssText = 'position:absolute;left:0;top:100%;right:0;z-index:999;background:#1a1a1a;border:2px solid #ffa500;max-height:180px;overflow-y:auto;display:none;box-shadow:0 4px 16px rgba(0,0,0,0.8);margin-top:2px;box-sizing:border-box;';
+    dropdown.className = 'player-autocomplete';
+    dropdown.style.display = 'none';
     wrap.appendChild(dropdown);
 
     let activeIdx = -1;
@@ -298,9 +278,9 @@ function setupPlayerAutocomplete(inputId, onSelect = null) {
 
       const lowerQ = query.toLowerCase();
       items.forEach((pName, idx) => {
-        const itemEl = document.createElement('div');
+        const itemEl = document.createElement('a');
         itemEl.className = 'ac-player-item';
-        itemEl.style.cssText = 'padding:0.35em 0.7em;cursor:pointer;font-size:0.85em;color:#ffffff;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+        itemEl.href = `player.html?name=${encodeURIComponent(pName)}`;
 
         const pLower = pName.toLowerCase();
         const matchIndex = pLower.indexOf(lowerQ);
@@ -315,12 +295,12 @@ function setupPlayerAutocomplete(inputId, onSelect = null) {
         itemEl.innerHTML = `<div style="overflow:hidden;text-overflow:ellipsis;">${nameHtml}</div>`;
 
         itemEl.addEventListener('mouseenter', () => setActive(idx));
-        itemEl.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          selectItem(idx);
-        });
-
+        if (typeof onSelect === 'function') {
+          itemEl.addEventListener('click', (e) => {
+            e.preventDefault();
+            selectItem(idx);
+          });
+        }
         dropdown.appendChild(itemEl);
       });
 
@@ -332,8 +312,7 @@ function setupPlayerAutocomplete(inputId, onSelect = null) {
       const items = dropdown.querySelectorAll('.ac-player-item');
       items.forEach((el, i) => {
         const isAct = i === idx;
-        el.style.background = isAct ? '#ffa500' : 'transparent';
-        el.style.color = isAct ? '#111111' : '#ffffff';
+        el.classList.toggle('is-active', isAct);
         const hl = el.querySelector('span[style*="color:#ffa500"]');
         if (hl) hl.style.color = isAct ? '#000000' : '#ffa500';
       });
@@ -419,3 +398,34 @@ const icons = {
 };
 
 initLang();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const panels = document.querySelectorAll('.glass-panel:not(.leaderboard-panel)');
+
+  if (hasFinePointer && !reducedMotion) {
+    panels.forEach(panel => {
+      let frame = 0;
+      panel.addEventListener('pointermove', event => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => {
+          const rect = panel.getBoundingClientRect();
+          panel.style.setProperty('--pointer-x', `${event.clientX - rect.left}px`);
+          panel.style.setProperty('--pointer-y', `${event.clientY - rect.top}px`);
+          frame = 0;
+        });
+      }, { passive: true });
+    });
+  }
+
+  if (reducedMotion) return;
+
+  const targets = document.querySelectorAll('.inner-page-shell > *, .page-about .glass-panel, .compare-scenario');
+  targets.forEach((target, index) => {
+    target.classList.add('ui-reveal');
+    target.style.setProperty('--reveal-delay', `${Math.min(index, 7) * 55}ms`);
+  });
+
+  requestAnimationFrame(() => document.body.classList.add('ui-ready'));
+});
