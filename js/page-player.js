@@ -165,6 +165,8 @@
 
         list.forEach(map => {
           const tr = document.createElement('tr');
+          tr.className = 'premium-table-row transition-colors';
+          if (typeof map.rank === 'number' && map.rank <= 3) tr.classList.add('top-rank-row', `top-rank-${map.rank}`);
           const rankDisplay = map.rank === '???' ? '???' : '#' + map.rank;
           const rankTitle = map.rank === '???' ? (currentLang === 'en' ? 'Enriched map ranking' : 'Обогащенная карта — точный ранг неопределен') : '';
           tr.innerHTML = `

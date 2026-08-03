@@ -101,6 +101,7 @@
 
       const tr = document.createElement('tr');
       tr.className = 'premium-table-row';
+      if (currentDisplayRank <= 3) tr.classList.add(`top-rank-row`, `top-rank-${currentDisplayRank}`);
 
       let rankHtml = `<span class="global-rank-badge">#${currentDisplayRank}</span>`;
       if (currentDisplayRank <= 3) rankHtml = `<span class="global-rank-badge ranking-position-${currentDisplayRank}">#${currentDisplayRank}</span>`;
@@ -142,10 +143,12 @@
       buttons.forEach(btn => {
         if (banlistSortConfig.key === k) {
           const arrow = banlistSortConfig.direction === 'desc' ? '▾' : '▴';
-          btn.className = 'px-2.5 py-1 rounded text-xs border border-red-500 bg-red-500/20 text-red-300 font-bold transition-all';
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-pressed', 'true');
           btn.textContent = `${label} ${arrow}`;
         } else {
-          btn.className = 'px-2.5 py-1 rounded text-xs border border-white/10 text-slate-400 hover:bg-white/10 transition-all';
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-pressed', 'false');
           btn.textContent = `${label} ▾`;
         }
       });
@@ -220,17 +223,12 @@
 
       let badgeContent = currentLang === 'en' ? 'Banned' : 'Заблокирован';
       if (count > 0) {
-        const parts = [];
-        if (wr1 > 0) parts.push(`<span class="text-amber-300 font-bold">#1: ${wr1}</span>`);
-        if (top10 > 0) parts.push(`<span class="text-slate-200 font-bold">#2-10: ${top10}</span>`);
-        if (top50 > 0) parts.push(`<span class="text-slate-400 font-medium">#11-50: ${top50}</span>`);
-
-        const mainText = currentLang === 'en'
-          ? `Removed from ${count.toLocaleString()} maps`
-          : `Удалён с ${count.toLocaleString()} карт`;
-
-        const detailsText = parts.length > 0 ? ` (${parts.join(' · ')})` : '';
-        badgeContent = `${mainText}${detailsText}`;
+        badgeContent = `
+          <span class="ban-stat ban-stat-total">${currentLang === 'en' ? 'Total' : 'Всего'} ${count.toLocaleString()}</span>
+          <span class="ban-stat ban-stat-wr">#1 ${wr1}</span>
+          <span class="ban-stat">#2-10 ${top10}</span>
+          <span class="ban-stat">#11-50 ${top50}</span>
+        `;
       }
 
       const tr = document.createElement('tr');
@@ -243,8 +241,8 @@
           </a>
         </td>
         <td class="p-4 text-right">
-          <span class="px-2.5 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-mono tracking-wider inline-flex items-center gap-1.5 justify-end">
-            🚫 ${badgeContent}
+          <span class="ban-record-stats">
+            ${badgeContent}
           </span>
         </td>
       `;
@@ -297,6 +295,19 @@
   document.addEventListener('DOMContentLoaded', () => {
     renderHeader('home');
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('[data-reveal]').forEach((element) => {
+      if (reducedMotion) {
+        element.classList.add('is-visible');
+        return;
+      }
+      new IntersectionObserver(([entry], observer) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.disconnect();
+      }, { threshold: 0.12 }).observe(element);
+    });
+
     const dict = getDict();
     document.documentElement.lang = currentLang;
 
@@ -310,6 +321,9 @@
     document.getElementById('home-base-pts-desc').textContent = dict.home.basePtsDesc;
     document.getElementById('home-skill-pts-title').textContent = dict.home.skillPtsTitle;
     document.getElementById('home-skill-pts-desc').textContent = dict.home.skillPtsDesc;
+    document.getElementById('scoring-logic-label').textContent = currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ';
+    document.getElementById('player-scan-label').textContent = currentLang === 'en' ? 'PLAYER SEARCH / 02' : 'ПОИСК ИГРОКА / 02';
+    document.getElementById('global-telemetry-label').textContent = currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ';
 
     document.getElementById('home-skill-pts-and').textContent = currentLang === 'en' ? 'and record' : 'и рекорда';
     document.getElementById('home-skill-pts-where').textContent = currentLang === 'en' ? 'Where' : 'Где';

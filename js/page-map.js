@@ -176,6 +176,7 @@
           grouped.forEach((group) => {
             const tr = document.createElement('tr');
             tr.className = 'premium-table-row transition-colors';
+            if (displayRank <= 3) tr.classList.add('top-rank-row', `top-rank-${displayRank}`);
 
             const timeRatio = modeTBest > 0 ? group.time / modeTBest : 1;
             const gapPct = Math.max(0, (timeRatio - 1) * 100);
@@ -221,16 +222,13 @@
           const btnTeam = document.getElementById('tab-dummy-team');
 
           const switchTab = (mode) => {
-            const activeStyle = 'padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:#ffa500;color:#000;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;';
-            const inactiveStyle = 'padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:rgba(255,255,255,0.05);color:#9a9a9a;border:1px solid rgba(255,255,255,0.15);cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;';
-
             if (mode === 'solo') {
-              btnSolo.setAttribute('style', activeStyle);
-              btnTeam.setAttribute('style', inactiveStyle);
+              btnSolo.classList.add('is-active');
+              btnTeam.classList.remove('is-active');
               renderLeaderboardRows(soloList);
             } else {
-              btnTeam.setAttribute('style', activeStyle);
-              btnSolo.setAttribute('style', inactiveStyle);
+              btnTeam.classList.add('is-active');
+              btnSolo.classList.remove('is-active');
               renderLeaderboardRows(teamList);
             }
           };
