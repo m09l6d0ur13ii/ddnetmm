@@ -19,7 +19,34 @@ function isQualifyingRun(server, rank, teamRank) {
   if (s === 'Solo' || s === 'Race' || s === 'Dummy') {
     return true;
   }
-  return Boolean(teamRank && rank >= teamRank);
+  const tr = (teamRank && typeof teamRank === 'object') ? teamRank.rank : teamRank;
+  return Boolean(tr);
+}
+
+function loadRankingScriptAsync(src) {
+  return new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => resolve(true);
+    s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+  });
+}
+
+async function getMapRanking(mapName) {
+  if (window.mapRankingsData && window.mapRankingsData[mapName]) {
+    return window.mapRankingsData[mapName];
+  }
+  const safeName = String(mapName).replace(/[/\\?%*:|"<>]/g, '_').replace(/ /g, '_');
+  const scriptPath = `data/rankings/${safeName}.js`;
+  const loaded = await loadRankingScriptAsync(scriptPath);
+  if (loaded && window.mapRankingCurrent) {
+    const rankings = window.mapRankingCurrent;
+    if (!window.mapRankingsData) window.mapRankingsData = {};
+    window.mapRankingsData[mapName] = rankings;
+    return rankings;
+  }
+  return null;
 }
 
 const playerCache = new Map();
@@ -68,24 +95,16 @@ async function fetchPlayerPts(playerName) {
     let newPtsSkill = 0;
 
     const finishes = data.finishes || [];
-    const processedMaps = new Set();
-
-    // finishDetails: per-map breakdown for player profile page
     const finishDetails = [];
 
     for (const finish of finishes) {
-      const mapName = finish.map.name || finish.map.map;
-      const server = finish.map.server;
+      if (!finish.map || !finish.map.map) continue;
 
-      if (!server || server.toLowerCase() === 'fun') continue;
-      // Only count each map once
-      if (processedMaps.has(mapName)) continue;
-      processedMaps.add(mapName);
+      const mapName = finish.map.map;
+      const server = finish.map.server || finish.server || 'Solo';
 
-      const mapPts = finish.map.points || 0;
-      oldPts += mapPts;
-
-      const pBase = mapPts;
+      const pBase = finish.map.points || 0;
+      oldPts += pBase;
       newPtsBase += pBase;
 
       let pSkill = 0;
@@ -114,17 +133,30 @@ async function fetchPlayerPts(playerName) {
       // Pick rank: team_rank.rank on team maps if available, or finish.rank
       const rawRank = (finish.team_rank && finish.team_rank.rank) ? finish.team_rank.rank : (finish.rank || 0);
 
-      // Check cleaned MapMastery rank if window.mapRankingsData is present
+      // Check if map is enriched / flooded by TASers
+      const mLower = mapName.toLowerCase();
+      const isEnriched = (window.enrichedMapsData && (window.enrichedMapsData[mapName] || Object.keys(window.enrichedMapsData).some(k => k.toLowerCase() === mLower))) ||
+                         (window.mapMinTimesData && window.mapMinTimesData[mLower]) ||
+                         (window.customMapRecordsData && window.customMapRecordsData[mLower]);
+
+      let rankings = (window.mapRankingsData && window.mapRankingsData[mapName]) ? window.mapRankingsData[mapName] : null;
+      if (!rankings && isEnriched) {
+        rankings = await getMapRanking(mapName);
+      }
+
       let mmRank = rawRank;
-      if (window.mapRankingsData && window.mapRankingsData[mapName]) {
-        const rankings = window.mapRankingsData[mapName];
+      if (rankings) {
         const idx = rankings.findIndex(r => {
           const pNames = String(r.player || r.name || '').toLowerCase().split(/[,/&]+/).map(s => s.trim());
           return pNames.includes(playerName.toLowerCase());
         });
         if (idx !== -1) {
           mmRank = rankings[idx].rank || (idx + 1);
+        } else if (isEnriched) {
+          mmRank = '???';
         }
+      } else if (isEnriched) {
+        mmRank = '???';
       }
 
       finishDetails.push({

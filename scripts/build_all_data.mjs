@@ -102,6 +102,14 @@ function loadPlayerList(blacklistSet) {
         console.log(`🧹 Automatically removed ${removedCount} blacklisted player(s) directly from player_list.txt!`);
     }
 
+    // Purge cached profile JSONs for all blacklisted players
+    for (const bPlayer of blacklistSet) {
+        const jsonFile = path.join(PLAYERS_DIR, `${sanitizeFilename(bPlayer)}.json`);
+        if (fs.existsSync(jsonFile)) {
+            try { fs.unlinkSync(jsonFile); } catch (e) {}
+        }
+    }
+
     const names = cleanedLines
         .map(line => line.trim())
         .filter(line => line && !line.startsWith('#') && !line.startsWith('//'))
@@ -171,10 +179,16 @@ function loadCustomMapRecords() {
         const parts = trimmed.split('|');
         if (parts.length >= 2) {
             const mName = parts[0].trim().toLowerCase();
-            const timeSec = parseTimeToSeconds(parts[1]);
-            const pStr = parts[2] ? parts[2].trim() : 'Unknown';
+            let timeSec = 0;
+            let pStr = '';
+            if (parts.length >= 3) {
+                timeSec = parseTimeToSeconds(parts[1]);
+                pStr = parts[2] ? parts[2].trim() : '';
+            } else {
+                pStr = parts[1] ? parts[1].trim() : '';
+            }
             const players = pStr.split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
-            if (timeSec > 0) {
+            if (players.length > 0) {
                 customRecords[mName] = {
                     time: timeSec,
                     player: pStr,
@@ -185,6 +199,42 @@ function loadCustomMapRecords() {
         }
     }
     return customRecords;
+}
+
+async function resolveCustomRecords(customMapRecords) {
+    for (const mLower in customMapRecords) {
+        const custom = customMapRecords[mLower];
+        if (!custom.players || !custom.players.length) continue;
+
+        const mainPlayer = custom.players[0];
+        const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(mainPlayer)}.json`);
+        let pData = null;
+
+        if (fs.existsSync(localFile)) {
+            try { pData = JSON.parse(fs.readFileSync(localFile, 'utf8')); } catch (e) {}
+        }
+
+        if (!pData) {
+            pData = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(mainPlayer)}`);
+            if (pData) {
+                try { fs.writeFileSync(localFile, JSON.stringify(pData)); } catch (e) {}
+            }
+        }
+
+        if (pData && pData.finishes) {
+            const f = pData.finishes.find(item => item.map && item.map.map && item.map.map.toLowerCase() === mLower);
+            if (f && f.time) {
+                // Dynamically fetch player's latest best finish time from DDStats
+                if (custom.time === 0 || f.time < custom.time) {
+                    custom.time = f.time;
+                }
+                if (f.team_rank && Array.isArray(f.team_rank.players) && f.team_rank.players.length > 0) {
+                    custom.players = f.team_rank.players;
+                    custom.player = f.team_rank.players.join(' & ');
+                }
+            }
+        }
+    }
 }
 
 let apiCallCount = 0;
@@ -273,12 +323,18 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
 
 function isFinishAllowed(pName, mName, timeSec, blacklistSet, mapMinTimes, ignoredFinishesSet) {
     if (!pName || !mName) return false;
-    const pLower = String(pName).trim().toLowerCase();
     const mLower = String(mName).trim().toLowerCase();
 
-    if (blacklistSet.has(pLower)) return false;
-    if (ignoredFinishesSet.has(`${pLower}|${mLower}`)) return false;
     if (mapMinTimes[mLower] && timeSec < mapMinTimes[mLower]) return false;
+
+    // Check all players in team (e.g. "PlayerA & PlayerB").
+    // If ANY player in the team is blacklisted or has ignored finish exception, reject the finish!
+    const playerList = String(pName).split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+    for (const p of playerList) {
+        const pLower = p.toLowerCase();
+        if (blacklistSet.has(pLower)) return false;
+        if (ignoredFinishesSet.has(`${pLower}|${mLower}`)) return false;
+    }
 
     return true;
 }
@@ -296,7 +352,8 @@ async function run() {
     console.log(`Loaded ${ignoredFinishesSet.size} ignored finish exceptions.`);
 
     const customMapRecords = loadCustomMapRecords();
-    console.log(`Loaded ${Object.keys(customMapRecords).length} custom map records:`, customMapRecords);
+    await resolveCustomRecords(customMapRecords);
+    console.log(`Loaded & resolved ${Object.keys(customMapRecords).length} custom map records:`, customMapRecords);
 
     // Save JS files
     const blacklistJsContent = `// Blacklist of cheaters/TASers loaded locally\nwindow.blacklistData = ${JSON.stringify(blacklistArray, null, 2)};\n\nwindow.isBlacklisted = function(name) {\n  if (!name || !window.blacklistData || !window.blacklistData.length) return false;\n  const lower = String(name).toLowerCase().trim();\n  return window.blacklistData.some(b => String(b).toLowerCase().trim() === lower);\n};\n`;
@@ -465,19 +522,39 @@ async function run() {
     const args = process.argv.slice(2);
     const isFastMode = args.includes('--fast');
 
+    const mapsRawMap = {};
+    for (const m of allMaps) { mapsRawMap[m.map] = m; }
+
     const enrichedMaps = {};
     let enrichedCount = 0;
     if (isFastMode) {
-        console.log("⚡ [--fast mode] Skipping player enrichment scan.");
+        console.log("⚡ [--fast mode] Preserving existing enriched rankings and instantly filtering blacklisted players.");
+        for (const mName in mapsRawMap) {
+            const safe = safeRankingFilename(mName);
+            const filePath = path.join(RANKINGS_DIR, `${safe}.js`);
+            if (fs.existsSync(filePath)) {
+                try {
+                    const code = fs.readFileSync(filePath, 'utf8');
+                    const match = code.match(/window\.mapRankingCurrent\s*=\s*(.*);/s);
+                    if (match) {
+                        const parsed = JSON.parse(match[1]);
+                        if (parsed && parsed.length > 0) {
+                            mapRankings[mName] = parsed;
+                        }
+                    }
+                } catch (e) { }
+            }
+        }
     } else {
         const allLegitPlayers = loadPlayerList(blacklistSet);
-        // Prioritize cached profiles and top 1500 players for high-speed, high-coverage enrichment
+        // Prioritize cached profiles and top 5000 players for deep, high-coverage enrichment
         const cachedPlayers = allLegitPlayers.filter(p => fs.existsSync(path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`)));
-        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 1500)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
+        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 5000)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
         console.log(`Enrichment source: player_list.txt (${allLegitPlayers.length} total harvested, ${topPlayers.length} active scanned)`);
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
             const batch = topPlayers.slice(i, i + CONCURRENCY);
+            let neededNetworkFetch = false;
             await Promise.all(batch.map(async (p) => {
                 const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`);
                 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
@@ -486,17 +563,19 @@ async function run() {
 
                 if (fs.existsSync(localFile)) {
                     try {
+                        pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
                         const fileStats = fs.statSync(localFile);
                         if (Date.now() - fileStats.mtimeMs < ONE_DAY_MS) {
-                            pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
                             isCacheValid = true;
                         }
                     } catch (e) { }
                 }
 
-                if (!isCacheValid || !pData) {
-                    pData = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(p.name)}`);
-                    if (pData) {
+                if (!isCacheValid) {
+                    neededNetworkFetch = true;
+                    const fetched = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(p.name)}`);
+                    if (fetched) {
+                        pData = fetched;
                         try { fs.writeFileSync(localFile, JSON.stringify(pData)); } catch (e) { }
                     }
                 }
@@ -516,19 +595,18 @@ async function run() {
                     const isTeamCat = mapInfo && mapInfo.server !== 'Solo' && mapInfo.server !== 'Race' && mapInfo.server !== 'Dummy';
 
                     let teamPlayers = [p.name];
-                    let isTeamRank = false;
+                    let isTeamRank = Boolean(f.team_rank);
 
-                    if (f.team_rank && Array.isArray(f.team_rank.players) && f.team_rank.players.length > 0) {
+                    if (f.team_rank && typeof f.team_rank === 'object' && Array.isArray(f.team_rank.players) && f.team_rank.players.length > 0) {
                         teamPlayers = f.team_rank.players.map(n => String(n).trim()).filter(Boolean);
-                        isTeamRank = true;
                     }
 
                     // Reject solo finishes on team category maps
-                    if (isTeamCat && (!isTeamRank || teamPlayers.length < 2)) continue;
+                    if (isTeamCat && !isTeamRank) continue;
 
                     const playerStr = teamPlayers.join(' & ');
 
-                    if (!isFinishAllowed(p.name, mName, pTime, blacklistSet, mapMinTimes, ignoredFinishesSet)) continue;
+                    if (!isFinishAllowed(playerStr, mName, pTime, blacklistSet, mapMinTimes, ignoredFinishesSet)) continue;
 
                     if (!mapRankings[mName]) mapRankings[mName] = [];
 
@@ -541,14 +619,14 @@ async function run() {
                     });
                 }
             }));
+            if (neededNetworkFetch) {
+                await new Promise(r => setTimeout(r, 60));
+            }
             if (i % 100 === 0 && i > 0) console.log(`   Enrichment: ${i}/${topPlayers.length} players scanned...`);
         }
     }
 
     // Clean, deduplicate, sort, and re-rank all map rankings
-    const mapsRawMap = {};
-    for (const m of allMaps) { mapsRawMap[m.map] = m; }
-
     for (const mName in mapRankings) {
         let list = mapRankings[mName] || [];
 
@@ -606,12 +684,22 @@ async function run() {
         if (customMapRecords[mLower]) {
             const custom = customMapRecords[mLower];
             const teamPlayers = custom.players && custom.players.length ? custom.players : [custom.player];
-            for (const pName of teamPlayers) {
-                const existingIdx = cleanList.findIndex(r => (r.player || r.name).toLowerCase() === pName.toLowerCase());
+            if (isTeamCategory && teamPlayers.length >= 2) {
+                const customTeamStr = teamPlayers.join(' & ');
+                const existingIdx = cleanList.findIndex(r => (r.player || r.name || '').toLowerCase() === customTeamStr.toLowerCase());
                 if (existingIdx !== -1) {
                     cleanList[existingIdx].time = custom.time;
                 } else {
-                    cleanList.push({ player: pName, time: custom.time });
+                    cleanList.push({ player: customTeamStr, time: custom.time, isTeamRank: true });
+                }
+            } else {
+                for (const pName of teamPlayers) {
+                    const existingIdx = cleanList.findIndex(r => (r.player || r.name || '').toLowerCase() === pName.toLowerCase());
+                    if (existingIdx !== -1) {
+                        cleanList[existingIdx].time = custom.time;
+                    } else {
+                        cleanList.push({ player: pName, time: custom.time });
+                    }
                 }
             }
         }
@@ -636,16 +724,15 @@ async function run() {
         }
 
         const updatedMapNames = [];
-        if (hasCustomRecord) {
-            mapRecords[mName] = customMapRecords[mLower].time;
-            updatedMapNames.push(`${mName} (Custom Record)`);
-        } else if (cleanList.length > 0) {
+        if (cleanList.length > 0) {
             const newWr = cleanList[0].time;
             if (mapRecords[mName] !== newWr) {
                 mapRecords[mName] = newWr;
                 enrichedCount++;
-                updatedMapNames.push(`${mName} (New WR by ${cleanList[0].player})`);
+                updatedMapNames.push(`${mName} (WR: ${newWr}s by ${cleanList[0].player})`);
             }
+        } else if (hasCustomRecord) {
+            mapRecords[mName] = customMapRecords[mLower].time;
         } else {
             mapRecords[mName] = null;
         }

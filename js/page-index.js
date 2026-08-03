@@ -399,7 +399,7 @@
         const errEl = document.getElementById('search-error');
         errEl.textContent = (err.isBlacklisted || (window.isBlacklisted && window.isBlacklisted(val)))
           ? (currentLang === 'en' ? 'Player is blacklisted (TAS / Cheating)' : 'Игрок заблокирован в системе (TAS / Читы)')
-          : (currentLang === 'en' ? 'Player not found' : 'Игрок не найден');
+          : (currentLang === 'en' ? 'Player not found or DDStats service temporarily unavailable' : 'Игрок не найден или сервис DDStats временно недоступен');
         errEl.classList.remove('hidden');
       } finally {
         btn.innerHTML = icons.search;

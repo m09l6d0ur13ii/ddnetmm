@@ -1,2 +1,4 @@
-# Format: MapName | Time (e.g. 08:07 or 487) | PlayerName(s) (e.g. Xardas, tw1zenn)
-2 Days in the back | 08:07 | Xardas, tw1zenn
+# Format: MapName | PlayerName(s) (e.g. 2 Days in the back | Xardas, tw1zenn)
+# Time is automatically fetched & updated from DDStats API!
+# Optional format with fixed time override: MapName | Time | PlayerName(s)
+2 Days in the back | Xardas, tw1zenn

@@ -64,6 +64,13 @@ window.blacklistData = [
     "top50": 125
   },
   {
+    "name": "Demise ♡",
+    "count": 760,
+    "wr1": 1,
+    "top10": 8,
+    "top50": 28
+  },
+  {
     "name": "Problems???",
     "count": 738,
     "wr1": 11,
@@ -83,6 +90,13 @@ window.blacklistData = [
     "wr1": 2,
     "top10": 34,
     "top50": 59
+  },
+  {
+    "name": "шайтан",
+    "count": 629,
+    "wr1": 1,
+    "top10": 12,
+    "top50": 43
   },
   {
     "name": "vavan4ik000",
@@ -118,6 +132,13 @@ window.blacklistData = [
     "wr1": 5,
     "top10": 27,
     "top50": 55
+  },
+  {
+    "name": "Raifu ♡",
+    "count": 495,
+    "wr1": 1,
+    "top10": 1,
+    "top50": 8
   },
   {
     "name": "SMARY",
@@ -393,6 +414,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "Veeedo✰",
+    "count": 200,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 6
+  },
+  {
     "name": "L1M173D",
     "count": 192,
     "wr1": 1,
@@ -442,11 +470,25 @@ window.blacklistData = [
     "top50": 50
   },
   {
+    "name": "шкет",
+    "count": 158,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 4
+  },
+  {
     "name": "t.me/e621tas",
     "count": 156,
     "wr1": 53,
     "top10": 75,
     "top50": 24
+  },
+  {
+    "name": "worse player",
+    "count": 156,
+    "wr1": 0,
+    "top10": 2,
+    "top50": 20
   },
   {
     "name": "2000",
@@ -461,6 +503,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 1,
     "top50": 3
+  },
+  {
+    "name": "[D] шайта",
+    "count": 145,
+    "wr1": 0,
+    "top10": 2,
+    "top50": 8
   },
   {
     "name": "5tamlie",
@@ -580,6 +629,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 0,
     "top50": 0
+  },
+  {
+    "name": "Majestic",
+    "count": 107,
+    "wr1": 0,
+    "top10": 5,
+    "top50": 4
   },
   {
     "name": "TACEP=ПИДOP",
@@ -841,6 +897,13 @@ window.blacklistData = [
     "top50": 12
   },
   {
+    "name": "[D] worse playe",
+    "count": 53,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "карл",
     "count": 53,
     "wr1": 0,
@@ -881,6 +944,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 2,
     "top50": 15
+  },
+  {
+    "name": "fun squezee",
+    "count": 46,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 8
   },
   {
     "name": "lkaroaroa",
@@ -995,6 +1065,13 @@ window.blacklistData = [
     "top50": 13
   },
   {
+    "name": "раб Majestic",
+    "count": 33,
+    "wr1": 0,
+    "top10": 3,
+    "top50": 4
+  },
+  {
     "name": "Раб твич",
     "count": 32,
     "wr1": 0,
@@ -1049,6 +1126,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 0,
     "top50": 0
+  },
+  {
+    "name": "african",
+    "count": 25,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 8
   },
   {
     "name": "MORPHINE",
@@ -1119,6 +1203,20 @@ window.blacklistData = [
     "wr1": 1,
     "top10": 3,
     "top50": 7
+  },
+  {
+    "name": "[D] african",
+    "count": 14,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 2
+  },
+  {
+    "name": "!tsy",
+    "count": 13,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
   },
   {
     "name": "nekoxwq",
@@ -1224,6 +1322,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 0,
     "top50": 2
+  },
+  {
+    "name": "[D] !tsy",
+    "count": 8,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
   },
   {
     "name": "[D] про top",

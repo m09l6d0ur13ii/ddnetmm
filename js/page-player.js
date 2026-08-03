@@ -116,7 +116,7 @@
         });
       }
 
-      const allMaps = data.finishDetails || [];
+      const allMaps = (data.finishDetails || []).filter(m => m.pSkill > 0);
 
       const renderFilteredMaps = () => {
         const catFilter = document.getElementById('map-filter-server')?.value || 'ALL';
@@ -165,7 +165,8 @@
 
         list.forEach(map => {
           const tr = document.createElement('tr');
-          tr.className = 'premium-table-row transition-colors';
+          const rankDisplay = map.rank === '???' ? '???' : '#' + map.rank;
+          const rankTitle = map.rank === '???' ? (currentLang === 'en' ? 'Enriched map ranking' : 'Обогащенная карта — точный ранг неопределен') : '';
           tr.innerHTML = `
             <td class="p-4 font-bold">
               <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
@@ -176,7 +177,7 @@
             <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
             <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
             <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-            <td class="p-4 font-bold text-amber-300 text-center"><span class="ranking-position-badge ranking-position-${map.rank <= 3 ? map.rank : 'other'}">#${map.rank}</span></td>
+            <td class="p-4 font-bold text-amber-300 text-center"><span class="ranking-position-badge ranking-position-${typeof map.rank === 'number' && map.rank <= 3 ? map.rank : 'other'}" title="${rankTitle}">${rankDisplay}</span></td>
           `;
           tbody.appendChild(tr);
         });

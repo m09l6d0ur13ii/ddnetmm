@@ -1,6 +1,6 @@
 window.customMapRecordsData = {
   "2 days in the back": {
-    "time": 487,
+    "time": 487.72,
     "player": "Xardas, tw1zenn",
     "players": [
       "Xardas",
