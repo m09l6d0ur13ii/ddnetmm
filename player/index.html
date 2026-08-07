@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Player Profile — DDNet Map Mastery</title>
-  <link rel="canonical" href="https://ddnetmm.ru/player.html">
+  <link rel="canonical" href="https://ddnetmm.ru/player">
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -30,17 +30,18 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Player Profile — DDNet Map Mastery">
   <meta property="og:description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
-  <meta property="og:image" content="icon.png">
+  <meta property="og:image" content="../icon.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Player Profile — DDNet Map Mastery">
   <meta name="twitter:description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
-  <meta name="twitter:image" content="icon.png">
+  <meta name="twitter:image" content="../icon.png">
 
-  <link rel="icon" type="image/png" href="icon.png">
-  <script src="js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20260803-27">
+  <link rel="icon" type="image/png" href="../icon.png">
+  <script src="../js/tailwindcss.js"></script>
+  <link rel="stylesheet" href="../css/style.css?v=20260803-27">
+  <link rel="stylesheet" href="../css/tee-skin-renderer.css">
   <script>
     tailwind.config = {
       theme: {
@@ -70,9 +71,9 @@
 
       <!-- Header -->
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-3 mb-2 flex-wrap">
-            <a href="index.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-block whitespace-nowrap">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3 flex-wrap">
+            <a href="/" class="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-block whitespace-nowrap">
               &larr; <span id="player-back"></span>
             </a>
             <span class="text-slate-600">|</span>
@@ -93,21 +94,24 @@
             </form>
           </div>
 
-          <header class="inner-page-hero space-y-2">
-            <div class="flex items-center gap-3 flex-wrap">
-              <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
-              <button
-                id="share-profile-btn"
-                style="padding:0.4em 0.8em;font-size:0.85em;background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.5);font-weight:bold;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;transition:all 0.2s;"
-                onmouseover="this.style.background='#ffa500';this.style.color='#111';"
-                onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                <span id="share-profile-text"></span>
-              </button>
-            </div>
-            <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
-          </header>
+          <div class="flex items-center gap-5">
+            <div id="player-tee-container" class="shrink-0 flex items-center justify-center p-3 rounded-2xl bg-slate-900/80 border border-amber-500/30 shadow-[0_0_20px_rgba(255,165,0,0.15)] min-w-[96px] min-h-[96px]"></div>
+            <header class="inner-page-hero space-y-2">
+              <div class="flex items-center gap-3 flex-wrap">
+                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400" id="player-name"></h1>
+                <button
+                  id="share-profile-btn"
+                  style="padding:0.4em 0.8em;font-size:0.85em;background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.5);font-weight:bold;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;transition:all 0.2s;"
+                  onmouseover="this.style.background='#ffa500';this.style.color='#111';"
+                  onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                  <span id="share-profile-text"></span>
+                </button>
+              </div>
+              <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
+            </header>
+          </div>
         </div>
 
         <!-- Summary Cards -->
@@ -196,27 +200,28 @@
         <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
       </div>
       <div class="flex flex-wrap items-center gap-6">
-        <a href="index.html" class="hover:text-white transition-colors">Главная</a>
-        <a href="about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="compare.html" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="privacy.html" class="hover:text-white transition-colors">Политика конфиденциальности</a>
+        <a href="/" class="hover:text-white transition-colors">Главная</a>
+        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
+        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
         <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
       </div>
     </div>
   </footer>
 
-  <script defer src="data/maps.js?v=a1601ea"></script>
-  <script defer src="data/unique_players.js?v=a1601ea"></script>
-  <script defer src="data/leaderboard.js?v=a1601ea"></script>
-  <script defer src="data/map_records.js?v=a1601ea"></script>
-  <script defer src="data/map_stats.js?v=a1601ea"></script>
-  <script defer src="data/blacklist.js?v=a1601ea"></script>
-  <script defer src="data/map_enriched.js?v=a1601ea"></script>
-  <script defer src="data/map_min_times.js?v=a1601ea"></script>
-  <script defer src="data/custom_map_records.js?v=a1601ea"></script>
-  <script defer src="js/i18n.js"></script>
-  <script defer src="js/api.js?v=a1601ea"></script>
-  <script defer src="js/app.js?v=20260803-9"></script>
-  <script defer src="js/page-player.js?v=20260803-26"></script>
+  <script defer src="../data/maps.js?v=a1601ea"></script>
+  <script defer src="../data/unique_players.js?v=a1601ea"></script>
+  <script defer src="../data/leaderboard.js?v=a1601ea"></script>
+  <script defer src="../data/map_records.js?v=a1601ea"></script>
+  <script defer src="../data/map_stats.js?v=a1601ea"></script>
+  <script defer src="../data/blacklist.js?v=a1601ea"></script>
+  <script defer src="../data/map_enriched.js?v=a1601ea"></script>
+  <script defer src="../data/map_min_times.js?v=a1601ea"></script>
+  <script defer src="../data/custom_map_records.js?v=a1601ea"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/api.js?v=a1601ea"></script>
+  <script defer src="../js/app.js?v=20260803-9"></script>
+  <script defer src="../js/tee-skin-renderer.umd.js"></script>
+  <script defer src="../js/page-player.js?v=20260803-26"></script>
 </body>
 </html>

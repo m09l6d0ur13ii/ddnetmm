@@ -9,23 +9,23 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ddnetmm.ru/map.html</loc>
+    <loc>https://ddnetmm.ru/map</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ddnetmm.ru/player.html</loc>
+    <loc>https://ddnetmm.ru/player</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ddnetmm.ru/pvp.html</loc>
+    <loc>https://ddnetmm.ru/pvp</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ddnetmm.ru/compare.html</loc>
+    <loc>https://ddnetmm.ru/compare</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ddnetmm.ru/privacy.html</loc>
+    <loc>https://ddnetmm.ru/privacy</loc>
     <priority>0.5</priority>
   </url>
 </urlset>

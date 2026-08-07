@@ -60,22 +60,21 @@
   <div id="header-container"></div>
 
   <main class="home-shell p-4 md:p-8 animate-fade-in">
-    <header class="home-hero max-w-7xl mx-auto mb-12 text-center space-y-4">
+    <header class="home-hero max-w-5xl mx-auto mb-14 text-center space-y-6">
       <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-orbit" id="icon-trophy">
-        <span class="hero-orbit-ring" aria-hidden="true"></span>
-        <img src="icon.png" alt="Logo">
-      </div>
-      <div class="hero-kicker"><span></span> DDNET PERFORMANCE INDEX <span></span></div>
-      <h1 class="text-5xl md:text-7xl font-black tracking-tight bg-gradient-to-br from-white via-slate-200 to-slate-500 bg-clip-text text-transparent drop-shadow-sm" id="home-title">
+      
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight bg-gradient-to-br from-white via-slate-100 to-slate-400 bg-clip-text text-transparent drop-shadow-sm leading-tight text-center max-w-4xl mx-auto" id="home-title">
+        DDNET <span class="inline-block whitespace-nowrap"><img src="icon.png" alt="M" class="inline-hero-m">AP</span> MASTERY
       </h1>
-      <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto" id="home-subtitle">
+
+      <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto text-center leading-relaxed" id="home-subtitle">
       </p>
-      <div class="hero-actions pt-4 flex flex-wrap justify-center gap-4">
-        <a href="about" class="hero-button hero-button-muted">
+
+      <div class="hero-actions pt-2 flex flex-wrap justify-center gap-4">
+        <a href="/about" class="hero-button hero-button-muted">
           <span id="home-about-btn"></span> <span id="icon-arrow-right-1"></span>
         </a>
-        <a href="compare.html" class="hero-button hero-button-primary">
+        <a href="/compare" class="hero-button hero-button-primary">
           <span id="home-compare-btn"></span> <span id="icon-arrow-right-2"></span>
         </a>
       </div>
@@ -262,22 +261,45 @@
               </tr>
             </thead>
 
-            <tbody id="leaderboard-body">
-              <tr>
-                <td colspan="5" class="p-4 text-center text-slate-500" id="empty-state"></td>
+            <thead>
+              <tr class="bg-white/[0.02] border-b border-white/[0.08] text-slate-400 text-xs sm:text-sm tracking-wide">
+                <th class="p-4 font-semibold text-center w-16" id="th-rank">#</th>
+                <th class="p-4 font-semibold" id="th-player">Игрок</th>
+                <th class="p-4 font-semibold text-right" id="th-base">Base PTS</th>
+                <th class="p-4 font-semibold text-right" id="th-skill">Skill PTS</th>
+                <th class="p-4 font-semibold text-right text-primary" id="th-total">Total PTS</th>
               </tr>
+            </thead>
+            <tbody id="leaderboard-body" class="divide-y divide-white/[0.04]">
+              <!-- Loaded via page-index.js -->
             </tbody>
           </table>
         </div>
 
-        <div id="load-more-container" class="p-4 border-t border-white/[0.05] text-center bg-white/[0.02] mt-4 rounded-xl hidden">
-          <button
-            id="load-more-btn"
-            class="px-6 py-2 bg-primary/20 text-primary border border-primary/50 hover:bg-primary/30 rounded-full font-semibold transition-colors disabled:opacity-50"
-          >
-          </button>
+        <!-- Pagination Footer -->
+        <div class="p-4 sm:p-6 border-t border-white/[0.08] bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-400" id="pagination-info"></div>
+          
+          <div class="flex items-center gap-2" id="pagination-controls">
+            <!-- Rendered by page-index.js -->
+          </div>
         </div>
+
       </section>
+
+      <!-- Blacklist Modal / Info Section -->
+      <section class="glass-panel p-6 border-l-4 border-l-red-500/80 bg-red-500/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-wider flex items-center gap-2" id="blacklist-title">
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed" id="blacklist-desc">
+          </p>
+        </div>
+        <button id="toggle-blacklist-modal-btn" class="px-4 py-2 bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30 text-xs font-bold rounded-lg transition-colors whitespace-nowrap">
+          <span id="btn-view-blacklist"></span> &rarr;
+        </button>
+      </section>
+
     </div>
 
   </main>
@@ -290,10 +312,10 @@
         <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
       </div>
       <div class="flex flex-wrap items-center gap-6">
-        <a href="./" class="hover:text-white transition-colors">Главная</a>
-        <a href="about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="compare.html" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="privacy.html" class="hover:text-white transition-colors">Политика конфиденциальности</a>
+        <a href="/" class="hover:text-white transition-colors">Главная</a>
+        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
+        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
         <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
       </div>
     </div>

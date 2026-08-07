@@ -186,7 +186,7 @@
             if (displayRank <= 3) rankHtml = `<span class="ranking-position-badge ranking-position-${displayRank}">#${displayRank}</span>`;
 
             const playersHtml = group.players.map(pName =>
-              `<a href="player.html?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`
+              `<a href="/player?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`
             ).join(' <span class="text-amber-400 font-bold px-0.5">&amp;</span> ');
 
             tr.innerHTML = `

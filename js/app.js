@@ -50,16 +50,15 @@ function renderHeader(activePage = 'home') {
 
         <!-- Logo & Discord -->
         <div class="site-nav">
-          <a href="/" class="site-logo">
-            <span class="site-logo-mark"><img src="/icon.png" alt="Logo"></span>
-            <span class="site-logo-type"><strong>MAP MASTERY</strong><small>DDNET // PTS</small></span>
+          <a href="/" class="site-nav-link${activePage === 'home' ? ' is-active' : ''}">
+            <span>Home</span>
           </a>
           <span class="site-nav-divider">/</span>
-          <a href="/pvp.html" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
+          <a href="/pvp" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
             <span>Player vs Player</span>
           </a>
           <span class="site-nav-divider">/</span>
-          <a href="https://discord.gg/d5FyWS7Tpv" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
+          <a href="https://discord.gg/BWmT3q96FP" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 127.14 96.36" fill="#5865F2"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.68 1.76 1.36 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44zm42.24 0c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44z"/></svg>
             <span>teeproject discord</span>
           </a>
@@ -85,12 +84,13 @@ function renderHeader(activePage = 'home') {
               />
             </div>
           </form>
-        </div>
-
       </div>
     </header>
   `;
-  document.getElementById('header-container').innerHTML = headerHtml;
+  const headerContainer = document.getElementById('header-container');
+  if (headerContainer) {
+    headerContainer.innerHTML = headerHtml;
+  }
 
   setTimeout(() => {
     const mapSearchForm = document.getElementById('header-map-search-form');
@@ -99,7 +99,7 @@ function renderHeader(activePage = 'home') {
         e.preventDefault();
         const input = document.getElementById('header-map-search-input');
         if (input && input.value.trim()) {
-          window.location.href = `map.html?name=${encodeURIComponent(input.value.trim())}`;
+          window.location.href = `/map?name=${encodeURIComponent(input.value.trim())}`;
         }
       });
     }
@@ -138,7 +138,7 @@ function renderHeader(activePage = 'home') {
       if (!items.length) { dropdown.style.display = 'none'; return; }
 
       dropdown.innerHTML = items.map((m, i) => `
-        <a class="ac-item" data-idx="${i}" href="/map.html?name=${encodeURIComponent(m.map)}">
+        <a class="ac-item" data-idx="${i}" href="/map?name=${encodeURIComponent(m.map)}">
           <div class="ac-map-info">
             <span class="ac-map-name">${highlightMatch(m.map, query)}</span>
             ${m.mapper ? `<span class="ac-map-mapper">by ${highlightMatch(m.mapper, query)}</span>` : ''}
@@ -153,6 +153,11 @@ function renderHeader(activePage = 'home') {
       dropdown.style.display = 'block';
 
       dropdown.querySelectorAll('.ac-item').forEach(el => {
+        el.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          const idx = parseInt(el.getAttribute('data-idx'), 10);
+          selectItem(idx);
+        });
         el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
         el.addEventListener('mouseleave', () => setActive(-1));
       });
@@ -162,11 +167,15 @@ function renderHeader(activePage = 'home') {
       activeIdx = idx;
       dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
         const isAct = i === idx;
-        el.classList.toggle('is-active', isAct);
+        el.style.background = isAct ? 'rgba(255, 165, 0, 0.25)' : '';
+        el.style.outline = isAct ? '1px solid #ffa500' : 'none';
         
-        const hls = el.querySelectorAll('.ac-hl');
-        hls.forEach(h => {
-          h.style.color = isAct ? '#000000' : '#ffa500';
+        const nameEl = el.querySelector('.ac-map-name');
+        if (nameEl) nameEl.style.color = isAct ? '#ffffff' : '';
+
+        const metaEls = el.querySelectorAll('.ac-map-meta span');
+        metaEls.forEach(s => {
+          s.style.color = isAct ? '#ffeedd' : '';
         });
         
         const sub = el.querySelector('span[style*="font-size:0.75em"]');
@@ -186,151 +195,7 @@ function renderHeader(activePage = 'home') {
       if (!m) return;
       input.value = m.map;
       dropdown.style.display = 'none';
-      window.location.href = `map.html?name=${encodeURIComponent(m.map)}`;
-    }
-
-    function closeDropdown() {
-      dropdown.style.display = 'none';
-      activeIdx = -1;
-    }
-
-    function triggerAutocomplete() {
-      const q = input.value.trim();
-      if (q.length < 1) { closeDropdown(); return; }
-      const lower = q.toLowerCase();
-      const starts = [], contains = [], mappers = [];
-      for (const m of window.mapsData) {
-        const name = m.map.toLowerCase();
-        const mapper = (m.mapper || '').toLowerCase();
-        if (name.startsWith(lower)) starts.push(m);
-        else if (name.includes(lower)) contains.push(m);
-        else if (mapper.includes(lower)) mappers.push(m);
-        if (starts.length + contains.length + mappers.length >= 60) break;
-      }
-      renderDropdown([...starts, ...contains, ...mappers].slice(0, 12), q);
-    }
-
-    input.addEventListener('input', triggerAutocomplete);
-    input.addEventListener('focus', triggerAutocomplete);
-
-    input.addEventListener('keydown', (e) => {
-      if (dropdown.style.display === 'none') return;
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setActive(Math.min(activeIdx + 1, currentItems.length - 1));
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setActive(Math.max(activeIdx - 1, -1));
-      } else if (e.key === 'Enter') {
-        if (activeIdx >= 0) { e.preventDefault(); selectItem(activeIdx); }
-      } else if (e.key === 'Escape') {
-        closeDropdown();
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) closeDropdown();
-    });
-  }, 100);
-}
-
-function setupPlayerAutocomplete(inputId, onSelect = null) {
-  setTimeout(() => {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-
-    const playersList = window.uniquePlayersData || (window.leaderboardData ? window.leaderboardData.map(p => p.name) : []);
-    if (!playersList || playersList.length === 0) return;
-
-    let wrap = input.parentElement;
-    if (!wrap || getComputedStyle(wrap).position === 'static') {
-      const parent = input.parentNode;
-      const newWrap = document.createElement('div');
-      newWrap.style.position = 'relative';
-      newWrap.style.flex = '1';
-      newWrap.style.minWidth = '0';
-      newWrap.style.display = 'block';
-      parent.insertBefore(newWrap, input);
-      newWrap.appendChild(input);
-      wrap = newWrap;
-      input.style.width = '100%';
-      input.style.boxSizing = 'border-box';
-    }
-    wrap.classList.add('player-autocomplete-wrap');
-
-    const dropdown = document.createElement('div');
-    dropdown.id = inputId + '-autocomplete';
-    dropdown.className = 'player-autocomplete';
-    dropdown.style.display = 'none';
-    wrap.appendChild(dropdown);
-
-    let activeIdx = -1;
-    let currentItems = [];
-
-    function renderDropdown(items, query) {
-      currentItems = items;
-      dropdown.innerHTML = '';
-      activeIdx = -1;
-      if (items.length === 0) {
-        dropdown.style.display = 'none';
-        return;
-      }
-
-      const lowerQ = query.toLowerCase();
-      items.forEach((pName, idx) => {
-        const itemEl = document.createElement('a');
-        itemEl.className = 'ac-player-item';
-        itemEl.href = `/player.html?name=${encodeURIComponent(pName)}`;
-
-        const pLower = pName.toLowerCase();
-        const matchIndex = pLower.indexOf(lowerQ);
-        let nameHtml = escapeHtml(pName);
-        if (matchIndex >= 0) {
-          const before = escapeHtml(pName.substring(0, matchIndex));
-          const match = escapeHtml(pName.substring(matchIndex, matchIndex + lowerQ.length));
-          const after = escapeHtml(pName.substring(matchIndex + lowerQ.length));
-          nameHtml = `${before}<span style="color:#ffa500;font-weight:bold;">${match}</span>${after}`;
-        }
-
-        itemEl.innerHTML = `<div style="overflow:hidden;text-overflow:ellipsis;">${nameHtml}</div>`;
-
-        itemEl.addEventListener('mouseenter', () => setActive(idx));
-        if (typeof onSelect === 'function') {
-          itemEl.addEventListener('click', (e) => {
-            e.preventDefault();
-            selectItem(idx);
-          });
-        }
-        dropdown.appendChild(itemEl);
-      });
-
-      dropdown.style.display = 'block';
-    }
-
-    function setActive(idx) {
-      activeIdx = idx;
-      const items = dropdown.querySelectorAll('.ac-player-item');
-      items.forEach((el, i) => {
-        const isAct = i === idx;
-        el.classList.toggle('is-active', isAct);
-        const hl = el.querySelector('span[style*="color:#ffa500"]');
-        if (hl) hl.style.color = isAct ? '#000000' : '#ffa500';
-      });
-      if (idx >= 0 && items[idx]) {
-        items[idx].scrollIntoView({ block: 'nearest' });
-      }
-    }
-
-    function selectItem(idx) {
-      const pName = currentItems[idx];
-      if (!pName) return;
-      input.value = pName;
-      dropdown.style.display = 'none';
-      if (typeof onSelect === 'function') {
-        onSelect(pName);
-      } else {
-        window.location.href = `player.html?name=${encodeURIComponent(pName)}`;
-      }
+      window.location.href = `/map?name=${encodeURIComponent(m.map)}`;
     }
 
     function closeDropdown() {
@@ -429,3 +294,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
   requestAnimationFrame(() => document.body.classList.add('ui-ready'));
 });
+
+window.setupPlayerAutocomplete = function (inputId, onSelect) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  const wrap = input.parentElement;
+  if (!wrap) return;
+  wrap.style.position = 'relative';
+
+  let dropdown = wrap.querySelector('.player-autocomplete-dropdown');
+  if (!dropdown) {
+    dropdown = document.createElement('div');
+    dropdown.className = 'player-autocomplete-dropdown';
+    dropdown.style.display = 'none';
+    dropdown.style.position = 'absolute';
+    dropdown.style.top = '100%';
+    dropdown.style.left = '0';
+    dropdown.style.right = '0';
+    dropdown.style.zIndex = '9999';
+    dropdown.style.maxHeight = '200px';
+    dropdown.style.overflowY = 'auto';
+    dropdown.style.background = '#111827';
+    dropdown.style.border = '1px solid #374151';
+    dropdown.style.borderRadius = '0.5rem';
+    dropdown.style.marginTop = '4px';
+    wrap.appendChild(dropdown);
+  }
+
+  let activeIdx = -1;
+  let currentItems = [];
+
+  const escHtml = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  const renderDropdown = () => {
+    if (currentItems.length === 0) {
+      dropdown.style.display = 'none';
+      return;
+    }
+    dropdown.innerHTML = currentItems.map((name, i) => `
+      <div class="px-3 py-2 text-sm text-slate-200 hover:bg-amber-500/20 hover:text-amber-300 cursor-pointer ${i === activeIdx ? 'bg-amber-500/20 text-amber-300' : ''}" data-idx="${i}">
+        ${escHtml(name)}
+      </div>
+    `).join('');
+    dropdown.style.display = 'block';
+
+    dropdown.querySelectorAll('[data-idx]').forEach(el => {
+      el.onmousedown = (e) => {
+        e.preventDefault();
+        const idx = Number(el.dataset.idx);
+        if (currentItems[idx]) {
+          input.value = currentItems[idx];
+          dropdown.style.display = 'none';
+          if (onSelect) onSelect(currentItems[idx]);
+        }
+      };
+    });
+  };
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim().toLowerCase();
+    activeIdx = -1;
+    if (!val || !window.uniquePlayers) {
+      currentItems = [];
+      renderDropdown();
+      return;
+    }
+    currentItems = window.uniquePlayers.filter(p => p.toLowerCase().includes(val)).slice(0, 8);
+    renderDropdown();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (dropdown.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIdx = (activeIdx + 1) % currentItems.length;
+      renderDropdown();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIdx = (activeIdx - 1 + currentItems.length) % currentItems.length;
+      renderDropdown();
+    } else if (e.key === 'Enter') {
+      if (activeIdx >= 0 && currentItems[activeIdx]) {
+        e.preventDefault();
+        input.value = currentItems[activeIdx];
+        dropdown.style.display = 'none';
+        if (onSelect) onSelect(currentItems[activeIdx]);
+      }
+    } else if (e.key === 'Escape') {
+      dropdown.style.display = 'none';
+    }
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => { dropdown.style.display = 'none'; }, 200);
+  });
+};
+

@@ -178,6 +178,10 @@ async function fetchPlayerPts(playerName) {
 
     const result = {
       name: data.profile?.name || playerName,
+      profile: data.profile || null,
+      skinName: data.profile?.skin_name || data.profile?.skin || 'default',
+      skinColorBody: data.profile?.skin_color_body ?? data.profile?.color_body ?? null,
+      skinColorFeet: data.profile?.skin_color_feet ?? data.profile?.color_feet ?? null,
       oldPts,
       newPtsBase,
       newPtsSkill,

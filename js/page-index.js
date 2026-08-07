@@ -111,7 +111,7 @@
       tr.innerHTML = `
         <td class="p-4">${rankHtml}</td>
         <td class="p-4 font-bold text-lg">
-          <a href="player.html?name=${encodeURIComponent(p.name)}" class="text-white hover:text-blue-400 transition-colors">
+          <a href="/player?name=${encodeURIComponent(p.name)}" class="text-white hover:text-blue-400 transition-colors">
             ${escapeHtml(p.name)}
           </a>${staticBadge}
         </td>
@@ -236,7 +236,7 @@
       tr.innerHTML = `
         <td class="p-4">${rankBadge}</td>
         <td class="p-4 font-bold">
-          <a href="player.html?name=${encodeURIComponent(name)}" class="text-red-400 hover:text-red-300 transition-colors" style="${blurStyle}">
+          <a href="/player?name=${encodeURIComponent(name)}" class="text-red-400 hover:text-red-300 transition-colors" style="${blurStyle}">
             ${escapeHtml(name)}
           </a>
         </td>
@@ -250,43 +250,64 @@
     });
   }
 
+  const setTxt = (id, txt) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  };
+
+  const setHtml = (id, html) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  };
+
   // ── Load leaderboard ──────────────────────────────────────────────────────
   async function loadLeaderboard() {
     loading = true;
-    document.getElementById('leaderboard-loader').classList.remove('hidden');
-    document.getElementById('load-more-btn').disabled = true;
-    document.getElementById('load-more-btn').innerHTML = icons.loader;
+    const loaderEl = document.getElementById('leaderboard-loader');
+    if (loaderEl) loaderEl.classList.remove('hidden');
+
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.innerHTML = icons.loader;
+    }
 
     try {
       playersData = await window.api.getTopPlayersLive(displayLimit, (done, total) => {
-        document.getElementById('status-message').textContent =
-          `${currentLang === 'en' ? 'Loading' : 'Загрузка'} ${done} / ${total}...`;
+        setTxt('status-message', `${currentLang === 'en' ? 'Loading' : 'Загрузка'} ${done} / ${total}...`);
       });
-      document.getElementById('status-message').textContent = '';
+      setTxt('status-message', '');
 
       // Warn if all data is cached (DDStats unreachable)
       const allStatic = playersData.length > 0 && playersData.every(p => p.isStatic);
       if (allStatic) {
-        document.getElementById('status-message').textContent =
-          currentLang === 'en'
+        const msgEl = document.getElementById('status-message');
+        if (msgEl) {
+          msgEl.textContent = currentLang === 'en'
             ? '⚠ DDStats unreachable — showing cached data'
             : '⚠ DDStats недоступен — показаны кэшированные данные';
-        document.getElementById('status-message').style.color = '#f59e0b';
+          msgEl.style.color = '#f59e0b';
+        }
       }
 
       renderTable();
     } catch (err) {
-      document.getElementById('empty-state').textContent = 'Error loading data';
+      setTxt('empty-state', 'Error loading data');
     } finally {
       loading = false;
-      document.getElementById('leaderboard-loader').classList.add('hidden');
-      document.getElementById('load-more-btn').disabled = false;
-      document.getElementById('load-more-btn').textContent = getLoadMoreBtnText(displayLimit);
+      if (loaderEl) loaderEl.classList.add('hidden');
+      if (loadMoreBtn) {
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = getLoadMoreBtnText(displayLimit);
+      }
 
-      if (currentTab === 'global' && displayLimit < 100 && playersData.length >= displayLimit) {
-        document.getElementById('load-more-container').classList.remove('hidden');
-      } else {
-        document.getElementById('load-more-container').classList.add('hidden');
+      const loadMoreContainer = document.getElementById('load-more-container');
+      if (loadMoreContainer) {
+        if (currentTab === 'global' && displayLimit < 100 && playersData.length >= displayLimit) {
+          loadMoreContainer.classList.remove('hidden');
+        } else {
+          loadMoreContainer.classList.add('hidden');
+        }
       }
     }
   }
@@ -312,62 +333,67 @@
     document.documentElement.lang = currentLang;
 
     // Set texts from i18n
-    document.getElementById('home-title').textContent = dict.home.title;
-    document.getElementById('home-subtitle').textContent = dict.home.subtitle;
-    document.getElementById('home-about-btn').textContent = dict.home.aboutBtn;
-    document.getElementById('home-compare-btn').textContent = dict.home.compareBtn;
-    document.getElementById('home-how-it-works').textContent = dict.home.howItWorks;
-    document.getElementById('home-base-pts-title').textContent = dict.home.basePtsTitle;
-    document.getElementById('home-base-pts-desc').textContent = dict.home.basePtsDesc;
-    document.getElementById('home-skill-pts-title').textContent = dict.home.skillPtsTitle;
-    document.getElementById('home-skill-pts-desc').textContent = dict.home.skillPtsDesc;
-    document.getElementById('scoring-logic-label').textContent = currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ';
-    document.getElementById('player-scan-label').textContent = currentLang === 'en' ? 'PLAYER SEARCH / 02' : 'ПОИСК ИГРОКА / 02';
-    document.getElementById('global-telemetry-label').textContent = currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ';
+    const rawTitle = dict.home.title || 'DDNet Map Mastery';
+    const titleHtml = rawTitle
+      .replace(/\bMap\b/i, '<span class="inline-block whitespace-nowrap"><img src="icon.png" alt="M" class="inline-hero-m">ap</span>')
+      .replace(/\bMAP\b/, '<span class="inline-block whitespace-nowrap"><img src="icon.png" alt="M" class="inline-hero-m">AP</span>');
+    setHtml('home-title', titleHtml);
+    setTxt('home-subtitle', dict.home.subtitle);
+    setTxt('home-about-btn', dict.home.aboutBtn);
+    setTxt('home-compare-btn', dict.home.compareBtn);
+    setTxt('home-how-it-works', dict.home.howItWorks);
+    setTxt('home-base-pts-title', dict.home.basePtsTitle);
+    setTxt('home-base-pts-desc', dict.home.basePtsDesc);
+    setTxt('home-skill-pts-title', dict.home.skillPtsTitle);
+    setTxt('home-skill-pts-desc', dict.home.skillPtsDesc);
+    setTxt('scoring-logic-label', currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ');
+    setTxt('player-scan-label', currentLang === 'en' ? 'PLAYER SEARCH / 02' : 'ПОИСК ИГРОКА / 02');
+    setTxt('global-telemetry-label', currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ');
 
-    document.getElementById('home-skill-pts-and').textContent = currentLang === 'en' ? 'and record' : 'и рекорда';
-    document.getElementById('home-skill-pts-where').textContent = currentLang === 'en' ? 'Where' : 'Где';
-    document.getElementById('home-skill-pts-and2').textContent = currentLang === 'en' ? 'and' : 'и';
-    document.getElementById('home-skill-pts-s-desc').textContent = currentLang === 'en'
+    setTxt('home-skill-pts-and', currentLang === 'en' ? 'and record' : 'и рекорда');
+    setTxt('home-skill-pts-where', currentLang === 'en' ? 'Where' : 'Где');
+    setTxt('home-skill-pts-and2', currentLang === 'en' ? 'and' : 'и');
+    setTxt('home-skill-pts-s-desc', currentLang === 'en'
       ? 'dynamic strictness coefficient (0.5 to 3.0 based on variance)'
-      : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)';
+      : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)');
 
-    document.getElementById('search-title').textContent = currentLang === 'en' ? 'Find Player' : 'Найти игрока';
-    document.getElementById('home-leaderboard-title').textContent = dict.home.leaderboardTitle;
-    document.getElementById('table-rank').textContent = dict.home.tableRank;
-    document.getElementById('table-player').textContent = dict.home.tablePlayer;
-    document.getElementById('table-base').textContent = dict.home.tableBase;
-    document.getElementById('table-skill').textContent = dict.home.tableSkill;
-    document.getElementById('table-total').textContent = dict.home.tableTotal;
-    document.getElementById('empty-state').textContent = dict.home.empty;
-    document.getElementById('status-message').textContent = '';
-    document.getElementById('load-more-btn').textContent = getLoadMoreBtnText(displayLimit);
+    setTxt('search-title', currentLang === 'en' ? 'Find Player' : 'Найти игрока');
+    setTxt('home-leaderboard-title', dict.home.leaderboardTitle);
+    setTxt('table-rank', dict.home.tableRank);
+    setTxt('table-player', dict.home.tablePlayer);
+    setTxt('table-base', dict.home.tableBase);
+    setTxt('table-skill', dict.home.tableSkill);
+    setTxt('table-total', dict.home.tableTotal);
+    setTxt('empty-state', dict.home.empty);
+    setTxt('status-message', '');
+    
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) loadMoreBtn.textContent = getLoadMoreBtnText(displayLimit);
 
-    // Search result labels from i18n (no more hardcode)
-    document.getElementById('search-result-base-label').textContent = dict.home.searchResultBase;
-    document.getElementById('search-result-skill-label').textContent = dict.home.searchResultSkill;
-    document.getElementById('search-result-total-label').textContent = dict.home.searchResultTotal;
+    // Search result labels from i18n
+    setTxt('search-result-base-label', dict.home.searchResultBase);
+    setTxt('search-result-skill-label', dict.home.searchResultSkill);
+    setTxt('search-result-total-label', dict.home.searchResultTotal);
     const copyTextEl = document.getElementById('search-result-copy-text');
     if (copyTextEl) copyTextEl.textContent = dict.home.copyBtn || 'Copy';
 
     // Icons
-    document.getElementById('icon-arrow-right-1').innerHTML = icons.arrowRight;
-    document.getElementById('icon-arrow-right-2').innerHTML = icons.arrowRight;
-    document.getElementById('icon-arrow-1').innerHTML = icons.arrowUpDown;
-    document.getElementById('icon-arrow-2').innerHTML = icons.arrowUpDown;
-    document.getElementById('icon-arrow-3').innerHTML = icons.arrowUpDown;
-    document.getElementById('search-btn').innerHTML = icons.search;
-    document.getElementById('leaderboard-loader').innerHTML = icons.loader;
+    setHtml('icon-arrow-right-1', icons.arrowRight);
+    setHtml('icon-arrow-right-2', icons.arrowRight);
+    setHtml('icon-arrow-1', icons.arrowUpDown);
+    setHtml('icon-arrow-2', icons.arrowUpDown);
+    setHtml('icon-arrow-3', icons.arrowUpDown);
+    setHtml('search-btn', icons.search);
+    setHtml('leaderboard-loader', icons.loader);
 
     // Render Math
-    katex.render('P_{total} = P_{base} + P_{skill}', document.getElementById('math-1'), { displayMode: true });
-    katex.render('P_{base} = P_{DDNet}', document.getElementById('math-2'), { displayMode: false });
-    katex.render('t_{player}', document.getElementById('math-3'), { displayMode: false });
-    katex.render('t_{best}', document.getElementById('math-4'), { displayMode: false });
-    katex.render('P_{skill} = \\lfloor P_{max\\_bonus} \\times e^{-s(\\frac{t_{player}}{t_{best}} - 1)} \\rfloor',
-      document.getElementById('math-5'), { displayMode: true });
-    katex.render('P_{max\\_bonus} = P_{DDNet} \\times 5', document.getElementById('math-6'), { displayMode: false });
-    katex.render('s', document.getElementById('math-7'), { displayMode: false });
+    const m1 = document.getElementById('math-1'); if (m1) katex.render('P_{total} = P_{base} + P_{skill}', m1, { displayMode: true });
+    const m2 = document.getElementById('math-2'); if (m2) katex.render('P_{base} = P_{DDNet}', m2, { displayMode: false });
+    const m3 = document.getElementById('math-3'); if (m3) katex.render('t_{player}', m3, { displayMode: false });
+    const m4 = document.getElementById('math-4'); if (m4) katex.render('t_{best}', m4, { displayMode: false });
+    const m5 = document.getElementById('math-5'); if (m5) katex.render('P_{skill} = \\lfloor P_{max\\_bonus} \\times e^{-s(\\frac{t_{player}}{t_{best}} - 1)} \\rfloor', m5, { displayMode: true });
+    const m6 = document.getElementById('math-6'); if (m6) katex.render('P_{max\\_bonus} = P_{DDNet} \\times 5', m6, { displayMode: false });
+    const m7 = document.getElementById('math-7'); if (m7) katex.render('s', m7, { displayMode: false });
 
     // Player search
     let lastSearchResult = null;
@@ -388,54 +414,71 @@
       });
     }
 
-    document.getElementById('player-search-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const val = document.getElementById('search-input').value.trim();
-      if (!val) return;
+    const playerSearchForm = document.getElementById('player-search-form');
+    if (playerSearchForm) {
+      playerSearchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const sInput = document.getElementById('search-input');
+        const val = sInput ? sInput.value.trim() : '';
+        if (!val) return;
 
-      const btn = document.getElementById('search-btn');
-      btn.innerHTML = icons.loader;
-      btn.disabled = true;
-      document.getElementById('search-error').classList.add('hidden');
-      document.getElementById('search-result').classList.add('hidden');
+        const btn = document.getElementById('search-btn');
+        if (btn) {
+          btn.innerHTML = icons.loader;
+          btn.disabled = true;
+        }
+        const sErr = document.getElementById('search-error');
+        if (sErr) sErr.classList.add('hidden');
+        const sRes = document.getElementById('search-result');
+        if (sRes) sRes.classList.add('hidden');
 
-      let res = playersData.find(p => p.name === val);
-      try {
-        if (!res) res = await window.api.fetchPlayerPts(val);
-        lastSearchResult = res;
-        document.getElementById('search-result-name').textContent = res.name;
-        document.getElementById('search-result-name').href = `player.html?name=${encodeURIComponent(res.name)}`;
-        document.getElementById('search-result-base').textContent = '+' + res.newPtsBase.toLocaleString();
-        document.getElementById('search-result-skill').textContent = '+' + res.newPtsSkill.toLocaleString();
-        document.getElementById('search-result-total').textContent = res.newPtsTotal.toLocaleString();
-        document.getElementById('search-result').classList.remove('hidden');
-      } catch (err) {
-        const errEl = document.getElementById('search-error');
-        errEl.textContent = (err.isBlacklisted || (window.isBlacklisted && window.isBlacklisted(val)))
-          ? (currentLang === 'en' ? 'Player is blacklisted (TAS / Cheating)' : 'Игрок заблокирован в системе (TAS / Читы)')
-          : (currentLang === 'en' ? 'Player not found or DDStats service temporarily unavailable' : 'Игрок не найден или сервис DDStats временно недоступен');
-        errEl.classList.remove('hidden');
-      } finally {
-        btn.innerHTML = icons.search;
-        btn.disabled = false;
-      }
-    });
+        let res = playersData.find(p => p.name === val);
+        try {
+          if (!res) res = await window.api.fetchPlayerPts(val);
+          lastSearchResult = res;
+          setTxt('search-result-name', res.name);
+          const nameEl = document.getElementById('search-result-name');
+          if (nameEl) nameEl.href = `/player?name=${encodeURIComponent(res.name)}`;
+          setTxt('search-result-base', '+' + res.newPtsBase.toLocaleString());
+          setTxt('search-result-skill', '+' + res.newPtsSkill.toLocaleString());
+          setTxt('search-result-total', res.newPtsTotal.toLocaleString());
+          if (sRes) sRes.classList.remove('hidden');
+        } catch (err) {
+          if (sErr) {
+            sErr.textContent = (err.isBlacklisted || (window.isBlacklisted && window.isBlacklisted(val)))
+              ? (currentLang === 'en' ? 'Player is blacklisted (TAS / Cheating)' : 'Игрок заблокирован в системе (TAS / Читы)')
+              : (currentLang === 'en' ? 'Player not found or DDStats service temporarily unavailable' : 'Игрок не найден или сервис DDStats временно недоступен');
+            sErr.classList.remove('hidden');
+          }
+        } finally {
+          if (btn) {
+            btn.innerHTML = icons.search;
+            btn.disabled = false;
+          }
+        }
+      });
+    }
 
     // Load more
-    document.getElementById('load-more-btn').addEventListener('click', () => {
-      if (displayLimit < 20) displayLimit = 20;
-      else if (displayLimit < 40) displayLimit = 40;
-      else displayLimit = 100;
-      loadLeaderboard();
-    });
+    const loadMoreBtnEl = document.getElementById('load-more-btn');
+    if (loadMoreBtnEl) {
+      loadMoreBtnEl.addEventListener('click', () => {
+        if (displayLimit < 20) displayLimit = 20;
+        else if (displayLimit < 40) displayLimit = 40;
+        else displayLimit = 100;
+        loadLeaderboard();
+      });
+    }
 
-    setupPlayerAutocomplete('search-input', () => {
-      const form = document.getElementById('player-search-form');
-      if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-    });
+    if (window.setupPlayerAutocomplete) {
+      window.setupPlayerAutocomplete('search-input', () => {
+        const form = document.getElementById('player-search-form');
+        if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      });
+    }
 
     const banlist = window.blacklistData || [];
-    document.getElementById('banlist-count').textContent = banlist.length;
+    setTxt('banlist-count', banlist.length);
 
     loadLeaderboard();
   });

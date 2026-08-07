@@ -56,7 +56,7 @@
         return;
       }
 
-      window.history.pushState({}, '', `pvp.html?p1=${encodeURIComponent(p1)}&p2=${encodeURIComponent(p2)}`);
+      window.history.pushState({}, '', `/pvp?p1=${encodeURIComponent(p1)}&p2=${encodeURIComponent(p2)}`);
       runComparison(p1, p2);
     });
   });
@@ -247,9 +247,9 @@
     if (btnP2)  btnP2.textContent  = `🏆 ${d2.name} (${p2Wins})`;
     if (btnTie) btnTie.textContent = `🤝 ${pvp.filterTie || 'Ничьи'} (${ties})`;
 
-    const updateFilterButtonsUI = () => {
-      const btns = document.querySelectorAll('[data-pvp-filter]');
-      btns.forEach(btn => {
+    const filterBtns = document.querySelectorAll('[data-pvp-filter]');
+    const updateFilterUI = () => {
+      filterBtns.forEach(btn => {
         const type = btn.getAttribute('data-pvp-filter');
         if (type === currentFilter) {
           btn.className = 'px-3 py-1 text-xs font-bold rounded-lg border transition-all bg-amber-500 text-slate-950 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.3)]';
@@ -258,33 +258,35 @@
         }
       });
     };
-    updateFilterButtonsUI();
+    updateFilterUI();
 
-    document.querySelectorAll('[data-pvp-filter]').forEach(btn => {
+    filterBtns.forEach(btn => {
       btn.onclick = () => {
         currentFilter = btn.getAttribute('data-pvp-filter');
-        updateFilterButtonsUI();
+        updateFilterUI();
         renderTable();
       };
     });
 
     const renderTable = () => {
-      const q = (document.getElementById('pvp-map-search').value || '').toLowerCase().trim();
+      const searchQuery = (document.getElementById('pvp-map-search')?.value || '').toLowerCase().trim();
       const tbody = document.getElementById('pvp-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
 
       const filtered = commonMaps.filter(m => {
-        const matchesSearch = !q || m.mapName.toLowerCase().includes(q);
-        if (!matchesSearch) return false;
+        if (currentFilter === 'p1' && m.winner !== 1) return false;
+        if (currentFilter === 'p2' && m.winner !== 2) return false;
+        if (currentFilter === 'tie' && m.winner !== 0) return false;
 
-        if (currentFilter === 'p1') return m.winner === 1;
-        if (currentFilter === 'p2') return m.winner === 2;
-        if (currentFilter === 'tie') return m.winner === 0;
+        if (searchQuery && !m.mapName.toLowerCase().includes(searchQuery)) {
+          return false;
+        }
         return true;
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${pvp.noCommon || 'Нет общих карт'}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${pvp.noCommonMaps || 'Нет карт для отображения'}</td></tr>`;
         return;
       }
 
@@ -294,9 +296,9 @@
 
         let winnerBadgeHtml = '';
         if (m.winner === 1) {
-          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold shadow-[0_0_8px_rgba(16,185,129,0.2)]">${escapeHtml(d1.name)} (-${m.timeDiff.toFixed(2)}s)</span>`;
+          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">🏆 ${escapeHtml(d1.name)} (+${formatTime(Math.abs(m.timeDiff))})</span>`;
         } else if (m.winner === 2) {
-          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold shadow-[0_0_8px_rgba(16,185,129,0.2)]">${escapeHtml(d2.name)} (-${m.timeDiff.toFixed(2)}s)</span>`;
+          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">🏆 ${escapeHtml(d2.name)} (+${formatTime(Math.abs(m.timeDiff))})</span>`;
         } else {
           winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-slate-500/20 text-slate-300 text-xs font-bold">${pvp.equal || 'Ничья'}</span>`;
         }
@@ -306,7 +308,7 @@
 
         tr.innerHTML = `
           <td class="p-4 font-bold">
-            <a href="map.html?name=${encodeURIComponent(m.mapName)}" class="text-white hover:text-amber-400 transition-colors">
+            <a href="/map?name=${encodeURIComponent(m.mapName)}" class="text-white hover:text-amber-400 transition-colors">
               ${escapeHtml(m.mapName)}
             </a>
           </td>
@@ -320,10 +322,13 @@
     };
 
     const mapSearch = document.getElementById('pvp-map-search');
-    mapSearch.addEventListener('input', renderTable);
-    mapSearch.addEventListener('change', renderTable);
+    if (mapSearch) {
+      mapSearch.addEventListener('input', renderTable);
+      mapSearch.addEventListener('change', renderTable);
+    }
     renderTable();
 
-    document.getElementById('pvp-results').classList.remove('hidden');
+    const pvpResults = document.getElementById('pvp-results');
+    if (pvpResults) pvpResults.classList.remove('hidden');
   }
 })();

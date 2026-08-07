@@ -20,7 +20,63 @@
     if (s.includes('solo'))      return 'server-solo';
     if (s.includes('dummy'))     return 'server-dummy';
     if (s.includes('oldschool')) return 'server-oldschool';
-    return 'server-ddmax';
+  };
+
+  const renderPlayerTee = async (data) => {
+    const container = document.getElementById('player-tee-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    let skinName = data.skinName || 'default';
+    if (!skinName || skinName === 'null') skinName = 'default';
+
+    const localSkinUrl = `../data/skins/${encodeURIComponent(skinName)}.png`;
+    const remoteSkinUrl = `https://skins.ddstats.tw/${encodeURIComponent(skinName)}.png`;
+    const defaultSkinUrl = `https://skins.ddstats.tw/default.png`;
+
+    const checkImage = (url) => new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+
+    let finalSkinUrl = localSkinUrl;
+    if (!(await checkImage(localSkinUrl))) {
+      if (await checkImage(remoteSkinUrl)) {
+        finalSkinUrl = remoteSkinUrl;
+      } else {
+        finalSkinUrl = defaultSkinUrl;
+      }
+    }
+
+    const config = {
+      skinUrl: finalSkinUrl,
+      followMouse: true,
+      eyes: 'normal',
+      direction: 'right',
+    };
+
+    if (data.skinColorBody !== null && data.skinColorBody !== undefined) {
+      config.colorBody = Number(data.skinColorBody);
+      config.useCustomColor = true;
+    }
+    if (data.skinColorFeet !== null && data.skinColorFeet !== undefined) {
+      config.colorFeet = Number(data.skinColorFeet);
+      config.useCustomColor = true;
+    }
+
+    try {
+      if (window.TeeSkinRenderer && typeof window.TeeSkinRenderer.createAsync === 'function') {
+        const teeElement = await window.TeeSkinRenderer.createAsync(config);
+        teeElement.style.fontSize = '1.3px';
+        container.appendChild(teeElement);
+      }
+    } catch (err) {
+      console.warn('Failed to render player Tee skin:', err);
+    }
   };
 
   document.addEventListener('DOMContentLoaded', async () => {
@@ -35,39 +91,52 @@
       return;
     }
 
-    // SEO
-    document.title = `${playerName} — DDNet Map Mastery`;
-    document.querySelector('meta[name="description"]').content =
-      `${playerName} — Base PTS, Skill PTS and Total Mastery on DDNet Map Mastery.`;
+    const setTxt = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    };
+    const setHtml = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    };
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.content = `${playerName} — Base PTS, Skill PTS and Total Mastery on DDNet Map Mastery.`;
+    }
 
     // Static UI text from i18n
-    document.getElementById('loader-icon').innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
+    setHtml('loader-icon', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>');
 
-    document.getElementById('player-back').textContent             = dict.player.back;
-    document.getElementById('player-loading').textContent          = dict.player.loading;
-    document.getElementById('player-error').textContent            = dict.player.error;
-    document.getElementById('stat-base').textContent               = dict.player.statBase;
-    document.getElementById('stat-skill').textContent              = dict.player.statSkill;
-    document.getElementById('stat-total').textContent              = dict.player.statTotal;
-    document.getElementById('table-map').textContent               = dict.player.mapName;
-    document.getElementById('table-server').textContent            = dict.player.mapServer;
-    document.getElementById('table-time').textContent              = dict.player.mapTime;
-    document.getElementById('table-base-col').textContent          = dict.player.tableBase;
-    document.getElementById('table-skill-col').textContent         = dict.player.tableSkill;
-    document.getElementById('table-top-col').textContent           = dict.player.tableTopDDNet;
+    setTxt('player-back', dict.player.back);
+    setTxt('player-loading', dict.player.loading);
+    setTxt('player-error', dict.player.error);
+    setTxt('stat-base', dict.player.statBase);
+    setTxt('stat-skill', dict.player.statSkill);
+    setTxt('stat-total', dict.player.statTotal);
+    setTxt('table-map', dict.player.mapName || dict.player.map || 'Карта');
+    setTxt('table-server', dict.player.mapServer || dict.player.category || 'Сервер');
+    setTxt('table-time', dict.player.mapTime || dict.player.time || 'Время');
+    setTxt('table-base-col', dict.player.tableBase || 'Base');
+    setTxt('table-skill-col', dict.player.tableSkill || 'Skill Bonus');
+    setTxt('table-top-col', dict.player.tableTopDDNet || 'Top DDNet');
 
     const shareTextEl = document.getElementById('share-profile-text');
     if (shareTextEl) shareTextEl.textContent = dict.player.shareBtn || 'Share Profile';
 
     // Inline player search
-    document.getElementById('inline-player-search-input').placeholder = dict.player.searchPlaceholder;
-    document.getElementById('inline-player-search-btn').textContent   = dict.player.searchBtn;
-    document.getElementById('inline-player-search-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const target = document.getElementById('inline-player-search-input').value.trim();
-      if (target) window.location.href = `player.html?name=${encodeURIComponent(target)}`;
-    });
+    const sInput = document.getElementById('inline-player-search-input');
+    if (sInput) sInput.placeholder = dict.player.searchPlaceholder;
+    const sBtn = document.getElementById('inline-player-search-btn');
+    if (sBtn) sBtn.textContent = dict.player.searchBtn;
+    const sForm = document.getElementById('inline-player-search-form');
+    if (sForm) {
+      sForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const target = sInput ? sInput.value.trim() : '';
+        if (target) window.location.href = `/player?name=${encodeURIComponent(target)}`;
+      });
+    }
     setupPlayerAutocomplete('inline-player-search-input');
 
     // Blacklist check
@@ -94,6 +163,7 @@
       const data = await window.api.fetchPlayerPts(playerName);
 
       document.getElementById('player-name').textContent  = data.name;
+      renderPlayerTee(data);
       document.getElementById('val-base').textContent     = data.newPtsBase.toLocaleString();
       document.getElementById('val-skill').textContent    = data.newPtsSkill.toLocaleString();
       document.getElementById('val-total').textContent    = data.newPtsTotal.toLocaleString();
@@ -171,7 +241,7 @@
           const rankTitle = map.rank === '???' ? (currentLang === 'en' ? 'Enriched map ranking' : 'Обогащенная карта — точный ранг неопределен') : '';
           tr.innerHTML = `
             <td class="p-4 font-bold">
-              <a href="map.html?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
+              <a href="/map?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
                 ${escapeHtml(map.mapName)}
               </a>
             </td>
