@@ -401,7 +401,7 @@
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
         if (!lastSearchResult) return;
-        const cardText = `${lastSearchResult.name} | base: ${lastSearchResult.newPtsBase} | skill: ${lastSearchResult.newPtsSkill} | total: ${lastSearchResult.newPtsTotal} | https://m09l6d0ur13ii.github.io/ddnetmm`;
+        const cardText = `${lastSearchResult.name} | base: ${lastSearchResult.newPtsBase} | skill: ${lastSearchResult.newPtsSkill} | total: ${lastSearchResult.newPtsTotal} | https://ddnetmm.ru/player?name=${encodeURIComponent(lastSearchResult.name)}`;
         navigator.clipboard.writeText(cardText).then(() => {
           if (copyTextEl) {
             const orig = dict.home.copyBtn || 'Copy';

@@ -355,12 +355,13 @@ window.setupPlayerAutocomplete = function (inputId, onSelect) {
   input.addEventListener('input', () => {
     const val = input.value.trim().toLowerCase();
     activeIdx = -1;
-    if (!val || !window.uniquePlayers) {
+    const playersList = window.uniquePlayersData || window.uniquePlayers || [];
+    if (!val || playersList.length === 0) {
       currentItems = [];
       renderDropdown();
       return;
     }
-    currentItems = window.uniquePlayers.filter(p => p.toLowerCase().includes(val)).slice(0, 8);
+    currentItems = playersList.filter(p => String(p).toLowerCase().includes(val)).slice(0, 8);
     renderDropdown();
   });
 

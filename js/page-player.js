@@ -137,7 +137,9 @@
         if (target) window.location.href = `/player?name=${encodeURIComponent(target)}`;
       });
     }
-    setupPlayerAutocomplete('inline-player-search-input');
+    setupPlayerAutocomplete('inline-player-search-input', (val) => {
+      if (val) window.location.href = `/player?name=${encodeURIComponent(val)}`;
+    });
 
     // Blacklist check
     if (window.isBlacklisted && window.isBlacklisted(playerName)) {
@@ -171,7 +173,7 @@
       const shareBtn = document.getElementById('share-profile-btn');
       if (shareBtn) {
         shareBtn.addEventListener('click', () => {
-          const cardText = `${data.name} | base: ${data.newPtsBase} | skill: ${data.newPtsSkill} | total: ${data.newPtsTotal} | https://m09l6d0ur13ii.github.io/ddnetmm`;
+          const cardText = `${data.name} | base: ${data.newPtsBase} | skill: ${data.newPtsSkill} | total: ${data.newPtsTotal} | https://ddnetmm.ru/player?name=${encodeURIComponent(data.name)}`;
           navigator.clipboard.writeText(cardText).then(() => {
             if (shareTextEl) {
               const origText = dict.player.shareBtn || 'Share Profile';
