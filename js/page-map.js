@@ -236,7 +236,8 @@
           btnSolo.onclick = () => switchTab('solo');
           btnTeam.onclick = () => switchTab('team');
 
-          switchTab('solo');
+          const initialMode = (soloList.length === 0 && teamList.length > 0) ? 'team' : 'solo';
+          switchTab(initialMode);
         } else {
           if (dummyTabsContainer) dummyTabsContainer.classList.add('hidden');
           renderLeaderboardRows(data.leaderboard);
