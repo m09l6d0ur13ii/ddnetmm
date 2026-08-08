@@ -22,36 +22,43 @@
     const headBanlist = document.getElementById('table-header-banlist');
     const mobileBanlistSort = document.getElementById('banlist-mobile-sort');
     const loadMoreContainer = document.getElementById('load-more-container');
-    const dict = getDict();
+    const tbody = document.getElementById('leaderboard-body');
+
+    if (tbody) tbody.innerHTML = '';
 
     if (tab === 'global') {
-      btnGlobal.style.background = '#ffa500';
-      btnGlobal.style.color = '#111111';
-      btnGlobal.style.border = 'none';
+      if (btnGlobal) {
+        btnGlobal.style.background = '#ffa500';
+        btnGlobal.style.color = '#111111';
+        btnGlobal.style.border = 'none';
+      }
+      if (btnBanlist) {
+        btnBanlist.style.background = 'rgba(255,255,255,0.05)';
+        btnBanlist.style.color = '#9a9a9a';
+        btnBanlist.style.border = '1px solid rgba(255,255,255,0.15)';
+      }
 
-      btnBanlist.style.background = 'rgba(255,255,255,0.05)';
-      btnBanlist.style.color = '#9a9a9a';
-      btnBanlist.style.border = '1px solid rgba(255,255,255,0.15)';
-
-      headGlobal.classList.remove('hidden');
-      headBanlist.classList.add('hidden');
-      mobileBanlistSort.classList.add('hidden');
-      loadMoreContainer.classList.add('hidden');
+      if (headGlobal) headGlobal.classList.remove('hidden');
+      if (headBanlist) headBanlist.classList.add('hidden');
+      if (mobileBanlistSort) mobileBanlistSort.classList.add('hidden');
+      if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
       renderTable();
     } else {
-      btnBanlist.style.background = '#ef4444';
-      btnBanlist.style.color = '#ffffff';
-      btnBanlist.style.border = 'none';
+      if (btnBanlist) {
+        btnBanlist.style.background = '#ef4444';
+        btnBanlist.style.color = '#ffffff';
+        btnBanlist.style.border = 'none';
+      }
+      if (btnGlobal) {
+        btnGlobal.style.background = 'rgba(255,255,255,0.05)';
+        btnGlobal.style.color = '#9a9a9a';
+        btnGlobal.style.border = '1px solid rgba(255,255,255,0.15)';
+      }
 
-      btnGlobal.style.background = 'rgba(255,255,255,0.05)';
-      btnGlobal.style.color = '#9a9a9a';
-      btnGlobal.style.border = '1px solid rgba(255,255,255,0.15)';
-
-      headGlobal.classList.add('hidden');
-      headBanlist.classList.remove('hidden');
-      mobileBanlistSort.classList.remove('hidden');
-
-      loadMoreContainer.classList.add('hidden');
+      if (headGlobal) headGlobal.classList.add('hidden');
+      if (headBanlist) headBanlist.classList.remove('hidden');
+      if (mobileBanlistSort) mobileBanlistSort.classList.remove('hidden');
+      if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
       renderBanlistTable();
     }
   };
@@ -156,7 +163,9 @@
   }
 
   function renderBanlistTable() {
+    if (currentTab !== 'banlist') return;
     const tbody = document.getElementById('leaderboard-body');
+    if (!tbody) return;
     tbody.classList.add('banlist-mode');
     tbody.innerHTML = '';
 
@@ -221,15 +230,12 @@
       else if (currentDisplayRank === 2) rankBadge = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
       else if (currentDisplayRank === 3) rankBadge = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
 
-      let badgeContent = currentLang === 'en' ? 'Banned' : 'Заблокирован';
-      if (count > 0) {
-        badgeContent = `
-          <span class="ban-stat ban-stat-total">${currentLang === 'en' ? 'Total' : 'Всего'} ${count.toLocaleString()}</span>
-          <span class="ban-stat ban-stat-wr">#1 ${wr1}</span>
-          <span class="ban-stat">#2-10 ${top10}</span>
-          <span class="ban-stat">#11-50 ${top50}</span>
-        `;
-      }
+      const badgeContent = `
+        <span class="ban-stat ban-stat-total">${currentLang === 'en' ? 'Total' : 'Всего'} ${count.toLocaleString()}</span>
+        <span class="ban-stat ban-stat-wr">#1 ${wr1}</span>
+        <span class="ban-stat">#2-10 ${top10}</span>
+        <span class="ban-stat">#11-50 ${top50}</span>
+      `;
 
       const tr = document.createElement('tr');
       tr.className = 'premium-table-row transition-colors';

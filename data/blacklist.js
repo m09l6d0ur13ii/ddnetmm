@@ -1,6 +1,27 @@
 // Blacklist of cheaters/TASers loaded locally with deleted record counts
 window.blacklistData = [
   {
+    "name": "cmelost",
+    "count": 101,
+    "wr1": 1,
+    "top10": 10,
+    "top50": 19
+  },
+  {
+    "name": "гурех",
+    "count": 1,
+    "wr1": 1,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "zlo0dey",
+    "count": 1,
+    "wr1": 1,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "-lonexxx",
     "count": 0,
     "wr1": 0,
@@ -79,6 +100,20 @@ window.blacklistData = [
   },
   {
     "name": "[...(o_0)...] k",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "[...(o_0)...] V",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "[...o_0...] l",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -225,6 +260,27 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "♪Xyu♥",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "♪Xyu♥1",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "✞550ħ✞",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "😂😂",
     "count": 0,
     "wr1": 0,
@@ -247,6 +303,13 @@ window.blacklistData = [
   },
   {
     "name": "1",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "1046",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -330,6 +393,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "5qu4ďT1tαn♬",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "5tamlie",
     "count": 0,
     "wr1": 0,
@@ -351,7 +421,21 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "8h gooning",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "адольф с",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "бабуля",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -394,6 +478,20 @@ window.blacklistData = [
   },
   {
     "name": "карл",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "карофшл",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "кoшкo дeвo",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -512,6 +610,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "шкибиди",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "шмелиоз",
     "count": 0,
     "wr1": 0,
@@ -520,6 +625,13 @@ window.blacklistData = [
   },
   {
     "name": "Шнайдер",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "Шymckий H.A.",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -540,7 +652,21 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "Alina",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "alt",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "AntiKolhoz",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -617,6 +743,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "Brainrot God",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "bratko",
     "count": 0,
     "wr1": 0,
@@ -687,7 +820,21 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "CTAKAH CTAKAH",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "cuter as a vamp",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "cαgιн",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -723,6 +870,13 @@ window.blacklistData = [
   },
   {
     "name": "DaZzL",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "dcv",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -785,6 +939,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "dɛłļė",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "dibik",
     "count": 0,
     "wr1": 0,
@@ -814,6 +975,20 @@ window.blacklistData = [
   },
   {
     "name": "disease",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "DJFILYA DOLBOEB",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "dora",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -863,6 +1038,13 @@ window.blacklistData = [
   },
   {
     "name": "eseva096",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "espup",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1009,6 +1191,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "JuKKi",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "kisesひ",
     "count": 0,
     "wr1": 0,
@@ -1016,7 +1205,35 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "l0lik1",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "L1M173D",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "l3git",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "la pikiki",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "la pikyky",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1135,7 +1352,21 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "mevixs",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "MORPHINE",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "MOTOP ПETУX",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1219,6 +1450,20 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "PLEER",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "PLEER gay",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "Priora",
     "count": 0,
     "wr1": 0,
@@ -1268,6 +1513,20 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "rainbowglass",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "reddit",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "rickOWens",
     "count": 0,
     "wr1": 0,
@@ -1276,6 +1535,13 @@ window.blacklistData = [
   },
   {
     "name": "sad",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "Saint",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1408,6 +1674,20 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "TACEР=ПИДOP",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "TACEP=КPACABA",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "TACEP=ПИДOP",
     "count": 0,
     "wr1": 0,
@@ -1415,7 +1695,21 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "TACEP=KPУTOЙ",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "TAS ёбтa",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "TASER=POMIDOR",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1534,6 +1828,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "wisw",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "worse player",
     "count": 0,
     "wr1": 0,
@@ -1542,6 +1843,13 @@ window.blacklistData = [
   },
   {
     "name": "Xdark",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "xFlyGoon3x",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1570,6 +1878,13 @@ window.blacklistData = [
   },
   {
     "name": "yonz1",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "YUNG TRAPPA",
     "count": 0,
     "wr1": 0,
     "top10": 0,
@@ -1611,6 +1926,13 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": "春樱海",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "柚子柚子",
     "count": 0,
     "wr1": 0,
@@ -1621,9 +1943,9 @@ window.blacklistData = [
 
 window.isBlacklisted = function(name) {
   if (!name || !window.blacklistData || !window.blacklistData.length) return false;
-  const lower = String(name).toLowerCase().trim();
+  const players = String(name).split(/[,/&]+/).map(p => p.toLowerCase().trim()).filter(Boolean);
   return window.blacklistData.some(b => {
-    const bName = typeof b === 'string' ? b : b.name;
-    return String(bName).toLowerCase().trim() === lower;
+    const bName = (typeof b === 'string' ? b : b.name).toLowerCase().trim();
+    return players.includes(bName);
   });
 };

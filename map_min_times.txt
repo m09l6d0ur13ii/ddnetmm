@@ -1,2 +1,8 @@
 # Format: MapName | MinTime (e.g. 7:30 or 450)
 2 Days in the back | 5:00
+SkipIt2 | 7
+Stronghold | 215
+Exanimus | 456
+1Hook | 88
+Linear | 42
+Rush Clouds 2 | 30

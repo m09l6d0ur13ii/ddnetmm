@@ -203,56 +203,8 @@ async function getTopPlayersLive(limit = 500, onProgress = null) {
   const staticLeaderboard = await getLeaderboardData();
   const maxLimit = (typeof limit === 'number' && limit > 0 && limit !== Infinity) ? limit : 500;
   const topCandidates = staticLeaderboard.slice(0, maxLimit);
-
-  if (topCandidates.length === 0) return [];
-
-  // Quick connectivity check — try to fetch one player
-  let ddstatsReachable = true;
-  try {
-    const probe = await Promise.race([
-      fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(topCandidates[0].name)}`),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
-    ]);
-    if (!probe.ok) ddstatsReachable = false;
-  } catch {
-    ddstatsReachable = false;
-  }
-
-  // If DDStats is down — return static data immediately with a flag
-  if (!ddstatsReachable) {
-    if (onProgress) onProgress(topCandidates.length, topCandidates.length);
-    return topCandidates.map(p => ({ ...p, isStatic: true }));
-  }
-
-  const livePlayers = [];
-
-  // Process in batches to avoid flooding the browser
-  const batchSize = 5;
-  for (let i = 0; i < topCandidates.length; i += batchSize) {
-    const batch = topCandidates.slice(i, i + batchSize);
-    const results = await Promise.all(batch.map(async p => {
-      try {
-        return await fetchPlayerPts(p.name);
-      } catch (e) {
-        return null;
-      }
-    }));
-
-    for (let j = 0; j < results.length; j++) {
-      if (results[j]) {
-        livePlayers.push(results[j]);
-      } else {
-        livePlayers.push({ ...batch[j], isStatic: true }); // fallback to static
-      }
-    }
-
-    if (onProgress) {
-      onProgress(Math.min(i + batchSize, topCandidates.length), topCandidates.length);
-    }
-  }
-
-  livePlayers.sort((a, b) => b.newPtsTotal - a.newPtsTotal);
-  return livePlayers;
+  if (onProgress) onProgress(topCandidates.length, topCandidates.length);
+  return topCandidates;
 }
 
 // Load map rankings from a per-map JS file (data/rankings/{safe}.js)
@@ -346,7 +298,12 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
           const isDummy = foundInMaps && (foundInMaps.server === 'Dummy');
           if (isDummy) {
             const rawSolo = (mapData.rankings || []).map(r => ({ player: r.name, time: r.time, timestamp: r.timestamp || null, isTeamRank: false }));
-            const rawTeam = (mapData.team_rankings || []).map(r => ({ player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name), time: r.time, timestamp: r.timestamp || null, isTeamRank: true }));
+            const rawTeam = (mapData.team_rankings || [])
+              .filter(r => {
+                const pList = r.players || (r.player ? r.player.split(/[,/&]+/) : []);
+                return pList.length <= 2;
+              })
+              .map(r => ({ player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name), time: r.time, timestamp: r.timestamp || null, isTeamRank: true }));
             rankings = [...rawSolo, ...rawTeam].sort((a, b) => a.time - b.time);
           } else if (mapData.team_rankings && mapData.team_rankings.length > 0 && foundInMaps && foundInMaps.server !== 'Solo' && foundInMaps.server !== 'Race') {
             rankings = mapData.team_rankings.map(r => ({ player: Array.isArray(r.players) ? r.players.join(' & ') : (r.player || r.name), time: r.time, timestamp: r.timestamp || null, isTeamRank: true }));
@@ -366,6 +323,9 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
       if (!r) return false;
       const pName = r.player || r.name;
       if (!pName) return false;
+
+      // Custom record manual overrides bypass blacklist/rules
+      if (r.isCustomRecord) return true;
 
       // 1. Min time filter
       if (minTimeSec > 0 && r.time < minTimeSec) return false;

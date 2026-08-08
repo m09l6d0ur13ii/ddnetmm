@@ -2,3 +2,4 @@
 # Time is automatically fetched & updated from DDStats API!
 # Optional format with fixed time override: MapName | Time | PlayerName(s)
 2 Days in the back | Xardas, tw1zenn
+Linear | 42.46 | гурех, zlo0dey

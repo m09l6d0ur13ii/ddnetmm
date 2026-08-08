@@ -495,6 +495,7 @@ async function run() {
             const validTeamRankings = rawTeam.filter(r => {
                 if (!r) return false;
                 const playerList = r.players || [r.name || r.player];
+                if (m.server === 'Dummy' && playerList.length > 2) return false; // Reject bugged practice mode finishes (>2 players on Dummy map)
                 return playerList.every(p => p && isFinishAllowed(p, mapName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
             });
 
@@ -615,7 +616,7 @@ async function run() {
                     if (match) {
                         const parsed = JSON.parse(match[1]);
                         if (parsed && parsed.length > 0) {
-                            mapRankings[mName] = parsed;
+                            mapRankings[mName] = parsed.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
                         }
                     }
                 } catch (e) { }
@@ -715,8 +716,8 @@ async function run() {
     for (const mName in mapRankings) {
         let list = mapRankings[mName] || [];
 
-        // Filter blacklisted players & rules
-        list = list.filter(r => isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
+        // Filter blacklisted players & rules (preserving custom map record overrides)
+        list = list.filter(r => r.isCustomRecord || isFinishAllowed(r.player || r.name, mName, r.time, blacklistSet, mapMinTimes, ignoredFinishesSet));
 
         let cleanList = [];
         const isTeamCategory = mapsRawMap[mName] && mapsRawMap[mName].server !== 'Solo' && mapsRawMap[mName].server !== 'Race' && mapsRawMap[mName].server !== 'Dummy';
@@ -774,19 +775,31 @@ async function run() {
                 const existingIdx = cleanList.findIndex(r => (r.player || r.name || '').toLowerCase() === customTeamStr.toLowerCase());
                 if (existingIdx !== -1) {
                     cleanList[existingIdx].time = custom.time;
+                    cleanList[existingIdx].isCustomRecord = true;
                 } else {
-                    cleanList.push({ player: customTeamStr, time: custom.time, isTeamRank: true });
+                    cleanList.push({ player: customTeamStr, time: custom.time, isTeamRank: true, isCustomRecord: true });
                 }
             } else {
                 for (const pName of teamPlayers) {
                     const existingIdx = cleanList.findIndex(r => (r.player || r.name || '').toLowerCase() === pName.toLowerCase());
                     if (existingIdx !== -1) {
                         cleanList[existingIdx].time = custom.time;
+                        cleanList[existingIdx].isCustomRecord = true;
                     } else {
-                        cleanList.push({ player: pName, time: custom.time });
+                        cleanList.push({ player: pName, time: custom.time, isCustomRecord: true });
                     }
                 }
             }
+        }
+
+        if (mapsRawMap[mName] && mapsRawMap[mName].server === 'Dummy') {
+            cleanList = cleanList.filter(r => {
+                if (r.isTeamRank || String(r.player).includes(' & ')) {
+                    const pArray = String(r.player).split(/[,/&]+/).map(p => p.trim()).filter(Boolean);
+                    if (pArray.length > 2) return false;
+                }
+                return true;
+            });
         }
 
         cleanList.sort((a, b) => a.time - b.time);
@@ -852,13 +865,16 @@ async function run() {
     let leaderboard = [];
     const topPlayers = loadPlayerList(blacklistSet);
     const mapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
+    const playerFiles = new Set(fs.existsSync(PLAYERS_DIR) ? fs.readdirSync(PLAYERS_DIR).map(f => f.toLowerCase()) : []);
 
     for (const p of topPlayers) {
         const pName = p.name;
         if (blacklistSet.has(pName.toLowerCase())) continue;
 
+        const fname = `${sanitizeFilename(pName)}.json`.toLowerCase();
+        if (!playerFiles.has(fname)) continue;
+
         const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(pName)}.json`);
-        if (!fs.existsSync(localFile)) continue;
 
         try {
             const pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));

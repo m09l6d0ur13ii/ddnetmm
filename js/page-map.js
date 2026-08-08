@@ -213,7 +213,11 @@
           dummyTabsContainer.classList.remove('hidden');
 
           const soloList = data.leaderboard.filter(item => !item.isTeamRank && !String(item.player).includes(' & '));
-          const teamList = data.leaderboard.filter(item => item.isTeamRank || String(item.player).includes(' & '));
+          const teamList = data.leaderboard.filter(item => {
+            if (!item.isTeamRank && !String(item.player).includes(' & ')) return false;
+            const pNames = String(item.player).split(/[,&]+/).map(n => n.trim()).filter(Boolean);
+            return pNames.length <= 2;
+          });
 
           document.getElementById('count-dummy-solo').textContent = soloList.length;
           document.getElementById('count-dummy-team').textContent = teamList.length;
