@@ -127,10 +127,10 @@
   },
   {
     "name": "PlantKnight",
-    "oldPts": 30749,
-    "newPtsBase": 30749,
+    "oldPts": 30774,
+    "newPtsBase": 30774,
     "newPtsSkill": 36931,
-    "newPtsTotal": 67680
+    "newPtsTotal": 67705
   },
   {
     "name": "ryu",
@@ -1142,10 +1142,10 @@
   },
   {
     "name": "天然二",
-    "oldPts": 29634,
-    "newPtsBase": 29634,
+    "oldPts": 29647,
+    "newPtsBase": 29647,
     "newPtsSkill": 9218,
-    "newPtsTotal": 38852
+    "newPtsTotal": 38865
   },
   {
     "name": "满月",
@@ -1225,18 +1225,18 @@
     "newPtsTotal": 38408
   },
   {
+    "name": "Kenshiro",
+    "oldPts": 29293,
+    "newPtsBase": 29293,
+    "newPtsSkill": 9087,
+    "newPtsTotal": 38380
+  },
+  {
     "name": "Zeral",
     "oldPts": 18221,
     "newPtsBase": 18221,
     "newPtsSkill": 20156,
     "newPtsTotal": 38377
-  },
-  {
-    "name": "Kenshiro",
-    "oldPts": 29241,
-    "newPtsBase": 29241,
-    "newPtsSkill": 9021,
-    "newPtsTotal": 38262
   },
   {
     "name": "green_bomb",
@@ -2801,10 +2801,10 @@
   },
   {
     "name": "pantless tee",
-    "oldPts": 18035,
-    "newPtsBase": 18035,
-    "newPtsSkill": 9773,
-    "newPtsTotal": 27808
+    "oldPts": 18059,
+    "newPtsBase": 18059,
+    "newPtsSkill": 9778,
+    "newPtsTotal": 27837
   },
   {
     "name": "Mizkibo",
@@ -3633,18 +3633,18 @@
     "newPtsTotal": 24823
   },
   {
+    "name": "Fiee",
+    "oldPts": 17281,
+    "newPtsBase": 17281,
+    "newPtsSkill": 7508,
+    "newPtsTotal": 24789
+  },
+  {
     "name": "大橙子",
     "oldPts": 22030,
     "newPtsBase": 22030,
     "newPtsSkill": 2753,
     "newPtsTotal": 24783
-  },
-  {
-    "name": "Fiee",
-    "oldPts": 17261,
-    "newPtsBase": 17261,
-    "newPtsSkill": 7508,
-    "newPtsTotal": 24769
   },
   {
     "name": "玩家2号",
@@ -3682,6 +3682,13 @@
     "newPtsTotal": 24597
   },
   {
+    "name": "Elsa Cowea",
+    "oldPts": 15297,
+    "newPtsBase": 15297,
+    "newPtsSkill": 9295,
+    "newPtsTotal": 24592
+  },
+  {
     "name": "Мамбо",
     "oldPts": 15332,
     "newPtsBase": 15332,
@@ -3701,13 +3708,6 @@
     "newPtsBase": 20917,
     "newPtsSkill": 3657,
     "newPtsTotal": 24574
-  },
-  {
-    "name": "Elsa Cowea",
-    "oldPts": 15270,
-    "newPtsBase": 15270,
-    "newPtsSkill": 9242,
-    "newPtsTotal": 24512
   },
   {
     "name": "妳説",
@@ -3948,6 +3948,13 @@
     "newPtsTotal": 23852
   },
   {
+    "name": "落日秋风",
+    "oldPts": 17558,
+    "newPtsBase": 17558,
+    "newPtsSkill": 6239,
+    "newPtsTotal": 23797
+  },
+  {
     "name": "口罩坤",
     "oldPts": 21207,
     "newPtsBase": 21207,
@@ -3960,13 +3967,6 @@
     "newPtsBase": 19482,
     "newPtsSkill": 4302,
     "newPtsTotal": 23784
-  },
-  {
-    "name": "落日秋风",
-    "oldPts": 17538,
-    "newPtsBase": 17538,
-    "newPtsSkill": 6239,
-    "newPtsTotal": 23777
   },
   {
     "name": "akametyanka",
@@ -3990,18 +3990,18 @@
     "newPtsTotal": 23755
   },
   {
+    "name": "*|Loading*",
+    "oldPts": 18975,
+    "newPtsBase": 18975,
+    "newPtsSkill": 4760,
+    "newPtsTotal": 23735
+  },
+  {
     "name": "02",
     "oldPts": 20452,
     "newPtsBase": 20452,
     "newPtsSkill": 3279,
     "newPtsTotal": 23731
-  },
-  {
-    "name": "*|Loading*",
-    "oldPts": 18951,
-    "newPtsBase": 18951,
-    "newPtsSkill": 4760,
-    "newPtsTotal": 23711
   },
   {
     "name": "豆腐干",
@@ -4067,18 +4067,18 @@
     "newPtsTotal": 23580
   },
   {
+    "name": "凋叶棕",
+    "oldPts": 17823,
+    "newPtsBase": 17823,
+    "newPtsSkill": 5711,
+    "newPtsTotal": 23534
+  },
+  {
     "name": "喔齁",
     "oldPts": 20321,
     "newPtsBase": 20321,
     "newPtsSkill": 3208,
     "newPtsTotal": 23529
-  },
-  {
-    "name": "凋叶棕",
-    "oldPts": 17805,
-    "newPtsBase": 17805,
-    "newPtsSkill": 5711,
-    "newPtsTotal": 23516
   },
   {
     "name": "嘤嘤怪",
@@ -4116,6 +4116,13 @@
     "newPtsTotal": 23432
   },
   {
+    "name": "GAAROVIC",
+    "oldPts": 16216,
+    "newPtsBase": 16216,
+    "newPtsSkill": 7213,
+    "newPtsTotal": 23429
+  },
+  {
     "name": "大泠",
     "oldPts": 18577,
     "newPtsBase": 18577,
@@ -4142,13 +4149,6 @@
     "newPtsBase": 20889,
     "newPtsSkill": 2418,
     "newPtsTotal": 23307
-  },
-  {
-    "name": "GAAROVIC",
-    "oldPts": 16169,
-    "newPtsBase": 16169,
-    "newPtsSkill": 7128,
-    "newPtsTotal": 23297
   },
   {
     "name": "路痴",
@@ -4431,6 +4431,13 @@
     "newPtsTotal": 22499
   },
   {
+    "name": "caramel",
+    "oldPts": 16061,
+    "newPtsBase": 16061,
+    "newPtsSkill": 6423,
+    "newPtsTotal": 22484
+  },
+  {
     "name": "群猛男",
     "oldPts": 20297,
     "newPtsBase": 20297,
@@ -4501,13 +4508,6 @@
     "newPtsTotal": 22332
   },
   {
-    "name": "caramel",
-    "oldPts": 15989,
-    "newPtsBase": 15989,
-    "newPtsSkill": 6339,
-    "newPtsTotal": 22328
-  },
-  {
     "name": "[D] SuPerp_",
     "oldPts": 15079,
     "newPtsBase": 15079,
@@ -4553,8 +4553,8 @@
     "name": "尾巴大人",
     "oldPts": 11279,
     "newPtsBase": 11279,
-    "newPtsSkill": 10886,
-    "newPtsTotal": 22165
+    "newPtsSkill": 10877,
+    "newPtsTotal": 22156
   },
   {
     "name": "也就",
@@ -4634,6 +4634,20 @@
     "newPtsTotal": 22014
   },
   {
+    "name": "爆头就离谱",
+    "oldPts": 17522,
+    "newPtsBase": 17522,
+    "newPtsSkill": 4455,
+    "newPtsTotal": 21977
+  },
+  {
+    "name": "kagelio",
+    "oldPts": 10263,
+    "newPtsBase": 10263,
+    "newPtsSkill": 11708,
+    "newPtsTotal": 21971
+  },
+  {
     "name": "White-King",
     "oldPts": 14307,
     "newPtsBase": 14307,
@@ -4711,25 +4725,11 @@
     "newPtsTotal": 21801
   },
   {
-    "name": "kagelio",
-    "oldPts": 10215,
-    "newPtsBase": 10215,
-    "newPtsSkill": 11586,
-    "newPtsTotal": 21801
-  },
-  {
     "name": "三木西子",
     "oldPts": 20011,
     "newPtsBase": 20011,
     "newPtsSkill": 1764,
     "newPtsTotal": 21775
-  },
-  {
-    "name": "爆头就离谱",
-    "oldPts": 17350,
-    "newPtsBase": 17350,
-    "newPtsSkill": 4421,
-    "newPtsTotal": 21771
   },
   {
     "name": "[D]coradax",
@@ -4949,6 +4949,13 @@
     "newPtsTotal": 20983
   },
   {
+    "name": "Ehjio",
+    "oldPts": 13390,
+    "newPtsBase": 13390,
+    "newPtsSkill": 7559,
+    "newPtsTotal": 20949
+  },
+  {
     "name": "Monmon99999",
     "oldPts": 13258,
     "newPtsBase": 13258,
@@ -4975,13 +4982,6 @@
     "newPtsBase": 12990,
     "newPtsSkill": 7892,
     "newPtsTotal": 20882
-  },
-  {
-    "name": "Ehjio",
-    "oldPts": 13369,
-    "newPtsBase": 13369,
-    "newPtsSkill": 7499,
-    "newPtsTotal": 20868
   },
   {
     "name": "雾起春华",
@@ -5089,6 +5089,13 @@
     "newPtsTotal": 20532
   },
   {
+    "name": "[D] A开启",
+    "oldPts": 17707,
+    "newPtsBase": 17707,
+    "newPtsSkill": 2814,
+    "newPtsTotal": 20521
+  },
+  {
     "name": "Velozity",
     "oldPts": 14502,
     "newPtsBase": 14502,
@@ -5096,11 +5103,11 @@
     "newPtsTotal": 20513
   },
   {
-    "name": "[D] A开启",
-    "oldPts": 17671,
-    "newPtsBase": 17671,
-    "newPtsSkill": 2814,
-    "newPtsTotal": 20485
+    "name": "朝岚",
+    "oldPts": 17987,
+    "newPtsBase": 17987,
+    "newPtsSkill": 2446,
+    "newPtsTotal": 20433
   },
   {
     "name": "RedFight",
@@ -5180,13 +5187,6 @@
     "newPtsTotal": 20218
   },
   {
-    "name": "朝岚",
-    "oldPts": 17759,
-    "newPtsBase": 17759,
-    "newPtsSkill": 2431,
-    "newPtsTotal": 20190
-  },
-  {
     "name": "Silent",
     "oldPts": 10558,
     "newPtsBase": 10558,
@@ -5208,11 +5208,25 @@
     "newPtsTotal": 20140
   },
   {
+    "name": "liyuxin",
+    "oldPts": 15707,
+    "newPtsBase": 15707,
+    "newPtsSkill": 4378,
+    "newPtsTotal": 20085
+  },
+  {
     "name": "四",
     "oldPts": 19039,
     "newPtsBase": 19039,
     "newPtsSkill": 1041,
     "newPtsTotal": 20080
+  },
+  {
+    "name": "telo",
+    "oldPts": 10977,
+    "newPtsBase": 10977,
+    "newPtsSkill": 9069,
+    "newPtsTotal": 20046
   },
   {
     "name": "OWOWOWO",
@@ -5229,18 +5243,18 @@
     "newPtsTotal": 20013
   },
   {
-    "name": "liyuxin",
-    "oldPts": 15629,
-    "newPtsBase": 15629,
-    "newPtsSkill": 4378,
-    "newPtsTotal": 20007
-  },
-  {
     "name": "Haraknos",
     "oldPts": 15530,
     "newPtsBase": 15530,
     "newPtsSkill": 4440,
     "newPtsTotal": 19970
+  },
+  {
+    "name": "北冬",
+    "oldPts": 15960,
+    "newPtsBase": 15960,
+    "newPtsSkill": 4007,
+    "newPtsTotal": 19967
   },
   {
     "name": "KuZu",
@@ -5257,25 +5271,11 @@
     "newPtsTotal": 19950
   },
   {
-    "name": "北冬",
-    "oldPts": 15939,
-    "newPtsBase": 15939,
-    "newPtsSkill": 4007,
-    "newPtsTotal": 19946
-  },
-  {
     "name": "羊油饼",
     "oldPts": 12087,
     "newPtsBase": 12087,
     "newPtsSkill": 7837,
     "newPtsTotal": 19924
-  },
-  {
-    "name": "telo",
-    "oldPts": 10929,
-    "newPtsBase": 10929,
-    "newPtsSkill": 8982,
-    "newPtsTotal": 19911
   },
   {
     "name": "画渣",
@@ -5299,6 +5299,13 @@
     "newPtsTotal": 19842
   },
   {
+    "name": "A cup",
+    "oldPts": 17325,
+    "newPtsBase": 17325,
+    "newPtsSkill": 2490,
+    "newPtsTotal": 19815
+  },
+  {
     "name": "Mιƙҽყ",
     "oldPts": 11501,
     "newPtsBase": 11501,
@@ -5306,18 +5313,11 @@
     "newPtsTotal": 19814
   },
   {
-    "name": "A cup",
-    "oldPts": 17307,
-    "newPtsBase": 17307,
-    "newPtsSkill": 2490,
-    "newPtsTotal": 19797
-  },
-  {
     "name": "cyberFighter",
-    "oldPts": 13316,
-    "newPtsBase": 13316,
-    "newPtsSkill": 6463,
-    "newPtsTotal": 19779
+    "oldPts": 13328,
+    "newPtsBase": 13328,
+    "newPtsSkill": 6484,
+    "newPtsTotal": 19812
   },
   {
     "name": "Lilith",
@@ -5355,6 +5355,13 @@
     "newPtsTotal": 19540
   },
   {
+    "name": "Lindar",
+    "oldPts": 17526,
+    "newPtsBase": 17526,
+    "newPtsSkill": 2008,
+    "newPtsTotal": 19534
+  },
+  {
     "name": "Kirbyfu",
     "oldPts": 11422,
     "newPtsBase": 11422,
@@ -5367,13 +5374,6 @@
     "newPtsBase": 15500,
     "newPtsSkill": 4027,
     "newPtsTotal": 19527
-  },
-  {
-    "name": "Lindar",
-    "oldPts": 17505,
-    "newPtsBase": 17505,
-    "newPtsSkill": 2006,
-    "newPtsTotal": 19511
   },
   {
     "name": "The real LOL",
@@ -5414,8 +5414,8 @@
     "name": "wilki19",
     "oldPts": 12082,
     "newPtsBase": 12082,
-    "newPtsSkill": 7283,
-    "newPtsTotal": 19365
+    "newPtsSkill": 7286,
+    "newPtsTotal": 19368
   },
   {
     "name": "maqep",
@@ -5663,11 +5663,18 @@
     "newPtsTotal": 18440
   },
   {
+    "name": "Xardas",
+    "oldPts": 10703,
+    "newPtsBase": 10703,
+    "newPtsSkill": 7719,
+    "newPtsTotal": 18422
+  },
+  {
     "name": "我叫芙焦",
     "oldPts": 13881,
     "newPtsBase": 13881,
-    "newPtsSkill": 4535,
-    "newPtsTotal": 18416
+    "newPtsSkill": 4537,
+    "newPtsTotal": 18418
   },
   {
     "name": "casual",
@@ -5682,6 +5689,13 @@
     "newPtsBase": 12368,
     "newPtsSkill": 6026,
     "newPtsTotal": 18394
+  },
+  {
+    "name": "brain",
+    "oldPts": 8697,
+    "newPtsBase": 8697,
+    "newPtsSkill": 9671,
+    "newPtsTotal": 18368
   },
   {
     "name": "wkkkker",
@@ -5703,13 +5717,6 @@
     "newPtsBase": 13023,
     "newPtsSkill": 5265,
     "newPtsTotal": 18288
-  },
-  {
-    "name": "Xardas",
-    "oldPts": 10648,
-    "newPtsBase": 10648,
-    "newPtsSkill": 7614,
-    "newPtsTotal": 18262
   },
   {
     "name": "BlueMeww",
@@ -5734,10 +5741,10 @@
   },
   {
     "name": "心陽Alex",
-    "oldPts": 15013,
-    "newPtsBase": 15013,
+    "oldPts": 15025,
+    "newPtsBase": 15025,
     "newPtsSkill": 3160,
-    "newPtsTotal": 18173
+    "newPtsTotal": 18185
   },
   {
     "name": "RageBaby",
@@ -5755,10 +5762,17 @@
   },
   {
     "name": "CrimsonKid",
-    "oldPts": 14787,
-    "newPtsBase": 14787,
-    "newPtsSkill": 3329,
-    "newPtsTotal": 18116
+    "oldPts": 14789,
+    "newPtsBase": 14789,
+    "newPtsSkill": 3331,
+    "newPtsTotal": 18120
+  },
+  {
+    "name": "X2Z5",
+    "oldPts": 13546,
+    "newPtsBase": 13546,
+    "newPtsSkill": 4562,
+    "newPtsTotal": 18108
   },
   {
     "name": "Jaguar",
@@ -5768,25 +5782,11 @@
     "newPtsTotal": 18106
   },
   {
-    "name": "brain",
-    "oldPts": 8562,
-    "newPtsBase": 8562,
-    "newPtsSkill": 9521,
-    "newPtsTotal": 18083
-  },
-  {
     "name": "cunt",
     "oldPts": 11290,
     "newPtsBase": 11290,
     "newPtsSkill": 6783,
     "newPtsTotal": 18073
-  },
-  {
-    "name": "X2Z5",
-    "oldPts": 13530,
-    "newPtsBase": 13530,
-    "newPtsSkill": 4533,
-    "newPtsTotal": 18063
   },
   {
     "name": "FirstClass",
@@ -5880,6 +5880,13 @@
     "newPtsTotal": 17707
   },
   {
+    "name": "哈莉",
+    "oldPts": 15652,
+    "newPtsBase": 15652,
+    "newPtsSkill": 2028,
+    "newPtsTotal": 17680
+  },
+  {
     "name": "Ark :3",
     "oldPts": 12721,
     "newPtsBase": 12721,
@@ -5971,6 +5978,13 @@
     "newPtsTotal": 17443
   },
   {
+    "name": "1725",
+    "oldPts": 15106,
+    "newPtsBase": 15106,
+    "newPtsSkill": 2299,
+    "newPtsTotal": 17405
+  },
+  {
     "name": "Pepe",
     "oldPts": 12064,
     "newPtsBase": 12064,
@@ -5978,25 +5992,18 @@
     "newPtsTotal": 17396
   },
   {
+    "name": "»Norbi«",
+    "oldPts": 14405,
+    "newPtsBase": 14405,
+    "newPtsSkill": 2982,
+    "newPtsTotal": 17387
+  },
+  {
     "name": "青糜哟",
     "oldPts": 14508,
     "newPtsBase": 14508,
     "newPtsSkill": 2862,
     "newPtsTotal": 17370
-  },
-  {
-    "name": "»Norbi«",
-    "oldPts": 14387,
-    "newPtsBase": 14387,
-    "newPtsSkill": 2982,
-    "newPtsTotal": 17369
-  },
-  {
-    "name": "1725",
-    "oldPts": 15069,
-    "newPtsBase": 15069,
-    "newPtsSkill": 2299,
-    "newPtsTotal": 17368
   },
   {
     "name": "Rcion.",
@@ -6090,6 +6097,13 @@
     "newPtsTotal": 17053
   },
   {
+    "name": "宗介",
+    "oldPts": 13508,
+    "newPtsBase": 13508,
+    "newPtsSkill": 3532,
+    "newPtsTotal": 17040
+  },
+  {
     "name": "WISE",
     "oldPts": 16152,
     "newPtsBase": 16152,
@@ -6102,20 +6116,6 @@
     "newPtsBase": 10872,
     "newPtsSkill": 6137,
     "newPtsTotal": 17009
-  },
-  {
-    "name": "宗介",
-    "oldPts": 13455,
-    "newPtsBase": 13455,
-    "newPtsSkill": 3513,
-    "newPtsTotal": 16968
-  },
-  {
-    "name": "哈莉",
-    "oldPts": 15471,
-    "newPtsBase": 15471,
-    "newPtsSkill": 1496,
-    "newPtsTotal": 16967
   },
   {
     "name": "Nixus",
@@ -6174,17 +6174,17 @@
     "newPtsTotal": 16857
   },
   {
+    "name": "Suetam",
+    "oldPts": 11159,
+    "newPtsBase": 11159,
+    "newPtsSkill": 5694,
+    "newPtsTotal": 16853
+  },
+  {
     "name": "snailx3",
     "oldPts": 8199,
     "newPtsBase": 8199,
     "newPtsSkill": 8641,
-    "newPtsTotal": 16840
-  },
-  {
-    "name": "Suetam",
-    "oldPts": 11146,
-    "newPtsBase": 11146,
-    "newPtsSkill": 5694,
     "newPtsTotal": 16840
   },
   {
@@ -6237,6 +6237,13 @@
     "newPtsTotal": 16678
   },
   {
+    "name": "Ұ",
+    "oldPts": 6409,
+    "newPtsBase": 6409,
+    "newPtsSkill": 10263,
+    "newPtsTotal": 16672
+  },
+  {
     "name": "Miko",
     "oldPts": 15169,
     "newPtsBase": 15169,
@@ -6279,18 +6286,18 @@
     "newPtsTotal": 16525
   },
   {
-    "name": "Ұ",
-    "oldPts": 6345,
-    "newPtsBase": 6345,
-    "newPtsSkill": 10169,
-    "newPtsTotal": 16514
-  },
-  {
     "name": "hi_leute_gll",
     "oldPts": 9337,
     "newPtsBase": 9337,
     "newPtsSkill": 7172,
     "newPtsTotal": 16509
+  },
+  {
+    "name": "LOBAAA?",
+    "oldPts": 8701,
+    "newPtsBase": 8701,
+    "newPtsSkill": 7802,
+    "newPtsTotal": 16503
   },
   {
     "name": "MilTee",
@@ -6335,13 +6342,6 @@
     "newPtsTotal": 16346
   },
   {
-    "name": "LOBAAA?",
-    "oldPts": 8557,
-    "newPtsBase": 8557,
-    "newPtsSkill": 7781,
-    "newPtsTotal": 16338
-  },
-  {
     "name": "飞翔的翅膀",
     "oldPts": 10413,
     "newPtsBase": 10413,
@@ -6354,6 +6354,13 @@
     "newPtsBase": 8976,
     "newPtsSkill": 7287,
     "newPtsTotal": 16263
+  },
+  {
+    "name": "初九",
+    "oldPts": 13520,
+    "newPtsBase": 13520,
+    "newPtsSkill": 2733,
+    "newPtsTotal": 16253
   },
   {
     "name": "dievard",
@@ -6375,13 +6382,6 @@
     "newPtsBase": 11233,
     "newPtsSkill": 5002,
     "newPtsTotal": 16235
-  },
-  {
-    "name": "初九",
-    "oldPts": 13490,
-    "newPtsBase": 13490,
-    "newPtsSkill": 2733,
-    "newPtsTotal": 16223
   },
   {
     "name": "PARKCHANYEOL",
@@ -6524,18 +6524,18 @@
     "newPtsTotal": 15757
   },
   {
+    "name": "Shi Gule",
+    "oldPts": 13927,
+    "newPtsBase": 13927,
+    "newPtsSkill": 1805,
+    "newPtsTotal": 15732
+  },
+  {
     "name": "水下放电",
     "oldPts": 13810,
     "newPtsBase": 13810,
     "newPtsSkill": 1902,
     "newPtsTotal": 15712
-  },
-  {
-    "name": "Shi Gule",
-    "oldPts": 13903,
-    "newPtsBase": 13903,
-    "newPtsSkill": 1805,
-    "newPtsTotal": 15708
   },
   {
     "name": "Tarulayaz",
@@ -6580,6 +6580,13 @@
     "newPtsTotal": 15633
   },
   {
+    "name": "Morty",
+    "oldPts": 14969,
+    "newPtsBase": 14969,
+    "newPtsSkill": 655,
+    "newPtsTotal": 15624
+  },
+  {
     "name": "CroCK",
     "oldPts": 11240,
     "newPtsBase": 11240,
@@ -6601,13 +6608,6 @@
     "newPtsTotal": 15593
   },
   {
-    "name": "Morty",
-    "oldPts": 14911,
-    "newPtsBase": 14911,
-    "newPtsSkill": 655,
-    "newPtsTotal": 15566
-  },
-  {
     "name": "snAko",
     "oldPts": 10822,
     "newPtsBase": 10822,
@@ -6615,18 +6615,18 @@
     "newPtsTotal": 15562
   },
   {
+    "name": "RicK",
+    "oldPts": 15107,
+    "newPtsBase": 15107,
+    "newPtsSkill": 454,
+    "newPtsTotal": 15561
+  },
+  {
     "name": ".",
     "oldPts": 10030,
     "newPtsBase": 10030,
     "newPtsSkill": 5456,
     "newPtsTotal": 15486
-  },
-  {
-    "name": "RicK",
-    "oldPts": 15028,
-    "newPtsBase": 15028,
-    "newPtsSkill": 454,
-    "newPtsTotal": 15482
   },
   {
     "name": "Elsie",
@@ -6657,6 +6657,13 @@
     "newPtsTotal": 15436
   },
   {
+    "name": "风雨后",
+    "oldPts": 11374,
+    "newPtsBase": 11374,
+    "newPtsSkill": 4055,
+    "newPtsTotal": 15429
+  },
+  {
     "name": "Mazen",
     "oldPts": 12498,
     "newPtsBase": 12498,
@@ -6678,6 +6685,13 @@
     "newPtsTotal": 15421
   },
   {
+    "name": "Æ exosphere",
+    "oldPts": 9886,
+    "newPtsBase": 9886,
+    "newPtsSkill": 5532,
+    "newPtsTotal": 15418
+  },
+  {
     "name": "geroy231",
     "oldPts": 14367,
     "newPtsBase": 14367,
@@ -6697,13 +6711,6 @@
     "newPtsBase": 13482,
     "newPtsSkill": 1910,
     "newPtsTotal": 15392
-  },
-  {
-    "name": "风雨后",
-    "oldPts": 11332,
-    "newPtsBase": 11332,
-    "newPtsSkill": 4055,
-    "newPtsTotal": 15387
   },
   {
     "name": "救援队1号",
@@ -6735,10 +6742,17 @@
   },
   {
     "name": "ZZARO",
-    "oldPts": 12157,
-    "newPtsBase": 12157,
-    "newPtsSkill": 3092,
-    "newPtsTotal": 15249
+    "oldPts": 12172,
+    "newPtsBase": 12172,
+    "newPtsSkill": 3098,
+    "newPtsTotal": 15270
+  },
+  {
+    "name": "Veyrox",
+    "oldPts": 10182,
+    "newPtsBase": 10182,
+    "newPtsSkill": 5069,
+    "newPtsTotal": 15251
   },
   {
     "name": "忍也刃下心",
@@ -6753,13 +6767,6 @@
     "newPtsBase": 10807,
     "newPtsSkill": 4383,
     "newPtsTotal": 15190
-  },
-  {
-    "name": "Æ exosphere",
-    "oldPts": 9747,
-    "newPtsBase": 9747,
-    "newPtsSkill": 5414,
-    "newPtsTotal": 15161
   },
   {
     "name": "Kaneki-Ken",
@@ -6819,10 +6826,17 @@
   },
   {
     "name": "KRE",
-    "oldPts": 14103,
-    "newPtsBase": 14103,
+    "oldPts": 14124,
+    "newPtsBase": 14124,
     "newPtsSkill": 838,
-    "newPtsTotal": 14941
+    "newPtsTotal": 14962
+  },
+  {
+    "name": "王仔牛奶",
+    "oldPts": 9144,
+    "newPtsBase": 9144,
+    "newPtsSkill": 5802,
+    "newPtsTotal": 14946
   },
   {
     "name": "StorмPʜöɴix",
@@ -6832,18 +6846,11 @@
     "newPtsTotal": 14930
   },
   {
-    "name": "王仔牛奶",
-    "oldPts": 9075,
-    "newPtsBase": 9075,
-    "newPtsSkill": 5800,
-    "newPtsTotal": 14875
-  },
-  {
     "name": "DarkOort",
-    "oldPts": 8682,
-    "newPtsBase": 8682,
+    "oldPts": 8687,
+    "newPtsBase": 8687,
     "newPtsSkill": 6181,
-    "newPtsTotal": 14863
+    "newPtsTotal": 14868
   },
   {
     "name": "TheGhast",
@@ -6867,25 +6874,18 @@
     "newPtsTotal": 14775
   },
   {
+    "name": "Sh1ver",
+    "oldPts": 7808,
+    "newPtsBase": 7808,
+    "newPtsSkill": 6953,
+    "newPtsTotal": 14761
+  },
+  {
     "name": "Makin",
     "oldPts": 7804,
     "newPtsBase": 7804,
     "newPtsSkill": 6945,
     "newPtsTotal": 14749
-  },
-  {
-    "name": "Veyrox",
-    "oldPts": 9877,
-    "newPtsBase": 9877,
-    "newPtsSkill": 4871,
-    "newPtsTotal": 14748
-  },
-  {
-    "name": "Sh1ver",
-    "oldPts": 7792,
-    "newPtsBase": 7792,
-    "newPtsSkill": 6947,
-    "newPtsTotal": 14739
   },
   {
     "name": "Mømø",
@@ -6944,18 +6944,18 @@
     "newPtsTotal": 14630
   },
   {
+    "name": "陈ber",
+    "oldPts": 13310,
+    "newPtsBase": 13310,
+    "newPtsSkill": 1303,
+    "newPtsTotal": 14613
+  },
+  {
     "name": "EpicBanana20",
     "oldPts": 8305,
     "newPtsBase": 8305,
     "newPtsSkill": 6272,
     "newPtsTotal": 14577
-  },
-  {
-    "name": "陈ber",
-    "oldPts": 13271,
-    "newPtsBase": 13271,
-    "newPtsSkill": 1303,
-    "newPtsTotal": 14574
   },
   {
     "name": "P.J.",
@@ -6965,25 +6965,25 @@
     "newPtsTotal": 14558
   },
   {
+    "name": "[D] mourn",
+    "oldPts": 10910,
+    "newPtsBase": 10910,
+    "newPtsSkill": 3601,
+    "newPtsTotal": 14511
+  },
+  {
+    "name": "Cipy29",
+    "oldPts": 10440,
+    "newPtsBase": 10440,
+    "newPtsSkill": 4063,
+    "newPtsTotal": 14503
+  },
+  {
     "name": "Gody Of Ar",
     "oldPts": 10282,
     "newPtsBase": 10282,
     "newPtsSkill": 4212,
     "newPtsTotal": 14494
-  },
-  {
-    "name": "[D] mourn",
-    "oldPts": 10889,
-    "newPtsBase": 10889,
-    "newPtsSkill": 3601,
-    "newPtsTotal": 14490
-  },
-  {
-    "name": "Cipy29",
-    "oldPts": 10397,
-    "newPtsBase": 10397,
-    "newPtsSkill": 4063,
-    "newPtsTotal": 14460
   },
   {
     "name": "作祟",
@@ -6998,6 +6998,13 @@
     "newPtsBase": 8999,
     "newPtsSkill": 5415,
     "newPtsTotal": 14414
+  },
+  {
+    "name": "ndng mehmet",
+    "oldPts": 10076,
+    "newPtsBase": 10076,
+    "newPtsSkill": 4333,
+    "newPtsTotal": 14409
   },
   {
     "name": "Meeu",
@@ -7071,17 +7078,24 @@
   },
   {
     "name": "Stepfunn sucks",
-    "oldPts": 10083,
-    "newPtsBase": 10083,
-    "newPtsSkill": 4166,
-    "newPtsTotal": 14249
+    "oldPts": 10091,
+    "newPtsBase": 10091,
+    "newPtsSkill": 4180,
+    "newPtsTotal": 14271
   },
   {
     "name": "Naklz'",
     "oldPts": 8342,
     "newPtsBase": 8342,
-    "newPtsSkill": 5896,
-    "newPtsTotal": 14238
+    "newPtsSkill": 5904,
+    "newPtsTotal": 14246
+  },
+  {
+    "name": "褪色SB",
+    "oldPts": 10751,
+    "newPtsBase": 10751,
+    "newPtsSkill": 3479,
+    "newPtsTotal": 14230
   },
   {
     "name": "SINIY SLONIK",
@@ -7096,13 +7110,6 @@
     "newPtsBase": 7887,
     "newPtsSkill": 6311,
     "newPtsTotal": 14198
-  },
-  {
-    "name": "ndng mehmet",
-    "oldPts": 9994,
-    "newPtsBase": 9994,
-    "newPtsSkill": 4196,
-    "newPtsTotal": 14190
   },
   {
     "name": "Takahiro",
@@ -7126,25 +7133,18 @@
     "newPtsTotal": 14174
   },
   {
+    "name": "tuxsux",
+    "oldPts": 7656,
+    "newPtsBase": 7656,
+    "newPtsSkill": 6494,
+    "newPtsTotal": 14150
+  },
+  {
     "name": "nealson T'nP",
     "oldPts": 6073,
     "newPtsBase": 6073,
     "newPtsSkill": 8056,
     "newPtsTotal": 14129
-  },
-  {
-    "name": "褪色SB",
-    "oldPts": 10661,
-    "newPtsBase": 10661,
-    "newPtsSkill": 3458,
-    "newPtsTotal": 14119
-  },
-  {
-    "name": "tuxsux",
-    "oldPts": 7635,
-    "newPtsBase": 7635,
-    "newPtsSkill": 6470,
-    "newPtsTotal": 14105
   },
   {
     "name": "啊哈AHiah",
@@ -7168,6 +7168,13 @@
     "newPtsTotal": 14064
   },
   {
+    "name": "CLSB",
+    "oldPts": 10158,
+    "newPtsBase": 10158,
+    "newPtsSkill": 3902,
+    "newPtsTotal": 14060
+  },
+  {
     "name": "Sir Skeleton",
     "oldPts": 12571,
     "newPtsBase": 12571,
@@ -7189,6 +7196,13 @@
     "newPtsTotal": 13895
   },
   {
+    "name": "ndng semih",
+    "oldPts": 7121,
+    "newPtsBase": 7121,
+    "newPtsSkill": 6736,
+    "newPtsTotal": 13857
+  },
+  {
     "name": "Jonaà",
     "oldPts": 8990,
     "newPtsBase": 8990,
@@ -7206,15 +7220,8 @@
     "name": "윰도",
     "oldPts": 12098,
     "newPtsBase": 12098,
-    "newPtsSkill": 1727,
-    "newPtsTotal": 13825
-  },
-  {
-    "name": "CLSB",
-    "oldPts": 10004,
-    "newPtsBase": 10004,
-    "newPtsSkill": 3807,
-    "newPtsTotal": 13811
+    "newPtsSkill": 1730,
+    "newPtsTotal": 13828
   },
   {
     "name": "Sté",
@@ -7329,13 +7336,6 @@
     "newPtsTotal": 13611
   },
   {
-    "name": "ndng semih",
-    "oldPts": 7019,
-    "newPtsBase": 7019,
-    "newPtsSkill": 6549,
-    "newPtsTotal": 13568
-  },
-  {
     "name": "[D] ByEdGaR",
     "oldPts": 7982,
     "newPtsBase": 7982,
@@ -7369,6 +7369,13 @@
     "newPtsBase": 11520,
     "newPtsSkill": 1913,
     "newPtsTotal": 13433
+  },
+  {
+    "name": "Megumin",
+    "oldPts": 11503,
+    "newPtsBase": 11503,
+    "newPtsSkill": 1920,
+    "newPtsTotal": 13423
   },
   {
     "name": "zyre",
@@ -7427,10 +7434,10 @@
     "newPtsTotal": 13349
   },
   {
-    "name": "Megumin",
-    "oldPts": 11425,
-    "newPtsBase": 11425,
-    "newPtsSkill": 1918,
+    "name": "梦梦99999",
+    "oldPts": 7474,
+    "newPtsBase": 7474,
+    "newPtsSkill": 5869,
     "newPtsTotal": 13343
   },
   {
@@ -7470,10 +7477,10 @@
   },
   {
     "name": "月下听Jay",
-    "oldPts": 12538,
-    "newPtsBase": 12538,
+    "oldPts": 12565,
+    "newPtsBase": 12565,
     "newPtsSkill": 747,
-    "newPtsTotal": 13285
+    "newPtsTotal": 13312
   },
   {
     "name": "Ɍøηɋȵ",
@@ -7481,6 +7488,13 @@
     "newPtsBase": 6011,
     "newPtsSkill": 7272,
     "newPtsTotal": 13283
+  },
+  {
+    "name": "liyuxin分身",
+    "oldPts": 10029,
+    "newPtsBase": 10029,
+    "newPtsSkill": 3223,
+    "newPtsTotal": 13252
   },
   {
     "name": "жопик",
@@ -7497,25 +7511,11 @@
     "newPtsTotal": 13183
   },
   {
-    "name": "梦梦99999",
-    "oldPts": 7406,
-    "newPtsBase": 7406,
-    "newPtsSkill": 5766,
-    "newPtsTotal": 13172
-  },
-  {
     "name": "冬殇",
     "oldPts": 12714,
     "newPtsBase": 12714,
     "newPtsSkill": 451,
     "newPtsTotal": 13165
-  },
-  {
-    "name": "liyuxin分身",
-    "oldPts": 9935,
-    "newPtsBase": 9935,
-    "newPtsSkill": 3223,
-    "newPtsTotal": 13158
   },
   {
     "name": "骨头",
@@ -7563,8 +7563,8 @@
     "name": "wilki19.",
     "oldPts": 7806,
     "newPtsBase": 7806,
-    "newPtsSkill": 5291,
-    "newPtsTotal": 13097
+    "newPtsSkill": 5294,
+    "newPtsTotal": 13100
   },
   {
     "name": "patsiuuu",
@@ -7645,10 +7645,10 @@
   },
   {
     "name": "fuwei",
-    "oldPts": 11891,
-    "newPtsBase": 11891,
+    "oldPts": 11903,
+    "newPtsBase": 11903,
     "newPtsSkill": 998,
-    "newPtsTotal": 12889
+    "newPtsTotal": 12901
   },
   {
     "name": "Loxyde",
@@ -7766,8 +7766,8 @@
     "name": "AM|Notorious✔",
     "oldPts": 8920,
     "newPtsBase": 8920,
-    "newPtsSkill": 3723,
-    "newPtsTotal": 12643
+    "newPtsSkill": 3720,
+    "newPtsTotal": 12640
   },
   {
     "name": "limon.pulento",
@@ -7784,11 +7784,25 @@
     "newPtsTotal": 12611
   },
   {
+    "name": "ReyalS",
+    "oldPts": 8659,
+    "newPtsBase": 8659,
+    "newPtsSkill": 3948,
+    "newPtsTotal": 12607
+  },
+  {
     "name": "hurricane",
     "oldPts": 6169,
     "newPtsBase": 6169,
     "newPtsSkill": 6432,
     "newPtsTotal": 12601
+  },
+  {
+    "name": "操作员",
+    "oldPts": 9945,
+    "newPtsBase": 9945,
+    "newPtsSkill": 2644,
+    "newPtsTotal": 12589
   },
   {
     "name": "gustavo",
@@ -7917,11 +7931,25 @@
     "newPtsTotal": 12417
   },
   {
+    "name": "m09l6d0ur13ii",
+    "oldPts": 8295,
+    "newPtsBase": 8295,
+    "newPtsSkill": 4116,
+    "newPtsTotal": 12411
+  },
+  {
     "name": "Meekrioz",
     "oldPts": 9261,
     "newPtsBase": 9261,
     "newPtsSkill": 3149,
     "newPtsTotal": 12410
+  },
+  {
+    "name": "Chalequex",
+    "oldPts": 8738,
+    "newPtsBase": 8738,
+    "newPtsSkill": 3667,
+    "newPtsTotal": 12405
   },
   {
     "name": "BANaninhaMarela",
@@ -7945,18 +7973,11 @@
     "newPtsTotal": 12364
   },
   {
-    "name": "操作员",
-    "oldPts": 9813,
-    "newPtsBase": 9813,
-    "newPtsSkill": 2540,
-    "newPtsTotal": 12353
-  },
-  {
-    "name": "m09l6d0ur13ii",
-    "oldPts": 8234,
-    "newPtsBase": 8234,
-    "newPtsSkill": 4108,
-    "newPtsTotal": 12342
+    "name": "[D] altf4",
+    "oldPts": 5686,
+    "newPtsBase": 5686,
+    "newPtsSkill": 6646,
+    "newPtsTotal": 12332
   },
   {
     "name": "喜多xd",
@@ -8022,11 +8043,25 @@
     "newPtsTotal": 12062
   },
   {
+    "name": "[D] TX",
+    "oldPts": 4250,
+    "newPtsBase": 4250,
+    "newPtsSkill": 7805,
+    "newPtsTotal": 12055
+  },
+  {
     "name": "Bishwo",
     "oldPts": 9651,
     "newPtsBase": 9651,
     "newPtsSkill": 2395,
     "newPtsTotal": 12046
+  },
+  {
+    "name": "nod",
+    "oldPts": 7233,
+    "newPtsBase": 7233,
+    "newPtsSkill": 4812,
+    "newPtsTotal": 12045
   },
   {
     "name": "ballzee",
@@ -8036,25 +8071,11 @@
     "newPtsTotal": 12040
   },
   {
-    "name": "[D] altf4",
-    "oldPts": 5563,
-    "newPtsBase": 5563,
-    "newPtsSkill": 6476,
-    "newPtsTotal": 12039
-  },
-  {
     "name": "我吃牛肉",
     "oldPts": 11349,
     "newPtsBase": 11349,
     "newPtsSkill": 683,
     "newPtsTotal": 12032
-  },
-  {
-    "name": "ReyalS",
-    "oldPts": 8387,
-    "newPtsBase": 8387,
-    "newPtsSkill": 3641,
-    "newPtsTotal": 12028
   },
   {
     "name": "老健",
@@ -8064,18 +8085,11 @@
     "newPtsTotal": 12027
   },
   {
-    "name": "Chalequex",
-    "oldPts": 8495,
-    "newPtsBase": 8495,
-    "newPtsSkill": 3518,
-    "newPtsTotal": 12013
-  },
-  {
-    "name": "[D] TX",
-    "oldPts": 4238,
-    "newPtsBase": 4238,
-    "newPtsSkill": 7761,
-    "newPtsTotal": 11999
+    "name": "[D] Kirbyfu",
+    "oldPts": 6457,
+    "newPtsBase": 6457,
+    "newPtsSkill": 5569,
+    "newPtsTotal": 12026
   },
   {
     "name": "Dimp",
@@ -8106,13 +8120,6 @@
     "newPtsTotal": 11923
   },
   {
-    "name": "nod",
-    "oldPts": 7177,
-    "newPtsBase": 7177,
-    "newPtsSkill": 4735,
-    "newPtsTotal": 11912
-  },
-  {
     "name": "丹丹余",
     "oldPts": 8124,
     "newPtsBase": 8124,
@@ -8134,18 +8141,18 @@
     "newPtsTotal": 11855
   },
   {
-    "name": "[D] Kirbyfu",
-    "oldPts": 6380,
-    "newPtsBase": 6380,
-    "newPtsSkill": 5469,
-    "newPtsTotal": 11849
-  },
-  {
     "name": "Lunarelly",
     "oldPts": 8533,
     "newPtsBase": 8533,
     "newPtsSkill": 3300,
     "newPtsTotal": 11833
+  },
+  {
+    "name": "Grrrr",
+    "oldPts": 11021,
+    "newPtsBase": 11021,
+    "newPtsSkill": 811,
+    "newPtsTotal": 11832
   },
   {
     "name": "Lenah",
@@ -8156,17 +8163,24 @@
   },
   {
     "name": "LP33",
-    "oldPts": 10796,
-    "newPtsBase": 10796,
-    "newPtsSkill": 979,
-    "newPtsTotal": 11775
+    "oldPts": 10830,
+    "newPtsBase": 10830,
+    "newPtsSkill": 997,
+    "newPtsTotal": 11827
+  },
+  {
+    "name": "Koala.<3",
+    "oldPts": 9927,
+    "newPtsBase": 9927,
+    "newPtsSkill": 1846,
+    "newPtsTotal": 11773
   },
   {
     "name": "neb~",
-    "oldPts": 8123,
-    "newPtsBase": 8123,
-    "newPtsSkill": 3638,
-    "newPtsTotal": 11761
+    "oldPts": 8127,
+    "newPtsBase": 8127,
+    "newPtsSkill": 3641,
+    "newPtsTotal": 11768
   },
   {
     "name": "Grizzly",
@@ -8174,13 +8188,6 @@
     "newPtsBase": 8140,
     "newPtsSkill": 3621,
     "newPtsTotal": 11761
-  },
-  {
-    "name": "Grrrr",
-    "oldPts": 10953,
-    "newPtsBase": 10953,
-    "newPtsSkill": 800,
-    "newPtsTotal": 11753
   },
   {
     "name": "我星星星",
@@ -8197,13 +8204,6 @@
     "newPtsTotal": 11718
   },
   {
-    "name": "Koala.<3",
-    "oldPts": 9880,
-    "newPtsBase": 9880,
-    "newPtsSkill": 1833,
-    "newPtsTotal": 11713
-  },
-  {
     "name": "緋月",
     "oldPts": 11205,
     "newPtsBase": 11205,
@@ -8216,6 +8216,20 @@
     "newPtsBase": 9450,
     "newPtsSkill": 2244,
     "newPtsTotal": 11694
+  },
+  {
+    "name": "ekravcenko57",
+    "oldPts": 9651,
+    "newPtsBase": 9651,
+    "newPtsSkill": 2039,
+    "newPtsTotal": 11690
+  },
+  {
+    "name": "Yacinello",
+    "oldPts": 7154,
+    "newPtsBase": 7154,
+    "newPtsSkill": 4515,
+    "newPtsTotal": 11669
   },
   {
     "name": "tabon",
@@ -8237,13 +8251,6 @@
     "newPtsBase": 9986,
     "newPtsSkill": 1638,
     "newPtsTotal": 11624
-  },
-  {
-    "name": "Yacinello",
-    "oldPts": 7131,
-    "newPtsBase": 7131,
-    "newPtsSkill": 4485,
-    "newPtsTotal": 11616
   },
   {
     "name": "nicolas",
@@ -8281,13 +8288,6 @@
     "newPtsTotal": 11552
   },
   {
-    "name": "ekravcenko57",
-    "oldPts": 9507,
-    "newPtsBase": 9507,
-    "newPtsSkill": 2039,
-    "newPtsTotal": 11546
-  },
-  {
     "name": "三七二十一",
     "oldPts": 8647,
     "newPtsBase": 8647,
@@ -8309,6 +8309,13 @@
     "newPtsTotal": 11494
   },
   {
+    "name": "Mois",
+    "oldPts": 10272,
+    "newPtsBase": 10272,
+    "newPtsSkill": 1206,
+    "newPtsTotal": 11478
+  },
+  {
     "name": "The Direwolf",
     "oldPts": 9176,
     "newPtsBase": 9176,
@@ -8316,11 +8323,18 @@
     "newPtsTotal": 11463
   },
   {
-    "name": "Mois",
-    "oldPts": 10226,
-    "newPtsBase": 10226,
-    "newPtsSkill": 1206,
-    "newPtsTotal": 11432
+    "name": "cocoda_zy",
+    "oldPts": 10933,
+    "newPtsBase": 10933,
+    "newPtsSkill": 505,
+    "newPtsTotal": 11438
+  },
+  {
+    "name": "Veeon",
+    "oldPts": 7482,
+    "newPtsBase": 7482,
+    "newPtsSkill": 3953,
+    "newPtsTotal": 11435
   },
   {
     "name": "Natzer",
@@ -8328,13 +8342,6 @@
     "newPtsBase": 7594,
     "newPtsSkill": 3788,
     "newPtsTotal": 11382
-  },
-  {
-    "name": "Veeon",
-    "oldPts": 7434,
-    "newPtsBase": 7434,
-    "newPtsSkill": 3947,
-    "newPtsTotal": 11381
   },
   {
     "name": "Irotiya",
@@ -8349,13 +8356,6 @@
     "newPtsBase": 7781,
     "newPtsSkill": 3545,
     "newPtsTotal": 11326
-  },
-  {
-    "name": "cocoda_zy",
-    "oldPts": 10823,
-    "newPtsBase": 10823,
-    "newPtsSkill": 481,
-    "newPtsTotal": 11304
   },
   {
     "name": "MonikFox",
@@ -8384,6 +8384,13 @@
     "newPtsBase": 10345,
     "newPtsSkill": 899,
     "newPtsTotal": 11244
+  },
+  {
+    "name": "Timiitz",
+    "oldPts": 6812,
+    "newPtsBase": 6812,
+    "newPtsSkill": 4429,
+    "newPtsTotal": 11241
   },
   {
     "name": "ИІқά◦",
@@ -8449,6 +8456,13 @@
     "newPtsTotal": 11117
   },
   {
+    "name": "Gqˆˆ",
+    "oldPts": 7588,
+    "newPtsBase": 7588,
+    "newPtsSkill": 3527,
+    "newPtsTotal": 11115
+  },
+  {
     "name": "Skystrife",
     "oldPts": 8483,
     "newPtsBase": 8483,
@@ -8461,6 +8475,13 @@
     "newPtsBase": 7949,
     "newPtsSkill": 3149,
     "newPtsTotal": 11098
+  },
+  {
+    "name": "[NC]Slifer",
+    "oldPts": 6977,
+    "newPtsBase": 6977,
+    "newPtsSkill": 4110,
+    "newPtsTotal": 11087
   },
   {
     "name": "bex",
@@ -8482,13 +8503,6 @@
     "newPtsBase": 8077,
     "newPtsSkill": 2993,
     "newPtsTotal": 11070
-  },
-  {
-    "name": "[NC]Slifer",
-    "oldPts": 6953,
-    "newPtsBase": 6953,
-    "newPtsSkill": 4110,
-    "newPtsTotal": 11063
   },
   {
     "name": "Dummy D",
@@ -8526,25 +8540,18 @@
     "newPtsTotal": 11004
   },
   {
+    "name": "有奶便有狼",
+    "oldPts": 7809,
+    "newPtsBase": 7809,
+    "newPtsSkill": 3187,
+    "newPtsTotal": 10996
+  },
+  {
     "name": "rebzyyx",
     "oldPts": 3880,
     "newPtsBase": 3880,
     "newPtsSkill": 7111,
     "newPtsTotal": 10991
-  },
-  {
-    "name": "有奶便有狼",
-    "oldPts": 7796,
-    "newPtsBase": 7796,
-    "newPtsSkill": 3180,
-    "newPtsTotal": 10976
-  },
-  {
-    "name": "Timiitz",
-    "oldPts": 6708,
-    "newPtsBase": 6708,
-    "newPtsSkill": 4263,
-    "newPtsTotal": 10971
   },
   {
     "name": "Legendarxy",
@@ -8566,13 +8573,6 @@
     "newPtsBase": 6300,
     "newPtsSkill": 4657,
     "newPtsTotal": 10957
-  },
-  {
-    "name": "Gqˆˆ",
-    "oldPts": 7467,
-    "newPtsBase": 7467,
-    "newPtsSkill": 3455,
-    "newPtsTotal": 10922
   },
   {
     "name": "久夏",
@@ -8659,6 +8659,13 @@
     "newPtsTotal": 10748
   },
   {
+    "name": "chimu",
+    "oldPts": 9605,
+    "newPtsBase": 9605,
+    "newPtsSkill": 1137,
+    "newPtsTotal": 10742
+  },
+  {
     "name": "Smooth Lee",
     "oldPts": 7760,
     "newPtsBase": 7760,
@@ -8680,11 +8687,11 @@
     "newPtsTotal": 10734
   },
   {
-    "name": "chimu",
-    "oldPts": 9589,
-    "newPtsBase": 9589,
-    "newPtsSkill": 1137,
-    "newPtsTotal": 10726
+    "name": "Dyshues",
+    "oldPts": 6377,
+    "newPtsBase": 6377,
+    "newPtsSkill": 4355,
+    "newPtsTotal": 10732
   },
   {
     "name": "god*Xola_Xola77",
@@ -8692,6 +8699,13 @@
     "newPtsBase": 5451,
     "newPtsSkill": 5263,
     "newPtsTotal": 10714
+  },
+  {
+    "name": "Korean Workers",
+    "oldPts": 3772,
+    "newPtsBase": 3772,
+    "newPtsSkill": 6940,
+    "newPtsTotal": 10712
   },
   {
     "name": "Tsumugi",
@@ -8764,6 +8778,13 @@
     "newPtsTotal": 10603
   },
   {
+    "name": "Takara Miyuki",
+    "oldPts": 10339,
+    "newPtsBase": 10339,
+    "newPtsSkill": 262,
+    "newPtsTotal": 10601
+  },
+  {
     "name": "Pastèque",
     "oldPts": 6592,
     "newPtsBase": 6592,
@@ -8776,13 +8797,6 @@
     "newPtsBase": 7278,
     "newPtsSkill": 3314,
     "newPtsTotal": 10592
-  },
-  {
-    "name": "Takara Miyuki",
-    "oldPts": 10315,
-    "newPtsBase": 10315,
-    "newPtsSkill": 262,
-    "newPtsTotal": 10577
   },
   {
     "name": "EdEnd",
@@ -8820,13 +8834,6 @@
     "newPtsTotal": 10531
   },
   {
-    "name": "Korean Workers",
-    "oldPts": 3666,
-    "newPtsBase": 3666,
-    "newPtsSkill": 6857,
-    "newPtsTotal": 10523
-  },
-  {
     "name": "Kinopio",
     "oldPts": 8205,
     "newPtsBase": 8205,
@@ -8860,13 +8867,6 @@
     "newPtsBase": 8417,
     "newPtsSkill": 2034,
     "newPtsTotal": 10451
-  },
-  {
-    "name": "Dyshues",
-    "oldPts": 6140,
-    "newPtsBase": 6140,
-    "newPtsSkill": 4282,
-    "newPtsTotal": 10422
   },
   {
     "name": ".Sadabenn",
@@ -8918,6 +8918,13 @@
     "newPtsTotal": 10372
   },
   {
+    "name": "颜浮影深",
+    "oldPts": 9498,
+    "newPtsBase": 9498,
+    "newPtsSkill": 872,
+    "newPtsTotal": 10370
+  },
+  {
     "name": "TuTioGabo",
     "oldPts": 7089,
     "newPtsBase": 7089,
@@ -8939,6 +8946,13 @@
     "newPtsTotal": 10343
   },
   {
+    "name": "呆瓜无脑冲",
+    "oldPts": 9056,
+    "newPtsBase": 9056,
+    "newPtsSkill": 1270,
+    "newPtsTotal": 10326
+  },
+  {
     "name": "一颗维C",
     "oldPts": 8957,
     "newPtsBase": 8957,
@@ -8946,18 +8960,11 @@
     "newPtsTotal": 10317
   },
   {
-    "name": "呆瓜无脑冲",
-    "oldPts": 9032,
-    "newPtsBase": 9032,
-    "newPtsSkill": 1270,
-    "newPtsTotal": 10302
-  },
-  {
-    "name": "颜浮影深",
-    "oldPts": 9421,
-    "newPtsBase": 9421,
-    "newPtsSkill": 872,
-    "newPtsTotal": 10293
+    "name": "Pilbo",
+    "oldPts": 8001,
+    "newPtsBase": 8001,
+    "newPtsSkill": 2284,
+    "newPtsTotal": 10285
   },
   {
     "name": "нанамар",
@@ -8995,11 +9002,11 @@
     "newPtsTotal": 10237
   },
   {
-    "name": "Pilbo",
-    "oldPts": 7960,
-    "newPtsBase": 7960,
-    "newPtsSkill": 2276,
-    "newPtsTotal": 10236
+    "name": "老毛",
+    "oldPts": 4342,
+    "newPtsBase": 4342,
+    "newPtsSkill": 5888,
+    "newPtsTotal": 10230
   },
   {
     "name": "吃我",
@@ -9205,18 +9212,25 @@
     "newPtsTotal": 9906
   },
   {
+    "name": "Atovic",
+    "oldPts": 6260,
+    "newPtsBase": 6260,
+    "newPtsSkill": 3640,
+    "newPtsTotal": 9900
+  },
+  {
+    "name": "[D]落日秋风",
+    "oldPts": 6116,
+    "newPtsBase": 6116,
+    "newPtsSkill": 3783,
+    "newPtsTotal": 9899
+  },
+  {
     "name": "NB_FaNtOm",
     "oldPts": 6318,
     "newPtsBase": 6318,
     "newPtsSkill": 3572,
     "newPtsTotal": 9890
-  },
-  {
-    "name": "[D]落日秋风",
-    "oldPts": 6092,
-    "newPtsBase": 6092,
-    "newPtsSkill": 3783,
-    "newPtsTotal": 9875
   },
   {
     "name": "Big Smart",
@@ -9289,18 +9303,18 @@
     "newPtsTotal": 9780
   },
   {
+    "name": "0.77",
+    "oldPts": 7622,
+    "newPtsBase": 7622,
+    "newPtsSkill": 2154,
+    "newPtsTotal": 9776
+  },
+  {
     "name": "wvcoowcvxcowcvw",
     "oldPts": 6774,
     "newPtsBase": 6774,
     "newPtsSkill": 3000,
     "newPtsTotal": 9774
-  },
-  {
-    "name": "0.77",
-    "oldPts": 7622,
-    "newPtsBase": 7622,
-    "newPtsSkill": 2151,
-    "newPtsTotal": 9773
   },
   {
     "name": "chiliking",
@@ -9359,13 +9373,6 @@
     "newPtsTotal": 9675
   },
   {
-    "name": "Atovic",
-    "oldPts": 6160,
-    "newPtsBase": 6160,
-    "newPtsSkill": 3511,
-    "newPtsTotal": 9671
-  },
-  {
     "name": "sux",
     "oldPts": 5665,
     "newPtsBase": 5665,
@@ -9401,18 +9408,18 @@
     "newPtsTotal": 9576
   },
   {
+    "name": "Tobii",
+    "oldPts": 7879,
+    "newPtsBase": 7879,
+    "newPtsSkill": 1664,
+    "newPtsTotal": 9543
+  },
+  {
     "name": "Nagi01 {LAN}",
     "oldPts": 5431,
     "newPtsBase": 5431,
     "newPtsSkill": 4108,
     "newPtsTotal": 9539
-  },
-  {
-    "name": "Tobii",
-    "oldPts": 7879,
-    "newPtsBase": 7879,
-    "newPtsSkill": 1656,
-    "newPtsTotal": 9535
   },
   {
     "name": "乇ﾚ√ﾉ丂",
@@ -9576,6 +9583,13 @@
     "newPtsTotal": 9190
   },
   {
+    "name": "[D] eternal",
+    "oldPts": 6608,
+    "newPtsBase": 6608,
+    "newPtsSkill": 2568,
+    "newPtsTotal": 9176
+  },
+  {
     "name": "K.LoLiK",
     "oldPts": 6519,
     "newPtsBase": 6519,
@@ -9602,13 +9616,6 @@
     "newPtsBase": 5853,
     "newPtsSkill": 3308,
     "newPtsTotal": 9161
-  },
-  {
-    "name": "[D] eternal",
-    "oldPts": 6584,
-    "newPtsBase": 6584,
-    "newPtsSkill": 2568,
-    "newPtsTotal": 9152
   },
   {
     "name": "simitikus",
@@ -9735,13 +9742,6 @@
     "newPtsBase": 7489,
     "newPtsSkill": 1498,
     "newPtsTotal": 8987
-  },
-  {
-    "name": "老毛",
-    "oldPts": 4088,
-    "newPtsBase": 4088,
-    "newPtsSkill": 4886,
-    "newPtsTotal": 8974
   },
   {
     "name": "Quit",
@@ -9899,10 +9899,10 @@
   },
   {
     "name": "小粉",
-    "oldPts": 7681,
-    "newPtsBase": 7681,
+    "oldPts": 7693,
+    "newPtsBase": 7693,
     "newPtsSkill": 1047,
-    "newPtsTotal": 8728
+    "newPtsTotal": 8740
   },
   {
     "name": "⚡-єxoтi¢",
@@ -9926,18 +9926,18 @@
     "newPtsTotal": 8688
   },
   {
+    "name": "faded",
+    "oldPts": 5284,
+    "newPtsBase": 5284,
+    "newPtsSkill": 3397,
+    "newPtsTotal": 8681
+  },
+  {
     "name": "dartel228",
     "oldPts": 4687,
     "newPtsBase": 4687,
     "newPtsSkill": 3984,
     "newPtsTotal": 8671
-  },
-  {
-    "name": "faded",
-    "oldPts": 5276,
-    "newPtsBase": 5276,
-    "newPtsSkill": 3391,
-    "newPtsTotal": 8667
   },
   {
     "name": "RaÐia",
@@ -9989,6 +9989,13 @@
     "newPtsTotal": 8610
   },
   {
+    "name": "哩子",
+    "oldPts": 8443,
+    "newPtsBase": 8443,
+    "newPtsSkill": 133,
+    "newPtsTotal": 8576
+  },
+  {
     "name": "Kappa",
     "oldPts": 5784,
     "newPtsBase": 5784,
@@ -10024,13 +10031,6 @@
     "newPtsTotal": 8485
   },
   {
-    "name": "哩子",
-    "oldPts": 8343,
-    "newPtsBase": 8343,
-    "newPtsSkill": 133,
-    "newPtsTotal": 8476
-  },
-  {
     "name": "ShelzyMadara",
     "oldPts": 6723,
     "newPtsBase": 6723,
@@ -10050,6 +10050,13 @@
     "newPtsBase": 2661,
     "newPtsSkill": 5767,
     "newPtsTotal": 8428
+  },
+  {
+    "name": "REDCAR",
+    "oldPts": 6684,
+    "newPtsBase": 6684,
+    "newPtsSkill": 1740,
+    "newPtsTotal": 8424
   },
   {
     "name": "Unomi",
@@ -10094,13 +10101,6 @@
     "newPtsTotal": 8411
   },
   {
-    "name": "REDCAR",
-    "oldPts": 6654,
-    "newPtsBase": 6654,
-    "newPtsSkill": 1740,
-    "newPtsTotal": 8394
-  },
-  {
     "name": "Wamos",
     "oldPts": 7213,
     "newPtsBase": 7213,
@@ -10120,6 +10120,13 @@
     "newPtsBase": 5689,
     "newPtsSkill": 2681,
     "newPtsTotal": 8370
+  },
+  {
+    "name": "Cipyfish",
+    "oldPts": 5612,
+    "newPtsBase": 5612,
+    "newPtsSkill": 2756,
+    "newPtsTotal": 8368
   },
   {
     "name": "[D] Hav",
@@ -10143,18 +10150,18 @@
     "newPtsTotal": 8352
   },
   {
+    "name": "无敌大王",
+    "oldPts": 5011,
+    "newPtsBase": 5011,
+    "newPtsSkill": 3296,
+    "newPtsTotal": 8307
+  },
+  {
     "name": "other Hojphy",
     "oldPts": 5760,
     "newPtsBase": 5760,
     "newPtsSkill": 2538,
     "newPtsTotal": 8298
-  },
-  {
-    "name": "Cipyfish",
-    "oldPts": 5567,
-    "newPtsBase": 5567,
-    "newPtsSkill": 2729,
-    "newPtsTotal": 8296
   },
   {
     "name": "TheNofis",
@@ -10228,10 +10235,10 @@
   },
   {
     "name": "[CSGS]Runescape",
-    "oldPts": 6874,
-    "newPtsBase": 6874,
+    "oldPts": 6886,
+    "newPtsBase": 6886,
     "newPtsSkill": 1305,
-    "newPtsTotal": 8179
+    "newPtsTotal": 8191
   },
   {
     "name": "Kotka",
@@ -10276,6 +10283,13 @@
     "newPtsTotal": 8151
   },
   {
+    "name": "giga",
+    "oldPts": 6683,
+    "newPtsBase": 6683,
+    "newPtsSkill": 1449,
+    "newPtsTotal": 8132
+  },
+  {
     "name": "DaRK| Do6pb|u^",
     "oldPts": 5436,
     "newPtsBase": 5436,
@@ -10304,25 +10318,11 @@
     "newPtsTotal": 8085
   },
   {
-    "name": "giga",
-    "oldPts": 6636,
-    "newPtsBase": 6636,
-    "newPtsSkill": 1448,
-    "newPtsTotal": 8084
-  },
-  {
     "name": "SmokeR",
     "oldPts": 5623,
     "newPtsBase": 5623,
     "newPtsSkill": 2454,
     "newPtsTotal": 8077
-  },
-  {
-    "name": "无敌大王",
-    "oldPts": 4891,
-    "newPtsBase": 4891,
-    "newPtsSkill": 3184,
-    "newPtsTotal": 8075
   },
   {
     "name": "Cazz",
@@ -10346,18 +10346,18 @@
     "newPtsTotal": 8058
   },
   {
+    "name": "[D] 钟离茶",
+    "oldPts": 4762,
+    "newPtsBase": 4762,
+    "newPtsSkill": 3255,
+    "newPtsTotal": 8017
+  },
+  {
     "name": "ProsTo/urpok/",
     "oldPts": 5044,
     "newPtsBase": 5044,
     "newPtsSkill": 2967,
     "newPtsTotal": 8011
-  },
-  {
-    "name": "[D] 钟离茶",
-    "oldPts": 4750,
-    "newPtsBase": 4750,
-    "newPtsSkill": 3255,
-    "newPtsTotal": 8005
   },
   {
     "name": "wawrtrtw2tw",
@@ -10381,6 +10381,13 @@
     "newPtsTotal": 7996
   },
   {
+    "name": "♿绿麻蓝紫",
+    "oldPts": 7511,
+    "newPtsBase": 7511,
+    "newPtsSkill": 462,
+    "newPtsTotal": 7973
+  },
+  {
     "name": "twix?",
     "oldPts": 5026,
     "newPtsBase": 5026,
@@ -10400,13 +10407,6 @@
     "newPtsBase": 3141,
     "newPtsSkill": 4811,
     "newPtsTotal": 7952
-  },
-  {
-    "name": "♿绿麻蓝紫",
-    "oldPts": 7483,
-    "newPtsBase": 7483,
-    "newPtsSkill": 462,
-    "newPtsTotal": 7945
   },
   {
     "name": "北澜梓",
@@ -10479,6 +10479,13 @@
     "newPtsTotal": 7869
   },
   {
+    "name": "Dixon",
+    "oldPts": 4014,
+    "newPtsBase": 4014,
+    "newPtsSkill": 3854,
+    "newPtsTotal": 7868
+  },
+  {
     "name": "sv_luck 1",
     "oldPts": 6931,
     "newPtsBase": 6931,
@@ -10521,6 +10528,13 @@
     "newPtsTotal": 7733
   },
   {
+    "name": "[D] 一个人Fo",
+    "oldPts": 6813,
+    "newPtsBase": 6813,
+    "newPtsSkill": 875,
+    "newPtsTotal": 7688
+  },
+  {
     "name": "VéNaGoD",
     "oldPts": 3805,
     "newPtsBase": 3805,
@@ -10549,25 +10563,11 @@
     "newPtsTotal": 7647
   },
   {
-    "name": "[D] 一个人Fo",
-    "oldPts": 6765,
-    "newPtsBase": 6765,
-    "newPtsSkill": 870,
-    "newPtsTotal": 7635
-  },
-  {
     "name": "Frosch",
     "oldPts": 3715,
     "newPtsBase": 3715,
     "newPtsSkill": 3918,
     "newPtsTotal": 7633
-  },
-  {
-    "name": "Dixon",
-    "oldPts": 3846,
-    "newPtsBase": 3846,
-    "newPtsSkill": 3766,
-    "newPtsTotal": 7612
   },
   {
     "name": "...",
@@ -10640,6 +10640,13 @@
     "newPtsTotal": 7488
   },
   {
+    "name": "FastMonk",
+    "oldPts": 4579,
+    "newPtsBase": 4579,
+    "newPtsSkill": 2908,
+    "newPtsTotal": 7487
+  },
+  {
     "name": "Drake",
     "oldPts": 5932,
     "newPtsBase": 5932,
@@ -10666,6 +10673,13 @@
     "newPtsBase": 3712,
     "newPtsSkill": 3718,
     "newPtsTotal": 7430
+  },
+  {
+    "name": "dmen",
+    "oldPts": 6198,
+    "newPtsBase": 6198,
+    "newPtsSkill": 1224,
+    "newPtsTotal": 7422
   },
   {
     "name": "TapokPeacemaker",
@@ -10708,13 +10722,6 @@
     "newPtsBase": 4680,
     "newPtsSkill": 2723,
     "newPtsTotal": 7403
-  },
-  {
-    "name": "dmen",
-    "oldPts": 6168,
-    "newPtsBase": 6168,
-    "newPtsSkill": 1224,
-    "newPtsTotal": 7392
   },
   {
     "name": "GdBrMatheus",
@@ -10773,6 +10780,13 @@
     "newPtsTotal": 7340
   },
   {
+    "name": "?hook?",
+    "oldPts": 2451,
+    "newPtsBase": 2451,
+    "newPtsSkill": 4876,
+    "newPtsTotal": 7327
+  },
+  {
     "name": "zvjkjltwrun",
     "oldPts": 6823,
     "newPtsBase": 6823,
@@ -10806,13 +10820,6 @@
     "newPtsBase": 6388,
     "newPtsSkill": 893,
     "newPtsTotal": 7281
-  },
-  {
-    "name": "FastMonk",
-    "oldPts": 4434,
-    "newPtsBase": 4434,
-    "newPtsSkill": 2845,
-    "newPtsTotal": 7279
   },
   {
     "name": "StamB1c",
@@ -10851,10 +10858,10 @@
   },
   {
     "name": "Halozy",
-    "oldPts": 5114,
-    "newPtsBase": 5114,
+    "oldPts": 5119,
+    "newPtsBase": 5119,
     "newPtsSkill": 2119,
-    "newPtsTotal": 7233
+    "newPtsTotal": 7238
   },
   {
     "name": "rabtyZ",
@@ -10869,13 +10876,6 @@
     "newPtsBase": 5341,
     "newPtsSkill": 1873,
     "newPtsTotal": 7214
-  },
-  {
-    "name": "?hook?",
-    "oldPts": 2424,
-    "newPtsBase": 2424,
-    "newPtsSkill": 4776,
-    "newPtsTotal": 7200
   },
   {
     "name": "spor",
@@ -10913,6 +10913,13 @@
     "newPtsTotal": 7161
   },
   {
+    "name": "Oxide",
+    "oldPts": 2113,
+    "newPtsBase": 2113,
+    "newPtsSkill": 5047,
+    "newPtsTotal": 7160
+  },
+  {
     "name": "Claszian",
     "oldPts": 4667,
     "newPtsBase": 4667,
@@ -10927,18 +10934,18 @@
     "newPtsTotal": 7153
   },
   {
-    "name": "Oxide",
-    "oldPts": 2093,
-    "newPtsBase": 2093,
-    "newPtsSkill": 5046,
-    "newPtsTotal": 7139
-  },
-  {
     "name": "Zheo",
     "oldPts": 5380,
     "newPtsBase": 5380,
     "newPtsSkill": 1757,
     "newPtsTotal": 7137
+  },
+  {
+    "name": "[D] qa78o21",
+    "oldPts": 4600,
+    "newPtsBase": 4600,
+    "newPtsSkill": 2534,
+    "newPtsTotal": 7134
   },
   {
     "name": "Gruvan",
@@ -10976,13 +10983,6 @@
     "newPtsTotal": 7103
   },
   {
-    "name": "[D] qa78o21",
-    "oldPts": 4566,
-    "newPtsBase": 4566,
-    "newPtsSkill": 2534,
-    "newPtsTotal": 7100
-  },
-  {
     "name": "still nameless",
     "oldPts": 5201,
     "newPtsBase": 5201,
@@ -11002,6 +11002,13 @@
     "newPtsBase": 3795,
     "newPtsSkill": 3259,
     "newPtsTotal": 7054
+  },
+  {
+    "name": "qa78o21",
+    "oldPts": 4600,
+    "newPtsBase": 4600,
+    "newPtsSkill": 2451,
+    "newPtsTotal": 7051
   },
   {
     "name": "SLEΞK",
@@ -11039,13 +11046,6 @@
     "newPtsTotal": 7025
   },
   {
-    "name": "qa78o21",
-    "oldPts": 4566,
-    "newPtsBase": 4566,
-    "newPtsSkill": 2451,
-    "newPtsTotal": 7017
-  },
-  {
     "name": "Bibi",
     "oldPts": 5164,
     "newPtsBase": 5164,
@@ -11065,6 +11065,13 @@
     "newPtsBase": 2576,
     "newPtsSkill": 4410,
     "newPtsTotal": 6986
+  },
+  {
+    "name": "[D] maqep",
+    "oldPts": 5453,
+    "newPtsBase": 5453,
+    "newPtsSkill": 1525,
+    "newPtsTotal": 6978
   },
   {
     "name": "CyClone",
@@ -11116,11 +11123,11 @@
     "newPtsTotal": 6961
   },
   {
-    "name": "[D] maqep",
-    "oldPts": 5440,
-    "newPtsBase": 5440,
-    "newPtsSkill": 1514,
-    "newPtsTotal": 6954
+    "name": "Kartofel14",
+    "oldPts": 5069,
+    "newPtsBase": 5069,
+    "newPtsSkill": 1891,
+    "newPtsTotal": 6960
   },
   {
     "name": "Dissembler",
@@ -11172,6 +11179,13 @@
     "newPtsTotal": 6897
   },
   {
+    "name": "Julius' Dummy",
+    "oldPts": 3489,
+    "newPtsBase": 3489,
+    "newPtsSkill": 3406,
+    "newPtsTotal": 6895
+  },
+  {
     "name": "Doso4kalegenda",
     "oldPts": 5169,
     "newPtsBase": 5169,
@@ -11193,13 +11207,6 @@
     "newPtsTotal": 6882
   },
   {
-    "name": "Julius' Dummy",
-    "oldPts": 3477,
-    "newPtsBase": 3477,
-    "newPtsSkill": 3401,
-    "newPtsTotal": 6878
-  },
-  {
     "name": "Соня",
     "oldPts": 3065,
     "newPtsBase": 3065,
@@ -11211,13 +11218,6 @@
     "oldPts": 2059,
     "newPtsBase": 2059,
     "newPtsSkill": 4800,
-    "newPtsTotal": 6859
-  },
-  {
-    "name": "Kartofel14",
-    "oldPts": 5012,
-    "newPtsBase": 5012,
-    "newPtsSkill": 1847,
     "newPtsTotal": 6859
   },
   {
@@ -11270,6 +11270,13 @@
     "newPtsTotal": 6813
   },
   {
+    "name": "BINGBIAN",
+    "oldPts": 4111,
+    "newPtsBase": 4111,
+    "newPtsSkill": 2699,
+    "newPtsTotal": 6810
+  },
+  {
     "name": "HoFi",
     "oldPts": 4463,
     "newPtsBase": 4463,
@@ -11319,6 +11326,13 @@
     "newPtsTotal": 6767
   },
   {
+    "name": "最凶",
+    "oldPts": 6509,
+    "newPtsBase": 6509,
+    "newPtsSkill": 258,
+    "newPtsTotal": 6767
+  },
+  {
     "name": "dummyrub",
     "oldPts": 5837,
     "newPtsBase": 5837,
@@ -11361,6 +11375,13 @@
     "newPtsTotal": 6750
   },
   {
+    "name": "[D] Ұ",
+    "oldPts": 1826,
+    "newPtsBase": 1826,
+    "newPtsSkill": 4915,
+    "newPtsTotal": 6741
+  },
+  {
     "name": "Miku",
     "oldPts": 4838,
     "newPtsBase": 4838,
@@ -11380,6 +11401,13 @@
     "newPtsBase": 5168,
     "newPtsSkill": 1558,
     "newPtsTotal": 6726
+  },
+  {
+    "name": "鱼鱼雨",
+    "oldPts": 6015,
+    "newPtsBase": 6015,
+    "newPtsSkill": 708,
+    "newPtsTotal": 6723
   },
   {
     "name": "絮桉",
@@ -11403,13 +11431,6 @@
     "newPtsTotal": 6710
   },
   {
-    "name": "最凶",
-    "oldPts": 6450,
-    "newPtsBase": 6450,
-    "newPtsSkill": 258,
-    "newPtsTotal": 6708
-  },
-  {
     "name": "Lis.",
     "oldPts": 4066,
     "newPtsBase": 4066,
@@ -11417,25 +11438,11 @@
     "newPtsTotal": 6708
   },
   {
-    "name": "[D] Ұ",
-    "oldPts": 1826,
-    "newPtsBase": 1826,
-    "newPtsSkill": 4878,
-    "newPtsTotal": 6704
-  },
-  {
     "name": "grM",
     "oldPts": 5370,
     "newPtsBase": 5370,
     "newPtsSkill": 1318,
     "newPtsTotal": 6688
-  },
-  {
-    "name": "鱼鱼雨",
-    "oldPts": 5965,
-    "newPtsBase": 5965,
-    "newPtsSkill": 708,
-    "newPtsTotal": 6673
   },
   {
     "name": "道友留步",
@@ -11471,13 +11478,6 @@
     "newPtsBase": 5992,
     "newPtsSkill": 616,
     "newPtsTotal": 6608
-  },
-  {
-    "name": "BINGBIAN",
-    "oldPts": 4034,
-    "newPtsBase": 4034,
-    "newPtsSkill": 2544,
-    "newPtsTotal": 6578
   },
   {
     "name": "라라",
@@ -11571,6 +11571,13 @@
     "newPtsTotal": 6486
   },
   {
+    "name": "오늘시작함",
+    "oldPts": 4235,
+    "newPtsBase": 4235,
+    "newPtsSkill": 2246,
+    "newPtsTotal": 6481
+  },
+  {
     "name": "Onigiri",
     "oldPts": 4801,
     "newPtsBase": 4801,
@@ -11590,13 +11597,6 @@
     "newPtsBase": 5420,
     "newPtsSkill": 1044,
     "newPtsTotal": 6464
-  },
-  {
-    "name": "오늘시작함",
-    "oldPts": 4219,
-    "newPtsBase": 4219,
-    "newPtsSkill": 2243,
-    "newPtsTotal": 6462
   },
   {
     "name": "🆒",
@@ -11810,10 +11810,10 @@
   },
   {
     "name": "[D] Fiee",
-    "oldPts": 3938,
-    "newPtsBase": 3938,
+    "oldPts": 3946,
+    "newPtsBase": 3946,
     "newPtsSkill": 2171,
-    "newPtsTotal": 6109
+    "newPtsTotal": 6117
   },
   {
     "name": "TDPL (1)",
@@ -11821,6 +11821,13 @@
     "newPtsBase": 2854,
     "newPtsSkill": 3247,
     "newPtsTotal": 6101
+  },
+  {
+    "name": "[D]王仔牛奶",
+    "oldPts": 4252,
+    "newPtsBase": 4252,
+    "newPtsSkill": 1848,
+    "newPtsTotal": 6100
   },
   {
     "name": "[D] MA1DASar",
@@ -11856,13 +11863,6 @@
     "newPtsBase": 3883,
     "newPtsSkill": 2175,
     "newPtsTotal": 6058
-  },
-  {
-    "name": "[D]王仔牛奶",
-    "oldPts": 4201,
-    "newPtsBase": 4201,
-    "newPtsSkill": 1855,
-    "newPtsTotal": 6056
   },
   {
     "name": "iwa",
@@ -11921,6 +11921,13 @@
     "newPtsTotal": 6035
   },
   {
+    "name": "LMBoy",
+    "oldPts": 5218,
+    "newPtsBase": 5218,
+    "newPtsSkill": 810,
+    "newPtsTotal": 6028
+  },
+  {
     "name": "тёmа пpaйm",
     "oldPts": 5146,
     "newPtsBase": 5146,
@@ -11933,13 +11940,6 @@
     "newPtsBase": 4921,
     "newPtsSkill": 1093,
     "newPtsTotal": 6014
-  },
-  {
-    "name": "LMBoy",
-    "oldPts": 5203,
-    "newPtsBase": 5203,
-    "newPtsSkill": 804,
-    "newPtsTotal": 6007
   },
   {
     "name": "Раб Миши",
@@ -12054,6 +12054,13 @@
     "newPtsTotal": 5902
   },
   {
+    "name": "Gordena",
+    "oldPts": 3006,
+    "newPtsBase": 3006,
+    "newPtsSkill": 2870,
+    "newPtsTotal": 5876
+  },
+  {
     "name": "530",
     "oldPts": 4784,
     "newPtsBase": 4784,
@@ -12110,6 +12117,13 @@
     "newPtsTotal": 5802
   },
   {
+    "name": "袨戨",
+    "oldPts": 5107,
+    "newPtsBase": 5107,
+    "newPtsSkill": 671,
+    "newPtsTotal": 5778
+  },
+  {
     "name": "Skyrel",
     "oldPts": 3513,
     "newPtsBase": 3513,
@@ -12136,13 +12150,6 @@
     "newPtsBase": 3777,
     "newPtsSkill": 1973,
     "newPtsTotal": 5750
-  },
-  {
-    "name": "袨戨",
-    "oldPts": 5107,
-    "newPtsBase": 5107,
-    "newPtsSkill": 632,
-    "newPtsTotal": 5739
   },
   {
     "name": "Possseidon",
@@ -12173,11 +12180,25 @@
     "newPtsTotal": 5694
   },
   {
+    "name": "kdz",
+    "oldPts": 2887,
+    "newPtsBase": 2887,
+    "newPtsSkill": 2796,
+    "newPtsTotal": 5683
+  },
+  {
     "name": "EZ MAP ?",
     "oldPts": 2967,
     "newPtsBase": 2967,
     "newPtsSkill": 2716,
     "newPtsTotal": 5683
+  },
+  {
+    "name": "[D] Yacinello",
+    "oldPts": 3093,
+    "newPtsBase": 3093,
+    "newPtsSkill": 2577,
+    "newPtsTotal": 5670
   },
   {
     "name": "[D] камуш",
@@ -12222,11 +12243,11 @@
     "newPtsTotal": 5630
   },
   {
-    "name": "[D] Yacinello",
-    "oldPts": 3070,
-    "newPtsBase": 3070,
-    "newPtsSkill": 2547,
-    "newPtsTotal": 5617
+    "name": "vivolg",
+    "oldPts": 1991,
+    "newPtsBase": 1991,
+    "newPtsSkill": 3638,
+    "newPtsTotal": 5629
   },
   {
     "name": "粉鲍鱼",
@@ -12313,18 +12334,18 @@
     "newPtsTotal": 5540
   },
   {
+    "name": "心理学家",
+    "oldPts": 4628,
+    "newPtsBase": 4628,
+    "newPtsSkill": 909,
+    "newPtsTotal": 5537
+  },
+  {
     "name": "zod nosferatu",
     "oldPts": 2810,
     "newPtsBase": 2810,
     "newPtsSkill": 2723,
     "newPtsTotal": 5533
-  },
-  {
-    "name": "Gordena",
-    "oldPts": 2865,
-    "newPtsBase": 2865,
-    "newPtsSkill": 2665,
-    "newPtsTotal": 5530
   },
   {
     "name": "Yunг~Seкиpo",
@@ -12346,13 +12367,6 @@
     "newPtsBase": 3145,
     "newPtsSkill": 2358,
     "newPtsTotal": 5503
-  },
-  {
-    "name": "心理学家",
-    "oldPts": 4584,
-    "newPtsBase": 4584,
-    "newPtsSkill": 906,
-    "newPtsTotal": 5490
   },
   {
     "name": "かみさま",
@@ -12415,6 +12429,13 @@
     "oldPts": 3126,
     "newPtsBase": 3126,
     "newPtsSkill": 2331,
+    "newPtsTotal": 5457
+  },
+  {
+    "name": "BadGuy",
+    "oldPts": 4435,
+    "newPtsBase": 4435,
+    "newPtsSkill": 1022,
     "newPtsTotal": 5457
   },
   {
@@ -12486,13 +12507,6 @@
     "newPtsBase": 4093,
     "newPtsSkill": 1282,
     "newPtsTotal": 5375
-  },
-  {
-    "name": "vivolg",
-    "oldPts": 1854,
-    "newPtsBase": 1854,
-    "newPtsSkill": 3516,
-    "newPtsTotal": 5370
   },
   {
     "name": "sulm",
@@ -12579,11 +12593,11 @@
     "newPtsTotal": 5299
   },
   {
-    "name": "BadGuy",
-    "oldPts": 4295,
-    "newPtsBase": 4295,
-    "newPtsSkill": 994,
-    "newPtsTotal": 5289
+    "name": "yandere o`sama",
+    "oldPts": 3240,
+    "newPtsBase": 3240,
+    "newPtsSkill": 2052,
+    "newPtsTotal": 5292
   },
   {
     "name": "negrOK",
@@ -12600,20 +12614,6 @@
     "newPtsTotal": 5284
   },
   {
-    "name": "yandere o`sama",
-    "oldPts": 3228,
-    "newPtsBase": 3228,
-    "newPtsSkill": 2052,
-    "newPtsTotal": 5280
-  },
-  {
-    "name": "kdz",
-    "oldPts": 2536,
-    "newPtsBase": 2536,
-    "newPtsSkill": 2667,
-    "newPtsTotal": 5203
-  },
-  {
     "name": "Nine Night",
     "oldPts": 2574,
     "newPtsBase": 2574,
@@ -12624,8 +12624,8 @@
     "name": "-=SNZDuMoHRUS=-",
     "oldPts": 4398,
     "newPtsBase": 4398,
-    "newPtsSkill": 793,
-    "newPtsTotal": 5191
+    "newPtsSkill": 795,
+    "newPtsTotal": 5193
   },
   {
     "name": "熊风一过",
@@ -12684,6 +12684,13 @@
     "newPtsTotal": 5132
   },
   {
+    "name": "mazloo",
+    "oldPts": 3720,
+    "newPtsBase": 3720,
+    "newPtsSkill": 1407,
+    "newPtsTotal": 5127
+  },
+  {
     "name": "바로",
     "oldPts": 3932,
     "newPtsBase": 3932,
@@ -12698,11 +12705,11 @@
     "newPtsTotal": 5112
   },
   {
-    "name": "mazloo",
-    "oldPts": 3696,
-    "newPtsBase": 3696,
-    "newPtsSkill": 1407,
-    "newPtsTotal": 5103
+    "name": "Kanzaki",
+    "oldPts": 2727,
+    "newPtsBase": 2727,
+    "newPtsSkill": 2370,
+    "newPtsTotal": 5097
   },
   {
     "name": "Exterminate",
@@ -12957,6 +12964,13 @@
     "newPtsTotal": 4848
   },
   {
+    "name": "Weed",
+    "oldPts": 4424,
+    "newPtsBase": 4424,
+    "newPtsSkill": 422,
+    "newPtsTotal": 4846
+  },
+  {
     "name": ":v",
     "oldPts": 3548,
     "newPtsBase": 3548,
@@ -12990,13 +13004,6 @@
     "newPtsBase": 3409,
     "newPtsSkill": 1400,
     "newPtsTotal": 4809
-  },
-  {
-    "name": "Weed",
-    "oldPts": 4388,
-    "newPtsBase": 4388,
-    "newPtsSkill": 420,
-    "newPtsTotal": 4808
   },
   {
     "name": "roro",
@@ -13104,6 +13111,13 @@
     "newPtsTotal": 4693
   },
   {
+    "name": "[D] Shi Gule",
+    "oldPts": 3971,
+    "newPtsBase": 3971,
+    "newPtsSkill": 709,
+    "newPtsTotal": 4680
+  },
+  {
     "name": "DrRiksi",
     "oldPts": 2107,
     "newPtsBase": 2107,
@@ -13111,11 +13125,25 @@
     "newPtsTotal": 4677
   },
   {
+    "name": "氏-p1ani",
+    "oldPts": 2712,
+    "newPtsBase": 2712,
+    "newPtsSkill": 1949,
+    "newPtsTotal": 4661
+  },
+  {
     "name": "tripmiss",
     "oldPts": 2318,
     "newPtsBase": 2318,
     "newPtsSkill": 2343,
     "newPtsTotal": 4661
+  },
+  {
+    "name": "its_haise",
+    "oldPts": 1683,
+    "newPtsBase": 1683,
+    "newPtsSkill": 2972,
+    "newPtsTotal": 4655
   },
   {
     "name": "Donger²",
@@ -13151,13 +13179,6 @@
     "newPtsBase": 3894,
     "newPtsSkill": 740,
     "newPtsTotal": 4634
-  },
-  {
-    "name": "[D] Shi Gule",
-    "oldPts": 3913,
-    "newPtsBase": 3913,
-    "newPtsSkill": 709,
-    "newPtsTotal": 4622
   },
   {
     "name": "cmelost",
@@ -13202,6 +13223,13 @@
     "newPtsTotal": 4588
   },
   {
+    "name": "w1zzybtw",
+    "oldPts": 3168,
+    "newPtsBase": 3168,
+    "newPtsSkill": 1412,
+    "newPtsTotal": 4580
+  },
+  {
     "name": "KALEWASEA",
     "oldPts": 2689,
     "newPtsBase": 2689,
@@ -13214,13 +13242,6 @@
     "newPtsBase": 3758,
     "newPtsSkill": 806,
     "newPtsTotal": 4564
-  },
-  {
-    "name": "Kanzaki",
-    "oldPts": 2237,
-    "newPtsBase": 2237,
-    "newPtsSkill": 2326,
-    "newPtsTotal": 4563
   },
   {
     "name": "TWITCH jeeand_",
@@ -13263,13 +13284,6 @@
     "newPtsBase": 2446,
     "newPtsSkill": 2059,
     "newPtsTotal": 4505
-  },
-  {
-    "name": "w1zzybtw",
-    "oldPts": 3110,
-    "newPtsBase": 3110,
-    "newPtsSkill": 1394,
-    "newPtsTotal": 4504
   },
   {
     "name": "Monster~",
@@ -13370,13 +13384,6 @@
     "newPtsTotal": 4454
   },
   {
-    "name": "氏-p1ani",
-    "oldPts": 2615,
-    "newPtsBase": 2615,
-    "newPtsSkill": 1835,
-    "newPtsTotal": 4450
-  },
-  {
     "name": "BamBam",
     "oldPts": 2766,
     "newPtsBase": 2766,
@@ -13403,6 +13410,13 @@
     "newPtsBase": 2730,
     "newPtsSkill": 1692,
     "newPtsTotal": 4422
+  },
+  {
+    "name": "[D] 大师",
+    "oldPts": 3649,
+    "newPtsBase": 3649,
+    "newPtsSkill": 771,
+    "newPtsTotal": 4420
   },
   {
     "name": "jacare no peito",
@@ -13440,25 +13454,11 @@
     "newPtsTotal": 4409
   },
   {
-    "name": "its_haise",
-    "oldPts": 1643,
-    "newPtsBase": 1643,
-    "newPtsSkill": 2763,
-    "newPtsTotal": 4406
-  },
-  {
     "name": "Borup",
     "oldPts": 2623,
     "newPtsBase": 2623,
     "newPtsSkill": 1765,
     "newPtsTotal": 4388
-  },
-  {
-    "name": "[D] 大师",
-    "oldPts": 3604,
-    "newPtsBase": 3604,
-    "newPtsSkill": 771,
-    "newPtsTotal": 4375
   },
   {
     "name": "olokreZ.",
@@ -13601,6 +13601,13 @@
     "newPtsTotal": 4178
   },
   {
+    "name": "天天",
+    "oldPts": 3773,
+    "newPtsBase": 3773,
+    "newPtsSkill": 404,
+    "newPtsTotal": 4177
+  },
+  {
     "name": "root",
     "oldPts": 1853,
     "newPtsBase": 1853,
@@ -13685,11 +13692,18 @@
     "newPtsTotal": 4089
   },
   {
-    "name": "天天",
-    "oldPts": 3669,
-    "newPtsBase": 3669,
-    "newPtsSkill": 404,
-    "newPtsTotal": 4073
+    "name": "Pulsar",
+    "oldPts": 2502,
+    "newPtsBase": 2502,
+    "newPtsSkill": 1578,
+    "newPtsTotal": 4080
+  },
+  {
+    "name": "Unomi!",
+    "oldPts": 2242,
+    "newPtsBase": 2242,
+    "newPtsSkill": 1832,
+    "newPtsTotal": 4074
   },
   {
     "name": "Dummy of baby",
@@ -13720,13 +13734,6 @@
     "newPtsTotal": 4064
   },
   {
-    "name": "Pulsar",
-    "oldPts": 2482,
-    "newPtsBase": 2482,
-    "newPtsSkill": 1578,
-    "newPtsTotal": 4060
-  },
-  {
     "name": "whoami",
     "oldPts": 2109,
     "newPtsBase": 2109,
@@ -13746,6 +13753,13 @@
     "newPtsBase": 2887,
     "newPtsSkill": 1162,
     "newPtsTotal": 4049
+  },
+  {
+    "name": "Branzino",
+    "oldPts": 3368,
+    "newPtsBase": 3368,
+    "newPtsSkill": 669,
+    "newPtsTotal": 4037
   },
   {
     "name": "TEE",
@@ -13802,13 +13816,6 @@
     "newPtsBase": 2989,
     "newPtsSkill": 1012,
     "newPtsTotal": 4001
-  },
-  {
-    "name": "Branzino",
-    "oldPts": 3334,
-    "newPtsBase": 3334,
-    "newPtsSkill": 666,
-    "newPtsTotal": 4000
   },
   {
     "name": "boykitten :3c",
@@ -13912,8 +13919,8 @@
     "name": "zxclxv",
     "oldPts": 2823,
     "newPtsBase": 2823,
-    "newPtsSkill": 1099,
-    "newPtsTotal": 3922
+    "newPtsSkill": 1111,
+    "newPtsTotal": 3934
   },
   {
     "name": "El Ganbide",
@@ -14014,6 +14021,13 @@
     "newPtsTotal": 3832
   },
   {
+    "name": "раб vivolga",
+    "oldPts": 998,
+    "newPtsBase": 998,
+    "newPtsSkill": 2820,
+    "newPtsTotal": 3818
+  },
+  {
     "name": "AηiŦøXa",
     "oldPts": 1840,
     "newPtsBase": 1840,
@@ -14047,13 +14061,6 @@
     "newPtsBase": 2601,
     "newPtsSkill": 1181,
     "newPtsTotal": 3782
-  },
-  {
-    "name": "Unomi!",
-    "oldPts": 2006,
-    "newPtsBase": 2006,
-    "newPtsSkill": 1770,
-    "newPtsTotal": 3776
   },
   {
     "name": "ILA",
@@ -14187,13 +14194,6 @@
     "newPtsBase": 2171,
     "newPtsSkill": 1476,
     "newPtsTotal": 3647
-  },
-  {
-    "name": "раб vivolga",
-    "oldPts": 936,
-    "newPtsBase": 936,
-    "newPtsSkill": 2703,
-    "newPtsTotal": 3639
   },
   {
     "name": "dogy4ek",
@@ -14420,6 +14420,13 @@
     "newPtsTotal": 3474
   },
   {
+    "name": "Torore",
+    "oldPts": 3253,
+    "newPtsBase": 3253,
+    "newPtsSkill": 220,
+    "newPtsTotal": 3473
+  },
+  {
     "name": "Twike™",
     "oldPts": 2332,
     "newPtsBase": 2332,
@@ -14448,13 +14455,6 @@
     "newPtsTotal": 3454
   },
   {
-    "name": "Torore",
-    "oldPts": 3233,
-    "newPtsBase": 3233,
-    "newPtsSkill": 220,
-    "newPtsTotal": 3453
-  },
-  {
     "name": "MEE6",
     "oldPts": 1767,
     "newPtsBase": 1767,
@@ -14467,6 +14467,13 @@
     "newPtsBase": 2228,
     "newPtsSkill": 1223,
     "newPtsTotal": 3451
+  },
+  {
+    "name": "sosi ska",
+    "oldPts": 3051,
+    "newPtsBase": 3051,
+    "newPtsSkill": 385,
+    "newPtsTotal": 3436
   },
   {
     "name": "korzhen tee",
@@ -14560,6 +14567,13 @@
     "newPtsTotal": 3378
   },
   {
+    "name": "свежеcть",
+    "oldPts": 1148,
+    "newPtsBase": 1148,
+    "newPtsSkill": 2227,
+    "newPtsTotal": 3375
+  },
+  {
     "name": "%app%wanwan",
     "oldPts": 2606,
     "newPtsBase": 2606,
@@ -14581,10 +14595,10 @@
     "newPtsTotal": 3363
   },
   {
-    "name": "sosi ska",
-    "oldPts": 2975,
-    "newPtsBase": 2975,
-    "newPtsSkill": 385,
+    "name": "Kayn",
+    "oldPts": 2477,
+    "newPtsBase": 2477,
+    "newPtsSkill": 883,
     "newPtsTotal": 3360
   },
   {
@@ -14616,13 +14630,6 @@
     "newPtsTotal": 3347
   },
   {
-    "name": "Kayn",
-    "oldPts": 2460,
-    "newPtsBase": 2460,
-    "newPtsSkill": 878,
-    "newPtsTotal": 3338
-  },
-  {
     "name": "Piciu",
     "oldPts": 2130,
     "newPtsBase": 2130,
@@ -14630,18 +14637,18 @@
     "newPtsTotal": 3332
   },
   {
+    "name": "shirtless tee",
+    "oldPts": 2534,
+    "newPtsBase": 2534,
+    "newPtsSkill": 780,
+    "newPtsTotal": 3314
+  },
+  {
     "name": "RPG7609",
     "oldPts": 2604,
     "newPtsBase": 2604,
     "newPtsSkill": 705,
     "newPtsTotal": 3309
-  },
-  {
-    "name": "shirtless tee",
-    "oldPts": 2518,
-    "newPtsBase": 2518,
-    "newPtsSkill": 780,
-    "newPtsTotal": 3298
   },
   {
     "name": "Seira",
@@ -14707,6 +14714,13 @@
     "newPtsTotal": 3250
   },
   {
+    "name": "neon②two",
+    "oldPts": 2074,
+    "newPtsBase": 2074,
+    "newPtsSkill": 1176,
+    "newPtsTotal": 3250
+  },
+  {
     "name": "Shift",
     "oldPts": 2216,
     "newPtsBase": 2216,
@@ -14721,18 +14735,18 @@
     "newPtsTotal": 3248
   },
   {
+    "name": "KOT",
+    "oldPts": 2671,
+    "newPtsBase": 2671,
+    "newPtsSkill": 576,
+    "newPtsTotal": 3247
+  },
+  {
     "name": "danmin",
     "oldPts": 1731,
     "newPtsBase": 1731,
     "newPtsSkill": 1516,
     "newPtsTotal": 3247
-  },
-  {
-    "name": "KOT",
-    "oldPts": 2666,
-    "newPtsBase": 2666,
-    "newPtsSkill": 576,
-    "newPtsTotal": 3242
   },
   {
     "name": "Edy",
@@ -14763,25 +14777,18 @@
     "newPtsTotal": 3216
   },
   {
+    "name": "[D] 微嘉锦",
+    "oldPts": 2446,
+    "newPtsBase": 2446,
+    "newPtsSkill": 765,
+    "newPtsTotal": 3211
+  },
+  {
     "name": "reyalsyxalag",
     "oldPts": 1324,
     "newPtsBase": 1324,
     "newPtsSkill": 1864,
     "newPtsTotal": 3188
-  },
-  {
-    "name": "[D] 微嘉锦",
-    "oldPts": 2422,
-    "newPtsBase": 2422,
-    "newPtsSkill": 765,
-    "newPtsTotal": 3187
-  },
-  {
-    "name": "neon②two",
-    "oldPts": 2043,
-    "newPtsBase": 2043,
-    "newPtsSkill": 1142,
-    "newPtsTotal": 3185
   },
   {
     "name": "jack",
@@ -14834,10 +14841,10 @@
   },
   {
     "name": "EXXXA.",
-    "oldPts": 2550,
-    "newPtsBase": 2550,
-    "newPtsSkill": 582,
-    "newPtsTotal": 3132
+    "oldPts": 2558,
+    "newPtsBase": 2558,
+    "newPtsSkill": 583,
+    "newPtsTotal": 3141
   },
   {
     "name": "berabem",
@@ -14978,13 +14985,6 @@
     "newPtsBase": 2245,
     "newPtsSkill": 794,
     "newPtsTotal": 3039
-  },
-  {
-    "name": "свежеcть",
-    "oldPts": 1017,
-    "newPtsBase": 1017,
-    "newPtsSkill": 2015,
-    "newPtsTotal": 3032
   },
   {
     "name": "moe",
@@ -15463,6 +15463,13 @@
     "newPtsTotal": 2658
   },
   {
+    "name": "NωG",
+    "oldPts": 1453,
+    "newPtsBase": 1453,
+    "newPtsSkill": 1196,
+    "newPtsTotal": 2649
+  },
+  {
     "name": "Ñanda#",
     "oldPts": 1610,
     "newPtsBase": 1610,
@@ -15517,13 +15524,6 @@
     "newPtsBase": 1870,
     "newPtsSkill": 710,
     "newPtsTotal": 2580
-  },
-  {
-    "name": "NωG",
-    "oldPts": 1424,
-    "newPtsBase": 1424,
-    "newPtsSkill": 1155,
-    "newPtsTotal": 2579
   },
   {
     "name": "Yar",
@@ -15596,6 +15596,13 @@
     "newPtsTotal": 2545
   },
   {
+    "name": "Gunaii",
+    "oldPts": 2021,
+    "newPtsBase": 2021,
+    "newPtsSkill": 519,
+    "newPtsTotal": 2540
+  },
+  {
     "name": "ine257",
     "oldPts": 2189,
     "newPtsBase": 2189,
@@ -15629,13 +15636,6 @@
     "newPtsBase": 1964,
     "newPtsSkill": 552,
     "newPtsTotal": 2516
-  },
-  {
-    "name": "Gunaii",
-    "oldPts": 1991,
-    "newPtsBase": 1991,
-    "newPtsSkill": 519,
-    "newPtsTotal": 2510
   },
   {
     "name": "B小町芒果",
@@ -15701,6 +15701,13 @@
     "newPtsTotal": 2448
   },
   {
+    "name": "Tsuky",
+    "oldPts": 1421,
+    "newPtsBase": 1421,
+    "newPtsSkill": 1023,
+    "newPtsTotal": 2444
+  },
+  {
     "name": "YMM",
     "oldPts": 1677,
     "newPtsBase": 1677,
@@ -15748,13 +15755,6 @@
     "newPtsBase": 663,
     "newPtsSkill": 1745,
     "newPtsTotal": 2408
-  },
-  {
-    "name": "Tsuky",
-    "oldPts": 1398,
-    "newPtsBase": 1398,
-    "newPtsSkill": 1007,
-    "newPtsTotal": 2405
   },
   {
     "name": "[D] Papota",
@@ -15946,6 +15946,13 @@
     "newPtsTotal": 2298
   },
   {
+    "name": "Hitomi04",
+    "oldPts": 1534,
+    "newPtsBase": 1534,
+    "newPtsSkill": 753,
+    "newPtsTotal": 2287
+  },
+  {
     "name": "Lenox179",
     "oldPts": 1855,
     "newPtsBase": 1855,
@@ -16044,13 +16051,6 @@
     "newPtsTotal": 2221
   },
   {
-    "name": "Hitomi04",
-    "oldPts": 1471,
-    "newPtsBase": 1471,
-    "newPtsSkill": 749,
-    "newPtsTotal": 2220
-  },
-  {
     "name": "War-Int;",
     "oldPts": 1724,
     "newPtsBase": 1724,
@@ -16086,6 +16086,13 @@
     "newPtsTotal": 2186
   },
   {
+    "name": "[D] Halozy",
+    "oldPts": 1381,
+    "newPtsBase": 1381,
+    "newPtsSkill": 802,
+    "newPtsTotal": 2183
+  },
+  {
     "name": "[D] zitrax",
     "oldPts": 1011,
     "newPtsBase": 1011,
@@ -16100,18 +16107,11 @@
     "newPtsTotal": 2179
   },
   {
-    "name": "[D] Halozy",
-    "oldPts": 1376,
-    "newPtsBase": 1376,
-    "newPtsSkill": 802,
-    "newPtsTotal": 2178
-  },
-  {
     "name": "Эmo4ka yandero",
-    "oldPts": 1280,
-    "newPtsBase": 1280,
+    "oldPts": 1292,
+    "newPtsBase": 1292,
     "newPtsSkill": 881,
-    "newPtsTotal": 2161
+    "newPtsTotal": 2173
   },
   {
     "name": "Amelia",
@@ -16217,6 +16217,13 @@
     "newPtsBase": 1486,
     "newPtsSkill": 609,
     "newPtsTotal": 2095
+  },
+  {
+    "name": "stonk789",
+    "oldPts": 485,
+    "newPtsBase": 485,
+    "newPtsSkill": 1606,
+    "newPtsTotal": 2091
   },
   {
     "name": "acamala228",
@@ -16632,13 +16639,6 @@
     "newPtsTotal": 1828
   },
   {
-    "name": "stonk789",
-    "oldPts": 384,
-    "newPtsBase": 384,
-    "newPtsSkill": 1443,
-    "newPtsTotal": 1827
-  },
-  {
     "name": "Mugiwara Uchiha",
     "oldPts": 1595,
     "newPtsBase": 1595,
@@ -16654,10 +16654,10 @@
   },
   {
     "name": "nonchalаnt",
-    "oldPts": 1098,
-    "newPtsBase": 1098,
+    "oldPts": 1099,
+    "newPtsBase": 1099,
     "newPtsSkill": 715,
-    "newPtsTotal": 1813
+    "newPtsTotal": 1814
   },
   {
     "name": "TicTac²",
@@ -16920,10 +16920,10 @@
   },
   {
     "name": "Darky",
-    "oldPts": 1044,
-    "newPtsBase": 1044,
+    "oldPts": 1048,
+    "newPtsBase": 1048,
     "newPtsSkill": 585,
-    "newPtsTotal": 1629
+    "newPtsTotal": 1633
   },
   {
     "name": "mathilda",
@@ -17066,6 +17066,13 @@
     "newPtsTotal": 1566
   },
   {
+    "name": "d/Aventa",
+    "oldPts": 1243,
+    "newPtsBase": 1243,
+    "newPtsSkill": 305,
+    "newPtsTotal": 1548
+  },
+  {
     "name": "зоофил",
     "oldPts": 427,
     "newPtsBase": 427,
@@ -17092,13 +17099,6 @@
     "newPtsBase": 1153,
     "newPtsSkill": 380,
     "newPtsTotal": 1533
-  },
-  {
-    "name": "d/Aventa",
-    "oldPts": 1225,
-    "newPtsBase": 1225,
-    "newPtsSkill": 304,
-    "newPtsTotal": 1529
   },
   {
     "name": "Ne[r]m[ ]sis",
@@ -17192,6 +17192,13 @@
     "newPtsTotal": 1460
   },
   {
+    "name": "ish_AK-47ツ",
+    "oldPts": 1306,
+    "newPtsBase": 1306,
+    "newPtsSkill": 144,
+    "newPtsTotal": 1450
+  },
+  {
     "name": "[D]明理",
     "oldPts": 1424,
     "newPtsBase": 1424,
@@ -17225,13 +17232,6 @@
     "newPtsBase": 1014,
     "newPtsSkill": 421,
     "newPtsTotal": 1435
-  },
-  {
-    "name": "ish_AK-47ツ",
-    "oldPts": 1287,
-    "newPtsBase": 1287,
-    "newPtsSkill": 144,
-    "newPtsTotal": 1431
   },
   {
     "name": "Lara",
@@ -17374,6 +17374,13 @@
     "newPtsTotal": 1344
   },
   {
+    "name": "Namola",
+    "oldPts": 554,
+    "newPtsBase": 554,
+    "newPtsSkill": 781,
+    "newPtsTotal": 1335
+  },
+  {
     "name": "Paula~ pete",
     "oldPts": 1100,
     "newPtsBase": 1100,
@@ -17393,13 +17400,6 @@
     "newPtsBase": 676,
     "newPtsSkill": 646,
     "newPtsTotal": 1322
-  },
-  {
-    "name": "Namola",
-    "oldPts": 536,
-    "newPtsBase": 536,
-    "newPtsSkill": 781,
-    "newPtsTotal": 1317
   },
   {
     "name": "圣代",
@@ -17500,6 +17500,13 @@
     "newPtsTotal": 1265
   },
   {
+    "name": "pro",
+    "oldPts": 807,
+    "newPtsBase": 807,
+    "newPtsSkill": 444,
+    "newPtsTotal": 1251
+  },
+  {
     "name": "跑kog想炉管",
     "oldPts": 686,
     "newPtsBase": 686,
@@ -17547,13 +17554,6 @@
     "newPtsBase": 822,
     "newPtsSkill": 414,
     "newPtsTotal": 1236
-  },
-  {
-    "name": "pro",
-    "oldPts": 797,
-    "newPtsBase": 797,
-    "newPtsSkill": 437,
-    "newPtsTotal": 1234
   },
   {
     "name": "buggy's Slave",
@@ -17745,6 +17745,13 @@
     "newPtsTotal": 1147
   },
   {
+    "name": "[D] Kanzaki",
+    "oldPts": 524,
+    "newPtsBase": 524,
+    "newPtsSkill": 611,
+    "newPtsTotal": 1135
+  },
+  {
     "name": "HMM",
     "oldPts": 526,
     "newPtsBase": 526,
@@ -17792,13 +17799,6 @@
     "newPtsBase": 661,
     "newPtsSkill": 443,
     "newPtsTotal": 1104
-  },
-  {
-    "name": "[D] Kanzaki",
-    "oldPts": 487,
-    "newPtsBase": 487,
-    "newPtsSkill": 611,
-    "newPtsTotal": 1098
   },
   {
     "name": "SaMo",
@@ -17885,6 +17885,13 @@
     "newPtsTotal": 1059
   },
   {
+    "name": "^_^",
+    "oldPts": 873,
+    "newPtsBase": 873,
+    "newPtsSkill": 180,
+    "newPtsTotal": 1053
+  },
+  {
     "name": "Cчастье",
     "oldPts": 807,
     "newPtsBase": 807,
@@ -17966,13 +17973,6 @@
     "oldPts": 573,
     "newPtsBase": 573,
     "newPtsSkill": 434,
-    "newPtsTotal": 1007
-  },
-  {
-    "name": "^_^",
-    "oldPts": 865,
-    "newPtsBase": 865,
-    "newPtsSkill": 142,
     "newPtsTotal": 1007
   },
   {
@@ -18557,6 +18557,13 @@
     "newPtsTotal": 746
   },
   {
+    "name": "its_haise.",
+    "oldPts": 488,
+    "newPtsBase": 488,
+    "newPtsSkill": 251,
+    "newPtsTotal": 739
+  },
+  {
     "name": "QuaD",
     "oldPts": 582,
     "newPtsBase": 582,
@@ -18625,13 +18632,6 @@
     "newPtsBase": 148,
     "newPtsSkill": 574,
     "newPtsTotal": 722
-  },
-  {
-    "name": "its_haise.",
-    "oldPts": 484,
-    "newPtsBase": 484,
-    "newPtsSkill": 235,
-    "newPtsTotal": 719
   },
   {
     "name": "zalupa",
@@ -18740,10 +18740,10 @@
   },
   {
     "name": "defri",
-    "oldPts": 243,
-    "newPtsBase": 243,
+    "oldPts": 247,
+    "newPtsBase": 247,
     "newPtsSkill": 436,
-    "newPtsTotal": 679
+    "newPtsTotal": 683
   },
   {
     "name": "Esdese",
@@ -18781,13 +18781,6 @@
     "newPtsTotal": 655
   },
   {
-    "name": "seraphim",
-    "oldPts": 249,
-    "newPtsBase": 249,
-    "newPtsSkill": 403,
-    "newPtsTotal": 652
-  },
-  {
     "name": "easytee",
     "oldPts": 367,
     "newPtsBase": 367,
@@ -18816,6 +18809,20 @@
     "newPtsTotal": 646
   },
   {
+    "name": "seraphim",
+    "oldPts": 249,
+    "newPtsBase": 249,
+    "newPtsSkill": 394,
+    "newPtsTotal": 643
+  },
+  {
+    "name": "pop",
+    "oldPts": 440,
+    "newPtsBase": 440,
+    "newPtsSkill": 200,
+    "newPtsTotal": 640
+  },
+  {
     "name": "244",
     "oldPts": 131,
     "newPtsBase": 131,
@@ -18842,13 +18849,6 @@
     "newPtsBase": 560,
     "newPtsSkill": 67,
     "newPtsTotal": 627
-  },
-  {
-    "name": "pop",
-    "oldPts": 425,
-    "newPtsBase": 425,
-    "newPtsSkill": 200,
-    "newPtsTotal": 625
   },
   {
     "name": "Faker",
@@ -19033,6 +19033,13 @@
     "newPtsTotal": 558
   },
   {
+    "name": "[D] vaneo",
+    "oldPts": 434,
+    "newPtsBase": 434,
+    "newPtsSkill": 118,
+    "newPtsTotal": 552
+  },
+  {
     "name": "h̶ay̶u∩kɟs",
     "oldPts": 304,
     "newPtsBase": 304,
@@ -19143,13 +19150,6 @@
     "newPtsBase": 318,
     "newPtsSkill": 204,
     "newPtsTotal": 522
-  },
-  {
-    "name": "[D] vaneo",
-    "oldPts": 409,
-    "newPtsBase": 409,
-    "newPtsSkill": 112,
-    "newPtsTotal": 521
   },
   {
     "name": "Dummy of Podert",
@@ -19964,6 +19964,13 @@
     "newPtsTotal": 294
   },
   {
+    "name": "Cape",
+    "oldPts": 239,
+    "newPtsBase": 239,
+    "newPtsSkill": 52,
+    "newPtsTotal": 291
+  },
+  {
     "name": "[D] MinDie",
     "oldPts": 115,
     "newPtsBase": 115,
@@ -20062,13 +20069,6 @@
     "newPtsTotal": 276
   },
   {
-    "name": "Cape",
-    "oldPts": 218,
-    "newPtsBase": 218,
-    "newPtsSkill": 52,
-    "newPtsTotal": 270
-  },
-  {
     "name": "Link=Zelda",
     "oldPts": 212,
     "newPtsBase": 212,
@@ -20109,6 +20109,13 @@
     "newPtsBase": 93,
     "newPtsSkill": 173,
     "newPtsTotal": 266
+  },
+  {
+    "name": "bastard fashist",
+    "oldPts": 88,
+    "newPtsBase": 88,
+    "newPtsSkill": 177,
+    "newPtsTotal": 265
   },
   {
     "name": "RUS > GER",
@@ -20293,6 +20300,13 @@
     "newPtsTotal": 237
   },
   {
+    "name": "dam namola",
+    "oldPts": 66,
+    "newPtsBase": 66,
+    "newPtsSkill": 171,
+    "newPtsTotal": 237
+  },
+  {
     "name": "only`",
     "oldPts": 51,
     "newPtsBase": 51,
@@ -20342,13 +20356,6 @@
     "newPtsTotal": 228
   },
   {
-    "name": "dam namola",
-    "oldPts": 55,
-    "newPtsBase": 55,
-    "newPtsSkill": 171,
-    "newPtsTotal": 226
-  },
-  {
     "name": "(1)чепух",
     "oldPts": 45,
     "newPtsBase": 45,
@@ -20361,13 +20368,6 @@
     "newPtsBase": 84,
     "newPtsSkill": 140,
     "newPtsTotal": 224
-  },
-  {
-    "name": "bastard fashist",
-    "oldPts": 46,
-    "newPtsBase": 46,
-    "newPtsSkill": 177,
-    "newPtsTotal": 223
   },
   {
     "name": "(1)Hatsune Miku",
@@ -20433,6 +20433,13 @@
     "newPtsTotal": 220
   },
   {
+    "name": "h9oler",
+    "oldPts": 90,
+    "newPtsBase": 90,
+    "newPtsSkill": 128,
+    "newPtsTotal": 218
+  },
+  {
     "name": "-v-",
     "oldPts": 169,
     "newPtsBase": 169,
@@ -20452,13 +20459,6 @@
     "newPtsBase": 160,
     "newPtsSkill": 51,
     "newPtsTotal": 211
-  },
-  {
-    "name": "h9oler",
-    "oldPts": 90,
-    "newPtsBase": 90,
-    "newPtsSkill": 120,
-    "newPtsTotal": 210
   },
   {
     "name": "[D] penglul",
@@ -21399,6 +21399,13 @@
     "newPtsTotal": 74
   },
   {
+    "name": "[D] андру",
+    "oldPts": 69,
+    "newPtsBase": 69,
+    "newPtsSkill": 5,
+    "newPtsTotal": 74
+  },
+  {
     "name": "spurfish",
     "oldPts": 20,
     "newPtsBase": 20,
@@ -21467,13 +21474,6 @@
     "newPtsBase": 27,
     "newPtsSkill": 43,
     "newPtsTotal": 70
-  },
-  {
-    "name": "[D] андру",
-    "oldPts": 64,
-    "newPtsBase": 64,
-    "newPtsSkill": 5,
-    "newPtsTotal": 69
   },
   {
     "name": "ebalaizzrt(sc)",

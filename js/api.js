@@ -199,13 +199,10 @@ async function fetchPlayerPts(playerName) {
 
 // Fetch top players from static leaderboard with live refresh via DDStats
 // Returns players array; each item has isStatic=true if DDStats was unreachable
-async function getTopPlayersLive(limit = Infinity, onProgress = null) {
+async function getTopPlayersLive(limit = 500, onProgress = null) {
   const staticLeaderboard = await getLeaderboardData();
-  if (limit === Infinity || limit >= staticLeaderboard.length) {
-    if (onProgress) onProgress(staticLeaderboard.length, staticLeaderboard.length);
-    return staticLeaderboard;
-  }
-  const topCandidates = staticLeaderboard.slice(0, limit);
+  const maxLimit = (typeof limit === 'number' && limit > 0 && limit !== Infinity) ? limit : 500;
+  const topCandidates = staticLeaderboard.slice(0, maxLimit);
 
   if (topCandidates.length === 0) return [];
 

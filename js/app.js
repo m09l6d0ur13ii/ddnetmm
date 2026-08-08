@@ -106,149 +106,173 @@ function renderHeader(activePage = 'home') {
 
     // ── Autocomplete ────────────────────────────────────────────────
     const input = document.getElementById('header-map-search-input');
-    if (!input || !window.mapsData) return;
+    if (input) {
+      const wrap = input.parentElement;
+      if (wrap) {
+        wrap.style.position = 'relative';
 
-    // Build dropdown container
-    const wrap = input.parentElement;
-    wrap.style.position = 'relative';
+        let dropdown = document.getElementById('map-autocomplete');
+        if (!dropdown) {
+          dropdown = document.createElement('div');
+          dropdown.id = 'map-autocomplete';
+          dropdown.style.display = 'none';
+          wrap.appendChild(dropdown);
+        }
 
-    const dropdown = document.createElement('div');
-    dropdown.id = 'map-autocomplete';
-    dropdown.style.display = 'none';
-    wrap.appendChild(dropdown);
+        let activeIdx = -1;
+        let currentItems = [];
 
-    let activeIdx = -1;
-    let currentItems = [];
+        function escHtml(s) {
+          return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
 
-    function escHtml(s) {
-      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+        function highlightMatch(text, query) {
+          if (!text || !query) return escHtml(text || '');
+          const idx = text.toLowerCase().indexOf(query.toLowerCase());
+          if (idx === -1) return escHtml(text);
+          return escHtml(text.slice(0, idx))
+            + '<strong class="ac-hl" style="color:var(--accent,#ffa500);font-weight:bold">' + escHtml(text.slice(idx, idx + query.length)) + '</strong>'
+            + escHtml(text.slice(idx + query.length));
+        }
 
-    function highlightMatch(text, query) {
-      const idx = text.toLowerCase().indexOf(query.toLowerCase());
-      if (idx === -1) return escHtml(text);
-      return escHtml(text.slice(0, idx))
-        + '<strong class="ac-hl" style="color:#ffa500;font-weight:bold">' + escHtml(text.slice(idx, idx + query.length)) + '</strong>'
-        + escHtml(text.slice(idx + query.length));
-    }
+        function renderDropdown(items, query) {
+          activeIdx = -1;
+          currentItems = items;
+          if (!items.length) { dropdown.style.display = 'none'; return; }
 
-    function renderDropdown(items, query) {
-      activeIdx = -1;
-      currentItems = items;
-      if (!items.length) { dropdown.style.display = 'none'; return; }
+          dropdown.innerHTML = items.map((m, i) => {
+            const mapName = m.map || m.name || '';
+            const mapper = m.mapper || '';
+            const server = m.server || m.type || 'DDNet';
+            const points = (m.points !== undefined && m.points !== null) ? m.points : (m.pts || 0);
 
-      dropdown.innerHTML = items.map((m, i) => `
-        <a class="ac-item" data-idx="${i}" href="/map?name=${encodeURIComponent(m.map)}">
-          <div class="ac-map-info">
-            <span class="ac-map-name">${highlightMatch(m.map, query)}</span>
-            ${m.mapper ? `<span class="ac-map-mapper">by ${highlightMatch(m.mapper, query)}</span>` : ''}
-          </div>
-          <div class="ac-map-meta">
-            <span class="ac-map-server">${escHtml(m.server)}</span>
-            <span class="ac-map-points">${m.points} PTS</span>
-          </div>
-        </a>
-      `).join('');
+            return `
+              <a class="ac-item" data-idx="${i}" href="/map?name=${encodeURIComponent(mapName)}">
+                <div class="ac-map-info">
+                  <span class="ac-map-name">${highlightMatch(mapName, query)}</span>
+                  ${mapper ? `<span class="ac-map-mapper">by ${highlightMatch(mapper, query)}</span>` : ''}
+                </div>
+                <div class="ac-map-meta">
+                  <span class="ac-map-server">${escHtml(server)}</span>
+                  <span class="ac-map-points">${points} PTS</span>
+                </div>
+              </a>
+            `;
+          }).join('');
 
-      dropdown.style.display = 'block';
+          dropdown.style.display = 'block';
 
-      dropdown.querySelectorAll('.ac-item').forEach(el => {
-        el.addEventListener('mousedown', (e) => {
-          e.preventDefault();
-          const idx = parseInt(el.getAttribute('data-idx'), 10);
-          selectItem(idx);
+          dropdown.querySelectorAll('.ac-item').forEach(el => {
+            el.addEventListener('mousedown', (e) => {
+              e.preventDefault();
+              const idx = parseInt(el.getAttribute('data-idx'), 10);
+              selectItem(idx);
+            });
+            el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
+          });
+        }
+
+        function setActive(idx) {
+          activeIdx = idx;
+          dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
+            const isAct = i === idx;
+            el.classList.toggle('is-active', isAct);
+          });
+
+          if (idx >= 0) {
+            const activeEl = dropdown.querySelectorAll('.ac-item')[idx];
+            if (activeEl) {
+              activeEl.scrollIntoView({ block: 'nearest' });
+            }
+          }
+        }
+
+        function selectItem(idx) {
+          const m = currentItems[idx];
+          if (!m) return;
+          const mapName = m.map || m.name;
+          input.value = mapName;
+          dropdown.style.display = 'none';
+          window.location.href = `/map?name=${encodeURIComponent(mapName)}`;
+        }
+
+        function closeDropdown() {
+          dropdown.style.display = 'none';
+          activeIdx = -1;
+        }
+
+        function triggerAutocomplete() {
+          const q = input.value.trim();
+          if (q.length < 1) { closeDropdown(); return; }
+
+          const maps = window.mapsData || window.allMaps || window.mapStatsData || [];
+          if (!maps.length) { closeDropdown(); return; }
+
+          const lower = q.toLowerCase();
+          const cleanQ = lower.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
+          const startsMap = [], containsMap = [], mapperMatches = [];
+
+          for (const m of maps) {
+            if (!m) continue;
+            const mName = String(m.map || m.name || '');
+            if (!mName) continue;
+
+            const lowerName = mName.toLowerCase();
+            const cleanName = lowerName.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
+
+            if (lowerName.startsWith(lower) || (cleanQ && cleanName.startsWith(cleanQ))) {
+              startsMap.push(m);
+            } else if (lowerName.includes(lower) || (cleanQ && cleanName.includes(cleanQ))) {
+              containsMap.push(m);
+            } else if (m.mapper && String(m.mapper).toLowerCase().includes(lower)) {
+              mapperMatches.push(m);
+            }
+
+            if (startsMap.length + containsMap.length + mapperMatches.length >= 50) break;
+          }
+
+          const combined = [...startsMap, ...containsMap, ...mapperMatches];
+          const uniqueMaps = [];
+          const seen = new Set();
+          for (const item of combined) {
+            const name = (item.map || item.name).toLowerCase();
+            if (!seen.has(name)) {
+              seen.add(name);
+              uniqueMaps.push(item);
+            }
+          }
+
+          renderDropdown(uniqueMaps.slice(0, 10), q);
+        }
+
+        input.addEventListener('input', triggerAutocomplete);
+        input.addEventListener('focus', triggerAutocomplete);
+
+        input.addEventListener('keydown', (e) => {
+          if (dropdown.style.display === 'none' || currentItems.length === 0) return;
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const nextIdx = activeIdx + 1 >= currentItems.length ? 0 : activeIdx + 1;
+            setActive(nextIdx);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prevIdx = activeIdx - 1 < 0 ? currentItems.length - 1 : activeIdx - 1;
+            setActive(prevIdx);
+          } else if (e.key === 'Enter') {
+            if (activeIdx >= 0) {
+              e.preventDefault();
+              selectItem(activeIdx);
+            }
+          } else if (e.key === 'Escape') {
+            closeDropdown();
+          }
         });
-        el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
-        el.addEventListener('mouseleave', () => setActive(-1));
-      });
-    }
 
-    function setActive(idx) {
-      activeIdx = idx;
-      dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
-        const isAct = i === idx;
-        el.style.background = isAct ? 'rgba(255, 165, 0, 0.25)' : '';
-        el.style.outline = isAct ? '1px solid #ffa500' : 'none';
-        
-        const nameEl = el.querySelector('.ac-map-name');
-        if (nameEl) nameEl.style.color = isAct ? '#ffffff' : '';
-
-        const metaEls = el.querySelectorAll('.ac-map-meta span');
-        metaEls.forEach(s => {
-          s.style.color = isAct ? '#ffeedd' : '';
+        document.addEventListener('click', (e) => {
+          if (!wrap.contains(e.target)) closeDropdown();
         });
-        
-        const sub = el.querySelector('span[style*="font-size:0.75em"]');
-        if (sub) sub.style.color = isAct ? '#333333' : '#94a3b8';
-      });
-      
-      if (idx >= 0) {
-        const activeEl = dropdown.querySelectorAll('.ac-item')[idx];
-        if (activeEl) {
-          activeEl.scrollIntoView({ block: 'nearest' });
-        }
       }
     }
-
-    function selectItem(idx) {
-      const m = currentItems[idx];
-      if (!m) return;
-      input.value = m.map;
-      dropdown.style.display = 'none';
-      window.location.href = `/map?name=${encodeURIComponent(m.map)}`;
-    }
-
-    function closeDropdown() {
-      dropdown.style.display = 'none';
-      activeIdx = -1;
-    }
-
-    function triggerAutocomplete() {
-      const q = input.value.trim();
-      if (q.length < 1) { closeDropdown(); return; }
-      const lower = q.toLowerCase();
-      const cleanQ = lower.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
-      const starts = [], contains = [];
-
-      for (const pName of playersList) {
-        if (window.isBlacklisted && window.isBlacklisted(pName)) continue;
-        const lowerName = pName.toLowerCase();
-        const cleanName = lowerName.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
-
-        if (lowerName.startsWith(lower) || (cleanQ && cleanName.startsWith(cleanQ))) {
-          starts.push(pName);
-        } else if (lowerName.includes(lower)) {
-          contains.push(pName);
-        }
-        if (starts.length + contains.length >= 40) break;
-      }
-      renderDropdown([...starts, ...contains].slice(0, 10), q);
-    }
-
-    input.addEventListener('input', triggerAutocomplete);
-    input.addEventListener('focus', triggerAutocomplete);
-
-    input.addEventListener('keydown', (e) => {
-      if (dropdown.style.display === 'none') return;
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setActive(Math.min(activeIdx + 1, currentItems.length - 1));
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setActive(Math.max(activeIdx - 1, -1));
-      } else if (e.key === 'Enter') {
-        if (activeIdx >= 0) {
-          e.preventDefault();
-          selectItem(activeIdx);
-        }
-      } else if (e.key === 'Escape') {
-        closeDropdown();
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) closeDropdown();
-    });
   }, 100);
 }
 
@@ -302,93 +326,175 @@ window.setupPlayerAutocomplete = function (inputId, onSelect) {
   const wrap = input.parentElement;
   if (!wrap) return;
   wrap.style.position = 'relative';
+  wrap.style.zIndex = '100';
 
-  let dropdown = wrap.querySelector('.player-autocomplete-dropdown');
+  // Ensure dropdown container with class 'player-autocomplete' (matches css/style.css!)
+  let dropdown = wrap.querySelector('.player-autocomplete');
   if (!dropdown) {
+    const oldDrop = wrap.querySelector('.player-autocomplete-dropdown');
+    if (oldDrop) oldDrop.remove();
+
     dropdown = document.createElement('div');
-    dropdown.className = 'player-autocomplete-dropdown';
+    dropdown.className = 'player-autocomplete';
     dropdown.style.display = 'none';
-    dropdown.style.position = 'absolute';
-    dropdown.style.top = '100%';
-    dropdown.style.left = '0';
-    dropdown.style.right = '0';
-    dropdown.style.zIndex = '9999';
-    dropdown.style.maxHeight = '200px';
-    dropdown.style.overflowY = 'auto';
-    dropdown.style.background = '#111827';
-    dropdown.style.border = '1px solid #374151';
-    dropdown.style.borderRadius = '0.5rem';
-    dropdown.style.marginTop = '4px';
     wrap.appendChild(dropdown);
   }
 
   let activeIdx = -1;
   let currentItems = [];
+  let currentQuery = '';
 
-  const escHtml = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function escHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-  const renderDropdown = () => {
+  function highlightMatch(text, query) {
+    if (!text || !query) return escHtml(text || '');
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return escHtml(text);
+    return escHtml(text.slice(0, idx))
+      + '<strong class="ac-hl" style="color:var(--accent,#ffa500);font-weight:bold">' + escHtml(text.slice(idx, idx + query.length)) + '</strong>'
+      + escHtml(text.slice(idx + query.length));
+  }
+
+  function renderDropdown() {
     if (currentItems.length === 0) {
       dropdown.style.display = 'none';
       return;
     }
+
     dropdown.innerHTML = currentItems.map((name, i) => `
-      <div class="px-3 py-2 text-sm text-slate-200 hover:bg-amber-500/20 hover:text-amber-300 cursor-pointer ${i === activeIdx ? 'bg-amber-500/20 text-amber-300' : ''}" data-idx="${i}">
-        ${escHtml(name)}
-      </div>
+      <a class="ac-player-item ${i === activeIdx ? 'is-active' : ''}" data-idx="${i}" href="/player?name=${encodeURIComponent(name)}">
+        <span class="ac-player-name">${highlightMatch(name, currentQuery)}</span>
+      </a>
     `).join('');
+
     dropdown.style.display = 'block';
 
-    dropdown.querySelectorAll('[data-idx]').forEach(el => {
-      el.onmousedown = (e) => {
+    dropdown.querySelectorAll('.ac-player-item').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
         e.preventDefault();
         const idx = Number(el.dataset.idx);
-        if (currentItems[idx]) {
-          input.value = currentItems[idx];
-          dropdown.style.display = 'none';
-          if (onSelect) onSelect(currentItems[idx]);
-        }
-      };
+        selectItem(idx);
+      });
+      el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
     });
-  };
+  }
 
-  input.addEventListener('input', () => {
-    const val = input.value.trim().toLowerCase();
+  function setActive(idx) {
+    activeIdx = idx;
+    dropdown.querySelectorAll('.ac-player-item').forEach((el, i) => {
+      const isAct = i === idx;
+      el.classList.toggle('is-active', isAct);
+    });
+
+    if (idx >= 0) {
+      const activeEl = dropdown.querySelectorAll('.ac-player-item')[idx];
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }
+
+  function selectItem(idx) {
+    const pName = currentItems[idx];
+    if (!pName) return;
+    input.value = pName;
+    dropdown.style.display = 'none';
     activeIdx = -1;
-    const playersList = window.uniquePlayersData || window.uniquePlayers || [];
-    if (!val || playersList.length === 0) {
+    if (typeof onSelect === 'function') {
+      onSelect(pName);
+    } else {
+      window.location.href = `/player?name=${encodeURIComponent(pName)}`;
+    }
+  }
+
+  function triggerAutocomplete() {
+    const sErr = document.getElementById('search-error');
+    if (sErr) sErr.classList.add('hidden');
+
+    const q = input.value.trim();
+    currentQuery = q;
+    if (q.length < 1) {
       currentItems = [];
-      renderDropdown();
+      dropdown.style.display = 'none';
+      activeIdx = -1;
       return;
     }
-    currentItems = playersList.filter(p => String(p).toLowerCase().includes(val)).slice(0, 8);
+
+    const playersList = window.uniquePlayersData || window.uniquePlayers || (window.playersData ? window.playersData.map(p => p.name) : []);
+    if (!playersList || !playersList.length) {
+      currentItems = [];
+      dropdown.style.display = 'none';
+      return;
+    }
+
+    const lower = q.toLowerCase();
+    const cleanQ = lower.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
+    const starts = [];
+    const contains = [];
+
+    for (const pName of playersList) {
+      if (!pName) continue;
+      if (window.isBlacklisted && window.isBlacklisted(pName)) continue;
+
+      const lowerName = String(pName).toLowerCase();
+      const cleanName = lowerName.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
+
+      if (lowerName.startsWith(lower) || (cleanQ && cleanName.startsWith(cleanQ))) {
+        starts.push(pName);
+      } else if (lowerName.includes(lower) || (cleanQ && cleanName.includes(cleanQ))) {
+        contains.push(pName);
+      }
+
+      if (starts.length + contains.length >= 40) break;
+    }
+
+    const combined = [...starts, ...contains];
+    const uniqueList = [];
+    const seen = new Set();
+    for (const p of combined) {
+      const k = p.toLowerCase();
+      if (!seen.has(k)) {
+        seen.add(k);
+        uniqueList.push(p);
+      }
+    }
+
+    currentItems = uniqueList.slice(0, 10);
+    activeIdx = -1;
     renderDropdown();
-  });
+  }
+
+  input.addEventListener('input', triggerAutocomplete);
+  input.addEventListener('focus', triggerAutocomplete);
 
   input.addEventListener('keydown', (e) => {
-    if (dropdown.style.display === 'none') return;
+    if (dropdown.style.display === 'none' || currentItems.length === 0) return;
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      activeIdx = (activeIdx + 1) % currentItems.length;
-      renderDropdown();
+      const nextIdx = activeIdx + 1 >= currentItems.length ? 0 : activeIdx + 1;
+      setActive(nextIdx);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      activeIdx = (activeIdx - 1 + currentItems.length) % currentItems.length;
-      renderDropdown();
+      const prevIdx = activeIdx - 1 < 0 ? currentItems.length - 1 : activeIdx - 1;
+      setActive(prevIdx);
     } else if (e.key === 'Enter') {
       if (activeIdx >= 0 && currentItems[activeIdx]) {
         e.preventDefault();
-        input.value = currentItems[activeIdx];
-        dropdown.style.display = 'none';
-        if (onSelect) onSelect(currentItems[activeIdx]);
+        selectItem(activeIdx);
       }
     } else if (e.key === 'Escape') {
       dropdown.style.display = 'none';
+      activeIdx = -1;
     }
   });
 
-  input.addEventListener('blur', () => {
-    setTimeout(() => { dropdown.style.display = 'none'; }, 200);
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) {
+      dropdown.style.display = 'none';
+      activeIdx = -1;
+    }
   });
 };
 

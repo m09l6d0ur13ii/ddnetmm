@@ -238,20 +238,79 @@ async function resolveCustomRecords(customMapRecords) {
 }
 
 let apiCallCount = 0;
+let consecutiveBlockedCount = 0;
 
-function fetchJson(url) {
+function fetchJson(url, retries = 1) {
     apiCallCount++;
     return new Promise((resolve) => {
-        const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 MapMastery Crawler' }, timeout: 3000 }, (res) => {
-            if (res.statusCode !== 200) return resolve(null);
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
-                try { resolve(JSON.parse(data)); } catch (e) { resolve(null); }
+        const executeFetch = (attempt) => {
+            const req = https.get(url, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 MapMastery/2.0'
+                },
+                timeout: 5000
+            }, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                    const isBlockedStatus = res.statusCode === 403 || res.statusCode === 429 || res.statusCode === 503;
+                    const isBlockedBody = data.includes('Blocked.') || data.includes('furo@posteo.net') || data.includes('Access denied');
+
+                    if (isBlockedStatus || isBlockedBody) {
+                        consecutiveBlockedCount++;
+                        console.error(`\n⛔ DDStats API Blocked / Rate-Limited! (HTTP ${res.statusCode}): ${url}`);
+                        if (data.includes('furo@posteo.net')) {
+                            console.error(`🛑 DDStats message: "Blocked. E-mail furo@posteo.net if this was a mistake."`);
+                        }
+
+                        if (consecutiveBlockedCount >= 3) {
+                            console.error(`\n💥 ОШИБКА: DDStats API заблокировал IP (HTTP ${res.statusCode})!`);
+                            console.error(`🔌 Включай VPN, ёпта! Скрипт остановлен, чтобы не спамить.`);
+                            process.exit(1);
+                        }
+
+                        if (res.statusCode === 429 && attempt < retries) {
+                            const delay = (attempt + 1) * 2000;
+                            console.warn(`⏳ Rate limited (429). Waiting ${delay}ms...`);
+                            setTimeout(() => executeFetch(attempt + 1), delay);
+                            return;
+                        }
+                        return resolve(null);
+                    }
+
+                    // Reset count on non-blocked successful response
+                    consecutiveBlockedCount = 0;
+
+                    if (res.statusCode !== 200) return resolve(null);
+
+                    try {
+                        const parsed = JSON.parse(data);
+                        resolve(parsed);
+                    } catch (e) {
+                        resolve(null);
+                    }
+                });
             });
-        });
-        req.on('timeout', () => { req.destroy(); resolve(null); });
-        req.on('error', () => resolve(null));
+
+            req.on('timeout', () => {
+                req.destroy();
+                if (attempt < retries) {
+                    setTimeout(() => executeFetch(attempt + 1), 1000);
+                } else {
+                    resolve(null);
+                }
+            });
+
+            req.on('error', () => {
+                if (attempt < retries) {
+                    setTimeout(() => executeFetch(attempt + 1), 1000);
+                } else {
+                    resolve(null);
+                }
+            });
+        };
+
+        executeFetch(0);
     });
 }
 
@@ -367,7 +426,25 @@ async function run() {
     fs.writeFileSync(CUSTOM_MAP_RECORDS_JS, `window.customMapRecordsData = ${JSON.stringify(customMapRecords, null, 2)};\n`);
 
     console.log("\n=== 2. Fetching Maps List ===");
-    const allMaps = await fetchJson('https://ddstats.tw/maps/json');
+    let allMaps = null;
+    const args = process.argv.slice(2);
+    const isFastMode = args.includes('--fast');
+
+    if (isFastMode && fs.existsSync(MAPS_RAW_FILE)) {
+        try {
+            allMaps = JSON.parse(fs.readFileSync(MAPS_RAW_FILE, 'utf8'));
+            console.log(`⚡ [--fast mode] Loaded ${allMaps.length} maps from local maps_raw.json cache.`);
+        } catch (e) { }
+    }
+
+    if (!allMaps) {
+        allMaps = await fetchJson('https://ddstats.tw/maps/json');
+        if ((!allMaps || !Array.isArray(allMaps)) && fs.existsSync(MAPS_RAW_FILE)) {
+            console.warn("⚠ Could not fetch live maps list from DDStats. Falling back to local maps_raw.json cache.");
+            try { allMaps = JSON.parse(fs.readFileSync(MAPS_RAW_FILE, 'utf8')); } catch (e) { }
+        }
+    }
+
     if (!allMaps || !Array.isArray(allMaps)) {
         console.error("Failed to fetch maps list");
         return;
@@ -396,16 +473,18 @@ async function run() {
             if (fs.existsSync(localCacheFile)) {
                 try {
                     const stats = fs.statSync(localCacheFile);
-                    if (Date.now() - stats.mtimeMs < THREE_DAYS_MS) {
+                    if (isFastMode || Date.now() - stats.mtimeMs < THREE_DAYS_MS) {
                         data = JSON.parse(fs.readFileSync(localCacheFile, 'utf8'));
                     }
                 } catch (e) { }
             }
 
-            if (!data) {
+            if (!data && !isFastMode) {
                 data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
                 if (data) {
                     try { fs.writeFileSync(localCacheFile, JSON.stringify(data)); } catch (e) { }
+                } else if (fs.existsSync(localCacheFile)) {
+                    try { data = JSON.parse(fs.readFileSync(localCacheFile, 'utf8')); } catch (e) { }
                 }
             }
 
@@ -519,9 +598,6 @@ async function run() {
     console.log(`Saved map_records and map_rankings for ${Object.keys(mapRecords).length} maps`);
 
     console.log("\n=== 3.5. Enriching Maps Flooded by TASers with Trusted Players Finishes ===");
-    const args = process.argv.slice(2);
-    const isFastMode = args.includes('--fast');
-
     const mapsRawMap = {};
     for (const m of allMaps) { mapsRawMap[m.map] = m; }
 
@@ -547,9 +623,18 @@ async function run() {
         }
     } else {
         const allLegitPlayers = loadPlayerList(blacklistSet);
-        // Prioritize cached profiles and top 5000 players for deep, high-coverage enrichment
+        if (fs.existsSync(LEADERBOARD_FILE)) {
+            try {
+                const lbData = JSON.parse(fs.readFileSync(LEADERBOARD_FILE, 'utf8'));
+                const ptsMap = new Map();
+                lbData.forEach((p, idx) => ptsMap.set(p.name.toLowerCase(), p.newPtsTotal || (100000 - idx)));
+                allLegitPlayers.sort((a, b) => (ptsMap.get(b.name.toLowerCase()) || 0) - (ptsMap.get(a.name.toLowerCase()) || 0));
+            } catch (e) { }
+        }
+
+        // Limit enrichment to cached profiles + top 500 players by PTS for optimal coverage without hitting rate limits
         const cachedPlayers = allLegitPlayers.filter(p => fs.existsSync(path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`)));
-        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 5000)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
+        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 500)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
         console.log(`Enrichment source: player_list.txt (${allLegitPlayers.length} total harvested, ${topPlayers.length} active scanned)`);
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
@@ -620,7 +705,7 @@ async function run() {
                 }
             }));
             if (neededNetworkFetch) {
-                await new Promise(r => setTimeout(r, 60));
+                await new Promise(r => setTimeout(r, 200));
             }
             if (i % 100 === 0 && i > 0) console.log(`   Enrichment: ${i}/${topPlayers.length} players scanned...`);
         }
@@ -801,10 +886,13 @@ async function run() {
     console.log("\n=== 5. Updating Blacklist Data & Removed Finish Counts ===");
     await updateBlacklistData();
 
-    console.log(`Finished! Final leaderboard size: ${leaderboard.length} players.`);
     console.log(`\n📡 Total API requests made: ${apiCallCount.toLocaleString()}`);
-    console.log(`   ≈ Maps fetch: ~${Object.keys(mapRecords).length} requests`);
-    console.log(`   ≈ Player enrichment: ~${apiCallCount - Object.keys(mapRecords).length - 1} requests`);
+    if (apiCallCount > 0) {
+        console.log(`   ≈ Maps fetch: ~${Math.min(apiCallCount, Object.keys(mapRecords).length)} requests`);
+        console.log(`   ≈ Player enrichment: ~${Math.max(0, apiCallCount - Object.keys(mapRecords).length - 1)} requests`);
+    } else {
+        console.log(`   ⚡ 100% offline build from disk cache (0 network requests made).`);
+    }
 }
 
 run();

@@ -1,5 +1,14 @@
 window.ignoredFinishesData = [
-  ".x0r*|2 days in the back"
+  ".x0r*|2 days in the back",
+  "асхаб та|excast 4",
+  "асхаб та|the fusion",
+  "асхаб та|behemoth",
+  "асхаб та|genericore 1",
+  "асхаб та|milkyway",
+  "асхаб та|just triple fly",
+  "асхаб та|stronghold 4 [final]",
+  "асхаб та|ton 2",
+  "асхаб та|necron"
 ];
 
 window.isIgnoredFinish = function(player, map) {

@@ -5,7 +5,7 @@
 
   let playersData = [];
   let sortConfig = { key: 'newPtsTotal', direction: 'desc' };
-  let displayLimit = Infinity;
+  let displayLimit = 500;
   let loading = false;
   let currentTab = 'global';
 
@@ -89,7 +89,7 @@
     });
 
     let currentDisplayRank = 1;
-    sortedData.slice(0, displayLimit).forEach((p, idx) => {
+    sortedData.slice(0, Math.min(500, displayLimit)).forEach((p, idx) => {
       if (idx > 0) {
         const prevP = sortedData[idx - 1];
         const prevVal = prevP[sortConfig.key] || 0;
