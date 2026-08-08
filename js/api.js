@@ -260,7 +260,14 @@ async function getTopPlayersLive(limit = 500, onProgress = null) {
 function loadMapRankingFile(mapName) {
   return new Promise((resolve) => {
     const safe = mapName.replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
-  const src = `data/rankings/${encodeURIComponent(safe)}.js?v=a1601ea`;
+    const isSubfolder = window.location.pathname.includes('/map/') ||
+                        window.location.pathname.includes('/player/') ||
+                        window.location.pathname.includes('/compare/') ||
+                        window.location.pathname.includes('/pvp/') ||
+                        window.location.pathname.includes('/about/') ||
+                        window.location.pathname.includes('/privacy/');
+    const prefix = isSubfolder ? '../' : './';
+    const src = `${prefix}data/rankings/${encodeURIComponent(safe)}.js?v=a1601ea`;
 
     const old = document.getElementById('map-ranking-script');
     if (old) old.remove();
@@ -351,8 +358,26 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
       } catch (e) {}
     }
 
-    // Filter blacklisted players
-    rankings = rankings.filter(r => r && (r.player || r.name) && !(window.isBlacklisted && window.isBlacklisted(r.player || r.name)));
+    // Filter mapMinTimes, ignored finishes, and blacklisted players
+    const mLower = String(realMapName || mapQuery).trim().toLowerCase();
+    const minTimeSec = (window.mapMinTimesData && window.mapMinTimesData[mLower]) || 0;
+
+    rankings = rankings.filter(r => {
+      if (!r) return false;
+      const pName = r.player || r.name;
+      if (!pName) return false;
+
+      // 1. Min time filter
+      if (minTimeSec > 0 && r.time < minTimeSec) return false;
+
+      // 2. Blacklist filter
+      if (window.isBlacklisted && window.isBlacklisted(pName)) return false;
+
+      // 3. Ignored finish filter
+      if (window.isIgnoredFinish && window.isIgnoredFinish(pName, realMapName)) return false;
+
+      return true;
+    });
 
     const topPlayers = rankings.slice(0, limit);
     const leaderboard = [];
