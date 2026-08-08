@@ -48,20 +48,29 @@ async function fetchPlayerFinishesInfo(name) {
     if (!finishes) {
         try {
             const url = `https://ddstats.tw/player/json?player=${encodeURIComponent(name)}`;
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' }
+            });
             if (res.ok) {
                 const data = await res.json();
                 finishes = data.finishes || [];
+                try {
+                    fs.writeFileSync(localFile, JSON.stringify(data));
+                } catch (e) { }
             }
         } catch (e) { }
     }
 
     let count = 0, wr1 = 0, top10 = 0, top50 = 0;
 
-    if (finishes && finishes.length > 0) {
+    if (finishes && Array.isArray(finishes)) {
         count = finishes.length;
         for (const f of finishes) {
-            const r = f.rank || f.team_rank;
+            const soloRank = f.rank ? (typeof f.rank === 'object' ? f.rank.rank : f.rank) : null;
+            const teamRank = f.team_rank ? (typeof f.team_rank === 'object' ? f.team_rank.rank : f.team_rank) : null;
+            const rankNums = [soloRank, teamRank].filter(n => typeof n === 'number' && n > 0);
+            if (rankNums.length === 0) continue;
+            const r = Math.min(...rankNums);
             if (r === 1) wr1++;
             else if (r >= 2 && r <= 10) top10++;
             else if (r >= 11 && r <= 50) top50++;
