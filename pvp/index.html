@@ -79,17 +79,21 @@
 
       <!-- Player Input Form -->
       <section class="pvp-launcher glass-panel p-6 max-w-3xl mx-auto">
-        <form id="pvp-form" class="grid grid-cols-1 sm:grid-cols-5 gap-4 items-center">
-          <div class="sm:col-span-2 space-y-1 relative">
+        <form id="pvp-form" class="grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
+          <div class="sm:col-span-2 space-y-1">
             <label for="pvp-player1-input" id="lbl-pvp-p1" class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono"></label>
-            <input type="text" id="pvp-player1-input" placeholder="Xardas" class="w-full p-2.5" />
+            <div class="relative">
+              <input type="text" id="pvp-player1-input" placeholder="Xardas" class="w-full p-2.5" />
+            </div>
           </div>
 
-          <div class="pvp-versus" aria-label="versus"><span>VS</span></div>
+          <div class="pvp-versus pb-2" aria-label="versus"><span>VS</span></div>
 
-          <div class="sm:col-span-2 space-y-1 relative">
+          <div class="sm:col-span-2 space-y-1">
             <label for="pvp-player2-input" id="lbl-pvp-p2" class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono"></label>
-            <input type="text" id="pvp-player2-input" placeholder="tw1zenn" class="w-full p-2.5" />
+            <div class="relative">
+              <input type="text" id="pvp-player2-input" placeholder="tw1zenn" class="w-full p-2.5" />
+            </div>
           </div>
 
           <div class="sm:col-span-5 text-center pt-2">
