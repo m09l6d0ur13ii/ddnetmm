@@ -19,11 +19,6 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
 
-  <!-- Yandex Autoplacement 19696361 -->
-  <script src="https://yandex.ru/ads/system/context.js" async></script>
-  <script data-page-id="19696361" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
-
-
   <meta name="description" content="Сравнение двух игроков DDNet — дуэль времени на общих картах, счет побед и сравнение Skill PTS.">
   
   <!-- Open Graph / Facebook / Discord -->
@@ -40,7 +35,7 @@
 
   <link rel="icon" type="image/png" href="../icon.png">
   <script src="../js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="../css/style.css?v=20260803-27">
+  <link rel="stylesheet" href="../css/style.css?v=20260807-12">
   <script>
     tailwind.config = {
       theme: {
@@ -53,7 +48,15 @@
     }
   </script>
 </head>
-<body class="page-pvp antialiased text-slate-200 font-sans min-h-screen">
+<body class="page-pvp site-loading antialiased text-slate-200 font-sans min-h-screen">
+  <div id="site-loader" role="status" aria-live="polite" aria-label="Загрузка сайта">
+    <div class="site-loader-card">
+      <img class="site-loader-logo" src="../icon.png" alt="" aria-hidden="true">
+      <p class="site-loader-title">DDNET MAP MASTERY</p>
+      <p class="site-loader-status">Загрузка / Loading</p>
+      <div class="site-loader-track" aria-hidden="true"></div>
+    </div>
+  </div>
   <div id="header-container"></div>
 
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
@@ -247,14 +250,13 @@
     </div>
   </footer>
 
-  <script defer src="../data/maps.js?v=a1601ea"></script>
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../data/map_records.js?v=a1601ea"></script>
   <script defer src="../data/map_stats.js?v=a1601ea"></script>
   <script defer src="../data/blacklist.js?v=a1601ea"></script>
   <script defer src="../js/i18n.js"></script>
-  <script defer src="../js/api.js?v=a1601ea"></script>
-  <script defer src="../js/app.js?v=20260803-9"></script>
-  <script defer src="../js/page-pvp.js?v=20260803-13"></script>
+  <script defer src="../js/api.js?v=20260809-1"></script>
+  <script defer src="../js/app.js?v=20260807-3"></script>
+  <script defer src="../js/page-pvp.js?v=20260809-1"></script>
 </body>
 </html>

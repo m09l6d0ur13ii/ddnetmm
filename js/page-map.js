@@ -40,6 +40,75 @@
     return `<span style="background:${bg};color:${color};border:${border};padding:0.2em 0.6em;border-radius:2px;font-weight:700;font-family:monospace;font-size:0.85em;display:inline-block;">${gapStr}</span>`;
   };
 
+  const setupMapPreview = (mapName) => {
+    const preview = document.getElementById('map-preview');
+    const previewContent = document.getElementById('map-preview-content');
+    const previewFrame = document.getElementById('map-preview-frame');
+    const viewer = document.getElementById('map-viewer');
+    const viewerStage = document.getElementById('map-viewer-stage');
+    const previewWrap = document.querySelector('.map-preview-frame-wrap');
+    const viewerUrl = `https://ddnet.org/mappreview/?map=${encodeURIComponent(mapName)}`;
+
+    const labels = currentLang === 'en'
+      ? { title: 'Explore the full map', show: 'Show map', hide: 'Hide map', open: 'Open fullscreen' }
+      : { title: 'Полная карта', show: 'Показать карту', hide: 'Скрыть карту', open: 'Открыть на весь экран' };
+
+    document.getElementById('map-preview-title').textContent = labels.title;
+    const toggleButton = document.getElementById('map-preview-toggle');
+    toggleButton.textContent = labels.show;
+    document.getElementById('map-preview-open').textContent = labels.open;
+    document.getElementById('map-viewer-title').textContent = mapName;
+    document.getElementById('map-preview-source').href = viewerUrl;
+    document.getElementById('map-background-frame').src = viewerUrl;
+    preview.classList.remove('hidden');
+    let opener = null;
+
+    const setMapInteraction = (active) => {
+      document.documentElement.classList.toggle('map-interacting', active);
+      document.body.classList.toggle('map-interacting', active);
+    };
+    previewFrame.addEventListener('pointerenter', () => setMapInteraction(true));
+    previewFrame.addEventListener('pointerleave', () => setMapInteraction(false));
+    previewFrame.addEventListener('blur', () => setMapInteraction(false));
+
+    toggleButton.addEventListener('click', () => {
+      const willOpen = previewContent.classList.contains('hidden');
+      previewContent.classList.toggle('hidden', !willOpen);
+      toggleButton.setAttribute('aria-expanded', String(willOpen));
+      toggleButton.textContent = willOpen ? labels.hide : labels.show;
+      if (willOpen && !previewFrame.src) previewFrame.src = viewerUrl;
+    });
+
+    const openViewer = () => {
+      opener = document.activeElement;
+      if (!previewFrame.src) previewFrame.src = viewerUrl;
+      viewerStage.appendChild(previewFrame);
+      viewer.classList.remove('hidden');
+      document.documentElement.classList.add('map-viewer-open');
+      document.body.classList.add('map-viewer-open');
+      document.getElementById('map-viewer-close').focus();
+    };
+    const closeViewer = () => {
+      previewWrap.appendChild(previewFrame);
+      viewer.classList.add('hidden');
+      document.documentElement.classList.remove('map-viewer-open', 'map-interacting');
+      document.body.classList.remove('map-viewer-open');
+      document.body.classList.remove('map-interacting');
+      if (opener) opener.focus();
+    };
+
+    document.getElementById('map-preview-open').addEventListener('click', openViewer);
+    document.getElementById('map-viewer-close').addEventListener('click', closeViewer);
+    document.addEventListener('keydown', event => {
+      if (viewer.classList.contains('hidden')) return;
+      if (event.key === 'Escape') closeViewer();
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        document.getElementById('map-viewer-close').focus();
+      }
+    });
+  };
+
   document.addEventListener('DOMContentLoaded', async () => {
     renderHeader('map');
     const dict = getDict();
@@ -48,7 +117,7 @@
     const mapQuery  = urlParams.get('name');
 
     if (!mapQuery) {
-      window.location.href = './';
+      window.location.replace('/');
       return;
     }
 
@@ -77,6 +146,7 @@
     setElemText('table-time', dict.map.tableTime);
     setElemText('table-gap', dict.map.tableGap);
     setElemText('table-pts', dict.map.tablePts);
+    setElemText('btn-load-more', dict.map.loadTop100);
 
     const loadMapData = async (limit) => {
       try {
@@ -88,15 +158,20 @@
         if (metaDesc) {
           metaDesc.content = `${data.mapName} leaderboard — Skill Points ranking on DDNet Map Mastery.`;
         }
+        const canonicalUrl = `https://ddnetmm.ru/map?name=${encodeURIComponent(data.mapName)}`;
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.href = canonicalUrl;
+        setElemText('map-table-caption', `${data.mapName} — ${dict.map.title}`);
 
         document.getElementById('map-name').textContent     = data.mapName;
         document.getElementById('val-tbest').textContent    = formatTime(data.tBest);
         document.getElementById('val-s').textContent        = data.s.toFixed(2);
+        setupMapPreview(data.mapName);
 
         // Map Meta Tags (Server category, Base PTS, Mapper)
         const metaTagsContainer = document.getElementById('map-meta-tags');
+        const mapInfo = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
         if (metaTagsContainer) {
-          const mapInfo = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
           let tagsHtml = '';
           if (mapInfo) {
             if (mapInfo.server) {
@@ -112,8 +187,8 @@
           metaTagsContainer.innerHTML = tagsHtml;
         }
 
-        const isEnriched = window.enrichedMapsData &&
-          (window.enrichedMapsData[data.mapName] || window.enrichedMapsData[mapQuery]);
+        const enrichedKey = Object.keys(window.enrichedMapsData || {}).find(key => key.toLowerCase() === data.mapName.toLowerCase());
+        const isEnriched = Boolean(enrichedKey);
         const bannerEl = document.getElementById('enriched-banner');
         if (isEnriched && bannerEl) {
           document.getElementById('enriched-banner-text').textContent = dict.map.enrichedBanner;
@@ -122,35 +197,18 @@
           bannerEl.classList.add('hidden');
         }
 
-        const mapInfo = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
         const isDummy = mapInfo && (mapInfo.server === 'Dummy');
         const dummyTabsContainer = document.getElementById('dummy-tabs-container');
 
         const renderLeaderboardRows = (rowsList) => {
-          const grouped = [];
-          rowsList.forEach((row) => {
+          const grouped = rowsList.map((row) => {
             const cleanName = (n) => String(n).replace(/[\u200B-\u200D\uFEFF\uDB40\uDC00-\uDC7F]/g, '').trim();
-            const rowNames = String(row.player)
-              .split(/[,&]+/)
+            const rowNames = (Array.isArray(row.players)
+              ? row.players
+              : row.isTeamRank ? String(row.player).split(' & ') : [row.player])
               .map(n => n.trim())
               .filter(n => n && cleanName(n).length > 0);
-            const last = grouped[grouped.length - 1];
-
-            const isSameTeam = last &&
-              Math.abs(last.time - row.time) < 0.001 &&
-              (!last.timestamp || !row.timestamp || last.timestamp === row.timestamp);
-
-            if (isSameTeam) {
-              rowNames.forEach(name => {
-                if (!last.players.includes(name)) last.players.push(name);
-              });
-            } else {
-              grouped.push({
-                time: row.time,
-                timestamp: row.timestamp || null,
-                players: rowNames
-              });
-            }
+            return { time: row.time, rank: row.rank, players: rowNames };
           });
 
           // Fastest time for current view mode
@@ -159,21 +217,29 @@
 
           const tbody = document.getElementById('map-body');
           tbody.innerHTML = '';
+          const loadMoreContainer = document.getElementById('load-more-container');
+          const loadMoreButton = document.getElementById('btn-load-more');
 
           if (grouped.length === 0) {
             const noRecText = (typeof getLang === 'function' && getLang() === 'en') ? 'No records in this category' : 'Нет рекордов в этой категории';
             tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${noRecText}</td></tr>`;
+            loadMoreContainer.classList.add('hidden');
             return;
           }
 
           const mapBasePts = mapInfo ? (mapInfo.points || 0) : 0;
           const pMaxBonus = mapBasePts * 5.0;
 
-          // displayRank = our sequential rank (1, 2, 3 ...) regardless of group size
-          // ddnetRank = proper DDNet rank accounting for ties (for tooltip/display option)
-          let displayRank = 1;
-          let ddnetRank = 1;
-          grouped.forEach((group) => {
+          let renderedCount = 0;
+          let previousTime = null;
+          let previousRank = 0;
+          const appendBatch = () => {
+            const fragment = document.createDocumentFragment();
+            grouped.slice(renderedCount, renderedCount + 100).forEach((group, batchIndex) => {
+            const index = renderedCount + batchIndex;
+            const displayRank = group.rank || (group.time === previousTime ? previousRank : index + 1);
+            previousTime = group.time;
+            previousRank = displayRank;
             const tr = document.createElement('tr');
             tr.className = 'premium-table-row transition-colors';
             if (displayRank <= 3) tr.classList.add('top-rank-row', `top-rank-${displayRank}`);
@@ -200,13 +266,14 @@
               <td class="p-4">${getGapBadgeHtml(gapPct)}</td>
               <td class="p-4 font-bold text-emerald-400 text-right text-lg">${pSkill}</td>
             `;
-            tbody.appendChild(tr);
-
-            // Sequential rank: each group (even ties) gets next number
-            displayRank++;
-            // DDNet rank: advances by actual player count in group (for reference)
-            ddnetRank += group.players.length;
-          });
+            fragment.appendChild(tr);
+            });
+            renderedCount = Math.min(renderedCount + 100, grouped.length);
+            tbody.appendChild(fragment);
+            loadMoreContainer.classList.toggle('hidden', renderedCount >= grouped.length);
+          };
+          loadMoreButton.onclick = appendBatch;
+          appendBatch();
         };
 
         if (isDummy && dummyTabsContainer) {
@@ -215,7 +282,7 @@
           const soloList = data.leaderboard.filter(item => !item.isTeamRank && !String(item.player).includes(' & '));
           const teamList = data.leaderboard.filter(item => {
             if (!item.isTeamRank && !String(item.player).includes(' & ')) return false;
-            const pNames = String(item.player).split(/[,&]+/).map(n => n.trim()).filter(Boolean);
+            const pNames = item.players || String(item.player).split(' & ').map(n => n.trim()).filter(Boolean);
             return pNames.length <= 2;
           });
 
@@ -229,10 +296,14 @@
             if (mode === 'solo') {
               btnSolo.classList.add('is-active');
               btnTeam.classList.remove('is-active');
+              btnSolo.setAttribute('aria-pressed', 'true');
+              btnTeam.setAttribute('aria-pressed', 'false');
               renderLeaderboardRows(soloList);
             } else {
               btnTeam.classList.add('is-active');
               btnSolo.classList.remove('is-active');
+              btnTeam.setAttribute('aria-pressed', 'true');
+              btnSolo.setAttribute('aria-pressed', 'false');
               renderLeaderboardRows(teamList);
             }
           };
@@ -247,16 +318,16 @@
           renderLeaderboardRows(data.leaderboard);
         }
 
-        document.getElementById('load-more-container').classList.add('hidden');
-
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('error').classList.add('hidden');
         document.getElementById('content').classList.remove('hidden');
+        if (window.finishInitialLoading) window.finishInitialLoading();
 
       } catch (e) {
         console.error(e);
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('error').classList.remove('hidden');
+        if (window.finishInitialLoading) window.finishInitialLoading();
       }
     };
 

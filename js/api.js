@@ -27,8 +27,14 @@ function loadRankingScriptAsync(src) {
   return new Promise((resolve) => {
     const s = document.createElement('script');
     s.src = src;
-    s.onload = () => resolve(true);
-    s.onerror = () => resolve(false);
+    s.onload = () => {
+      s.remove();
+      resolve(true);
+    };
+    s.onerror = () => {
+      s.remove();
+      resolve(false);
+    };
     document.head.appendChild(s);
   });
 }
@@ -38,7 +44,7 @@ async function getMapRanking(mapName) {
     return window.mapRankingsData[mapName];
   }
   const safeName = String(mapName).replace(/[/\\?%*:|"<>]/g, '_').replace(/ /g, '_');
-  const scriptPath = `data/rankings/${safeName}.js`;
+  const scriptPath = `/data/rankings/${encodeURIComponent(safeName)}.js`;
   const loaded = await loadRankingScriptAsync(scriptPath);
   if (loaded && window.mapRankingCurrent) {
     const rankings = window.mapRankingCurrent;
@@ -54,19 +60,24 @@ const playerCache = new Map();
 // Fetch player data from DDStats and calculate Map Mastery PTS
 // Returns: { name, oldPts, newPtsBase, newPtsSkill, newPtsTotal, finishDetails }
 async function fetchPlayerPts(playerName) {
+  const cacheKey = String(playerName || '').trim().toLowerCase();
   if (window.isBlacklisted && window.isBlacklisted(playerName)) {
     const err = new Error(`Player ${playerName} is blacklisted`);
     err.isBlacklisted = true;
     throw err;
   }
-  if (playerCache.has(playerName)) {
-    return playerCache.get(playerName);
+  if (playerCache.has(cacheKey)) {
+    return playerCache.get(cacheKey);
   }
+  const request = (async () => {
   try {
     let data = null;
 
     try {
-      const response = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3000);
+      const response = await fetch(`https://ddstats.tw/player/json?player=${encodeURIComponent(playerName)}`, { signal: controller.signal });
+      clearTimeout(timer);
       if (response.ok) {
         data = await response.json();
       }
@@ -76,7 +87,7 @@ async function fetchPlayerPts(playerName) {
 
     if (!data || !data.finishes) {
       try {
-        const localRes = await fetch(`data/players/${encodeURIComponent(playerName)}.json`);
+        const localRes = await fetch(`/data/players/${encodeURIComponent(playerName)}.json`);
         if (localRes.ok) {
           data = await localRes.json();
         }
@@ -189,10 +200,17 @@ async function fetchPlayerPts(playerName) {
       finishDetails,
     };
 
-    playerCache.set(playerName, result);
     return result;
   } catch (error) {
     console.error('Player points error:', error);
+    throw error;
+  }
+  })();
+  playerCache.set(cacheKey, request);
+  try {
+    return await request;
+  } catch (error) {
+    playerCache.delete(cacheKey);
     throw error;
   }
 }
@@ -201,7 +219,9 @@ async function fetchPlayerPts(playerName) {
 // Returns players array; each item has isStatic=true if DDStats was unreachable
 async function getTopPlayersLive(limit = 500, onProgress = null) {
   const staticLeaderboard = await getLeaderboardData();
-  const maxLimit = (typeof limit === 'number' && limit > 0 && limit !== Infinity) ? limit : 500;
+  const maxLimit = limit === Infinity
+    ? staticLeaderboard.length
+    : (typeof limit === 'number' && limit > 0 ? limit : 500);
   const topCandidates = staticLeaderboard.slice(0, maxLimit);
   if (onProgress) onProgress(topCandidates.length, topCandidates.length);
   return topCandidates;
@@ -247,7 +267,6 @@ function loadMapRankingFile(mapName) {
 async function getMapLeaderboardLive(mapQuery, limit = 999999) {
   try {
     const mapRecords = await getMapRecords();
-    const mapStats = await getMapStats();
 
     // Find canonical map name from window.mapsData (exact case)
     const mapsList = window.mapsData || [];
@@ -340,6 +359,7 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
       return true;
     });
 
+    rankings.sort((a, b) => Number(a.time) - Number(b.time));
     const topPlayers = rankings.slice(0, limit);
     const leaderboard = [];
 
@@ -353,12 +373,7 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
       tBest = rankings[0].time;
     }
 
-    let statsObj = mapStats[realMapName];
-    if (!statsObj) {
-      const statKey = Object.keys(mapStats).find(k => k.toLowerCase() === realMapName.toLowerCase());
-      if (statKey) statsObj = mapStats[statKey];
-    }
-    const s = (statsObj && statsObj.s) ? statsObj.s : 2.0;
+    const s = Number(foundInMaps && foundInMaps.s) || 2.0;
     const pMaxBonus = pBase * 5.0;
 
     for (const rankItem of topPlayers) {
@@ -370,11 +385,17 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
         player: playerName,
         time: playerTime,
         timestamp: rankItem.timestamp || null,
+        players: Array.isArray(rankItem.players) ? rankItem.players : null,
+        isTeamRank: Boolean(rankItem.isTeamRank),
+        rank: rankItem.rank || null,
         timeRatio,
         pSkill,
       });
     }
 
+    if (!foundInMaps && leaderboard.length === 0 && !tBest) {
+      throw new Error(`Map not found: ${mapQuery}`);
+    }
     return { mapName: realMapName, tBest: tBest || 0, s, leaderboard };
   } catch (err) {
     console.error('Map leaderboard error:', err);

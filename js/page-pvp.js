@@ -290,6 +290,7 @@
         return;
       }
 
+      const fragment = document.createDocumentFragment();
       filtered.forEach(m => {
         const tr = document.createElement('tr');
         tr.className = 'premium-table-row transition-colors';
@@ -317,14 +318,18 @@
           <td class="p-4 font-mono text-right ${t2Class}">${formatTime(m.t2)} <span class="text-xs text-purple-400/80 pl-1">(+${m.pSkill2})</span></td>
           <td class="p-4 text-center">${winnerBadgeHtml}</td>
         `;
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
       });
+      tbody.appendChild(fragment);
     };
 
     const mapSearch = document.getElementById('pvp-map-search');
     if (mapSearch) {
-      mapSearch.addEventListener('input', renderTable);
-      mapSearch.addEventListener('change', renderTable);
+      let searchTimer;
+      mapSearch.oninput = () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(renderTable, 120);
+      };
     }
     renderTable();
 
