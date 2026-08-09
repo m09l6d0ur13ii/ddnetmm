@@ -41,70 +41,72 @@
   };
 
   const setupMapPreview = (mapName) => {
-    const preview = document.getElementById('map-preview');
-    const previewContent = document.getElementById('map-preview-content');
-    const previewFrame = document.getElementById('map-preview-frame');
+    const viewerUrl = `https://ddnet.org/mappreview/?map=${encodeURIComponent(mapName)}`;
     const viewer = document.getElementById('map-viewer');
     const viewerStage = document.getElementById('map-viewer-stage');
-    const previewWrap = document.querySelector('.map-preview-frame-wrap');
-    const viewerUrl = `https://ddnet.org/mappreview/?map=${encodeURIComponent(mapName)}`;
+    const bgFrame = document.getElementById('map-background-frame');
 
-    const labels = currentLang === 'en'
-      ? { title: 'Explore the full map', show: 'Show map', hide: 'Hide map', open: 'Open fullscreen' }
-      : { title: 'Полная карта', show: 'Показать карту', hide: 'Скрыть карту', open: 'Открыть на весь экран' };
+    if (bgFrame && !bgFrame.src) {
+      bgFrame.src = viewerUrl;
+    }
 
-    document.getElementById('map-preview-title').textContent = labels.title;
-    const toggleButton = document.getElementById('map-preview-toggle');
-    toggleButton.textContent = labels.show;
-    document.getElementById('map-preview-open').textContent = labels.open;
-    document.getElementById('map-viewer-title').textContent = mapName;
-    document.getElementById('map-preview-source').href = viewerUrl;
-    document.getElementById('map-background-frame').src = viewerUrl;
-    preview.classList.remove('hidden');
-    let opener = null;
+    const mapExtLink = document.getElementById('map-external-link');
+    if (mapExtLink) {
+      mapExtLink.href = viewerUrl;
+      const textSpan = mapExtLink.querySelector('span');
+      if (textSpan) {
+        textSpan.textContent = currentLang === 'en' ? 'View map' : 'Посмотреть карту';
+      }
 
-    const setMapInteraction = (active) => {
-      document.documentElement.classList.toggle('map-interacting', active);
-      document.body.classList.toggle('map-interacting', active);
-    };
-    previewFrame.addEventListener('pointerenter', () => setMapInteraction(true));
-    previewFrame.addEventListener('pointerleave', () => setMapInteraction(false));
-    previewFrame.addEventListener('blur', () => setMapInteraction(false));
+      mapExtLink.addEventListener('click', (e) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+        e.preventDefault();
 
-    toggleButton.addEventListener('click', () => {
-      const willOpen = previewContent.classList.contains('hidden');
-      previewContent.classList.toggle('hidden', !willOpen);
-      toggleButton.setAttribute('aria-expanded', String(willOpen));
-      toggleButton.textContent = willOpen ? labels.hide : labels.show;
-      if (willOpen && !previewFrame.src) previewFrame.src = viewerUrl;
-    });
+        let modalFrame = document.getElementById('map-modal-iframe');
+        if (!modalFrame) {
+          modalFrame = document.createElement('iframe');
+          modalFrame.id = 'map-modal-iframe';
+          modalFrame.title = `DDNet map viewer - ${mapName}`;
+          modalFrame.loading = 'lazy';
+          modalFrame.allow = 'fullscreen';
+          modalFrame.style.width = '100%';
+          modalFrame.style.height = '100%';
+          modalFrame.style.border = '0';
+        }
+        modalFrame.src = viewerUrl;
 
-    const openViewer = () => {
-      opener = document.activeElement;
-      if (!previewFrame.src) previewFrame.src = viewerUrl;
-      viewerStage.appendChild(previewFrame);
-      viewer.classList.remove('hidden');
-      document.documentElement.classList.add('map-viewer-open');
-      document.body.classList.add('map-viewer-open');
-      document.getElementById('map-viewer-close').focus();
-    };
+        if (viewerStage) {
+          viewerStage.innerHTML = '';
+          viewerStage.appendChild(modalFrame);
+        }
+
+        const viewerTitle = document.getElementById('map-viewer-title');
+        if (viewerTitle) viewerTitle.textContent = mapName;
+
+        if (viewer) {
+          viewer.classList.remove('hidden');
+          document.documentElement.classList.add('map-viewer-open');
+          document.body.classList.add('map-viewer-open');
+          const closeBtn = document.getElementById('map-viewer-close');
+          if (closeBtn) closeBtn.focus();
+        }
+      });
+    }
+
     const closeViewer = () => {
-      previewWrap.appendChild(previewFrame);
-      viewer.classList.add('hidden');
+      if (viewer) viewer.classList.add('hidden');
       document.documentElement.classList.remove('map-viewer-open', 'map-interacting');
-      document.body.classList.remove('map-viewer-open');
-      document.body.classList.remove('map-interacting');
-      if (opener) opener.focus();
+      document.body.classList.remove('map-viewer-open', 'map-interacting');
     };
 
-    document.getElementById('map-preview-open').addEventListener('click', openViewer);
-    document.getElementById('map-viewer-close').addEventListener('click', closeViewer);
-    document.addEventListener('keydown', event => {
-      if (viewer.classList.contains('hidden')) return;
-      if (event.key === 'Escape') closeViewer();
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        document.getElementById('map-viewer-close').focus();
+    const closeBtn = document.getElementById('map-viewer-close');
+    if (closeBtn) {
+      closeBtn.onclick = closeViewer;
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (viewer && !viewer.classList.contains('hidden')) {
+        if (event.key === 'Escape') closeViewer();
       }
     });
   };

@@ -115,19 +115,20 @@ function findMapMatches(rawQuery, limit = 12) {
 }
 
 function renderHeader(activePage = 'home') {
-  const dict = getDict().header;
+  const isEn = currentLang === 'en';
+  const playerPlaceholder = isEn ? 'Find player...' : 'Найти игрока...';
+  const playerTitle = isEn ? 'PLAYER SEARCH / Find player' : 'ПОИСК ИГРОКА / Найти игрока';
+  const mapPlaceholder = isEn ? 'Find map...' : 'Найти карту...';
+  const mapTitle = isEn ? 'MAP SEARCH / Open records, times and map ranking' : 'ПОИСК КАРТЫ / Откройте рекорды, времена и рейтинг карты';
+
   const headerHtml = `
     <header class="site-header">
       <div class="site-header-inner">
 
-        <!-- Logo & Discord -->
+        <!-- Logo & Navigation -->
         <div class="site-nav">
           <a href="/" class="site-nav-link${activePage === 'home' ? ' is-active' : ''}">
             <span>Home</span>
-          </a>
-          <span class="site-nav-divider">/</span>
-          <a href="/tas" class="site-nav-link site-tas-link${activePage === 'tas' ? ' is-active' : ''}" style="color:#ef4444;">
-            <span>TAS Ban List</span>
           </a>
           <span class="site-nav-divider">/</span>
           <a href="https://discord.gg/BWmT3q96FP" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
@@ -136,9 +137,33 @@ function renderHeader(activePage = 'home') {
           </a>
         </div>
 
-        <!-- Language Toggles & Map Search -->
+        <!-- Header Searches: Player & Map Search -->
+        <div class="site-header-searches">
+          <!-- Player Search -->
+          <form id="header-player-search-form" class="header-search-form">
+            <div class="header-search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" id="header-player-search-input" placeholder="${playerPlaceholder}" title="${playerTitle}" autocomplete="off">
+            </di
+          </form>
+
+          <!-- Map Search -->
+          <form id="header-map-search-form" class="header-search-form">
+            <div class="header-search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input type="text" id="header-map-search-input" placeholder="${mapPlaceholder}" title="${mapTitle}" autocomplete="off">
+            </div>
+          </form>
+        </div>
+
+        <!-- Language Toggles -->
         <div class="site-header-tools">
-          <!-- Language Toggles -->
           <div class="language-toggle">
             <button onclick="setLang('ru')" class="${currentLang === 'ru' ? 'is-active' : ''}">RU</button>
             <button onclick="setLang('en')" class="${currentLang === 'en' ? 'is-active' : ''}">EN</button>
@@ -153,6 +178,25 @@ function renderHeader(activePage = 'home') {
   }
 
   setTimeout(() => {
+    // ── Player Search in Header ─────────────────────────────────────
+    const playerSearchForm = document.getElementById('header-player-search-form');
+    if (playerSearchForm) {
+      playerSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('header-player-search-input');
+        if (input && input.value.trim()) {
+          window.location.href = `/player?name=${encodeURIComponent(input.value.trim())}`;
+        }
+      });
+    }
+
+    if (window.setupPlayerAutocomplete) {
+      window.setupPlayerAutocomplete('header-player-search-input', (pName) => {
+        window.location.href = `/player?name=${encodeURIComponent(pName)}`;
+      });
+    }
+
+    // ── Map Search in Header ────────────────────────────────────────
     const mapSearchForm = document.getElementById('header-map-search-form');
     if (mapSearchForm) {
       mapSearchForm.addEventListener('submit', (e) => {
@@ -166,7 +210,7 @@ function renderHeader(activePage = 'home') {
       });
     }
 
-    // ── Autocomplete ────────────────────────────────────────────────
+    // ── Map Autocomplete ────────────────────────────────────────────
     const input = document.getElementById('header-map-search-input');
     if (input) {
       const wrap = input.parentElement;
@@ -185,7 +229,7 @@ function renderHeader(activePage = 'home') {
         let currentItems = [];
 
         function escHtml(s) {
-          return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+          return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         function highlightMatch(text, query) {
@@ -273,7 +317,7 @@ function renderHeader(activePage = 'home') {
         }
 
         input.addEventListener('input', triggerAutocomplete);
-        input.addEventListener('focus', triggerAutocomplete);
+        mapInput.addEventListener('focus', triggerAutocomplete);
 
         input.addEventListener('keydown', (e) => {
           if (dropdown.style.display === 'none' || currentItems.length === 0) return;
@@ -395,7 +439,7 @@ window.setupPlayerAutocomplete = function (inputId, onSelect) {
   let currentQuery = '';
 
   function escHtml(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   function highlightMatch(text, query) {
