@@ -132,13 +132,14 @@ export async function updateBlacklistData() {
     const jsContent = `// Blacklist of cheaters/TASers loaded locally with deleted record counts
 window.blacklistData = ${JSON.stringify(results, null, 2)};
 
+const blacklistNames = new Set(window.blacklistData.map(b =>
+  (typeof b === 'string' ? b : b.name).toLowerCase().trim()
+));
+
 window.isBlacklisted = function(name) {
   if (!name || !window.blacklistData || !window.blacklistData.length) return false;
   const players = String(name).split(/[,/&]+/).map(p => p.toLowerCase().trim()).filter(Boolean);
-  return window.blacklistData.some(b => {
-    const bName = (typeof b === 'string' ? b : b.name).toLowerCase().trim();
-    return players.includes(bName);
-  });
+  return players.some(player => blacklistNames.has(player));
 };
 `;
 

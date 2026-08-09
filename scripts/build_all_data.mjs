@@ -415,7 +415,7 @@ async function run() {
     console.log(`Loaded & resolved ${Object.keys(customMapRecords).length} custom map records:`, customMapRecords);
 
     // Save JS files
-    const blacklistJsContent = `// Blacklist of cheaters/TASers loaded locally\nwindow.blacklistData = ${JSON.stringify(blacklistArray, null, 2)};\n\nwindow.isBlacklisted = function(name) {\n  if (!name || !window.blacklistData || !window.blacklistData.length) return false;\n  const lower = String(name).toLowerCase().trim();\n  return window.blacklistData.some(b => String(b).toLowerCase().trim() === lower);\n};\n`;
+    const blacklistJsContent = `// Blacklist of cheaters/TASers loaded locally\nwindow.blacklistData = ${JSON.stringify(blacklistArray, null, 2)};\n\nconst blacklistNames = new Set(window.blacklistData.map(b =>\n  (typeof b === 'string' ? b : b.name).toLowerCase().trim()\n));\n\nwindow.isBlacklisted = function(name) {\n  if (!name || !window.blacklistData || !window.blacklistData.length) return false;\n  const players = String(name).split(/[,/&]+/).map(p => p.toLowerCase().trim()).filter(Boolean);\n  return players.some(player => blacklistNames.has(player));\n};\n`;
     fs.writeFileSync(BLACKLIST_JS, blacklistJsContent);
 
     fs.writeFileSync(MAP_MIN_TIMES_JS, `window.mapMinTimesData = ${JSON.stringify(mapMinTimes, null, 2)};\n`);
@@ -450,7 +450,9 @@ async function run() {
         return;
     }
     fs.writeFileSync(MAPS_RAW_FILE, JSON.stringify(allMaps, null, 2));
-    fs.writeFileSync(MAPS_JS_FILE, 'window.mapsData = ' + JSON.stringify(allMaps) + ';');
+    const compactMapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
+    const mapsForClient = allMaps.map(map => ({ ...map, s: compactMapStats[map.map || map.name]?.s || 2.0 }));
+    fs.writeFileSync(MAPS_JS_FILE, 'window.mapsData = ' + JSON.stringify(mapsForClient) + ';');
     console.log(`Saved ${allMaps.length} maps into maps_raw.json & maps.js`);
 
     console.log("\n=== 3. Fetching Map Rankings & World Records (Filtering Blacklist & Limits) ===");

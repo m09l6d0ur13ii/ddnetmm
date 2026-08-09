@@ -235,6 +235,7 @@
           return;
         }
 
+        const fragment = document.createDocumentFragment();
         list.forEach(map => {
           const tr = document.createElement('tr');
           tr.className = 'premium-table-row transition-colors';
@@ -253,8 +254,9 @@
             <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
             <td class="p-4 font-bold text-amber-300 text-center"><span class="ranking-position-badge ranking-position-${typeof map.rank === 'number' && map.rank <= 3 ? map.rank : 'other'}" title="${rankTitle}">${rankDisplay}</span></td>
           `;
-          tbody.appendChild(tr);
+          fragment.appendChild(tr);
         });
+        tbody.appendChild(fragment);
       };
 
       ['map-filter-server', 'map-sort-order'].forEach(id => {
@@ -262,7 +264,13 @@
         if (el) el.addEventListener('change', renderFilteredMaps);
       });
       const searchInput = document.getElementById('map-search-input');
-      if (searchInput) searchInput.addEventListener('input', renderFilteredMaps);
+      if (searchInput) {
+        let searchTimer;
+        searchInput.addEventListener('input', () => {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(renderFilteredMaps, 120);
+        });
+      }
 
       renderFilteredMaps();
 

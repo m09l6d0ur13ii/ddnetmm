@@ -1941,11 +1941,12 @@ window.blacklistData = [
   }
 ];
 
+const blacklistNames = new Set(window.blacklistData.map(b =>
+  (typeof b === 'string' ? b : b.name).toLowerCase().trim()
+));
+
 window.isBlacklisted = function(name) {
   if (!name || !window.blacklistData || !window.blacklistData.length) return false;
   const players = String(name).split(/[,/&]+/).map(p => p.toLowerCase().trim()).filter(Boolean);
-  return window.blacklistData.some(b => {
-    const bName = (typeof b === 'string' ? b : b.name).toLowerCase().trim();
-    return players.includes(bName);
-  });
+  return players.some(player => blacklistNames.has(player));
 };

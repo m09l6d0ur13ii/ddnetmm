@@ -155,7 +155,7 @@ const dictionaries = {
       tablePts: "Skill PTS",
       loading: "Загрузка...",
       enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats",
-      loadTop100: "Загрузить Топ 100"
+      loadTop100: "Показать ещё 100"
     },
     pvp: {
       title: "Player vs Player ⚔️",
@@ -339,7 +339,7 @@ const dictionaries = {
       tablePts: "Skill PTS",
       loading: "Loading...",
       enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats",
-      loadTop100: "Load Top 100"
+      loadTop100: "Show 100 more"
     },
     pvp: {
       title: "Player vs Player ⚔️",

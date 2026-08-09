@@ -41,9 +41,7 @@
 
   <link rel="icon" type="image/png" href="icon.png">
   <script src="js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="css/style.css?v=20260803-30">
+  <link rel="stylesheet" href="css/style.css?v=20260809-9">
   <script>
     tailwind.config = {
       theme: {
@@ -56,7 +54,15 @@
     }
   </script>
 </head>
-<body class="page-home antialiased text-slate-200 font-sans min-h-screen">
+<body class="page-home site-loading antialiased text-slate-200 font-sans min-h-screen">
+  <div id="site-loader" role="status" aria-live="polite" aria-label="Загрузка сайта">
+    <div class="site-loader-card">
+      <img class="site-loader-logo" src="icon.png" alt="" aria-hidden="true">
+      <p class="site-loader-title">DDNET MAP MASTERY</p>
+      <p class="site-loader-status">Загрузка / Loading</p>
+      <div class="site-loader-track" aria-hidden="true"></div>
+    </div>
+  </div>
   <div id="header-container"></div>
 
   <main class="home-shell p-4 md:p-8 animate-fade-in">
@@ -80,37 +86,40 @@
       </div>
     </header>
 
-    <section class="formula-panel max-w-7xl mx-auto mb-12 glass-panel p-8" data-reveal>
+    <section class="home-action-panel max-w-7xl mx-auto mb-12" aria-labelledby="home-tools-title" data-reveal>
       <div class="section-heading">
         <span class="section-index">01</span>
-        <h2 class="text-2xl font-bold text-white" id="home-how-it-works"></h2>
+        <h2 class="text-2xl font-bold text-white" id="home-tools-title"></h2>
         <span class="section-line"></span>
-        <span class="section-tag" id="scoring-logic-label"></span>
+        <span class="section-tag" id="home-tools-label"></span>
       </div>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="formula-column space-y-6 text-slate-300">
-          <div class="bg-slate-900/50 p-4 rounded-lg flex items-center justify-center overflow-x-auto" id="math-1"></div>
-          <div class="space-y-2">
-            <p><strong id="home-base-pts-title"></strong>: <span id="home-base-pts-desc"></span></p>
-            <div class="bg-slate-900/50 p-2 rounded-lg text-center" id="math-2"></div>
+      <div class="home-action-grid">
+        <article class="home-action-card glass-panel p-8">
+          <div class="home-action-heading">
+            <span class="home-action-icon" aria-hidden="true">🗺️</span>
+            <div><h3 id="home-map-search-title"></h3><p id="home-map-search-desc"></p></div>
           </div>
-        </div>
+          <form id="header-map-search-form" class="home-map-search-form">
+            <div class="header-search-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              <input type="text" id="header-map-search-input" autocomplete="off">
+            </div>
+            <button type="submit" class="home-action-submit" id="home-map-search-btn"></button>
+          </form>
+        </article>
 
-        <div class="formula-column space-y-4 text-slate-300">
-          <p>
-            <strong id="home-skill-pts-title"></strong>: <span id="home-skill-pts-desc"></span>
-            <span id="math-3"></span> <span id="home-skill-pts-and"></span> <span id="math-4"></span>.
-          </p>
-          <div class="bg-slate-900/50 p-4 rounded-lg overflow-x-auto" id="math-5"></div>
-          <p class="text-sm text-slate-400">
-            <span id="home-skill-pts-where"></span> <span id="math-6"></span> <span id="home-skill-pts-and2"></span> <span id="math-7"></span> — <span id="home-skill-pts-s-desc"></span>
-          </p>
-        </div>
+        <article class="home-action-card glass-panel p-8">
+          <div class="home-action-heading">
+            <span class="home-action-icon" aria-hidden="true">⚔️</span>
+            <div><h3>Player vs Player</h3><p id="home-pvp-desc"></p></div>
+          </div>
+          <a href="/pvp" class="home-action-link" id="home-pvp-btn"></a>
+        </article>
       </div>
     </section>
 
     <div class="home-dashboard grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
-      <section class="player-search-panel glass-panel p-8 h-fit md:col-span-1 space-y-6" data-reveal>
+      <section id="player-search-panel" class="player-search-panel glass-panel p-8 h-fit md:col-span-1 space-y-6" data-reveal>
         <div class="panel-label" id="player-scan-label"></div>
         <h2 class="text-xl font-bold" id="search-title"></h2>
         <form id="player-search-form" class="flex gap-2">
@@ -183,7 +192,7 @@
         </div>
       </section>
 
-      <section class="leaderboard-panel glass-panel p-8 md:col-span-2">
+      <section id="leaderboard-panel" class="leaderboard-panel glass-panel p-8 md:col-span-2">
         <div class="panel-label" id="global-telemetry-label"></div>
         <div class="leaderboard-toolbar flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
           <div class="main-ranking-tabs">
@@ -260,7 +269,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody id="leaderboard-body" class="divide-y divide-white/[0.04]">
+            <tbody id="leaderboard-body">
               <!-- Loaded via page-index.js -->
             </tbody>
           </table>
@@ -269,9 +278,10 @@
         <!-- Pagination Footer -->
         <div class="p-4 sm:p-6 border-t border-white/[0.08] bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-xs text-slate-400" id="pagination-info"></div>
-          
           <div class="flex items-center gap-2" id="pagination-controls">
-            <!-- Rendered by page-index.js -->
+            <div id="load-more-container" class="hidden">
+              <button type="button" id="load-more-btn"></button>
+            </div>
           </div>
         </div>
 
@@ -307,8 +317,8 @@
   <script defer src="data/map_stats.js?v=a1601ea"></script>
   <script defer src="data/blacklist.js?v=a1601ea"></script>
   <script defer src="js/i18n.js"></script>
-  <script defer src="js/api.js?v=a1601ea"></script>
-  <script defer src="js/app.js?v=20260803-9"></script>
-  <script defer src="js/page-index.js?v=20260803-26"></script>
+  <script defer src="js/api.js?v=20260809-2"></script>
+  <script defer src="js/app.js?v=20260807-3"></script>
+  <script defer src="js/page-index.js?v=20260809-3"></script>
 </body>
 </html>

@@ -5,12 +5,32 @@
 
   let playersData = [];
   let sortConfig = { key: 'newPtsTotal', direction: 'desc' };
-  let displayLimit = 500;
+  let displayLimit = 100;
   let loading = false;
   let currentTab = 'global';
 
   function getLoadMoreBtnText(limit) {
-    return '';
+    if (limit < 250) return currentLang === 'en' ? 'Show Top 250' : 'Показать Топ 250';
+    if (limit < 500) return currentLang === 'en' ? 'Show Top 500' : 'Показать Топ 500';
+    return currentLang === 'en' ? 'Show full leaderboard' : 'Показать весь топ';
+  }
+
+  function updateExpansionControls() {
+    const container = document.getElementById('load-more-container');
+    const button = document.getElementById('load-more-btn');
+    const info = document.getElementById('pagination-info');
+    const shown = displayLimit === Infinity ? playersData.length : Math.min(displayLimit, playersData.length);
+
+    if (info) {
+      info.textContent = currentLang === 'en'
+        ? `Showing Top ${shown}`
+        : `Показан Топ ${shown}`;
+    }
+    if (button) button.textContent = getLoadMoreBtnText(displayLimit);
+    if (container) {
+      const hasMore = displayLimit !== Infinity && (displayLimit >= 500 || playersData.length >= displayLimit);
+      container.classList.toggle('hidden', currentTab !== 'global' || !hasMore);
+    }
   }
 
   // ── Tab switching ──────────────────────────────────────────────────────────
@@ -41,8 +61,8 @@
       if (headGlobal) headGlobal.classList.remove('hidden');
       if (headBanlist) headBanlist.classList.add('hidden');
       if (mobileBanlistSort) mobileBanlistSort.classList.add('hidden');
-      if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
       renderTable();
+      updateExpansionControls();
     } else {
       if (btnBanlist) {
         btnBanlist.style.background = '#ef4444';
@@ -96,7 +116,9 @@
     });
 
     let currentDisplayRank = 1;
-    sortedData.slice(0, Math.min(500, displayLimit)).forEach((p, idx) => {
+    const fragment = document.createDocumentFragment();
+    const renderLimit = displayLimit === Infinity ? sortedData.length : displayLimit;
+    sortedData.slice(0, renderLimit).forEach((p, idx) => {
       if (idx > 0) {
         const prevP = sortedData[idx - 1];
         const prevVal = prevP[sortConfig.key] || 0;
@@ -126,8 +148,9 @@
         <td class="p-4 text-right font-mono text-purple-400/80">${(p.newPtsSkill || 0).toLocaleString()}</td>
         <td class="p-4 text-right font-mono font-bold text-amber-400 text-lg">${(p.newPtsTotal || 0).toLocaleString()}</td>
       `;
-      tbody.appendChild(tr);
+      fragment.appendChild(tr);
     });
+    tbody.appendChild(fragment);
   }
 
   // ── Render ban list table ─────────────────────────────────────────────────
@@ -308,13 +331,7 @@
       }
 
       const loadMoreContainer = document.getElementById('load-more-container');
-      if (loadMoreContainer) {
-        if (currentTab === 'global' && displayLimit < 100 && playersData.length >= displayLimit) {
-          loadMoreContainer.classList.remove('hidden');
-        } else {
-          loadMoreContainer.classList.add('hidden');
-        }
-      }
+      if (loadMoreContainer) updateExpansionControls();
     }
   }
 
@@ -375,6 +392,41 @@
     
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) loadMoreBtn.textContent = getLoadMoreBtnText(displayLimit);
+
+    const toolsText = currentLang === 'en' ? {
+      title: 'Search and compare', label: 'PLAYER TOOLS', mapTitle: 'Find a map',
+      mapDesc: 'Open map records, times and leaderboard', mapPlaceholder: 'Map name, e.g. Kintaro', mapBtn: 'Open map',
+      pvpDesc: 'Open the comparison tool and see who performs better', pvpBtn: 'Go and try'
+    } : {
+      title: 'Поиск и сравнение', label: 'ИНСТРУМЕНТЫ ИГРОКА', mapTitle: 'Найти карту',
+      mapDesc: 'Откройте рекорды, времена и рейтинг карты', mapPlaceholder: 'Название карты, например Kintaro', mapBtn: 'Открыть карту',
+      pvpDesc: 'Откройте сравнение и узнайте, кто показывает лучший результат', pvpBtn: 'Перейти и попробовать'
+    };
+    setTxt('home-tools-title', toolsText.title);
+    setTxt('home-tools-label', toolsText.label);
+    setTxt('home-map-search-title', toolsText.mapTitle);
+    setTxt('home-map-search-desc', toolsText.mapDesc);
+    setTxt('home-map-search-btn', toolsText.mapBtn);
+    setTxt('home-pvp-desc', toolsText.pvpDesc);
+    setTxt('home-pvp-btn', toolsText.pvpBtn);
+
+    const homeMapInput = document.querySelector('.home-map-search-form input');
+    if (homeMapInput) homeMapInput.placeholder = toolsText.mapPlaceholder;
+
+    const homeMapForm = document.querySelector('.home-map-search-form');
+    if (homeMapForm) {
+      homeMapForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const query = homeMapInput ? homeMapInput.value.trim() : '';
+        if (!query) return;
+        const bestMatch = findMapMatches(query, 1)[0];
+        const mapName = bestMatch ? (bestMatch.map || bestMatch.name) : query;
+        window.location.href = `/map?name=${encodeURIComponent(mapName)}`;
+      });
+    }
+
+    const homePvpBtn = document.getElementById('home-pvp-btn');
+    if (homePvpBtn) homePvpBtn.href = '/pvp';
 
     // Search result labels from i18n
     setTxt('search-result-base-label', dict.home.searchResultBase);
@@ -469,9 +521,9 @@
     const loadMoreBtnEl = document.getElementById('load-more-btn');
     if (loadMoreBtnEl) {
       loadMoreBtnEl.addEventListener('click', () => {
-        if (displayLimit < 20) displayLimit = 20;
-        else if (displayLimit < 40) displayLimit = 40;
-        else displayLimit = 100;
+        if (displayLimit < 250) displayLimit = 250;
+        else if (displayLimit < 500) displayLimit = 500;
+        else displayLimit = Infinity;
         loadLeaderboard();
       });
     }

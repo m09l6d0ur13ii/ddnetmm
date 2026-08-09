@@ -42,6 +42,78 @@ function getDict() {
   return dictionaries[currentLang];
 }
 
+const keyboardLayouts = {
+  en: "`qwertyuiop[]asdfghjkl;'zxcvbnm,./",
+  ru: "ёйцукенгшщзхъфывапролджэячсмитьбю."
+};
+
+function swapKeyboardLayout(value) {
+  return String(value || '').split('').map(char => {
+    const lower = char.toLowerCase();
+    let index = keyboardLayouts.en.indexOf(lower);
+    if (index >= 0) return keyboardLayouts.ru[index] || char;
+    index = keyboardLayouts.ru.indexOf(lower);
+    if (index >= 0) return keyboardLayouts.en[index] || char;
+    return char;
+  }).join('');
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]+/g, ' ').trim();
+}
+
+function getInitials(words) {
+  return words.filter(Boolean).map(word => word[0]).join('');
+}
+
+function isSubsequence(needle, haystack) {
+  let index = 0;
+  for (const char of haystack) {
+    if (char === needle[index]) index++;
+    if (index === needle.length) return true;
+  }
+  return needle.length === 0;
+}
+
+function getMapSearchScore(map, rawQuery) {
+  const variants = [...new Set([normalizeSearchText(rawQuery), normalizeSearchText(swapKeyboardLayout(rawQuery))])].filter(Boolean);
+  const name = normalizeSearchText(map.map || map.name || '');
+  const mapper = normalizeSearchText(map.mapper || '');
+  const nameWords = name.split(' ').filter(Boolean);
+  const nameInitials = getInitials(nameWords);
+  let best = -1;
+
+  variants.forEach(query => {
+    const queryWords = query.split(' ').filter(Boolean);
+    const compactQuery = queryWords.join('');
+    const allWordsMatch = queryWords.length > 1 && queryWords.every(queryWord =>
+      nameWords.some(nameWord => nameWord.startsWith(queryWord) || nameWord.includes(queryWord))
+    );
+
+    if (name === query) best = Math.max(best, 1000);
+    else if (name.startsWith(query)) best = Math.max(best, 800 - (name.length - query.length));
+    else if (name.includes(query)) best = Math.max(best, 650 - name.indexOf(query));
+    else if (allWordsMatch) best = Math.max(best, 620 + queryWords.length * 8);
+    else if (compactQuery.length >= 2 && nameInitials.startsWith(compactQuery)) best = Math.max(best, 610 - (nameInitials.length - compactQuery.length));
+    else if (compactQuery.length >= 2 && isSubsequence(compactQuery, nameInitials)) best = Math.max(best, 570 - (nameInitials.length - compactQuery.length));
+    else if (name.split(' ').some(word => word.startsWith(query))) best = Math.max(best, 550);
+    else if (mapper.includes(query)) best = Math.max(best, 300 - mapper.indexOf(query));
+  });
+
+  return best;
+}
+
+function findMapMatches(rawQuery, limit = 12) {
+  const maps = window.mapsData || window.allMaps || window.mapStatsData || [];
+  return maps
+    .filter(Boolean)
+    .map(map => ({ map, score: getMapSearchScore(map, rawQuery) }))
+    .filter(item => item.score >= 0)
+    .sort((a, b) => b.score - a.score || String(a.map.map || a.map.name || '').localeCompare(String(b.map.map || b.map.name || '')))
+    .slice(0, limit)
+    .map(item => item.map);
+}
+
 function renderHeader(activePage = 'home') {
   const dict = getDict().header;
   const headerHtml = `
@@ -52,10 +124,6 @@ function renderHeader(activePage = 'home') {
         <div class="site-nav">
           <a href="/" class="site-nav-link${activePage === 'home' ? ' is-active' : ''}">
             <span>Home</span>
-          </a>
-          <span class="site-nav-divider">/</span>
-          <a href="/pvp" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
-            <span>Player vs Player</span>
           </a>
           <span class="site-nav-divider">/</span>
           <a href="https://discord.gg/BWmT3q96FP" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
@@ -71,19 +139,7 @@ function renderHeader(activePage = 'home') {
             <button onclick="setLang('ru')" class="${currentLang === 'ru' ? 'is-active' : ''}">RU</button>
             <button onclick="setLang('en')" class="${currentLang === 'en' ? 'is-active' : ''}">EN</button>
           </div>
-
-          <!-- Map Search -->
-          <form id="header-map-search-form">
-            <div class="header-search-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-              <input
-                type="text"
-                id="header-map-search-input"
-                placeholder="${currentLang === 'ru' ? 'Поиск карты (напр: Kintaro)' : 'Search map (e.g. Kintaro)'}"
-                autocomplete="off"
-              />
-            </div>
-          </form>
+        </div>
       </div>
     </header>
   `;
@@ -99,7 +155,9 @@ function renderHeader(activePage = 'home') {
         e.preventDefault();
         const input = document.getElementById('header-map-search-input');
         if (input && input.value.trim()) {
-          window.location.href = `/map?name=${encodeURIComponent(input.value.trim())}`;
+          const bestMatch = findMapMatches(input.value.trim(), 1)[0];
+          const mapName = bestMatch ? (bestMatch.map || bestMatch.name) : input.value.trim();
+          window.location.href = `/map?name=${encodeURIComponent(mapName)}`;
         }
       });
     }
@@ -207,42 +265,7 @@ function renderHeader(activePage = 'home') {
 
           const maps = window.mapsData || window.allMaps || window.mapStatsData || [];
           if (!maps.length) { closeDropdown(); return; }
-
-          const lower = q.toLowerCase();
-          const cleanQ = lower.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
-          const startsMap = [], containsMap = [], mapperMatches = [];
-
-          for (const m of maps) {
-            if (!m) continue;
-            const mName = String(m.map || m.name || '');
-            if (!mName) continue;
-
-            const lowerName = mName.toLowerCase();
-            const cleanName = lowerName.replace(/^[^a-zA-Z0-9а-яА-Я0-9]+/, '');
-
-            if (lowerName.startsWith(lower) || (cleanQ && cleanName.startsWith(cleanQ))) {
-              startsMap.push(m);
-            } else if (lowerName.includes(lower) || (cleanQ && cleanName.includes(cleanQ))) {
-              containsMap.push(m);
-            } else if (m.mapper && String(m.mapper).toLowerCase().includes(lower)) {
-              mapperMatches.push(m);
-            }
-
-            if (startsMap.length + containsMap.length + mapperMatches.length >= 50) break;
-          }
-
-          const combined = [...startsMap, ...containsMap, ...mapperMatches];
-          const uniqueMaps = [];
-          const seen = new Set();
-          for (const item of combined) {
-            const name = (item.map || item.name).toLowerCase();
-            if (!seen.has(name)) {
-              seen.add(name);
-              uniqueMaps.push(item);
-            }
-          }
-
-          renderDropdown(uniqueMaps.slice(0, 10), q);
+          renderDropdown(findMapMatches(q, 10), q);
         }
 
         input.addEventListener('input', triggerAutocomplete);
@@ -287,6 +310,29 @@ const icons = {
 };
 
 initLang();
+
+function finishInitialLoading() {
+  const loader = document.getElementById('site-loader');
+  if (!loader || document.body.classList.contains('site-loaded')) return;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add('site-loaded');
+      document.body.classList.remove('site-loading');
+      loader.setAttribute('aria-hidden', 'true');
+      window.setTimeout(() => loader.remove(), 300);
+    });
+  });
+}
+window.finishInitialLoading = finishInitialLoading;
+
+// Third-party ads and embeds must not keep the application behind the splash.
+if (document.readyState !== 'loading') {
+  finishInitialLoading();
+} else {
+  document.addEventListener('DOMContentLoaded', finishInitialLoading, { once: true });
+  window.setTimeout(finishInitialLoading, 3000);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
