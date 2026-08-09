@@ -119,31 +119,19 @@
     </section>
 
     <div class="home-dashboard grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
-      <section id="player-search-panel" class="player-search-panel glass-panel p-8 h-fit md:col-span-1 space-y-6" data-reveal>
-        <div class="panel-label" id="player-scan-label"></div>
-        <h2 class="text-xl font-bold" id="search-title"></h2>
-        <form id="player-search-form" class="flex gap-2">
-          <input
-            type="text"
-            id="search-input"
-            placeholder="m09l6d0ur13ii.."
-            class="flex-1 bg-white/[0.03] border border-white/10 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-slate-100 placeholder:text-slate-500"
-          />
-          <button
-            type="submit"
-            id="search-btn"
-            class="bg-primary hover:bg-blue-600 transition-colors rounded-md p-2 flex items-center justify-center disabled:opacity-50"
-          >
-          </button>
-        </form>
-
-        <p id="search-error" class="text-red-400 text-sm hidden"></p>
-
-        <div id="search-result" class="search-result-card space-y-3 hidden">
-          <div class="flex items-center justify-between gap-2">
-            <h3 class="font-bold text-xl overflow-hidden text-ellipsis">
-              <a id="search-result-name" href="#" class="text-primary hover:text-amber-300 hover:underline transition-colors"></a>
-            </h3>
+      <!-- Left Sidebar: Search & Advertising -->
+      <div class="sidebar-column md:col-span-1 space-y-6">
+        <!-- Card 1: Player Search -->
+        <section id="player-search-panel" class="player-search-panel glass-panel p-8 space-y-6" data-reveal>
+          <div class="panel-label" id="player-scan-label"></div>
+          <h2 class="text-xl font-bold" id="search-title"></h2>
+          <form id="player-search-form" class="flex gap-2">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="m09l6d0ur13ii.."
+              class="flex-1 bg-white/[0.03] border border-white/10 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-slate-100 placeholder:text-slate-500"
+            />
             <button
               type="submit"
               id="search-btn"
@@ -214,6 +202,7 @@
         </aside>
       </div>
 
+      <!-- Right Column: Leaderboard Panel -->
       <section id="leaderboard-panel" class="leaderboard-panel glass-panel p-8 md:col-span-2">
         <div class="panel-label" id="global-telemetry-label"></div>
         <div class="leaderboard-toolbar flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
