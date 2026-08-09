@@ -104,8 +104,40 @@
 
       <!-- Technical Architecture & Formula -->
       <div class="glass-panel p-8 sm:p-10 space-y-8">
-        <h2 class="text-2xl font-bold text-white border-b border-slate-800 pb-4" id="tech-title">
+        <h2 class="text-2xl font-bold text-white border-b border-slate-800 pb-4 flex items-center justify-between" id="tech-title-container">
+          <span id="tech-title"></span>
+          <span class="text-xs font-mono uppercase bg-primary/10 text-primary border border-primary/30 px-3 py-1 rounded-md" id="scoring-logic-label"></span>
         </h2>
+
+        <!-- Formula Overview Panel (From Home) -->
+        <section class="formula-panel bg-slate-900/40 p-6 rounded-xl border border-white/10 space-y-6">
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="formula-column space-y-6 text-slate-300">
+              <div class="bg-slate-900/80 p-4 rounded-lg flex items-center justify-center overflow-x-auto text-lg border border-white/5">
+                $$P_{\text{total}} = P_{\text{base}} + P_{\text{skill}}$$
+              </div>
+              <div class="space-y-2">
+                <p><strong id="home-base-pts-title"></strong>: <span id="home-base-pts-desc"></span></p>
+                <div class="bg-slate-900/80 p-3 rounded-lg flex justify-center text-center font-mono border border-white/5">
+                  $$P_{\text{base}} = P_{\text{DDNet}}$$
+                </div>
+              </div>
+            </div>
+
+            <div class="formula-column space-y-4 text-slate-300">
+              <p>
+                <strong id="home-skill-pts-title"></strong>: <span id="home-skill-pts-desc"></span>
+                $t_{\text{player}}$ <span id="home-skill-pts-and"></span> $t_{\text{best}}$.
+              </p>
+              <div class="bg-slate-900/80 p-4 rounded-lg overflow-x-auto text-lg flex justify-center border border-white/5">
+                $$P_{\text{skill}} = \left\lfloor P_{\text{max\_bonus}} \times e^{-s \cdot \left(\frac{t_{\text{player}}}{t_{\text{best}}} - 1\right)} \right\rfloor$$
+              </div>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                <span id="home-skill-pts-where"></span> $P_{\text{max\_bonus}} = P_{\text{DDNet}} \times 5$ <span id="home-skill-pts-and2"></span> $s$ — <span id="home-skill-pts-s-desc"></span>
+              </p>
+            </div>
+          </div>
+        </section>
 
         <!-- Formula 1: Base PTS -->
         <section class="space-y-3">
@@ -334,6 +366,18 @@
       document.getElementById('card2-p3').textContent = dict.about.card2.p3;
 
       document.getElementById('tech-title').textContent = dict.about.techTitle;
+      document.getElementById('scoring-logic-label').textContent = currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ';
+      document.getElementById('home-base-pts-title').textContent = dict.home.basePtsTitle;
+      document.getElementById('home-base-pts-desc').textContent = dict.home.basePtsDesc;
+      document.getElementById('home-skill-pts-title').textContent = dict.home.skillPtsTitle;
+      document.getElementById('home-skill-pts-desc').textContent = dict.home.skillPtsDesc;
+      document.getElementById('home-skill-pts-and').textContent = currentLang === 'en' ? 'and record' : 'и рекорда';
+      document.getElementById('home-skill-pts-where').textContent = currentLang === 'en' ? 'Where' : 'Где';
+      document.getElementById('home-skill-pts-and2').textContent = currentLang === 'en' ? 'and' : 'и';
+      document.getElementById('home-skill-pts-s-desc').textContent = currentLang === 'en'
+        ? 'dynamic strictness coefficient (0.5 to 3.0 based on variance)'
+        : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)';
+
       document.getElementById('f1-title').textContent = dict.about.formula1Title;
       document.getElementById('f1-desc').textContent = dict.about.formula1Desc;
       document.getElementById('f2-title').textContent = dict.about.formula2Title;

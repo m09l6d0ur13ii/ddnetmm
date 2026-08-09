@@ -217,7 +217,8 @@ function loadMapRankingFile(mapName) {
                         window.location.pathname.includes('/compare/') ||
                         window.location.pathname.includes('/pvp/') ||
                         window.location.pathname.includes('/about/') ||
-                        window.location.pathname.includes('/privacy/');
+                        window.location.pathname.includes('/privacy/') ||
+                        window.location.pathname.includes('/tas/');
     const prefix = isSubfolder ? '../' : './';
     const src = `${prefix}data/rankings/${encodeURIComponent(safe)}.js?v=a1601ea`;
 

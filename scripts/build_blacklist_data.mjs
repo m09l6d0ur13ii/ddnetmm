@@ -7,6 +7,8 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.join(__dirname, '..');
 const BLACKLIST_TXT = path.join(ROOT_DIR, 'blacklist.txt');
 const BLACKLIST_JS = path.join(ROOT_DIR, 'data/blacklist.js');
+const MAPS_CACHE_DIR = path.join(ROOT_DIR, 'data/maps_cache');
+const PLAYERS_DIR = path.join(ROOT_DIR, 'data/players');
 
 function loadBlacklist() {
     if (!fs.existsSync(BLACKLIST_TXT)) return [];
@@ -17,117 +19,113 @@ function loadBlacklist() {
         .filter(line => line && !line.startsWith('#') && !line.startsWith('//'));
 }
 
-let mapRankingsCache = null;
-function getMapRankingsCache() {
-    if (mapRankingsCache) return mapRankingsCache;
-    const mapRankingsFile = path.join(ROOT_DIR, 'data/map_rankings.json');
-    if (fs.existsSync(mapRankingsFile)) {
-        try {
-            mapRankingsCache = JSON.parse(fs.readFileSync(mapRankingsFile, 'utf8'));
-        } catch (e) {
-            mapRankingsCache = {};
-        }
-    } else {
-        mapRankingsCache = {};
-    }
-    return mapRankingsCache;
-}
-
-async function fetchPlayerFinishesInfo(name) {
-    const sanitizeFilename = (n) => String(n).replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
-    const localFile = path.join(ROOT_DIR, 'data/players', `${sanitizeFilename(name)}.json`);
-    let finishes = null;
-
-    if (fs.existsSync(localFile)) {
-        try {
-            const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
-            finishes = data.finishes || [];
-        } catch (e) { }
-    }
-
-    if (!finishes) {
-        try {
-            const url = `https://ddstats.tw/player/json?player=${encodeURIComponent(name)}`;
-            const res = await fetch(url, {
-                headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' }
-            });
-            if (res.ok) {
-                const data = await res.json();
-                finishes = data.finishes || [];
-                try {
-                    fs.writeFileSync(localFile, JSON.stringify(data));
-                } catch (e) { }
-            }
-        } catch (e) { }
-    }
-
-    let count = 0, wr1 = 0, top10 = 0, top50 = 0;
-
-    if (finishes && Array.isArray(finishes)) {
-        count = finishes.length;
-        for (const f of finishes) {
-            const soloRank = f.rank ? (typeof f.rank === 'object' ? f.rank.rank : f.rank) : null;
-            const teamRank = f.team_rank ? (typeof f.team_rank === 'object' ? f.team_rank.rank : f.team_rank) : null;
-            const rankNums = [soloRank, teamRank].filter(n => typeof n === 'number' && n > 0);
-            if (rankNums.length === 0) continue;
-            const r = Math.min(...rankNums);
-            if (r === 1) wr1++;
-            else if (r >= 2 && r <= 10) top10++;
-            else if (r >= 11 && r <= 50) top50++;
-        }
-    }
-
-    // Always fallback / enrich using local map_rankings.json
-    const mapCache = getMapRankingsCache();
-    const targetName = String(name).toLowerCase().trim();
-    let mapCount = 0, mapWr1 = 0, mapTop10 = 0, mapTop50 = 0;
-
-    for (const mapName in mapCache) {
-        const rankings = mapCache[mapName];
-        if (!Array.isArray(rankings)) continue;
-        for (const r of rankings) {
-            if (!r || !r.player) continue;
-            const players = String(r.player).split(/[,/&]+/).map(p => p.toLowerCase().trim());
-            if (players.includes(targetName)) {
-                mapCount++;
-                const rankPos = r.rank || 999;
-                if (rankPos === 1) mapWr1++;
-                else if (rankPos >= 2 && rankPos <= 10) mapTop10++;
-                else if (rankPos >= 11 && rankPos <= 50) mapTop50++;
-            }
-        }
-    }
-
-    // Take max of API/profile cache and raw map rankings
-    if (mapCount > count) {
-        count = mapCount;
-        wr1 = Math.max(wr1, mapWr1);
-        top10 = Math.max(top10, mapTop10);
-        top50 = Math.max(top50, mapTop50);
-    }
-
-    return { count, wr1, top10, top50 };
-}
-
 export async function updateBlacklistData() {
     const rawNames = loadBlacklist();
-    console.log(`Fetching record counts & rank breakdowns for ${rawNames.length} blacklisted players...`);
+    console.log(`Calculating deleted record counts & rank breakdowns for ${rawNames.length} blacklisted players...`);
 
-    const results = [];
-    const batchSize = 10;
-
-    for (let i = 0; i < rawNames.length; i += batchSize) {
-        const batch = rawNames.slice(i, i + batchSize);
-        const batchResults = await Promise.all(batch.map(async (name) => {
-            const info = await fetchPlayerFinishesInfo(name);
-            return { name, count: info.count, wr1: info.wr1, top10: info.top10, top50: info.top50 };
-        }));
-        results.push(...batchResults);
-        console.log(`Processed ${Math.min(i + batchSize, rawNames.length)} / ${rawNames.length}...`);
+    // Map: playerName (lowercase) -> { name, mapRanks: Map<mapName, { soloRank, teamRank }> }
+    const playerStats = new Map();
+    for (const name of rawNames) {
+        playerStats.set(name.toLowerCase(), {
+            name,
+            mapRanks: new Map()
+        });
     }
 
-    // Sort descending by count, then by name
-    results.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    // 1. Scan local player JSONs in data/players/ if they exist
+    for (const name of rawNames) {
+        const sanitizeFilename = (n) => String(n).replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
+        const localFile = path.join(PLAYERS_DIR, `${sanitizeFilename(name)}.json`);
+        if (fs.existsSync(localFile)) {
+            try {
+                const data = JSON.parse(fs.readFileSync(localFile, 'utf8'));
+                const finishes = data.finishes || [];
+                if (finishes.length > 0) {
+                    const item = playerStats.get(name.toLowerCase());
+                    for (const f of finishes) {
+                        const mName = f.map ? (f.map.name || f.map.map) : null;
+                        if (!mName) continue;
+                        const r = f.rank ? (typeof f.rank === 'object' ? f.rank.rank : f.rank) : null;
+                        const tr = f.team_rank ? (typeof f.team_rank === 'object' ? f.team_rank.rank : f.team_rank) : null;
+                        const existing = item.mapRanks.get(mName) || { soloRank: null, teamRank: null };
+                        if (typeof r === 'number' && r > 0) existing.soloRank = existing.soloRank ? Math.min(existing.soloRank, r) : r;
+                        if (typeof tr === 'number' && tr > 0) existing.teamRank = existing.teamRank ? Math.min(existing.teamRank, tr) : tr;
+                        item.mapRanks.set(mName, existing);
+                    }
+                }
+            } catch (e) {}
+        }
+    }
+
+    // 2. Scan data/maps_cache/ (contains full raw DDStats rankings for all maps)
+    if (fs.existsSync(MAPS_CACHE_DIR)) {
+        const mapFiles = fs.readdirSync(MAPS_CACHE_DIR).filter(f => f.endsWith('.json'));
+        console.log(`Scanning ${mapFiles.length} map files in maps_cache...`);
+
+        for (const file of mapFiles) {
+            try {
+                const mapName = file.replace(/\.json$/, '');
+                const data = JSON.parse(fs.readFileSync(path.join(MAPS_CACHE_DIR, file), 'utf8'));
+                const rankings = data.rankings || [];
+                const teamRankings = data.team_rankings || [];
+
+                for (const r of rankings) {
+                    const p = (r.name || r.player || '').toLowerCase().trim();
+                    const item = playerStats.get(p);
+                    if (item) {
+                        const rankPos = r.rank || null;
+                        if (typeof rankPos === 'number' && rankPos > 0) {
+                            const existing = item.mapRanks.get(mapName) || { soloRank: null, teamRank: null };
+                            existing.soloRank = existing.soloRank ? Math.min(existing.soloRank, rankPos) : rankPos;
+                            item.mapRanks.set(mapName, existing);
+                        }
+                    }
+                }
+
+                for (const tr of teamRankings) {
+                    const players = (tr.players || [tr.name || tr.player]).map(p => String(p).toLowerCase().trim());
+                    for (const p of players) {
+                        const item = playerStats.get(p);
+                        if (item) {
+                            const rankPos = tr.rank || null;
+                            if (typeof rankPos === 'number' && rankPos > 0) {
+                                const existing = item.mapRanks.get(mapName) || { soloRank: null, teamRank: null };
+                                existing.teamRank = existing.teamRank ? Math.min(existing.teamRank, rankPos) : rankPos;
+                                item.mapRanks.set(mapName, existing);
+                            }
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+    }
+
+    // Compute final breakdown stats per player
+    const results = [];
+    for (const [lowerName, item] of playerStats.entries()) {
+        let count = 0, wr1 = 0, top10 = 0, top50 = 0;
+
+        for (const [mName, ranks] of item.mapRanks.entries()) {
+            const validRanks = [ranks.soloRank, ranks.teamRank].filter(n => typeof n === 'number' && n > 0);
+            if (validRanks.length === 0) continue;
+            const bestRank = Math.min(...validRanks);
+            count++;
+            if (bestRank === 1) wr1++;
+            else if (bestRank >= 2 && bestRank <= 10) top10++;
+            else if (bestRank >= 11 && bestRank <= 50) top50++;
+        }
+
+        results.push({
+            name: item.name,
+            count,
+            wr1,
+            top10,
+            top50
+        });
+    }
+
+    // Sort descending by count, then by wr1, then by name
+    results.sort((a, b) => b.count - a.count || b.wr1 - a.wr1 || a.name.localeCompare(b.name));
 
     const jsContent = `// Blacklist of cheaters/TASers loaded locally with deleted record counts
 window.blacklistData = ${JSON.stringify(results, null, 2)};
@@ -150,3 +148,4 @@ window.isBlacklisted = function(name) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     updateBlacklistData();
 }
+

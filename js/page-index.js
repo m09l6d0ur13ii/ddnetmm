@@ -13,56 +13,6 @@
     return '';
   }
 
-  // ── Tab switching ──────────────────────────────────────────────────────────
-  window.switchMainTab = function (tab) {
-    currentTab = tab;
-    const btnGlobal = document.getElementById('tab-btn-global');
-    const btnBanlist = document.getElementById('tab-btn-banlist');
-    const headGlobal = document.getElementById('table-header-global');
-    const headBanlist = document.getElementById('table-header-banlist');
-    const mobileBanlistSort = document.getElementById('banlist-mobile-sort');
-    const loadMoreContainer = document.getElementById('load-more-container');
-    const tbody = document.getElementById('leaderboard-body');
-
-    if (tbody) tbody.innerHTML = '';
-
-    if (tab === 'global') {
-      if (btnGlobal) {
-        btnGlobal.style.background = '#ffa500';
-        btnGlobal.style.color = '#111111';
-        btnGlobal.style.border = 'none';
-      }
-      if (btnBanlist) {
-        btnBanlist.style.background = 'rgba(255,255,255,0.05)';
-        btnBanlist.style.color = '#9a9a9a';
-        btnBanlist.style.border = '1px solid rgba(255,255,255,0.15)';
-      }
-
-      if (headGlobal) headGlobal.classList.remove('hidden');
-      if (headBanlist) headBanlist.classList.add('hidden');
-      if (mobileBanlistSort) mobileBanlistSort.classList.add('hidden');
-      if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
-      renderTable();
-    } else {
-      if (btnBanlist) {
-        btnBanlist.style.background = '#ef4444';
-        btnBanlist.style.color = '#ffffff';
-        btnBanlist.style.border = 'none';
-      }
-      if (btnGlobal) {
-        btnGlobal.style.background = 'rgba(255,255,255,0.05)';
-        btnGlobal.style.color = '#9a9a9a';
-        btnGlobal.style.border = '1px solid rgba(255,255,255,0.15)';
-      }
-
-      if (headGlobal) headGlobal.classList.add('hidden');
-      if (headBanlist) headBanlist.classList.remove('hidden');
-      if (mobileBanlistSort) mobileBanlistSort.classList.remove('hidden');
-      if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
-      renderBanlistTable();
-    }
-  };
-
   // ── Sort ──────────────────────────────────────────────────────────────────
   window.requestSort = function (key) {
     if (key === 'rank') {
@@ -76,7 +26,6 @@
 
   // ── Render global leaderboard table ───────────────────────────────────────
   function renderTable() {
-    if (currentTab !== 'global') return;
     const tbody = document.getElementById('leaderboard-body');
     tbody.classList.remove('banlist-mode');
     tbody.innerHTML = '';
@@ -125,132 +74,6 @@
         <td class="p-4 text-right font-mono text-emerald-400/80">${(p.newPtsBase || 0).toLocaleString()}</td>
         <td class="p-4 text-right font-mono text-purple-400/80">${(p.newPtsSkill || 0).toLocaleString()}</td>
         <td class="p-4 text-right font-mono font-bold text-amber-400 text-lg">${(p.newPtsTotal || 0).toLocaleString()}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // ── Render ban list table ─────────────────────────────────────────────────
-  let banlistSortConfig = { key: 'count', direction: 'desc' };
-
-  window.requestBanlistSort = function (key) {
-    if (banlistSortConfig.key === key) {
-      banlistSortConfig.direction = banlistSortConfig.direction === 'desc' ? 'asc' : 'desc';
-    } else {
-      banlistSortConfig = { key, direction: 'desc' };
-    }
-    renderBanlistTable();
-  };
-
-  function updateBanlistSortUI() {
-    const keys = ['count', 'wr1', 'top10', 'top50'];
-    keys.forEach(k => {
-      const label = k === 'count' ? 'Total' : k === 'wr1' ? '#1 WRs' : k === 'top10' ? '#2-10' : '#11-50';
-      const buttons = document.querySelectorAll(`#sort-btn-${k}, [data-banlist-sort="${k}"]`);
-      buttons.forEach(btn => {
-        if (banlistSortConfig.key === k) {
-          const arrow = banlistSortConfig.direction === 'desc' ? '▾' : '▴';
-          btn.classList.add('is-active');
-          btn.setAttribute('aria-pressed', 'true');
-          btn.textContent = `${label} ${arrow}`;
-        } else {
-          btn.classList.remove('is-active');
-          btn.setAttribute('aria-pressed', 'false');
-          btn.textContent = `${label} ▾`;
-        }
-      });
-    });
-  }
-
-  function renderBanlistTable() {
-    if (currentTab !== 'banlist') return;
-    const tbody = document.getElementById('leaderboard-body');
-    if (!tbody) return;
-    tbody.classList.add('banlist-mode');
-    tbody.innerHTML = '';
-
-    const rawList = window.blacklistData || [];
-    document.getElementById('banlist-count').textContent = rawList.length;
-    document.getElementById('table-banned-player').textContent = currentLang === 'en' ? 'Banned Player' : 'Заблокированный игрок';
-    document.getElementById('table-banned-status').textContent = currentLang === 'en' ? 'Deleted Records' : 'Удалено рекордов';
-    document.getElementById('banlist-mobile-sort-label').textContent = currentLang === 'en' ? 'Deleted records:' : 'Удалено рекордов:';
-
-    updateBanlistSortUI();
-
-    if (rawList.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No banned players' : 'Список бана пуст'}</td></tr>`;
-      return;
-    }
-
-    // Support both string array and object array { name, count, wr1, top10, top50 }
-    const list = rawList.map(item => typeof item === 'string' ? { name: item, count: 0, wr1: 0, top10: 0, top50: 0 } : item);
-
-    list.sort((a, b) => {
-      let aVal = a[banlistSortConfig.key];
-      let bVal = b[banlistSortConfig.key];
-
-      if (typeof aVal === 'string') {
-        aVal = aVal.toLowerCase();
-        bVal = (bVal || '').toLowerCase();
-        if (aVal < bVal) return banlistSortConfig.direction === 'asc' ? -1 : 1;
-        if (aVal > bVal) return banlistSortConfig.direction === 'asc' ? 1 : -1;
-        return 0;
-      }
-
-      aVal = aVal || 0;
-      bVal = bVal || 0;
-      if (aVal !== bVal) {
-        return banlistSortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
-      }
-      return (b.count || 0) - (a.count || 0);
-    });
-
-    let currentDisplayRank = 1;
-    list.forEach((item, idx) => {
-      if (idx > 0) {
-        const prevItem = list[idx - 1];
-        const prevVal = prevItem[banlistSortConfig.key] || 0;
-        const curVal = item[banlistSortConfig.key] || 0;
-        if (curVal !== prevVal) {
-          currentDisplayRank++;
-        }
-      }
-
-      const name = item.name;
-      const count = item.count || 0;
-      const wr1 = item.wr1 || 0;
-      const top10 = item.top10 || 0;
-      const top50 = item.top50 || 0;
-
-      const isTgAd = /t\.me\//i.test(name);
-      const blurStyle = isTgAd ? 'filter: blur(5px); user-select: none; display: inline-block; cursor: not-allowed;' : '';
-
-      let rankBadge = `<span class="text-slate-500 font-mono">#${currentDisplayRank}</span>`;
-      if (currentDisplayRank === 1) rankBadge = `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-2 py-0.5 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(251,191,36,0.3)]">#1</span>`;
-      else if (currentDisplayRank === 2) rankBadge = `<span class="bg-slate-300/20 text-slate-300 border border-slate-300/50 px-2 py-0.5 rounded-md font-bold text-sm">#2</span>`;
-      else if (currentDisplayRank === 3) rankBadge = `<span class="bg-amber-700/20 text-amber-600 border border-amber-700/50 px-2 py-0.5 rounded-md font-bold text-sm">#3</span>`;
-
-      const badgeContent = `
-        <span class="ban-stat ban-stat-total">${currentLang === 'en' ? 'Total' : 'Всего'} ${count.toLocaleString()}</span>
-        <span class="ban-stat ban-stat-wr">#1 ${wr1}</span>
-        <span class="ban-stat">#2-10 ${top10}</span>
-        <span class="ban-stat">#11-50 ${top50}</span>
-      `;
-
-      const tr = document.createElement('tr');
-      tr.className = 'premium-table-row transition-colors';
-      tr.innerHTML = `
-        <td class="p-4">${rankBadge}</td>
-        <td class="p-4 font-bold">
-          <a href="/player?name=${encodeURIComponent(name)}" class="text-red-400 hover:text-red-300 transition-colors" style="${blurStyle}">
-            ${escapeHtml(name)}
-          </a>
-        </td>
-        <td class="p-4 text-right">
-          <span class="ban-record-stats">
-            ${badgeContent}
-          </span>
-        </td>
       `;
       tbody.appendChild(tr);
     });
@@ -347,21 +170,8 @@
     setTxt('home-subtitle', dict.home.subtitle);
     setTxt('home-about-btn', dict.home.aboutBtn);
     setTxt('home-compare-btn', dict.home.compareBtn);
-    setTxt('home-how-it-works', dict.home.howItWorks);
-    setTxt('home-base-pts-title', dict.home.basePtsTitle);
-    setTxt('home-base-pts-desc', dict.home.basePtsDesc);
-    setTxt('home-skill-pts-title', dict.home.skillPtsTitle);
-    setTxt('home-skill-pts-desc', dict.home.skillPtsDesc);
-    setTxt('scoring-logic-label', currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ');
-    setTxt('player-scan-label', currentLang === 'en' ? 'PLAYER SEARCH / 02' : 'ПОИСК ИГРОКА / 02');
+    setTxt('player-scan-label', currentLang === 'en' ? 'PLAYER SEARCH / 01' : 'ПОИСК ИГРОКА / 01');
     setTxt('global-telemetry-label', currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ');
-
-    setTxt('home-skill-pts-and', currentLang === 'en' ? 'and record' : 'и рекорда');
-    setTxt('home-skill-pts-where', currentLang === 'en' ? 'Where' : 'Где');
-    setTxt('home-skill-pts-and2', currentLang === 'en' ? 'and' : 'и');
-    setTxt('home-skill-pts-s-desc', currentLang === 'en'
-      ? 'dynamic strictness coefficient (0.5 to 3.0 based on variance)'
-      : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)');
 
     setTxt('search-title', currentLang === 'en' ? 'Find Player' : 'Найти игрока');
     setTxt('home-leaderboard-title', dict.home.leaderboardTitle);
@@ -391,15 +201,6 @@
     setHtml('icon-arrow-3', icons.arrowUpDown);
     setHtml('search-btn', icons.search);
     setHtml('leaderboard-loader', icons.loader);
-
-    // Render Math
-    const m1 = document.getElementById('math-1'); if (m1) katex.render('P_{total} = P_{base} + P_{skill}', m1, { displayMode: true });
-    const m2 = document.getElementById('math-2'); if (m2) katex.render('P_{base} = P_{DDNet}', m2, { displayMode: false });
-    const m3 = document.getElementById('math-3'); if (m3) katex.render('t_{player}', m3, { displayMode: false });
-    const m4 = document.getElementById('math-4'); if (m4) katex.render('t_{best}', m4, { displayMode: false });
-    const m5 = document.getElementById('math-5'); if (m5) katex.render('P_{skill} = \\lfloor P_{max\\_bonus} \\times e^{-s(\\frac{t_{player}}{t_{best}} - 1)} \\rfloor', m5, { displayMode: true });
-    const m6 = document.getElementById('math-6'); if (m6) katex.render('P_{max\\_bonus} = P_{DDNet} \\times 5', m6, { displayMode: false });
-    const m7 = document.getElementById('math-7'); if (m7) katex.render('s', m7, { displayMode: false });
 
     // Player search
     let lastSearchResult = null;

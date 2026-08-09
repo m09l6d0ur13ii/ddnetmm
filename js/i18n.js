@@ -181,6 +181,22 @@ const dictionaries = {
       errorBlacklist: "Один из игроков находится в чёрном списке (TAS / Читы)",
       errorFetch: "Не удалось загрузить данные игроков",
       noCommon: "Нет общих карт или совпадений поиска"
+    },
+    tas: {
+      title: "TAS Ban List",
+      subtitle: "Реестр заблокированных игроков и аннулированных рекордов. Игроки из этого списка полностью исключены из рейтинга.",
+      back: "На главную",
+      totalBanned: "Заблокировано читеров",
+      totalDeleted: "Всего удалено рекордов",
+      wrCount: "#1 Мировых рекордов",
+      top10Count: "#2-10 Мест",
+      top50Count: "#11-50 Мест",
+      searchPlaceholder: "Поиск заблокированного игрока...",
+      tableRank: "#",
+      tablePlayer: "Заблокированный игрок",
+      tableStats: "Удалено рекордов",
+      noResults: "Заблокированные игроки не найдены",
+      blurNotice: "Рекламные никнеймы (t.me/) защищены фильтром безопасности"
     }
   },
   en: {
@@ -367,6 +383,22 @@ const dictionaries = {
       noCommon: "No common maps found or search mismatch",
       filterAll: "All Maps",
       filterTie: "Ties"
+    },
+    tas: {
+      title: "TAS Ban List",
+      subtitle: "Registry of banned players and purged records. Players on this list are completely excluded from rankings.",
+      back: "Back to Home",
+      totalBanned: "Banned Cheaters",
+      totalDeleted: "Total Purged Records",
+      wrCount: "#1 World Records",
+      top10Count: "#2-10 Ranks",
+      top50Count: "#11-50 Ranks",
+      searchPlaceholder: "Search banned player...",
+      tableRank: "#",
+      tablePlayer: "Banned Player",
+      tableStats: "Deleted Records",
+      noResults: "No banned players found",
+      blurNotice: "Telegram promotional nicknames (t.me/) are blurred for security"
     }
   }
 };
