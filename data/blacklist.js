@@ -1,6 +1,13 @@
 // Blacklist of cheaters/TASers loaded locally with deleted record counts
 window.blacklistData = [
   {
+    "name": ".",
+    "count": 1073,
+    "wr1": 13,
+    "top10": 26,
+    "top50": 39
+  },
+  {
     "name": "nameless tee",
     "count": 690,
     "wr1": 3,
@@ -15,11 +22,11 @@ window.blacklistData = [
     "top50": 84
   },
   {
-    "name": "dɛłļė",
-    "count": 361,
-    "wr1": 6,
-    "top10": 49,
-    "top50": 181
+    "name": "󠀡󠀡󠀡",
+    "count": 507,
+    "wr1": 30,
+    "top10": 194,
+    "top50": 206
   },
   {
     "name": "дэлдэфoн",
@@ -512,6 +519,13 @@ window.blacklistData = [
     "top50": 14
   },
   {
+    "name": "a",
+    "count": 48,
+    "wr1": 0,
+    "top10": 2,
+    "top50": 28
+  },
+  {
     "name": "[...(o_0)...] d",
     "count": 46,
     "wr1": 4,
@@ -897,6 +911,13 @@ window.blacklistData = [
     "top50": 7
   },
   {
+    "name": "lolxd000",
+    "count": 13,
+    "wr1": 2,
+    "top10": 6,
+    "top50": 4
+  },
+  {
     "name": "JuKKi",
     "count": 13,
     "wr1": 1,
@@ -1044,6 +1065,13 @@ window.blacklistData = [
     "top50": 1
   },
   {
+    "name": "lolxd777",
+    "count": 9,
+    "wr1": 0,
+    "top10": 6,
+    "top50": 2
+  },
+  {
     "name": "Veeedo✰",
     "count": 9,
     "wr1": 0,
@@ -1077,6 +1105,13 @@ window.blacklistData = [
     "wr1": 0,
     "top10": 1,
     "top50": 5
+  },
+  {
+    "name": "lolxd666",
+    "count": 8,
+    "wr1": 0,
+    "top10": 6,
+    "top50": 2
   },
   {
     "name": "Saint",
@@ -1891,6 +1926,20 @@ window.blacklistData = [
     "top50": 0
   },
   {
+    "name": ".dlsxchеat",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "dlsxchеat",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
     "name": "Focus!2",
     "count": 0,
     "wr1": 0,
@@ -1906,6 +1955,20 @@ window.blacklistData = [
   },
   {
     "name": "Grippie",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "matadora",
+    "count": 0,
+    "wr1": 0,
+    "top10": 0,
+    "top50": 0
+  },
+  {
+    "name": "t.me",
     "count": 0,
     "wr1": 0,
     "top10": 0,
