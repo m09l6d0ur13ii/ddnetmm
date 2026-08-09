@@ -25,6 +25,18 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     renderHeader('pvp');
+
+    if (window.setupPlayerAutocomplete) {
+      window.setupPlayerAutocomplete('pvp-player1-input', (val) => {
+        const input1 = document.getElementById('pvp-player1-input');
+        if (input1) input1.value = val;
+      });
+      window.setupPlayerAutocomplete('pvp-player2-input', (val) => {
+        const input2 = document.getElementById('pvp-player2-input');
+        if (input2) input2.value = val;
+      });
+    }
+
     applyPvpTranslations();
 
     if (typeof renderBreadcrumbs === 'function') {
@@ -37,64 +49,71 @@
       ]);
     }
 
-    setupPlayerAutocomplete('pvp-player1-input', (val) => {
-      document.getElementById('pvp-player1-input').value = val;
-    });
-    setupPlayerAutocomplete('pvp-player2-input', (val) => {
-      document.getElementById('pvp-player2-input').value = val;
-    });
-
     const urlParams = new URLSearchParams(window.location.search);
     const p1Url = urlParams.get('p1') || urlParams.get('player1');
     const p2Url = urlParams.get('p2') || urlParams.get('player2');
 
-    if (p1Url) document.getElementById('pvp-player1-input').value = p1Url;
-    if (p2Url) document.getElementById('pvp-player2-input').value = p2Url;
+    if (p1Url && document.getElementById('pvp-player1-input')) {
+      document.getElementById('pvp-player1-input').value = p1Url;
+    }
+    if (p2Url && document.getElementById('pvp-player2-input')) {
+      document.getElementById('pvp-player2-input').value = p2Url;
+    }
 
     if (p1Url && p2Url) {
       runComparison(p1Url, p2Url);
     }
 
-    document.getElementById('pvp-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const p1 = document.getElementById('pvp-player1-input').value.trim();
-      const p2 = document.getElementById('pvp-player2-input').value.trim();
+    const pvpForm = document.getElementById('pvp-form');
+    if (pvpForm) {
+      pvpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const p1 = (document.getElementById('pvp-player1-input')?.value || '').trim();
+        const p2 = (document.getElementById('pvp-player2-input')?.value || '').trim();
 
-      if (!p1 || !p2) return;
-      if (p1.toLowerCase() === p2.toLowerCase()) {
-        showError(getDict().pvp ? getDict().pvp.errorDiff : 'Выберите двух разных игроков');
-        return;
-      }
+        if (!p1 || !p2) return;
+        if (p1.toLowerCase() === p2.toLowerCase()) {
+          showError(getDict().pvp ? getDict().pvp.errorDiff : 'Выберите двух разных игроков');
+          return;
+        }
 
-      window.history.pushState({}, '', `/pvp?p1=${encodeURIComponent(p1)}&p2=${encodeURIComponent(p2)}`);
-      runComparison(p1, p2);
-    });
+        window.history.pushState({}, '', `/pvp?p1=${encodeURIComponent(p1)}&p2=${encodeURIComponent(p2)}`);
+        runComparison(p1, p2);
+      });
+    }
   });
 
   function applyPvpTranslations() {
     const dict = getDict();
     const pvp = dict.pvp || {};
 
-    document.getElementById('pvp-back').textContent = pvp.back || 'На главную';
-    document.getElementById('pvp-title-text').textContent = (pvp.title || 'Player vs Player').replace(/\s*⚔️?\s*/g, ' ').trim();
-    document.getElementById('pvp-subtitle').textContent = pvp.subtitle || '';
-    document.getElementById('lbl-pvp-p1').textContent = pvp.player1 || 'Игрок 1';
-    document.getElementById('lbl-pvp-p2').textContent = pvp.player2 || 'Игрок 2';
-    document.getElementById('pvp-submit-btn').textContent = pvp.compareBtn || 'Сравнить ⚔️';
-    document.getElementById('pvp-loading-text').textContent = pvp.loading || 'Загрузка...';
+    const setTxt = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
 
-    document.getElementById('p1-card-label').textContent = pvp.player1 || 'Player 1';
-    document.getElementById('p2-card-label').textContent = pvp.player2 || 'Player 2';
-    document.getElementById('p1-wins-label').textContent = pvp.wins || 'Побед на картах';
-    document.getElementById('p2-wins-label').textContent = pvp.wins || 'Побед на картах';
+    setTxt('pvp-back', pvp.back || 'На главную');
+    setTxt('pvp-title-text', (pvp.title || 'Player vs Player').replace(/\s*⚔️?\s*/g, ' ').trim());
+    setTxt('pvp-subtitle', pvp.subtitle || '');
+    setTxt('lbl-pvp-p1', pvp.player1 || 'Игрок 1');
+    setTxt('lbl-pvp-p2', pvp.player2 || 'Игрок 2');
+    setTxt('pvp-submit-btn', pvp.compareBtn || 'Сравнить ⚔️');
+    setTxt('pvp-loading-text', pvp.loading || 'Загрузка...');
 
-    document.getElementById('h2h-score-label').textContent = pvp.h2hScore || 'СЧЕТ ДУЭЛИ';
-    document.getElementById('common-count-label').textContent = pvp.commonMaps || 'Общих карт';
+    setTxt('p1-card-label', pvp.player1 || 'Player 1');
+    setTxt('p2-card-label', pvp.player2 || 'Player 2');
+    setTxt('p1-wins-label', pvp.wins || 'Побед на картах');
+    setTxt('p2-wins-label', pvp.wins || 'Побед на картах');
 
-    document.getElementById('pvp-map-search').placeholder = pvp.searchPlaceholder || 'Поиск карты...';
-    document.getElementById('th-map').textContent = pvp.map || 'Карта';
-    document.getElementById('th-server').textContent = pvp.server || 'Сервер';
-    document.getElementById('th-diff').textContent = pvp.winner || 'Победитель & Разница';
+    setTxt('h2h-score-label', pvp.h2hScore || 'СЧЕТ ДУЭЛИ');
+    setTxt('common-count-label', pvp.commonMaps || 'Общих карт');
+
+    const searchInput = document.getElementById('pvp-map-search');
+    if (searchInput) searchInput.placeholder = pvp.searchPlaceholder || 'Поиск карты...';
+
+    setTxt('th-map', pvp.map || 'Карта');
+    setTxt('th-server', pvp.server || 'Сервер');
+    setTxt('th-diff', pvp.winner || 'Победитель & Разница');
   }
 
   function showError(msg) {
