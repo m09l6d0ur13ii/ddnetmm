@@ -112,7 +112,8 @@ async function fetchPlayerPts(playerName) {
       if (!finish.map || !finish.map.map) continue;
 
       const mapName = finish.map.map;
-      const server = finish.map.server || finish.server || 'Solo';
+      const mapInfoObj = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === mapName.toLowerCase());
+      const server = mapInfoObj ? (mapInfoObj.server || 'Novice') : (finish.map?.server || finish.server || 'Novice');
 
       const pBase = finish.map.points || 0;
       oldPts += pBase;
@@ -122,7 +123,9 @@ async function fetchPlayerPts(playerName) {
       let timeRatio = 0;
       let tBest = mapRecords[mapName] || finish.time;
 
-      if (isQualifyingRun(server, finish.rank, finish.team_rank)) {
+      const teamRankVal = (finish.team_rank && typeof finish.team_rank === 'object') ? finish.team_rank.rank : finish.team_rank;
+
+      if (isQualifyingRun(server, finish.rank, teamRankVal)) {
         const playerTime = finish.time;
         if (!mapRecords[mapName]) {
           const rank = finish.rank || 1;
@@ -141,8 +144,10 @@ async function fetchPlayerPts(playerName) {
         newPtsSkill += pSkill;
       }
 
-      // Pick rank: team_rank.rank on team maps if available, or finish.rank
-      const rawRank = (finish.team_rank && finish.team_rank.rank) ? finish.team_rank.rank : (finish.rank || 0);
+      // Pick rank: team_rank.rank on team maps if available, or null for solo runs on team maps
+      const isSoloCategory = ['solo', 'race'].includes(server.toLowerCase());
+      const isTeamMap = !isSoloCategory && (server !== 'Dummy');
+      const rawRank = isTeamMap ? (teamRankVal || null) : (finish.rank || 0);
 
       // Check if map is enriched / flooded by TASers
       const mLower = mapName.toLowerCase();
@@ -163,11 +168,9 @@ async function fetchPlayerPts(playerName) {
         });
         if (idx !== -1) {
           mmRank = rankings[idx].rank || (idx + 1);
-        } else if (isEnriched) {
-          mmRank = '???';
+        } else if (isEnriched && !rawRank) {
+          mmRank = null;
         }
-      } else if (isEnriched) {
-        mmRank = '???';
       }
 
       let teamPartner = null;

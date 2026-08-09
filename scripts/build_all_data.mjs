@@ -347,7 +347,8 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
     const finishes = playerData.finishes || [];
     for (const finish of finishes) {
         const mapName = finish.map.name || finish.map.map;
-        const server = finish.map.server;
+        const mapObj = (maps || []).find(m => (m.map || m.name || '').toLowerCase() === mapName.toLowerCase());
+        const server = mapObj ? mapObj.server : (finish.map.server || 'Novice');
         if (!server || server.toLowerCase() === 'fun') continue;
         if (processedMaps.has(mapName)) continue;
         processedMaps.add(mapName);

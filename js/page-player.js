@@ -229,9 +229,29 @@
         list.forEach(map => {
           const tr = document.createElement('tr');
           tr.className = 'premium-table-row transition-colors';
-          if (typeof map.rank === 'number' && map.rank <= 3) tr.classList.add('top-rank-row', `top-rank-${map.rank}`);
-          const rankDisplay = map.rank === '???' ? '???' : '#' + map.rank;
-          const rankTitle = map.rank === '???' ? (currentLang === 'en' ? 'Enriched map ranking' : 'Обогащенная карта — точный ранг неопределен') : '';
+
+          const isSoloCategory = ['solo', 'race'].includes((map.server || '').toLowerCase());
+          const isSoloOnTeamMap = !isSoloCategory && (map.server !== 'Dummy') && (!map.rank || map.rank === '—');
+
+          let rankDisplay = '—';
+          if (typeof map.rank === 'number' && map.rank > 0) {
+            rankDisplay = '#' + map.rank;
+          } else if (map.rank === '???') {
+            rankDisplay = '???';
+          } else if (isSoloOnTeamMap) {
+            rankDisplay = '— (Solo)';
+          } else if (map.rank) {
+            rankDisplay = String(map.rank);
+          }
+
+          if (typeof map.rank === 'number' && map.rank <= 3) {
+            tr.classList.add('top-rank-row', `top-rank-${map.rank}`);
+          }
+
+          const rankBadgeClass = (typeof map.rank === 'number' && map.rank <= 3)
+            ? `ranking-position-${map.rank}`
+            : (isSoloOnTeamMap ? 'text-rose-400 bg-rose-500/10 border-rose-500/30' : 'ranking-position-other');
+
           tr.innerHTML = `
             <td class="p-4 font-bold">
               <a href="/map?name=${encodeURIComponent(map.mapName)}" class="text-white hover:text-amber-400 transition-colors">
@@ -241,8 +261,8 @@
             <td class="p-4"><span class="server-badge ${getServerBadgeClass(map.server)}">${escapeHtml(map.server)}</span></td>
             <td class="p-4 font-mono text-slate-100 font-medium text-right">${formatTime(map.time)}</td>
             <td class="p-4 font-semibold text-emerald-400 text-right">${map.pBase > 0 ? '+' + map.pBase : '0'}</td>
-            <td class="p-4 font-bold text-purple-400 text-right">${map.pSkill > 0 ? '+' + map.pSkill : '0'}</td>
-            <td class="p-4 font-bold text-amber-300 text-center"><span class="ranking-position-badge ranking-position-${typeof map.rank === 'number' && map.rank <= 3 ? map.rank : 'other'}" title="${rankTitle}">${rankDisplay}</span></td>
+            <td class="p-4 font-bold text-right">${map.pSkill > 0 ? '<span class="text-purple-400">+' + map.pSkill + '</span>' : '<span class="text-rose-400 font-semibold">0</span>'}</td>
+            <td class="p-4 font-bold text-center"><span class="ranking-position-badge ${rankBadgeClass}">${escapeHtml(rankDisplay)}</span></td>
           `;
           fragment.appendChild(tr);
         });
