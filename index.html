@@ -50,14 +50,18 @@
   <link rel="icon" type="image/png" href="icon.png">
   <script src="js/tailwindcss.js"></script>
   <link rel="stylesheet" href="css/style.css?v=20260809-9">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#ffa500',
-          }
-        }
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "DDNet Map Mastery",
+      "alternateName": ["DDNetMM", "Map Mastery"],
+      "url": "https://ddnetmm.ru/",
+      "description": "Альтернативная система рейтинга и очков для игроков DDNet на основе Skill Bonus и времени финиша.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://ddnetmm.ru/player?name={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
     }
   </script>
@@ -223,6 +227,41 @@
 
       </section>
     </div>
+
+    <!-- FAQ & Knowledge Base Section -->
+    <section class="max-w-7xl mx-auto mt-12 mb-8 space-y-6" id="faq-section">
+      <div class="section-heading flex items-center gap-3 border-b border-white/[0.08] pb-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-500 font-bold bg-amber-500/10 px-2.5 py-1 rounded">02</span>
+        <h2 class="text-2xl font-bold text-white" id="home-faq-title">База знаний & FAQ</h2>
+        <span class="h-px flex-1 bg-white/[0.08]"></span>
+        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest">KNOWLEDGE BASE</span>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6" id="faq-accordion-grid">
+        <article class="glass-panel p-6 space-y-2 rounded-xl border border-white/10">
+          <h3 class="text-base font-bold text-amber-400" id="faq-q1"></h3>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" id="faq-a1"></p>
+        </article>
+        <article class="glass-panel p-6 space-y-2 rounded-xl border border-white/10">
+          <h3 class="text-base font-bold text-amber-400" id="faq-q2"></h3>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" id="faq-a2"></p>
+        </article>
+        <article class="glass-panel p-6 space-y-2 rounded-xl border border-white/10">
+          <h3 class="text-base font-bold text-amber-400" id="faq-q3"></h3>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" id="faq-a3"></p>
+        </article>
+        <article class="glass-panel p-6 space-y-2 rounded-xl border border-white/10">
+          <h3 class="text-base font-bold text-amber-400" id="faq-q4"></h3>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" id="faq-a4"></p>
+        </article>
+      </div>
+
+      <div class="text-center pt-2">
+        <a href="/about#scoring" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+          <span id="faq-more-link">Узнать больше о математической формуле и алгоритмах защиты</span> &rarr;
+        </a>
+      </div>
+    </section>
 
   </main>
 

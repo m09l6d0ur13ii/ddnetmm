@@ -2022,9 +2022,13 @@ main {
 }
 
 .site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   max-width: 1440px;
   min-height: 4.25rem;
   padding: 0.55rem 1.25rem;
+  margin: 0 auto;
 }
 
 .site-logo {
@@ -2150,6 +2154,8 @@ main {
 
 .site-header-searches {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 0.65rem;
   flex: 1;

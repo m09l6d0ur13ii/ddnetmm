@@ -126,10 +126,15 @@
     document.title = `${mapQuery} — DDNet Map Mastery`;
 
     const arrowLeftHtml = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
-    document.getElementById('icon-arrow-left').innerHTML     = arrowLeftHtml;
-    document.getElementById('icon-arrow-left-err').innerHTML = arrowLeftHtml;
-    document.getElementById('loader-icon').innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
+    const setElemHtml = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    };
+
+    setElemHtml('icon-arrow-left', arrowLeftHtml);
+    setElemHtml('icon-arrow-left-err', arrowLeftHtml);
+    setElemHtml('loader-icon',
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>');
 
     const setElemText = (id, text) => {
       const el = document.getElementById(id);
@@ -169,6 +174,153 @@
         document.getElementById('val-tbest').textContent    = formatTime(data.tBest);
         document.getElementById('val-s').textContent        = data.s.toFixed(2);
         setupMapPreview(data.mapName);
+
+        // Render Personal Record Card if myNickname is set
+        const renderMyRecordCard = () => {
+          const card = document.getElementById('my-map-record-card');
+          if (!card) return;
+
+          const settings = typeof getSettings === 'function' ? getSettings() : { myNickname: '' };
+          const myNick = settings.myNickname ? settings.myNickname.trim() : '';
+          if (!myNick) {
+            card.classList.add('hidden');
+            return;
+          }
+
+          const myLower = myNick.toLowerCase();
+          const t = dict.map || {};
+
+          // Priority 1: Check live leaderboard of the current map
+          let leaderboardMatch = null;
+          if (data && Array.isArray(data.leaderboard)) {
+            leaderboardMatch = data.leaderboard.find(r => {
+              const pNames = (Array.isArray(r.players) ? r.players : String(r.player || '').split(/[,/&]+/)).map(n => n.trim().toLowerCase());
+              return pNames.includes(myLower);
+            });
+          }
+
+          // Priority 2: Fallback to user profile cache
+          const cache = typeof getUserProfileCache === 'function' ? getUserProfileCache() : null;
+          const finishes = (cache && cache.finishes) ? cache.finishes : [];
+          const cacheFinish = finishes.find(f => (f.map || f.mapName || '').toLowerCase() === data.mapName.toLowerCase());
+
+          if (!leaderboardMatch && !cacheFinish) {
+            card.className = 'glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-xl transition-all';
+            card.innerHTML = `
+              <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg shrink-0">👤</div>
+                  <div>
+                    <div class="text-xs font-bold text-amber-400 uppercase tracking-wider">${escapeHtml(myNick)} — ${t.myRecordTitle || 'Ваш результат'}</div>
+                    <div class="text-sm text-slate-300 font-medium">${t.myRecordNotFinished || 'Карта ещё не пройдена вашим никнеймом'}</div>
+                  </div>
+                </div>
+                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold transition-all">Открыть мой профиль</a>
+              </div>
+            `;
+            card.classList.remove('hidden');
+            return;
+          }
+
+          let rank = '-';
+          let timeVal = 0;
+          let partnerNames = null;
+
+          if (leaderboardMatch) {
+            rank = leaderboardMatch.rank || '-';
+            timeVal = leaderboardMatch.time;
+            const pNames = Array.isArray(leaderboardMatch.players) ? leaderboardMatch.players : String(leaderboardMatch.player || '').split('&').map(s => s.trim());
+            const otherPlayers = pNames.filter(p => p.toLowerCase() !== myLower);
+            if (otherPlayers.length > 0) {
+              partnerNames = otherPlayers.join(' & ');
+            }
+          } else if (cacheFinish) {
+            rank = cacheFinish.rank || '-';
+            timeVal = cacheFinish.time;
+            partnerNames = cacheFinish.teamPartner || cacheFinish.partner || null;
+          }
+
+          const timeFormatted = formatTime(timeVal);
+          const gapText = (timeVal && data.tBest) ? `+${(((timeVal / data.tBest) - 1) * 100).toFixed(1)}%` : '0.0%';
+
+          const mapInfoObj = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
+          const mapServer = mapInfoObj ? (mapInfoObj.server || 'Novice') : 'Novice';
+          const isSoloCategory = ['solo', 'race'].includes(mapServer.toLowerCase());
+
+          // A run is a Team run if partners exist OR if marked as team rank
+          const isTeamRun = Boolean(partnerNames && partnerNames.length > 0) || (leaderboardMatch && leaderboardMatch.isTeamRank);
+          const isSoloOnTeamMap = !isSoloCategory && (mapServer !== 'Dummy') && !isTeamRun;
+
+          const mapBasePts = mapInfoObj ? (mapInfoObj.points || 0) : 0;
+          const pSkill = isSoloOnTeamMap ? 0 : Math.floor((mapBasePts * 5.0) * Math.exp(-data.s * (Math.max(1, timeVal / (data.tBest || timeVal)) - 1)));
+
+          if (isSoloOnTeamMap) {
+            card.className = 'glass-panel p-5 sm:p-6 rounded-2xl border border-rose-500/50 bg-gradient-to-r from-rose-500/10 via-slate-900/60 to-slate-900/90 backdrop-blur-md shadow-xl transition-all';
+          } else {
+            card.className = 'glass-panel p-5 sm:p-6 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900/50 to-slate-900/80 backdrop-blur-md shadow-xl transition-all';
+          }
+
+          const warningHtml = isSoloOnTeamMap ? `
+            <div class="mt-3 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-300 text-xs sm:text-sm font-semibold flex items-center gap-3">
+              <span class="text-xl shrink-0">⚠️</span>
+              <div>
+                <strong>${currentLang === 'en' ? 'Solo finish on Team map!' : 'Вы прошли эту карту соло (без команды)!'}</strong>
+                <p class="text-rose-200/80 font-normal mt-0.5">${currentLang === 'en' ? 'According to DDNet Map Mastery rules, Skill PTS on team servers are awarded ONLY for Duo/Team finishes. No bonus PTS are given for solo finishes — you should practice teamplay!' : 'По правилам DDNet Map Mastery на командных серверах бонусные очки Skill PTS начисляются только за совместное (Duo/Team) прохождение. Вам стоит больше тренировать командную игру!'}</p>
+              </div>
+            </div>
+          ` : '';
+
+          card.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex items-center justify-between border-b ${isSoloOnTeamMap ? 'border-rose-500/30' : 'border-amber-500/20'} pb-3 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl ${isSoloOnTeamMap ? 'bg-rose-500/20 border-rose-500/40 text-rose-400' : 'bg-amber-500/20 border-amber-500/40 text-amber-400'} border flex items-center justify-center font-bold text-lg shrink-0">${isSoloOnTeamMap ? '🚫' : '⭐'}</div>
+                  <div>
+                    <div class="text-xs font-bold ${isSoloOnTeamMap ? 'text-rose-400' : 'text-amber-400'} uppercase tracking-widest">${t.myRecordTitle || 'Ваш личный результат'} — <a href="/player?name=${encodeURIComponent(myNick)}" class="underline hover:text-amber-300">${escapeHtml(myNick)}</a></div>
+                    <div class="text-lg font-black text-white font-mono">#${rank} место в мире ${isSoloOnTeamMap ? '<span class="text-xs text-rose-400 font-bold ml-1">(Соло)</span>' : ''}</div>
+                  </div>
+                </div>
+                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 ${isSoloOnTeamMap ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40' : 'bg-amber-500 hover:bg-amber-600 text-slate-950'} rounded-xl text-xs font-extrabold transition-all shadow-md">Мой профиль 👤</a>
+              </div>
+
+              ${warningHtml}
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-1">
+                <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+                  <div class="text-[11px] text-slate-400 font-semibold uppercase">${t.myRecordTime || 'Ваше время'}</div>
+                  <div class="text-base font-bold font-mono ${isSoloOnTeamMap ? 'text-rose-300' : 'text-amber-300'}">${timeFormatted}</div>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+                  <div class="text-[11px] text-slate-400 font-semibold uppercase">${t.myRecordGap || 'Отставание от WR'}</div>
+                  <div class="text-base font-bold font-mono text-slate-200">${gapText}</div>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+                  <div class="text-[11px] text-slate-400 font-semibold uppercase">${t.myRecordSkill || 'Skill PTS'}</div>
+                  <div class="text-base font-bold font-mono ${isSoloOnTeamMap ? 'text-rose-400' : 'text-emerald-400'}">${isSoloOnTeamMap ? '0 PTS' : '+' + pSkill + ' PTS'}</div>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+                  <div class="text-[11px] text-slate-400 font-semibold uppercase">${t.myRecordPartners || 'Напарники'}</div>
+                  <div class="text-base font-bold ${isSoloOnTeamMap ? 'text-rose-400' : 'text-slate-200'} truncate">${partnerNames ? escapeHtml(partnerNames) : '— (Solo)'}</div>
+                </div>
+              </div>
+            </div>
+          `;
+          card.classList.remove('hidden');
+        };
+
+        try {
+          renderMyRecordCard();
+        } catch (cardErr) {
+          console.warn('Failed to render my record card:', cardErr);
+        }
+
+        if (typeof renderBreadcrumbs === 'function') {
+          const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+          renderBreadcrumbs([
+            { label: homeLabel, url: '/' },
+            { label: data.mapName }
+          ]);
+        }
 
         // Map Meta Tags (Server category, Base PTS, Mapper)
         const metaTagsContainer = document.getElementById('map-meta-tags');

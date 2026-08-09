@@ -155,7 +155,14 @@ const dictionaries = {
       tablePts: "Skill PTS",
       loading: "Загрузка...",
       enrichedBanner: "⚡ Данная карта была обогащена верифицированными финишами легитимных игроков из-за ТАС-рекордов / сомнительных результатов на DDStats",
-      loadTop100: "Показать ещё 100"
+      loadTop100: "Показать ещё 100",
+      myRecordTitle: "Ваш результат на этой карте",
+      myRecordNotFinished: "Карта ещё не пройдена вашим никнеймом",
+      myRecordRank: "Ваше место",
+      myRecordTime: "Ваше время",
+      myRecordGap: "Отставание от WR",
+      myRecordSkill: "Заработано Skill PTS",
+      myRecordPartners: "Напарники"
     },
     pvp: {
       title: "Player vs Player ⚔️",
@@ -197,6 +204,59 @@ const dictionaries = {
       tableStats: "Удалено рекордов",
       noResults: "Заблокированные игроки не найдены",
       blurNotice: "Рекламные никнеймы (t.me/) защищены фильтром безопасности"
+    },
+    breadcrumbs: {
+      home: "Главная",
+      about: "О проекте",
+      map: "Карта",
+      player: "Игрок",
+      compare: "Сравнение систем",
+      pvp: "PvP Дуэль",
+      tas: "TAS Ban List",
+      privacy: "Политика конфиденциальности",
+      settings: "Настройки",
+      error404: "Ошибка 404"
+    },
+    settings: {
+      title: "Настройки пользователя",
+      subtitle: "Персонализация профиля, языка и быстрых закладок",
+      myNickLabel: "Мой никнейм в DDNet",
+      myNickPlaceholder: "Введите ваш ник в игре (например: Xardas)",
+      myNickHelp: "Укажите ваш игровой ник, чтобы получить быстрый доступ к вашему профилю в шапке сайта.",
+      langLabel: "Язык интерфейса",
+      favoritesLabel: "Избранные игроки (быстрый доступ)",
+      favoritesPlaceholder: "Добавить игрока в избранное...",
+      favoritesEmpty: "У вас пока нет сохраненных игроков",
+      saveBtn: "Сохранить настройки",
+      savedNotice: "Настройки успешно сохранены!",
+      myProfileHeaderBtn: "Мой профиль",
+      settingsHeaderBtn: "Настройки"
+    },
+    faq: {
+      title: "Часто задаваемые вопросы и база знаний",
+      subtitle: "Всё, что вам нужно знать об альтернативной системе рейтинга DDNet Map Mastery",
+      q1: "Чем DDNet Map Mastery отличается от стандартного рейтинга DDNet?",
+      a1: "Официальный рейтинг DDNet начисляет очки за прохождение карт фиксированно, поощряя количество пройденных карт (гринд). Map Mastery сохраняет эти очки в виде Base PTS, но дополнительно начисляет до x5 Skill Bonus на основе близости вашего времени к Мировому Рекорду (WR).",
+      q2: "Как рассчитывается Skill Bonus (бонус за скорость)?",
+      a2: "Бонус высчитывается по экспоненциальной формуле: P_skill = floor(P_max_bonus * exp(-s * (t_player / t_best - 1))). Чем ближе ваше время к лучшему результату, тем больше очков вы сохраняете.",
+      q3: "Что такое коэффициент строгости (s)?",
+      a3: "Коэффициент s отражает плотность конкуренции на карте. На коротких картах (Fastcap) с разницей в доли секунды s высокий (до 3.0), а на многочасовых картах на выживание s низкий (до 0.5), что сглаживает наказание за отставание.",
+      q4: "Как система защищена от ТАС-ботов и читеров?",
+      a4: "Используется 5-уровневая система: глобальный blacklist.txt, физические пороги времени map_min_times.txt, фильтрация отдельных фейковых рекордов, ручные выверки рекордов custom_map_records.txt и авто-обогащение карт Map Enrichment Engine.",
+      q5: "Чем различаются карты категории Dummy (Solo vs Team)?",
+      a5: "На картах Dummy действуют два независимых рейтинга: Solo (только 1 игрок без кнопок) и Team (командные финиши). Очки начисляются за оба вида прохождений относительно своих рекордов."
+    },
+    categoryGuides: {
+      title: "Категории серверов и сложность",
+      novice: "Простые карты для новичков. Направлены на освоение основных механик Teeworlds.",
+      moderate: "Средняя сложность. Требуют уверенного владения хуком, маневрами и таймингами.",
+      brutal: "Высокая сложность для опытных игроков. Требуют чистых паркуров и сложных трюков.",
+      insane: "Экстремальный уровень. Длинные хардкорные карты с невероятными требованиями к точности.",
+      solo: "Одиночные карты. Проходятся без помощи партнеров, запрещен командный флай.",
+      dummy: "Карты с ведением второго манекена (Dummy). Доступны соло и командные режимы.",
+      race: "Чистые спидран-карты без фриза. Фокус на максимально быстром прохождении трассы.",
+      oldschool: "Классические легендарные карты первых версий Teeworlds.",
+      ddmax: "Карты знаменитой серии DDmaX с уникальным стилем мапинга."
     }
   },
   en: {
@@ -355,7 +415,14 @@ const dictionaries = {
       tablePts: "Skill PTS",
       loading: "Loading...",
       enrichedBanner: "⚡ This map leaderboard was enriched with verified legitimate player finishes due to TAS / suspicious records on DDStats",
-      loadTop100: "Show 100 more"
+      loadTop100: "Show 100 more",
+      myRecordTitle: "Your Record on this Map",
+      myRecordNotFinished: "Map not finished by your nickname yet",
+      myRecordRank: "Your Rank",
+      myRecordTime: "Your Time",
+      myRecordGap: "Gap to WR",
+      myRecordSkill: "Skill PTS Earned",
+      myRecordPartners: "Partners"
     },
     pvp: {
       title: "Player vs Player ⚔️",
@@ -399,6 +466,59 @@ const dictionaries = {
       tableStats: "Deleted Records",
       noResults: "No banned players found",
       blurNotice: "Telegram promotional nicknames (t.me/) are blurred for security"
+    },
+    breadcrumbs: {
+      home: "Home",
+      about: "About",
+      map: "Map",
+      player: "Player",
+      compare: "System Comparison",
+      pvp: "PvP Duel",
+      tas: "TAS Ban List",
+      privacy: "Privacy Policy",
+      settings: "Settings",
+      error404: "Error 404"
+    },
+    settings: {
+      title: "User Settings",
+      subtitle: "Personalize your profile, language, and quick bookmarks",
+      myNickLabel: "My DDNet Nickname",
+      myNickPlaceholder: "Enter your in-game nickname (e.g. Xardas)",
+      myNickHelp: "Specify your nickname to enable instant 1-click profile access in the header.",
+      langLabel: "Interface Language",
+      favoritesLabel: "Favorite Players (Quick Access)",
+      favoritesPlaceholder: "Add player to favorites...",
+      favoritesEmpty: "No pinned favorite players yet",
+      saveBtn: "Save Settings",
+      savedNotice: "Settings saved successfully!",
+      myProfileHeaderBtn: "My Profile",
+      settingsHeaderBtn: "Settings"
+    },
+    faq: {
+      title: "Frequently Asked Questions & Knowledge Base",
+      subtitle: "Everything you need to know about the alternative DDNet Map Mastery ranking system",
+      q1: "How does DDNet Map Mastery differ from the standard DDNet rating?",
+      a1: "The official DDNet ranking awards points statically per map finish, favoring quantity (grinding). Map Mastery preserves base points as Base PTS, but awards up to x5 Skill Bonus based on how close your finish time is to the World Record (WR).",
+      q2: "How is the Skill Bonus calculated?",
+      a2: "The bonus is computed via an exponential formula: P_skill = floor(P_max_bonus * exp(-s * (t_player / t_best - 1))). The closer your time is to the record (t_best), the more bonus points you retain.",
+      q3: "What is the strictness coefficient (s)?",
+      a3: "The coefficient s represents competition density. On short fastcap maps with split-second gaps, s is high (up to 3.0), whereas on multi-hour survival maps, s is low (down to 0.5), forgiving larger time gaps.",
+      q4: "How is the system protected from TAS bots and cheaters?",
+      a4: "A 5-stage system is enforced: global blacklist.txt, physical time floors in map_min_times.txt, individual fake record exclusions, custom WR overrides, and the automated Map Enrichment Engine.",
+      q5: "How do Dummy category maps work (Solo vs Team)?",
+      a5: "Dummy maps feature two independent leaderboards: Solo (1 tee, no buttons) and Team. Players earn separate Skill PTS relative to Solo WR and Team WR."
+    },
+    categoryGuides: {
+      title: "Server Categories & Difficulty",
+      novice: "Easy maps for beginners to learn core Teeworlds mechanics.",
+      moderate: "Medium difficulty. Requires confident hook control, maneuvers, and timing.",
+      brutal: "High difficulty for experienced players. Demands clean parkour and tight tricks.",
+      insane: "Extreme difficulty. Long hardcore maps requiring pixel-perfect accuracy.",
+      solo: "Solo maps. Completed without partners; team flying is disabled.",
+      dummy: "Maps requiring dual tee control (Dummy). Features independent Solo and Team modes.",
+      race: "Pure speedrun maps without freeze tiles. Focuses on raw traversal speed.",
+      oldschool: "Classic legacy maps from the early days of Teeworlds.",
+      ddmax: "Maps from the famous DDmaX series with signature mapping styles."
     }
   }
 };

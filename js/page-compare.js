@@ -39,10 +39,15 @@
     const dict = getDict();
     document.documentElement.lang = currentLang;
 
-    document.getElementById('icon-arrow-left').innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
+    if (typeof renderBreadcrumbs === 'function') {
+      const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+      const compareLabel = dict.breadcrumbs ? dict.breadcrumbs.compare : 'Compare';
+      renderBreadcrumbs([
+        { label: homeLabel, url: '/' },
+        { label: compareLabel }
+      ]);
+    }
 
-    document.getElementById('compare-back').textContent  = dict.about.back;
     document.getElementById('compare-title').textContent = dict.compare.title;
     document.getElementById('compare-desc').textContent  = dict.compare.desc;
 

@@ -73,32 +73,11 @@
     </div>
 
     <div id="content" class="inner-page-shell hidden space-y-8">
+      <div id="breadcrumbs-container"></div>
 
       <!-- Header -->
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div class="space-y-4">
-          <div class="flex items-center gap-3 flex-wrap">
-            <a href="/" class="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-block whitespace-nowrap">
-              &larr; <span id="player-back"></span>
-            </a>
-            <span class="text-slate-600">|</span>
-            <!-- Quick Player Search Form -->
-            <form id="inline-player-search-form" class="flex items-center gap-1">
-              <input
-                type="text"
-                id="inline-player-search-input"
-                placeholder=""
-                style="padding:0.35em 0.7em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;width:15em;box-sizing:border-box;font-weight:600;"
-              />
-              <button
-                type="submit"
-                id="inline-player-search-btn"
-                style="padding:0.35em 0.8em;font-size:0.85em;background:#ffa500;color:#111;border:none;font-weight:bold;cursor:pointer;white-space:nowrap;"
-              >
-              </button>
-            </form>
-          </div>
-
           <div class="flex items-center gap-5">
             <div id="player-tee-container" class="shrink-0 flex items-center justify-center min-w-[96px] min-h-[96px]"></div>
             <header class="inner-page-hero space-y-2">
@@ -214,6 +193,7 @@
     </div>
   </footer>
 
+  <script defer src="../data/maps.js?v=a1601ea"></script>
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../data/map_records.js?v=a1601ea"></script>
   <script defer src="../data/map_stats.js?v=a1601ea"></script>

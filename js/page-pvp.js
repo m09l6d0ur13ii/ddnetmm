@@ -27,6 +27,16 @@
     renderHeader('pvp');
     applyPvpTranslations();
 
+    if (typeof renderBreadcrumbs === 'function') {
+      const dict = getDict();
+      const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+      const pvpLabel = dict.breadcrumbs ? dict.breadcrumbs.pvp : 'PvP Duel';
+      renderBreadcrumbs([
+        { label: homeLabel, url: '/' },
+        { label: pvpLabel }
+      ]);
+    }
+
     setupPlayerAutocomplete('pvp-player1-input', (val) => {
       document.getElementById('pvp-player1-input').value = val;
     });

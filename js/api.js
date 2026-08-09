@@ -170,6 +170,15 @@ async function fetchPlayerPts(playerName) {
         mmRank = '???';
       }
 
+      let teamPartner = null;
+      if (finish.team_rank) {
+        if (Array.isArray(finish.team_rank.players)) {
+          teamPartner = finish.team_rank.players.filter(p => String(p).toLowerCase() !== playerName.toLowerCase()).join(' & ');
+        } else if (finish.team_rank.player) {
+          teamPartner = String(finish.team_rank.player);
+        }
+      }
+
       finishDetails.push({
         mapName,
         server,
@@ -179,6 +188,8 @@ async function fetchPlayerPts(playerName) {
         timeRatio,
         record: tBest,
         rank: mmRank,
+        teamPartner,
+        isTeamRank: Boolean(finish.team_rank)
       });
     }
 
@@ -232,13 +243,15 @@ async function getTopPlayersLive(limit = 500, onProgress = null) {
 function loadMapRankingFile(mapName) {
   return new Promise((resolve) => {
     const safe = mapName.replace(/[^a-zA-Z0-9_\-. ]/g, '_').replace(/\s+/g, '_');
-    const isSubfolder = window.location.pathname.includes('/map/') ||
-                        window.location.pathname.includes('/player/') ||
-                        window.location.pathname.includes('/compare/') ||
-                        window.location.pathname.includes('/pvp/') ||
-                        window.location.pathname.includes('/about/') ||
-                        window.location.pathname.includes('/privacy/') ||
-                        window.location.pathname.includes('/tas/');
+    const path = window.location.pathname.toLowerCase();
+    const isSubfolder = path.includes('/map') ||
+                        path.includes('/player') ||
+                        path.includes('/compare') ||
+                        path.includes('/pvp') ||
+                        path.includes('/about') ||
+                        path.includes('/privacy') ||
+                        path.includes('/settings') ||
+                        path.includes('/tas');
     const prefix = isSubfolder ? '../' : './';
     const src = `${prefix}data/rankings/${encodeURIComponent(safe)}.js?v=a1601ea`;
 

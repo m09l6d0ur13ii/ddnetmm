@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — DDNet Map Mastery</title>
+  <title>Страница не найдена (404) — DDNet Map Mastery</title>
+  <link rel="canonical" href="https://ddnetmm.ru/404">
   
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
@@ -19,21 +20,86 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
 
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <script src="js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20260803-27">
+  <link rel="stylesheet" href="css/style.css?v=20260809-9">
 </head>
-<body class="page-404 bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4">
-  <div class="error-card glass-panel p-8 max-w-md w-full text-center space-y-6">
-    <div class="error-code text-6xl font-black text-amber-500 font-mono">404</div>
-    <h1 class="text-2xl font-bold">Страница не найдена</h1>
-    <p class="text-slate-400 text-sm">
-      Запрашиваемая страница внутри проекта DDNet Map Mastery не существует или была перемещена.
-    </p>
-    <div>
-      <a href="/" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-lg transition-colors">
-        Вернуться на главную
-      </a>
+<body class="page-404 bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+  <div id="header-container"></div>
+
+  <main class="flex-grow flex items-center justify-center p-4 sm:p-8">
+    <div class="max-w-xl w-full space-y-6">
+      <div id="breadcrumbs-container"></div>
+
+      <div class="error-card glass-panel p-8 sm:p-10 text-center space-y-6 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl">
+        <div class="error-code text-7xl font-black text-amber-500 font-mono tracking-tight drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">404</div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Страница не найдена</h1>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Запрашиваемая страница внутри проекта DDNet Map Mastery не существует или была перемещена. Вы можете воспользоваться поиском или перейти к основным разделам сайта:
+        </p>
+
+        <!-- Navigation Quick Links -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+          <a href="/" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            🏠 Главная
+          </a>
+          <a href="/about" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            📖 О проекте
+          </a>
+          <a href="/pvp" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            ⚔️ PvP Дуэль
+          </a>
+          <a href="/compare" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            📊 Сравнение
+          </a>
+          <a href="/tas" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            🛡️ TAS Ban List
+          </a>
+          <a href="/privacy" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            🔒 Privacy
+          </a>
+        </div>
+
+        <div class="pt-4 border-t border-white/10">
+          <a href="/" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+            На главную страницу
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
+
+  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 text-slate-400 text-xs sm:text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
+        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="/" class="hover:text-white transition-colors">Главная</a>
+        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
+        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
+        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader();
+      const dict = getDict();
+      if (typeof renderBreadcrumbs === 'function') {
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Главная';
+        const errLabel = dict.breadcrumbs ? dict.breadcrumbs.error404 : 'Ошибка 404';
+        renderBreadcrumbs([
+          { label: homeLabel, url: '/' },
+          { label: errLabel }
+        ]);
+      }
+    });
+  </script>
 </body>
 </html>

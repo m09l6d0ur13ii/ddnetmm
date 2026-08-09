@@ -162,6 +162,15 @@
     const dict = getDict();
     document.documentElement.lang = currentLang;
 
+    if (typeof renderBreadcrumbs === 'function') {
+      const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+      const tasLabel = dict.breadcrumbs ? dict.breadcrumbs.tas : 'TAS Ban List';
+      renderBreadcrumbs([
+        { label: homeLabel, url: '/' },
+        { label: tasLabel }
+      ]);
+    }
+
     const t = dict.tas || {};
     const setTxt = (id, txt) => {
       const el = document.getElementById(id);

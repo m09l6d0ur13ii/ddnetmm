@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Настройки — DDNet Map Mastery</title>
+  <link rel="canonical" href="https://ddnetmm.ru/settings">
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+          m[i].l=1*new Date();
+          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111228237', 'ym');
+
+      ym(111228237, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+  <meta name="description" content="Настройки пользователя DDNet Map Mastery — персональный никнейм, язык интерфейса и избранные игроки.">
+  
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="icon" type="image/png" href="../icon.png">
+  <script src="../js/tailwindcss.js"></script>
+  <link rel="stylesheet" href="../css/style.css?v=20260809-9">
+</head>
+<body class="page-settings site-loading antialiased text-slate-200 font-sans min-h-screen">
+  <div id="site-loader" role="status" aria-live="polite" aria-label="Загрузка сайта">
+    <div class="site-loader-card">
+      <img class="site-loader-logo" src="../icon.png" alt="" aria-hidden="true">
+      <p class="site-loader-title">DDNET MAP MASTERY</p>
+      <p class="site-loader-status">Загрузка / Loading</p>
+      <div class="site-loader-track" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div id="header-container"></div>
+
+  <main class="min-h-screen p-4 md:p-8 animate-fade-in">
+    <div class="inner-page-shell max-w-3xl mx-auto space-y-8">
+      
+      <div id="breadcrumbs-container"></div>
+
+      <header class="inner-page-hero space-y-2">
+        <h1 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400" id="settings-title">
+          Настройки пользователя
+        </h1>
+        <p class="text-slate-400 text-base sm:text-lg" id="settings-subtitle">
+          Персонализация профиля, языка и быстрых закладок
+        </p>
+      </header>
+
+      <!-- Settings Form Card -->
+      <form id="settings-form" class="glass-panel p-6 sm:p-10 space-y-8 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md">
+        
+        <!-- Field 1: My Nickname -->
+        <section class="space-y-3 border-b border-white/[0.08] pb-6">
+          <label for="settings-mynick-input" class="block font-bold text-white text-lg flex items-center gap-2">
+            <span>👤</span> <span id="lbl-settings-mynick">Мой никнейм в DDNet</span>
+          </label>
+          <div class="relative max-w-md">
+            <input
+              type="text"
+              id="settings-mynick-input"
+              placeholder="Введите ваш ник в игре..."
+              class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-bold"
+              autocomplete="off"
+            />
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed" id="desc-settings-mynick">
+            Укажите ваш игровой ник, чтобы получить быстрый доступ к вашему профилю в шапке сайта.
+          </p>
+        </section>
+
+        <!-- Field 2: Language -->
+        <section class="space-y-3 border-b border-white/[0.08] pb-6">
+          <label class="block font-bold text-white text-lg flex items-center gap-2">
+            <span>🌐</span> <span id="lbl-settings-lang">Язык интерфейса</span>
+          </label>
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 px-4 py-2.5 rounded-xl hover:border-amber-500/50 transition-all">
+              <input type="radio" name="settings-lang" value="ru" class="accent-amber-500 w-4 h-4">
+              <span class="font-semibold text-sm">Русский (RU)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 px-4 py-2.5 rounded-xl hover:border-amber-500/50 transition-all">
+              <input type="radio" name="settings-lang" value="en" class="accent-amber-500 w-4 h-4">
+              <span class="font-semibold text-sm">English (EN)</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Field 3: Favorites List -->
+        <section class="space-y-3 border-b border-white/[0.08] pb-6">
+          <label class="block font-bold text-white text-lg flex items-center gap-2">
+            <span>⭐</span> <span id="lbl-settings-favs">Избранные игроки</span>
+          </label>
+          
+          <div class="flex items-center gap-2 max-w-md">
+            <input
+              type="text"
+              id="settings-fav-input"
+              placeholder="Добавить игрока..."
+              class="flex-1 bg-white/[0.04] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              id="settings-fav-add-btn"
+              class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition-all"
+            >
+              + Добавить
+            </button>
+          </div>
+
+          <div id="favorites-chips-container" class="flex flex-wrap gap-2 pt-2">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- Notification Toast -->
+        <div id="settings-toast" class="hidden p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold text-sm text-center animate-fade-in">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2 flex justify-end">
+          <button
+            type="submit"
+            id="settings-submit-btn"
+            class="px-8 py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-base rounded-xl transition-all shadow-[0_0_20px_rgba(245,158,11,0.35)] cursor-pointer"
+          >
+            Сохранить настройки
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
+        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="/" class="hover:text-white transition-colors">Главная</a>
+        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
+        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
+        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="../data/unique_players.js?v=a1601ea"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/app.js?v=20260807-3"></script>
+  <script defer src="../js/page-settings.js"></script>
+</body>
+</html>

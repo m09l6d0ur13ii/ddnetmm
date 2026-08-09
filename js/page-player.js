@@ -124,23 +124,6 @@
     const shareTextEl = document.getElementById('share-profile-text');
     if (shareTextEl) shareTextEl.textContent = dict.player.shareBtn || 'Share Profile';
 
-    // Inline player search
-    const sInput = document.getElementById('inline-player-search-input');
-    if (sInput) sInput.placeholder = dict.player.searchPlaceholder;
-    const sBtn = document.getElementById('inline-player-search-btn');
-    if (sBtn) sBtn.textContent = dict.player.searchBtn;
-    const sForm = document.getElementById('inline-player-search-form');
-    if (sForm) {
-      sForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const target = sInput ? sInput.value.trim() : '';
-        if (target) window.location.href = `/player?name=${encodeURIComponent(target)}`;
-      });
-    }
-    setupPlayerAutocomplete('inline-player-search-input', (val) => {
-      if (val) window.location.href = `/player?name=${encodeURIComponent(val)}`;
-    });
-
     // Blacklist check
     if (window.isBlacklisted && window.isBlacklisted(playerName)) {
       document.getElementById('loading').classList.add('hidden');
@@ -165,6 +148,13 @@
       const data = await window.api.fetchPlayerPts(playerName);
 
       document.getElementById('player-name').textContent  = data.name;
+      if (typeof renderBreadcrumbs === 'function') {
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+        renderBreadcrumbs([
+          { label: homeLabel, url: '/' },
+          { label: data.name }
+        ]);
+      }
       renderPlayerTee(data);
       document.getElementById('val-base').textContent     = data.newPtsBase.toLocaleString();
       document.getElementById('val-skill').textContent    = data.newPtsSkill.toLocaleString();
@@ -270,6 +260,12 @@
           clearTimeout(searchTimer);
           searchTimer = setTimeout(renderFilteredMaps, 120);
         });
+
+        if (window.setupMapAutocomplete) {
+          window.setupMapAutocomplete('map-search-input', () => {
+            renderFilteredMaps();
+          });
+        }
       }
 
       renderFilteredMaps();

@@ -114,6 +114,277 @@ function findMapMatches(rawQuery, limit = 12) {
     .map(item => item.map);
 }
 
+function getSettings() {
+  try {
+    const raw = localStorage.getItem('ddnetmm_settings');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        myNickname: parsed.myNickname || '',
+        lang: parsed.lang || currentLang,
+        favorites: Array.isArray(parsed.favorites) ? parsed.favorites : []
+      };
+    }
+  } catch (e) { }
+  return {
+    myNickname: '',
+    lang: currentLang,
+    favorites: []
+  };
+}
+
+function saveSettings(newSettings) {
+  try {
+    const current = getSettings();
+    const updated = { ...current, ...newSettings };
+    localStorage.setItem('ddnetmm_settings', JSON.stringify(updated));
+  } catch (e) { }
+}
+
+function getUserProfileCache() {
+  try {
+    const raw = localStorage.getItem('ddnetmm_user_cache');
+    if (raw) return JSON.parse(raw);
+  } catch (e) { }
+  return null;
+}
+
+async function refreshUserProfileCache(overrideNick = null) {
+  const settings = getSettings();
+  const nick = overrideNick || settings.myNickname;
+  if (!nick || !nick.trim()) return null;
+
+  try {
+    const data = await window.api.fetchPlayerPts(nick.trim());
+    if (data) {
+      const cacheObj = {
+        name: data.name,
+        newPtsBase: data.newPtsBase,
+        newPtsSkill: data.newPtsSkill,
+        newPtsTotal: data.newPtsTotal,
+        finishes: data.finishDetails || [],
+        updatedAt: Date.now()
+      };
+      localStorage.setItem('ddnetmm_user_cache', JSON.stringify(cacheObj));
+      return cacheObj;
+    }
+  } catch (e) {
+    console.error('Failed to refresh user profile cache:', e);
+  }
+  return null;
+}
+
+function openSettingsModal() {
+  let modal = document.getElementById('settings-modal');
+  if (!modal) {
+    renderSettingsModal();
+    modal = document.getElementById('settings-modal');
+  }
+  if (modal) {
+    populateSettingsModal();
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeSettingsModal() {
+  const modal = document.getElementById('settings-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+function populateSettingsModal() {
+  const s = getSettings();
+  const cache = getUserProfileCache();
+  const dict = getDict();
+  const t = dict.settings || {};
+
+  const inputNick = document.getElementById('modal-mynick-input');
+  if (inputNick) inputNick.value = s.myNickname || '';
+
+  const radios = document.querySelectorAll('input[name="modal-settings-lang"]');
+  radios.forEach(r => {
+    r.checked = (r.value === currentLang);
+  });
+
+  const cacheInfo = document.getElementById('modal-cache-info');
+  if (cacheInfo) {
+    if (cache && cache.updatedAt) {
+      const dateStr = new Date(cache.updatedAt).toLocaleString(currentLang === 'en' ? 'en-US' : 'ru-RU');
+      cacheInfo.textContent = `${currentLang === 'en' ? 'Last profile update:' : 'Последнее обновление:'} ${dateStr} (${cache.finishes ? cache.finishes.length : 0} ${currentLang === 'en' ? 'maps' : 'карт'})`;
+    } else {
+      cacheInfo.textContent = currentLang === 'en' ? 'Profile data not cached yet' : 'Данные профиля еще не закэшированы';
+    }
+  }
+
+  // Render favorites chips in modal
+  const favContainer = document.getElementById('modal-favs-chips');
+  if (favContainer) {
+    let favs = [...s.favorites];
+    const renderModalFavs = () => {
+      if (favs.length === 0) {
+        favContainer.innerHTML = `<span class="text-xs text-slate-500 font-medium">${t.favoritesEmpty || 'No pinned players'}</span>`;
+        return;
+      }
+      favContainer.innerHTML = favs.map((p, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-200">
+          <a href="/player?name=${encodeURIComponent(p)}" class="hover:text-amber-400 transition-colors">${escapeHtml(p)}</a>
+          <button type="button" data-modal-fav-idx="${idx}" class="modal-remove-fav text-slate-500 hover:text-red-400 font-bold px-1">&times;</button>
+        </span>
+      `).join('');
+
+      favContainer.querySelectorAll('.modal-remove-fav').forEach(btn => {
+        btn.onclick = (e) => {
+          const idx = parseInt(e.currentTarget.getAttribute('data-modal-fav-idx'), 10);
+          if (!isNaN(idx)) {
+            favs.splice(idx, 1);
+            saveSettings({ favorites: favs });
+            renderModalFavs();
+          }
+        };
+      });
+    };
+    renderModalFavs();
+  }
+}
+
+function renderSettingsModal() {
+  const dict = getDict();
+  const t = dict.settings || {};
+
+  const html = `
+    <div id="settings-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in" role="dialog" aria-modal="true">
+      <div class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-2xl border border-white/15 bg-slate-900/90 shadow-2xl space-y-6">
+        
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span>⚙️</span> <span>${t.title || 'Настройки'}</span>
+          </h2>
+          <button type="button" onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-2xl font-bold p-1 leading-none">&times;</button>
+        </div>
+
+        <form id="modal-settings-form" class="space-y-6">
+          <!-- Nickname Field -->
+          <div class="space-y-2">
+            <label for="modal-mynick-input" class="block text-sm font-bold text-amber-400">${t.myNickLabel || 'Мой никнейм в DDNet'}</label>
+            <input type="text" id="modal-mynick-input" placeholder="${t.myNickPlaceholder || 'Xardas'}" class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-2.5 text-slate-100 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm" autocomplete="off">
+            <p class="text-xs text-slate-400">${t.myNickHelp || 'Укажите ник для 1-click перехода в профиль и плашки рекорда на картах.'}</p>
+          </div>
+
+          <!-- Refresh Data Button -->
+          <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="modal-cache-info" class="text-xs text-slate-400"></span>
+              <button type="button" id="modal-refresh-data-btn" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+                <span>🔄</span> <span>${currentLang === 'en' ? 'Refresh Profile Data' : 'Обновить данные'}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-amber-400">${t.langLabel || 'Язык интерфейса'}</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-3 rounded-xl hover:border-amber-500/50 transition-all">
+                <input type="radio" name="modal-settings-lang" value="ru" class="accent-amber-500">
+                <span class="font-bold text-xs">Русский (Russian)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-3 rounded-xl hover:border-amber-500/50 transition-all">
+                <input type="radio" name="modal-settings-lang" value="en" class="accent-amber-500">
+                <span class="font-bold text-xs">English (English)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Favorites List -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-amber-400">${t.favoritesLabel || 'Избранные игроки'}</label>
+            <div id="modal-favs-chips" class="flex flex-wrap gap-2 pt-1"></div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="pt-4 border-t border-white/10 flex justify-end gap-3">
+            <button type="button" onclick="closeSettingsModal()" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 font-bold rounded-xl text-sm transition-all">${currentLang === 'en' ? 'Cancel' : 'Отмена'}</button>
+            <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)]">${t.saveBtn || 'Сохранить'}</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  `;
+
+  let container = document.getElementById('settings-modal-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'settings-modal-container';
+    document.body.appendChild(container);
+  }
+  container.innerHTML = html;
+
+  // Setup Autocomplete for modal nickname input
+  if (window.setupPlayerAutocomplete) {
+    window.setupPlayerAutocomplete('modal-mynick-input', (val) => {
+      const inp = document.getElementById('modal-mynick-input');
+      if (inp) inp.value = val;
+    });
+  }
+
+  // Refresh data button click
+  const refreshBtn = document.getElementById('modal-refresh-data-btn');
+  if (refreshBtn) {
+    refreshBtn.onclick = async () => {
+      const inputNick = document.getElementById('modal-mynick-input');
+      const nick = inputNick ? inputNick.value.trim() : '';
+      if (!nick) return;
+
+      refreshBtn.disabled = true;
+      refreshBtn.innerHTML = `<span>⏳</span> <span>${currentLang === 'en' ? 'Updating...' : 'Загрузка...'}</span>`;
+      
+      await refreshUserProfileCache(nick);
+
+      refreshBtn.disabled = false;
+      refreshBtn.innerHTML = `<span>✅</span> <span>${currentLang === 'en' ? 'Updated!' : 'Обновлено!'}</span>`;
+      setTimeout(() => {
+        refreshBtn.innerHTML = `<span>🔄</span> <span>${currentLang === 'en' ? 'Refresh Profile Data' : 'Обновить данные'}</span>`;
+      }, 2000);
+      populateSettingsModal();
+    };
+  }
+
+  // Modal form submit
+  const form = document.getElementById('modal-settings-form');
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const inputNick = document.getElementById('modal-mynick-input');
+      const nick = inputNick ? inputNick.value.trim() : '';
+      const selectedLangEl = document.querySelector('input[name="modal-settings-lang"]:checked');
+      const selectedLang = selectedLangEl ? selectedLangEl.value : currentLang;
+
+      const prevNick = getSettings().myNickname;
+      saveSettings({
+        myNickname: nick,
+        lang: selectedLang
+      });
+
+      if (nick && nick !== prevNick) {
+        await refreshUserProfileCache(nick);
+      }
+
+      closeSettingsModal();
+      renderHeader();
+      
+      if (selectedLang !== currentLang) {
+        setLang(selectedLang);
+      } else {
+        window.location.reload();
+      }
+    };
+  }
+}
+
 function renderHeader(activePage = 'home') {
   const isEn = currentLang === 'en';
   const playerPlaceholder = isEn ? 'Find player...' : 'Найти игрока...';
@@ -121,15 +392,27 @@ function renderHeader(activePage = 'home') {
   const mapPlaceholder = isEn ? 'Find map...' : 'Найти карту...';
   const mapTitle = isEn ? 'MAP SEARCH / Open records, times and map ranking' : 'ПОИСК КАРТЫ / Откройте рекорды, времена и рейтинг карты';
 
+  const settings = getSettings();
+  const myNick = settings.myNickname ? settings.myNickname.trim() : '';
+
+  const myProfileHtml = myNick ? `
+    <span class="site-nav-divider">/</span>
+    <a href="/player?name=${encodeURIComponent(myNick)}" class="site-nav-link site-profile-link inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 text-amber-400 font-bold transition-all text-xs" title="${isEn ? 'My Profile' : 'Мой профиль'}: ${escapeHtml(myNick)}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 shrink-0"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span class="truncate max-w-[100px]">${escapeHtml(myNick)}</span>
+    </a>
+  ` : '';
+
   const headerHtml = `
     <header class="site-header">
       <div class="site-header-inner">
 
         <!-- Logo & Navigation -->
-        <div class="site-nav">
+        <div class="site-nav flex items-center gap-2">
           <a href="/" class="site-nav-link${activePage === 'home' ? ' is-active' : ''}">
             <span>Home</span>
           </a>
+          ${myProfileHtml}
           <span class="site-nav-divider">/</span>
           <a href="https://discord.gg/BWmT3q96FP" class="site-discord-link" aria-label="teeproject Discord" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 127.14 96.36" fill="#5865F2"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.68 1.76 1.36 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44zm42.24 0c-6.58 0-12-6.04-12-13.44s5.3-13.44 12-13.44c6.74 0 12.07 6.09 12 13.44 0 7.4-5.26 13.44-12 13.44z"/></svg>
@@ -147,7 +430,7 @@ function renderHeader(activePage = 'home') {
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
               <input type="text" id="header-player-search-input" placeholder="${playerPlaceholder}" title="${playerTitle}" autocomplete="off">
-            </di
+            </div>
           </form>
 
           <!-- Map Search -->
@@ -162,12 +445,12 @@ function renderHeader(activePage = 'home') {
           </form>
         </div>
 
-        <!-- Language Toggles -->
-        <div class="site-header-tools">
-          <div class="language-toggle">
-            <button onclick="setLang('ru')" class="${currentLang === 'ru' ? 'is-active' : ''}">RU</button>
-            <button onclick="setLang('en')" class="${currentLang === 'en' ? 'is-active' : ''}">EN</button>
-          </div>
+        <!-- Header Tools & Settings -->
+        <div class="site-header-tools flex items-center gap-2">
+          <button type="button" onclick="openSettingsModal()" class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-slate-300 hover:text-amber-400 transition-all flex items-center gap-1.5 text-xs font-bold ${activePage === 'settings' ? 'text-amber-400 border-amber-500/50 bg-amber-500/10' : ''}" title="${isEn ? 'Settings' : 'Настройки'}" aria-label="Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <span class="hidden sm:inline">${isEn ? 'Settings' : 'Настройки'}</span>
+          </button>
         </div>
       </div>
     </header>
@@ -210,142 +493,162 @@ function renderHeader(activePage = 'home') {
       });
     }
 
-    // ── Map Autocomplete ────────────────────────────────────────────
-    const input = document.getElementById('header-map-search-input');
-    if (input) {
-      const wrap = input.parentElement;
-      if (wrap) {
-        wrap.style.position = 'relative';
+    if (window.setupMapAutocomplete) {
+      window.setupMapAutocomplete('header-map-search-input');
+    }
+  }, 50);
+}
 
-        let dropdown = document.getElementById('map-autocomplete');
-        if (!dropdown) {
-          dropdown = document.createElement('div');
-          dropdown.id = 'map-autocomplete';
-          dropdown.style.display = 'none';
-          wrap.appendChild(dropdown);
-        }
+window.setupMapAutocomplete = function (inputId, onSelect) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
 
-        let activeIdx = -1;
-        let currentItems = [];
+  const wrap = input.parentElement;
+  if (!wrap) return;
+  wrap.style.position = 'relative';
+  if (!wrap.style.zIndex || wrap.style.zIndex === 'auto') {
+    wrap.style.zIndex = '100';
+  }
 
-        function escHtml(s) {
-          return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
+  let dropdown = wrap.querySelector('.map-autocomplete-dropdown') || wrap.querySelector('#map-autocomplete');
+  if (!dropdown) {
+    dropdown = document.createElement('div');
+    dropdown.className = 'map-autocomplete-dropdown player-autocomplete';
+    dropdown.style.display = 'none';
+    wrap.appendChild(dropdown);
+  }
 
-        function highlightMatch(text, query) {
-          if (!text || !query) return escHtml(text || '');
-          const idx = text.toLowerCase().indexOf(query.toLowerCase());
-          if (idx === -1) return escHtml(text);
-          return escHtml(text.slice(0, idx))
-            + '<strong class="ac-hl" style="color:var(--accent,#ffa500);font-weight:bold">' + escHtml(text.slice(idx, idx + query.length)) + '</strong>'
-            + escHtml(text.slice(idx + query.length));
-        }
+  let activeIdx = -1;
+  let currentItems = [];
+  let currentQuery = '';
 
-        function renderDropdown(items, query) {
-          activeIdx = -1;
-          currentItems = items;
-          if (!items.length) { dropdown.style.display = 'none'; return; }
+  function escHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
-          dropdown.innerHTML = items.map((m, i) => {
-            const mapName = m.map || m.name || '';
-            const mapper = m.mapper || '';
-            const server = m.server || m.type || 'DDNet';
-            const points = (m.points !== undefined && m.points !== null) ? m.points : (m.pts || 0);
+  function highlightMatch(text, query) {
+    if (!text || !query) return escHtml(text || '');
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return escHtml(text);
+    return escHtml(text.slice(0, idx))
+      + '<strong class="ac-hl" style="color:var(--accent,#ffa500);font-weight:bold">' + escHtml(text.slice(idx, idx + query.length)) + '</strong>'
+      + escHtml(text.slice(idx + query.length));
+  }
 
-            return `
-              <a class="ac-item" data-idx="${i}" href="/map?name=${encodeURIComponent(mapName)}">
-                <div class="ac-map-info">
-                  <span class="ac-map-name">${highlightMatch(mapName, query)}</span>
-                  ${mapper ? `<span class="ac-map-mapper">by ${highlightMatch(mapper, query)}</span>` : ''}
-                </div>
-                <div class="ac-map-meta">
-                  <span class="ac-map-server">${escHtml(server)}</span>
-                  <span class="ac-map-points">${points} PTS</span>
-                </div>
-              </a>
-            `;
-          }).join('');
+  function renderDropdown() {
+    if (currentItems.length === 0) {
+      dropdown.style.display = 'none';
+      return;
+    }
 
-          dropdown.style.display = 'block';
+    dropdown.innerHTML = currentItems.map((m, i) => {
+      const mapName = m.map || m.name || '';
+      const mapper = m.mapper || '';
+      const server = m.server || m.type || 'DDNet';
+      const points = (m.points !== undefined && m.points !== null) ? m.points : (m.pts || 0);
 
-          dropdown.querySelectorAll('.ac-item').forEach(el => {
-            el.addEventListener('mousedown', (e) => {
-              e.preventDefault();
-              const idx = parseInt(el.getAttribute('data-idx'), 10);
-              selectItem(idx);
-            });
-            el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
-          });
-        }
+      return `
+        <a class="ac-item ${i === activeIdx ? 'is-active' : ''}" data-idx="${i}" href="/map?name=${encodeURIComponent(mapName)}">
+          <div class="ac-map-info">
+            <span class="ac-map-name">${highlightMatch(mapName, currentQuery)}</span>
+            ${mapper ? `<span class="ac-map-mapper">by ${highlightMatch(mapper, currentQuery)}</span>` : ''}
+          </div>
+          <div class="ac-map-meta">
+            <span class="ac-map-server">${escHtml(server)}</span>
+            <span class="ac-map-points">${points} PTS</span>
+          </div>
+        </a>
+      `;
+    }).join('');
 
-        function setActive(idx) {
-          activeIdx = idx;
-          dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
-            const isAct = i === idx;
-            el.classList.toggle('is-active', isAct);
-          });
+    dropdown.style.display = 'block';
 
-          if (idx >= 0) {
-            const activeEl = dropdown.querySelectorAll('.ac-item')[idx];
-            if (activeEl) {
-              activeEl.scrollIntoView({ block: 'nearest' });
-            }
-          }
-        }
+    dropdown.querySelectorAll('.ac-item').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const idx = Number(el.dataset.idx);
+        selectItem(idx);
+      });
+      el.addEventListener('mouseenter', () => setActive(+el.dataset.idx));
+    });
+  }
 
-        function selectItem(idx) {
-          const m = currentItems[idx];
-          if (!m) return;
-          const mapName = m.map || m.name;
-          input.value = mapName;
-          dropdown.style.display = 'none';
-          window.location.href = `/map?name=${encodeURIComponent(mapName)}`;
-        }
+  function setActive(idx) {
+    activeIdx = idx;
+    dropdown.querySelectorAll('.ac-item').forEach((el, i) => {
+      const isAct = i === idx;
+      el.classList.toggle('is-active', isAct);
+    });
 
-        function closeDropdown() {
-          dropdown.style.display = 'none';
-          activeIdx = -1;
-        }
-
-        function triggerAutocomplete() {
-          const q = input.value.trim();
-          if (q.length < 1) { closeDropdown(); return; }
-
-          const maps = window.mapsData || window.allMaps || window.mapStatsData || [];
-          if (!maps.length) { closeDropdown(); return; }
-          renderDropdown(findMapMatches(q, 10), q);
-        }
-
-        input.addEventListener('input', triggerAutocomplete);
-        mapInput.addEventListener('focus', triggerAutocomplete);
-
-        input.addEventListener('keydown', (e) => {
-          if (dropdown.style.display === 'none' || currentItems.length === 0) return;
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            const nextIdx = activeIdx + 1 >= currentItems.length ? 0 : activeIdx + 1;
-            setActive(nextIdx);
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prevIdx = activeIdx - 1 < 0 ? currentItems.length - 1 : activeIdx - 1;
-            setActive(prevIdx);
-          } else if (e.key === 'Enter') {
-            if (activeIdx >= 0) {
-              e.preventDefault();
-              selectItem(activeIdx);
-            }
-          } else if (e.key === 'Escape') {
-            closeDropdown();
-          }
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!wrap.contains(e.target)) closeDropdown();
-        });
+    if (idx >= 0) {
+      const activeEl = dropdown.querySelectorAll('.ac-item')[idx];
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
       }
     }
-  }, 100);
-}
+  }
+
+  function selectItem(idx) {
+    const m = currentItems[idx];
+    if (!m) return;
+    const mapName = m.map || m.name || '';
+    input.value = mapName;
+    dropdown.style.display = 'none';
+    activeIdx = -1;
+
+    if (typeof onSelect === 'function') {
+      onSelect(mapName, m);
+    } else {
+      window.location.href = `/map?name=${encodeURIComponent(mapName)}`;
+    }
+  }
+
+  function triggerAutocomplete() {
+    const q = input.value.trim();
+    currentQuery = q;
+    if (q.length < 1) {
+      dropdown.style.display = 'none';
+      activeIdx = -1;
+      return;
+    }
+
+    if (typeof findMapMatches === 'function') {
+      currentItems = findMapMatches(q, 10);
+      renderDropdown();
+    }
+  }
+
+  input.addEventListener('input', triggerAutocomplete);
+  input.addEventListener('focus', triggerAutocomplete);
+
+  input.addEventListener('keydown', (e) => {
+    if (dropdown.style.display === 'none' || currentItems.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIdx = activeIdx + 1 >= currentItems.length ? 0 : activeIdx + 1;
+      setActive(nextIdx);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIdx = activeIdx - 1 < 0 ? currentItems.length - 1 : activeIdx - 1;
+      setActive(prevIdx);
+    } else if (e.key === 'Enter') {
+      if (activeIdx >= 0) {
+        e.preventDefault();
+        selectItem(activeIdx);
+      }
+    } else if (e.key === 'Escape') {
+      dropdown.style.display = 'none';
+      activeIdx = -1;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) {
+      dropdown.style.display = 'none';
+      activeIdx = -1;
+    }
+  });
+};
 
 
 
@@ -591,4 +894,53 @@ window.setupPlayerAutocomplete = function (inputId, onSelect) {
     }
   });
 };
+
+/**
+ * Renders Breadcrumbs navigation bar with Schema.org JSON-LD microdata
+ * @param {Array<{label: string, url?: string}>} items 
+ * @param {string} containerId 
+ */
+function renderBreadcrumbs(items, containerId = 'breadcrumbs-container') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const itemListElement = items.map((item, index) => {
+    const position = index + 1;
+    return {
+      "@type": "ListItem",
+      "position": position,
+      "name": item.label,
+      "item": item.url ? (item.url.startsWith('http') ? item.url : `https://ddnetmm.ru${item.url.startsWith('/') ? item.url : '/' + item.url}`) : undefined
+    };
+  });
+
+  const schemaJson = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": itemListElement
+  };
+
+  let html = `<nav aria-label="Breadcrumb" class="mb-4 text-xs sm:text-sm text-slate-400">`;
+  html += `<ol class="flex items-center flex-wrap gap-1.5 list-none p-0 m-0 font-medium">`;
+
+  items.forEach((item, index) => {
+    const isLast = index === items.length - 1;
+    html += `<li class="flex items-center gap-1.5">`;
+    if (index > 0) {
+      html += `<span class="text-slate-600 select-none">/</span>`;
+    }
+    if (isLast || !item.url) {
+      html += `<span class="text-amber-400 font-semibold truncate max-w-[200px] sm:max-w-none" aria-current="page">${escapeHtml(item.label)}</span>`;
+    } else {
+      html += `<a href="${escapeHtml(item.url)}" class="hover:text-white transition-colors">${escapeHtml(item.label)}</a>`;
+    }
+    html += `</li>`;
+  });
+
+  html += `</ol></nav>`;
+  html += `<script type="application/ld+json">${JSON.stringify(schemaJson)}</script>`;
+
+  container.innerHTML = html;
+}
+
 

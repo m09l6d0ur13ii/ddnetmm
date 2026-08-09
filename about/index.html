@@ -51,6 +51,37 @@
         }
       }
     }
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Чем DDNet Map Mastery отличается от стандартного рейтинга DDNet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Официальный рейтинг DDNet начисляет очки за прохождение карт фиксированно, поощряя количество пройденных карт (гринд). Map Mastery сохраняет эти очки в виде Base PTS, но дополнительно начисляет до x5 Skill Bonus на основе близости вашего времени к Мировому Рекорду (WR)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Как рассчитывается Skill Bonus (бонус за скорость)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Бонус высчитывается по экспоненциальной формуле с учетом разницы между временем игрока и мировым рекордом, масштабируясь коэффициентом строгости s."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Как система защищена от ТАС-ботов и читеров?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Используется 5-уровневая система очистки данных: черный список читеров, физические пороги времени по картам, исключения фейковых финишей, точечные кастомные мировые рекорды и автоматический алгоритм Map Enrichment Engine."
+          }
+        }
+      ]
+    }
   </script>
 </head>
 <body class="page-about site-loading antialiased text-slate-200 font-sans min-h-screen">
@@ -68,10 +99,7 @@
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
     <div class="inner-page-shell max-w-4xl mx-auto space-y-8">
       
-      <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg> 
-        <span id="about-back"></span>
-      </a>
+      <div id="breadcrumbs-container"></div>
 
       <!-- Header Banner -->
       <div class="glass-panel p-8 sm:p-12 text-center space-y-4">
@@ -351,7 +379,14 @@
       const dict = getDict();
       document.documentElement.lang = currentLang;
 
-      document.getElementById('about-back').textContent = dict.about.back;
+      if (typeof renderBreadcrumbs === 'function') {
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+        const aboutLabel = dict.breadcrumbs ? dict.breadcrumbs.about : 'About';
+        renderBreadcrumbs([
+          { label: homeLabel, url: '/' },
+          { label: aboutLabel }
+        ]);
+      }
       
       const titlePrefix = currentLang === 'en' ? 'Why is the new system ' : 'Почему новая система ';
       const titleSuffix = currentLang === 'en' ? 'better?' : 'лучше?';

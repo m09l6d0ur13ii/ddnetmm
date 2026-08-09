@@ -49,6 +49,7 @@
 
   <!-- Main Content -->
   <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div id="breadcrumbs-container" class="mb-4"></div>
     <div class="glass-panel p-8 sm:p-10 space-y-8 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-md">
       
       <div>
@@ -148,7 +149,21 @@
         <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
       </div>
     </div>
-  </footer>
-
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initLang();
+      const dict = getDict();
+      if (typeof renderBreadcrumbs === 'function') {
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Главная';
+        const privacyLabel = dict.breadcrumbs ? dict.breadcrumbs.privacy : 'Политика конфиденциальности';
+        renderBreadcrumbs([
+          { label: homeLabel, url: '/' },
+          { label: privacyLabel }
+        ]);
+      }
+    });
+  </script>
 </body>
 </html>

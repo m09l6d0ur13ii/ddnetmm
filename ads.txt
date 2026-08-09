@@ -1,0 +1,3 @@
+# Yandex Advertising Network (РСЯ) ads.txt file
+# https://yandex.ru/support/partner/ru/yan-rules/site
+yandex.ru, R-A-19696361-1, DIRECT

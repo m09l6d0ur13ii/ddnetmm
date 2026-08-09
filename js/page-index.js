@@ -246,6 +246,19 @@
     const copyTextEl = document.getElementById('search-result-copy-text');
     if (copyTextEl) copyTextEl.textContent = dict.home.copyBtn || 'Copy';
 
+    // FAQ Text Population
+    if (dict.faq) {
+      setTxt('home-faq-title', dict.faq.title);
+      setTxt('faq-q1', dict.faq.q1);
+      setTxt('faq-a1', dict.faq.a1);
+      setTxt('faq-q2', dict.faq.q2);
+      setTxt('faq-a2', dict.faq.a2);
+      setTxt('faq-q3', dict.faq.q3);
+      setTxt('faq-a3', dict.faq.a3);
+      setTxt('faq-q4', dict.faq.q4);
+      setTxt('faq-a4', dict.faq.a4);
+    }
+
     // Icons
     setHtml('icon-arrow-right-1', icons.arrowRight);
     setHtml('icon-arrow-right-2', icons.arrowRight);

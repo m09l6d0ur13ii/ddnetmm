@@ -85,9 +85,7 @@
     </div>
 
     <div id="content" class="inner-page-shell hidden max-w-5xl mx-auto space-y-8">
-      <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-        <span id="icon-arrow-left"></span> <span id="map-back"></span>
-      </a>
+      <div id="breadcrumbs-container"></div>
 
       <header id="map-hero" class="inner-page-hero map-page-hero space-y-2">
         <div class="flex items-center gap-3 flex-wrap">
@@ -107,6 +105,10 @@
         </div>
         <p class="text-primary font-medium tracking-wide uppercase text-sm" id="map-leaderboard-title"></p>
       </header>
+
+      <!-- Personal Record Card on this Map -->
+      <div id="my-map-record-card" class="hidden glass-panel p-5 sm:p-6 rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900/50 to-slate-900/80 backdrop-blur-md shadow-xl transition-all">
+      </div>
 
       <div id="enriched-banner"
         class="hidden glass-panel p-4 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-center gap-3 text-amber-300 text-sm font-medium">
