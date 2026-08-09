@@ -126,10 +126,6 @@ function renderHeader(activePage = 'home') {
             <span>Home</span>
           </a>
           <span class="site-nav-divider">/</span>
-          <a href="/pvp" class="site-nav-link site-pvp-link${activePage === 'pvp' ? ' is-active' : ''}">
-            <span>Player vs Player</span>
-          </a>
-          <span class="site-nav-divider">/</span>
           <a href="/tas" class="site-nav-link site-tas-link${activePage === 'tas' ? ' is-active' : ''}" style="color:#ef4444;">
             <span>TAS Ban List</span>
           </a>
