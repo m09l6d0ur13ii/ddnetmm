@@ -56,6 +56,11 @@
       return;
     }
 
+    const mobileSelect = document.getElementById('mobile-ranking-sort');
+    if (mobileSelect && sortConfig.key) {
+      mobileSelect.value = sortConfig.key;
+    }
+
     const sortedData = [...playersData].sort((a, b) => {
       const aVal = a[sortConfig.key] || 0;
       const bVal = b[sortConfig.key] || 0;
@@ -257,6 +262,19 @@
       setTxt('faq-a3', dict.faq.a3);
       setTxt('faq-q4', dict.faq.q4);
       setTxt('faq-a4', dict.faq.a4);
+    }
+
+    const mobileSortLabel = document.getElementById('mobile-ranking-sort-label');
+    if (mobileSortLabel && dict.home.mobileSortLabel) {
+      mobileSortLabel.textContent = dict.home.mobileSortLabel;
+    }
+    const mobileRankingSelect = document.getElementById('mobile-ranking-sort');
+    if (mobileRankingSelect && dict.home.mobileSortOptions) {
+      Array.from(mobileRankingSelect.options).forEach(opt => {
+        if (dict.home.mobileSortOptions[opt.value]) {
+          opt.textContent = dict.home.mobileSortOptions[opt.value];
+        }
+      });
     }
 
     // Icons

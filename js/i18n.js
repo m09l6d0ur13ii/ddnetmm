@@ -25,7 +25,14 @@ const dictionaries = {
       searchResultBase: "New Base:",
       searchResultSkill: "New Skill:",
       searchResultTotal: "Total Map Mastery:",
-      copyBtn: "Копировать"
+      copyBtn: "Копировать",
+      mobileSortLabel: "Сортировка",
+      mobileSortOptions: {
+        newPtsTotal: "Total Mastery",
+        newPtsSkill: "Skill PTS",
+        newPtsBase: "Base PTS",
+        rank: "Место"
+      }
     },
     player: {
       title: "Профиль игрока",
@@ -234,7 +241,15 @@ const dictionaries = {
       tablePlayer: "Заблокированный игрок",
       tableStats: "Удалено рекордов",
       noResults: "Заблокированные игроки не найдены",
-      blurNotice: "Рекламные никнеймы (t.me/) защищены фильтром безопасности"
+      blurNotice: "Рекламные никнеймы (t.me/) защищены фильтром безопасности",
+      mobileSortLabel: "Сортировка",
+      mobileSortOptions: {
+        count: "Всего удалено",
+        name: "Имя игрока",
+        wr1: "#1 WRs",
+        top10: "#2–10",
+        top50: "#11–50"
+      }
     },
     breadcrumbs: {
       home: "Главная",
@@ -316,7 +331,14 @@ const dictionaries = {
       searchResultBase: "New Base:",
       searchResultSkill: "New Skill:",
       searchResultTotal: "Total Map Mastery:",
-      copyBtn: "Copy"
+      copyBtn: "Copy",
+      mobileSortLabel: "Sorting",
+      mobileSortOptions: {
+        newPtsTotal: "Total Mastery",
+        newPtsSkill: "Skill PTS",
+        newPtsBase: "Base PTS",
+        rank: "Rank"
+      }
     },
     player: {
       title: "Player Profile",
@@ -527,7 +549,15 @@ const dictionaries = {
       tablePlayer: "Banned Player",
       tableStats: "Deleted Records",
       noResults: "No banned players found",
-      blurNotice: "Telegram promotional nicknames (t.me/) are blurred for security"
+      blurNotice: "Telegram promotional nicknames (t.me/) are blurred for security",
+      mobileSortLabel: "Sorting",
+      mobileSortOptions: {
+        count: "Total Removed",
+        name: "Player Name",
+        wr1: "#1 WRs",
+        top10: "#2–10",
+        top50: "#11–50"
+      }
     },
     breadcrumbs: {
       home: "Home",

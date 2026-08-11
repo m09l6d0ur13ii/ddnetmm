@@ -66,6 +66,11 @@
     if (!tbody) return;
     tbody.innerHTML = '';
 
+    const mobileSort = document.getElementById('tas-mobile-sort-select');
+    if (mobileSort && sortConfig.key) {
+      mobileSort.value = sortConfig.key;
+    }
+
     const rawList = getRawList();
     renderSummaryStats(rawList);
     updateSortHeaderArrows();
@@ -194,8 +199,20 @@
       });
     }
 
+    const mobileSortLabel = document.getElementById('tas-mobile-sort-label');
+    if (mobileSortLabel && t.mobileSortLabel) {
+      mobileSortLabel.textContent = t.mobileSortLabel;
+    }
+
     const mobileSort = document.getElementById('tas-mobile-sort-select');
     if (mobileSort) {
+      if (t.mobileSortOptions) {
+        Array.from(mobileSort.options).forEach(opt => {
+          if (t.mobileSortOptions[opt.value]) {
+            opt.textContent = t.mobileSortOptions[opt.value];
+          }
+        });
+      }
       mobileSort.value = sortConfig.key;
       mobileSort.addEventListener('change', () => {
         sortConfig = { key: mobileSort.value, direction: mobileSort.value === 'name' ? 'asc' : 'desc' };
