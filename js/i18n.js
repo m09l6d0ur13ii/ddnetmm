@@ -52,7 +52,23 @@ const dictionaries = {
       tableSkill: "Skill Bonus",
       tableTopDDNet: "Top DDNet",
       shareBtn: "Поделиться профилем",
-      copied: "Скопировано!"
+      copied: "Скопировано!",
+      skillLeague: {
+        ratioLabel: "Skill / Base",
+        provisionalHint: "Полная лига откроется после 1 000 Base PTS",
+        unranked: "Без ранга",
+        provisional: "Калибровка",
+        bronze: "Novice",
+        silver: "Moderate",
+        gold: "Brutal",
+        platinum: "Insane",
+        diamond: "Extreme",
+        master: "Legendary"
+      },
+      masteryLevel: {
+        level: "Уровень",
+        toNext: "Mastery PTS до следующего уровня"
+      }
     },
     compare: {
       title: "Сравнение систем: Ранг vs Время",
@@ -138,6 +154,21 @@ const dictionaries = {
         resultRatio: "Соотношение времени",
         resultSkill: "Итоговый Skill PTS",
         resultTotal: "Итоговый Total Mastery"
+      },
+      leagues: {
+        title: "Система рангов Skill League",
+        desc: "Ранг показывает не количество набранных очков, а качество результатов игрока. Суммарные Skill PTS делятся на суммарные Base PTS. Чем ближе времена игрока к мировым рекордам, тем выше коэффициент и лига.",
+        calibrationTitle: "Калибровка: ",
+        calibrationDesc: "до набора 1 000 Base PTS полноценная лига не выдаётся. Это не позволяет получить высший ранг за одну быстро пройденную карту.",
+        example: "Пример: 13 000 Skill PTS ÷ 10 000 Base PTS = 1.30× — это ранг Insane. Для Extreme при 10 000 Base PTS потребуется не менее 15 000 Skill PTS."
+      },
+      levels: {
+        title: "Система уровней Mastery",
+        desc: "Уровень показывает общий прогресс игрока во всей системе Map Mastery и рассчитывается из Total Mastery PTS — суммы Base PTS и Skill PTS. В отличие от Skill League, уровень учитывает общий объём достижений, а не соотношение качества результатов.",
+        scalingTitle: "Прогрессивное повышение: ",
+        scalingDesc: "первые уровни набираются быстро, но с каждым новым уровнем требуется всё больше Total Mastery PTS. Поэтому высокий уровень отражает долгосрочный прогресс и не обесценивается слишком быстрым ростом.",
+        progressDesc: "В профиле шкала показывает прогресс внутри текущего уровня и точное количество Mastery PTS, которое осталось набрать до следующего.",
+        levelLabel: "Уровень"
       },
       footerSummary: "Итог: Новая система наказывает тех, кто просто собирает легкие топы с плохим временем, и невероятно щедро награждает тех, кто ставит действительно мощные времена!"
     },
@@ -312,7 +343,23 @@ const dictionaries = {
       tableSkill: "Skill Bonus",
       tableTopDDNet: "Top DDNet",
       shareBtn: "Share Profile",
-      copied: "Copied!"
+      copied: "Copied!",
+      skillLeague: {
+        ratioLabel: "Skill / Base",
+        provisionalHint: "Full league unlocks at 1,000 Base PTS",
+        unranked: "Unranked",
+        provisional: "Calibration",
+        bronze: "Novice",
+        silver: "Moderate",
+        gold: "Brutal",
+        platinum: "Insane",
+        diamond: "Extreme",
+        master: "Legendary"
+      },
+      masteryLevel: {
+        level: "Level",
+        toNext: "Mastery PTS to the next level"
+      }
     },
     compare: {
       title: "System Comparison: Rank vs Time",
@@ -398,6 +445,21 @@ const dictionaries = {
         resultRatio: "Time Ratio",
         resultSkill: "Earned Skill PTS",
         resultTotal: "Earned Total Mastery"
+      },
+      leagues: {
+        title: "Skill League Rank System",
+        desc: "The rank represents the quality of a player's results rather than the total number of points. Total Skill PTS are divided by total Base PTS. The closer the player's times are to world records, the higher the coefficient and league.",
+        calibrationTitle: "Calibration: ",
+        calibrationDesc: "a full league is not awarded until the player reaches 1,000 Base PTS. This prevents one excellent finish from immediately granting the highest rank.",
+        example: "Example: 13,000 Skill PTS ÷ 10,000 Base PTS = 1.30× — the Insane rank. Reaching Extreme with 10,000 Base PTS requires at least 15,000 Skill PTS."
+      },
+      levels: {
+        title: "Mastery Level System",
+        desc: "The level represents a player's overall progress throughout Map Mastery and is calculated from Total Mastery PTS — the sum of Base PTS and Skill PTS. Unlike Skill League, the level measures total achievement rather than the quality ratio of results.",
+        scalingTitle: "Progressive leveling: ",
+        scalingDesc: "early levels are earned quickly, but every new level requires more Total Mastery PTS. This makes a high level represent long-term progress without being devalued by overly rapid growth.",
+        progressDesc: "On the player profile, the progress bar shows progress within the current level and the exact amount of Mastery PTS still required for the next one.",
+        levelLabel: "Level"
       },
       footerSummary: "Conclusion: The new system punishes those who collect easy tops with bad times, and incredibly generously rewards those who set truly powerful times!"
     },

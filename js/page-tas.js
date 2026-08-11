@@ -194,6 +194,15 @@
       });
     }
 
+    const mobileSort = document.getElementById('tas-mobile-sort-select');
+    if (mobileSort) {
+      mobileSort.value = sortConfig.key;
+      mobileSort.addEventListener('change', () => {
+        sortConfig = { key: mobileSort.value, direction: mobileSort.value === 'name' ? 'asc' : 'desc' };
+        renderTasTable();
+      });
+    }
+
     renderTasTable();
   });
 })();

@@ -1202,6 +1202,220 @@ a:hover {
   transform: none !important;
 }
 
+/* Primary map action: keep it clearly visible on every screen size. */
+.map-title-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  box-sizing: border-box;
+  padding: 0.55rem 1rem;
+  color: #171006 !important;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  background: linear-gradient(135deg, #ffd166 0%, var(--accent, #ffa500) 58%, #ff8a00 100%);
+  border: 1px solid #ffd166;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.14), 0 8px 24px rgba(255, 145, 0, 0.38);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.map-title-view-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.map-title-view-btn:hover {
+  color: #111111 !important;
+  filter: brightness(1.1) saturate(1.08);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 0 4px rgba(255, 165, 0, 0.2), 0 12px 30px rgba(255, 145, 0, 0.5);
+}
+
+.map-title-view-btn:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.map-title-view-btn:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.player-skill-league {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  padding-top: 0.25rem;
+}
+
+.skill-league-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.skill-league-detail {
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.mastery-level-card {
+  width: min(100%, 29rem);
+  box-sizing: border-box;
+  padding: 0.75rem 0.85rem;
+  background: #111214;
+  border: 1px solid rgba(0, 0, 0, 0.82);
+  border-radius: 0.8rem;
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.32);
+}
+
+.mastery-level-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.55rem;
+}
+
+.mastery-level-badge {
+  color: #ffb45f;
+  font-size: 0.85rem;
+  font-weight: 950;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.mastery-level-progress-text,
+.mastery-level-next {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.mastery-level-track {
+  overflow: hidden;
+  width: 100%;
+  height: 0.55rem;
+  background: #050505;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  border-radius: 999px;
+}
+
+.mastery-level-progress {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #ff8a00, #ffd166);
+  border-radius: inherit;
+  box-shadow: 0 0 12px rgba(255, 157, 46, 0.45);
+  transition: width 0.6s cubic-bezier(.16, 1, .3, 1);
+}
+
+.mastery-level-next {
+  display: block;
+  margin-top: 0.45rem;
+}
+
+.skill-league-bronze {
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.25);
+  border-color: rgba(56, 189, 248, 0.65);
+}
+
+.skill-league-silver {
+  color: #fde047;
+  background: rgba(251, 191, 36, 0.25);
+  border-color: rgba(251, 191, 36, 0.65);
+}
+
+.skill-league-gold {
+  color: #ffab70;
+  background: rgba(249, 115, 22, 0.25);
+  border-color: rgba(249, 115, 22, 0.65);
+}
+
+.skill-league-platinum {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.65);
+}
+
+.skill-league-diamond {
+  color: #d8b4fe;
+  background: rgba(168, 85, 247, 0.25);
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
+}
+
+.skill-league-master {
+  color: #f9a8d4;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(168, 85, 247, 0.3));
+  border-color: rgba(244, 114, 182, 0.75);
+  box-shadow: 0 0 22px rgba(236, 72, 153, 0.35);
+}
+.skill-league-provisional { color: #94a3b8; background: rgba(51, 65, 85, 0.42); border-style: dashed; }
+.skill-league-unranked { color: #64748b; background: rgba(30, 41, 59, 0.38); }
+
+.skill-league-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.skill-league-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.85rem;
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.72);
+  border-radius: 0.8rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025), 0 5px 14px rgba(0, 0, 0, 0.22);
+}
+
+/* Structural cards use neutral black frames; league badges keep their category colors. */
+.page-about .glass-panel,
+.page-about .formula-panel,
+.page-about section,
+.page-about section > div:not(.skill-league-grid),
+.page-about section article:not(.skill-league-card) {
+  border-color: rgba(0, 0, 0, 0.72) !important;
+}
+
+.page-about .skill-league-card {
+  border-color: rgba(0, 0, 0, 0.82) !important;
+}
+
+.page-about .skill-league-badge.skill-league-bronze { border-color: rgba(56, 189, 248, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-silver { border-color: rgba(251, 191, 36, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-gold { border-color: rgba(249, 115, 22, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-platinum { border-color: rgba(239, 68, 68, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-diamond { border-color: rgba(168, 85, 247, 0.7) !important; }
+.page-about .skill-league-badge.skill-league-master { border-color: rgba(244, 114, 182, 0.75) !important; }
+
+@media (max-width: 760px) {
+  .skill-league-grid { grid-template-columns: 1fr; }
+}
+
 /* ========================= Mobile Responsiveness ========================= */
 @media (max-width: 900px) {
   .site-header {
@@ -1291,34 +1505,6 @@ a:hover {
   .ac-map-points {
     font-size: 0.95rem;
   }
-
-.map-title-view-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  height: 2.25rem;
-  box-sizing: border-box;
-  padding: 0.4rem 0.85rem;
-  color: #111111 !important;
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-decoration: none;
-  background: var(--accent, #ffa500);
-  border: 1px solid var(--accent, #ffa500);
-  border-radius: 0.65rem;
-  box-shadow: 0 4px 14px rgba(255, 157, 46, 0.25);
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.map-title-view-btn:hover {
-  color: #111111 !important;
-  background: var(--accent-hover, #ffb733);
-  border-color: var(--accent-hover, #ffb733);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(255, 157, 46, 0.4);
-}
 
   .page-map #map-meta-tags {
     width: 100%;
@@ -3683,7 +3869,7 @@ select option {
 }
 
 .page-about .glass-panel:hover {
-  border-color: rgba(255, 157, 46, 0.2) !important;
+  border-color: rgba(0, 0, 0, 0.82) !important;
   transform: translateY(-3px);
 }
 
@@ -4090,6 +4276,569 @@ select option {
 
   #table-header-banlist .banlist-head-controls .banlist-sort-grid {
     display: none !important;
+  }
+}
+
+/* About page: neutral black cards instead of Tailwind's blue-slate surfaces. */
+.page-about .glass-panel,
+.page-about .formula-panel,
+.page-about .bg-slate-900\/40,
+.page-about .bg-slate-900\/50,
+.page-about .bg-slate-900\/80,
+.page-about .bg-slate-950\/60,
+.page-about .skill-league-card,
+.page-about section article {
+  background-color: #111214 !important;
+  background-image: none !important;
+  border-color: #050505 !important;
+}
+
+.page-about .skill-league-card {
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Rank colors belong only to the badges, not to the surrounding cards. */
+.page-about .skill-league-badge.skill-league-bronze { background: rgba(56, 189, 248, 0.25) !important; border-color: rgba(56, 189, 248, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-silver { background: rgba(251, 191, 36, 0.25) !important; border-color: rgba(251, 191, 36, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-gold { background: rgba(249, 115, 22, 0.25) !important; border-color: rgba(249, 115, 22, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-platinum { background: rgba(239, 68, 68, 0.25) !important; border-color: rgba(239, 68, 68, 0.65) !important; }
+.page-about .skill-league-badge.skill-league-diamond { background: rgba(168, 85, 247, 0.25) !important; border-color: rgba(168, 85, 247, 0.7) !important; }
+.page-about .skill-league-badge.skill-league-master { background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(168, 85, 247, 0.3)) !important; border-color: rgba(244, 114, 182, 0.75) !important; }
+
+.mastery-level-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 5.25rem;
+  padding: 0.75rem;
+  text-align: center;
+  background: #111214;
+  border: 1px solid #050505;
+  border-radius: 0.8rem;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.32);
+}
+
+.mastery-level-example strong {
+  color: #ffb45f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+.mastery-level-example span {
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* Formula blocks fit without a visible horizontal drag bar. */
+.page-about .formula-panel .overflow-x-auto,
+.page-about #scoring > section > .overflow-x-auto {
+  overflow-x: visible !important;
+  scrollbar-width: none;
+}
+
+.page-about .formula-panel .overflow-x-auto::-webkit-scrollbar,
+.page-about #scoring > section > .overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========================= Mobile UX contract ========================= */
+.mobile-leaderboard-sort,
+.tas-mobile-sort {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  html {
+    min-width: 0;
+  }
+
+  .site-header {
+    position: relative;
+  }
+
+  .site-header-inner {
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: max(0.55rem, env(safe-area-inset-top)) 0.75rem 0.7rem;
+  }
+
+  .site-nav {
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+    gap: 0.4rem;
+    overflow: visible;
+  }
+
+  .site-nav-divider {
+    display: none;
+  }
+
+  .site-nav-link,
+  .site-discord-link,
+  .site-header-tools button {
+    display: inline-flex;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .site-discord-link span {
+    display: none;
+  }
+
+  .site-profile-link {
+    max-width: 9rem;
+  }
+
+  .site-header-searches {
+    display: grid;
+    width: 100%;
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .header-search-form,
+  .header-search-wrap {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  #header-player-search-input,
+  #header-map-search-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    box-sizing: border-box;
+    padding-right: 0.55rem;
+    font-size: 16px;
+  }
+
+  .site-header-tools {
+    position: absolute;
+    top: max(0.55rem, env(safe-area-inset-top));
+    right: 0.75rem;
+  }
+
+  .site-nav {
+    padding-right: 3.2rem;
+  }
+
+  #map-autocomplete,
+  .player-autocomplete {
+    position: fixed;
+    z-index: 100000 !important;
+    top: 7.2rem;
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    max-height: min(20rem, 55dvh);
+  }
+
+  main,
+  .home-shell,
+  .page-about main,
+  .page-compare main,
+  .page-map main,
+  .page-player main,
+  .page-pvp main,
+  .page-settings main,
+  .page-tas main {
+    padding-inline: 0.75rem !important;
+  }
+
+  .inner-page-shell {
+    padding-top: 0.75rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .home-hero {
+    min-height: auto;
+    margin-bottom: 2.5rem;
+    padding: 2.25rem 0.25rem 1rem;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(2.4rem, 13vw, 3.5rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .home-hero p,
+  .inner-page-hero > p,
+  .compare-page-header > p {
+    font-size: 1rem !important;
+  }
+
+  .hero-actions,
+  .hero-actions .hero-button {
+    width: 100%;
+  }
+
+  .hero-button,
+  .home-action-link {
+    min-height: 2.75rem;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .home-action-card,
+  #leaderboard-panel,
+  #faq-accordion-grid article,
+  .page-tas .glass-panel,
+  .page-settings .glass-panel,
+  .pvp-launcher {
+    padding: 1rem !important;
+  }
+
+  .section-heading {
+    flex-wrap: wrap;
+  }
+
+  .section-heading .section-tag {
+    width: 100%;
+  }
+
+  .mobile-leaderboard-sort,
+  .tas-mobile-sort {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.8rem;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .mobile-leaderboard-sort select,
+  .tas-mobile-sort select {
+    width: 100%;
+    min-height: 2.75rem;
+    color: #fff;
+    background: #111214;
+    border: 1px solid #050505;
+    border-radius: 0.6rem;
+    padding: 0 0.75rem;
+    font-size: 16px;
+  }
+
+  .leaderboard-toolbar,
+  .leaderboard-toolbar #status-message {
+    width: 100%;
+    text-align: left !important;
+  }
+
+  .page-player #content > div:first-child,
+  .page-player #content > div:first-child > div:first-child > div {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .page-player #player-tee-container {
+    min-width: 0;
+    min-height: 76px;
+    align-self: center;
+  }
+
+  .page-player .inner-page-hero {
+    width: 100%;
+    text-align: center;
+  }
+
+  .page-player .inner-page-hero > div,
+  .player-skill-league {
+    justify-content: center;
+  }
+
+  .mastery-level-card {
+    width: 100%;
+    text-align: left;
+  }
+
+  .page-player .player-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .page-player .player-metrics > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .page-player .player-metrics > * {
+    min-height: 6rem;
+    padding: 0.85rem !important;
+  }
+
+  .page-player .player-metrics [id^="stat-"] {
+    font-size: 0.68rem !important;
+  }
+
+  .page-player .player-metrics [id^="val-"] {
+    font-size: 1.55rem !important;
+  }
+
+  .page-player .glass-panel > .p-6,
+  .page-pvp .glass-panel > .p-6 {
+    padding: 1rem !important;
+  }
+
+  #map-filter-server,
+  #map-sort-order,
+  #map-search-input,
+  #pvp-map-search {
+    width: 100% !important;
+    min-height: 2.75rem;
+    font-size: 16px !important;
+  }
+
+  .page-map #map-hero > div:first-child {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .page-map #map-name {
+    font-size: clamp(2rem, 11vw, 3rem) !important;
+  }
+
+  .map-title-view-btn {
+    width: 100%;
+    min-height: 2.75rem;
+  }
+
+  .page-map #map-meta-tags {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #dummy-tabs-container {
+    display: grid !important;
+    grid-template-columns: 1fr;
+  }
+
+  #dummy-tabs-container.hidden {
+    display: none !important;
+  }
+
+  #dummy-tabs-container button,
+  [data-pvp-filter] {
+    width: 100%;
+    min-height: 2.75rem !important;
+    justify-content: center;
+  }
+
+  .pvp-title-kicker {
+    font-size: 0.68rem;
+  }
+
+  .pvp-launcher #pvp-form {
+    gap: 0.75rem;
+  }
+
+  .pvp-versus {
+    padding: 0 !important;
+  }
+
+  #pvp-submit-btn {
+    width: 100%;
+    min-height: 2.75rem;
+  }
+
+  #pvp-filter-container {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-settings #settings-form section > .flex,
+  .page-settings #settings-form section > div.flex {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .page-settings #settings-fav-input,
+  .page-settings #settings-fav-add-btn,
+  .page-settings #settings-submit-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+  }
+
+  .remove-fav-btn,
+  .modal-remove-fav {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+
+  #settings-modal {
+    align-items: flex-start !important;
+    overflow-y: auto;
+    padding: max(0.75rem, env(safe-area-inset-top)) 0.75rem max(0.75rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  #settings-modal > div {
+    max-height: none;
+    margin: auto 0;
+    padding: 1rem !important;
+  }
+
+  #settings-modal .flex.items-center.justify-between {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .page-about #tech-title-container {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .page-about #scoring,
+  .page-about .formula-panel,
+  .page-about #scoring section,
+  .page-about .skill-league-card {
+    padding: 1rem !important;
+  }
+
+  .page-about .katex-display {
+    overflow-x: auto !important;
+    padding-bottom: 0.4rem;
+    font-size: 0.82rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .page-about input[type="range"] {
+    height: 2rem;
+  }
+
+  .skill-league-card {
+    min-height: 3.5rem;
+  }
+
+  .page-compare .compare-chart-surface {
+    min-height: 19rem !important;
+    height: 19rem !important;
+    padding: 0.5rem;
+  }
+
+  footer > div {
+    align-items: stretch !important;
+    text-align: center;
+  }
+
+  footer > div > div:last-child {
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem !important;
+  }
+
+  footer a {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+  }
+
+  /* TAS table becomes readable cards instead of a six-column scroller. */
+  .page-tas table thead {
+    display: none;
+  }
+
+  .page-tas table,
+  .page-tas #tas-table-body,
+  .page-tas #tas-table-body tr,
+  .page-tas #tas-table-body td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .page-tas #tas-table-body {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .page-tas #tas-table-body .premium-table-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    background: #111214;
+    border: 1px solid #050505;
+    border-radius: 0.8rem;
+  }
+
+  .page-tas #tas-table-body td {
+    min-width: 0;
+    padding: 0.7rem !important;
+    text-align: left !important;
+    white-space: normal;
+  }
+
+  .page-tas #tas-table-body td:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .page-tas #tas-table-body td:nth-child(n+3)::before {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: #94a3b8;
+    font-family: sans-serif;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .page-tas #tas-table-body td:nth-child(3)::before { content: "Удалено"; }
+  .page-tas #tas-table-body td:nth-child(4)::before { content: "#1 WR"; }
+  .page-tas #tas-table-body td:nth-child(5)::before { content: "#2–10"; }
+  .page-tas #tas-table-body td:nth-child(6)::before { content: "#11–50"; }
+}
+
+@media (max-width: 360px) {
+  .site-header-searches {
+    grid-template-columns: 1fr;
+  }
+
+  #map-autocomplete,
+  .player-autocomplete {
+    top: 10.4rem;
+  }
+
+  .mastery-level-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .page-player .player-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .page-player .player-metrics > :last-child {
+    grid-column: auto;
   }
 }
 .map-preview-open:focus-visible,
