@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
   <script src="../js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="../css/style.css?v=20260807-12">
+  <link rel="stylesheet" href="../css/style.css?v=20260810-mobile-1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
@@ -51,6 +51,7 @@
         }
       }
     }
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -224,7 +225,6 @@
           </div>
 
           <div class="grid md:grid-cols-2 gap-6 bg-slate-900/50 p-6 rounded-xl border border-white/10">
-            <!-- Sliders -->
             <div class="space-y-4">
               <div>
                 <div class="flex justify-between text-xs text-slate-300 mb-1">
@@ -233,7 +233,6 @@
                 </div>
                 <input type="range" id="slider-base" min="10" max="1000" step="10" value="100" class="w-full accent-amber-500 bg-slate-800 rounded">
               </div>
-
               <div>
                 <div class="flex justify-between text-xs text-slate-300 mb-1">
                   <span id="label-calc-wr">Мировой рекорд (WR)</span>
@@ -241,7 +240,6 @@
                 </div>
                 <input type="range" id="slider-wr" min="30" max="3600" step="10" value="300" class="w-full accent-amber-500 bg-slate-800 rounded">
               </div>
-
               <div>
                 <div class="flex justify-between text-xs text-slate-300 mb-1">
                   <span id="label-calc-player-time">Время игрока</span>
@@ -249,7 +247,6 @@
                 </div>
                 <input type="range" id="slider-player-time" min="30" max="3600" step="10" value="360" class="w-full accent-amber-500 bg-slate-800 rounded">
               </div>
-
               <div>
                 <div class="flex justify-between text-xs text-slate-300 mb-1">
                   <span id="label-calc-strictness">Строгость (S)</span>
@@ -259,7 +256,6 @@
               </div>
             </div>
 
-            <!-- Output Results -->
             <div class="glass-panel p-5 flex flex-col justify-between space-y-3 bg-slate-950/60 border border-amber-500/20">
               <div class="space-y-2">
                 <div class="flex justify-between items-center text-xs">
@@ -275,13 +271,63 @@
                   <span id="res-val-skill" class="font-mono font-bold text-emerald-400">+335</span>
                 </div>
               </div>
-
               <div class="pt-3 border-t border-white/10 flex justify-between items-end">
                 <span class="text-sm font-bold text-slate-300" id="res-label-total">ИТОГО PTS:</span>
                 <span id="res-val-total" class="text-2xl font-black font-mono text-primary">435 PTS</span>
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- Skill / Base League System -->
+        <section class="space-y-5 pt-6 border-t border-slate-800" id="skill-leagues">
+          <div>
+            <h2 class="text-xl font-bold text-white" id="leagues-title"></h2>
+            <p class="text-slate-300 text-sm leading-relaxed mt-2" id="leagues-desc"></p>
+          </div>
+          <div class="bg-slate-900/80 p-4 rounded-lg flex justify-center text-slate-100 overflow-x-auto border border-white/5">
+            $$\text{League coefficient} = \frac{\text{Skill PTS}}{\text{Base PTS}}$$
+          </div>
+          <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl text-sm leading-relaxed">
+            <strong class="text-amber-300" id="leagues-calibration-title"></strong>
+            <span class="text-slate-300" id="leagues-calibration-desc"></span>
+          </div>
+          <div class="skill-league-grid">
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-bronze">Novice</span><strong>0.00× – 0.29×</strong></article>
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-silver">Moderate</span><strong>0.30× – 0.59×</strong></article>
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-gold">Brutal</span><strong>0.60× – 0.99×</strong></article>
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-platinum">Insane</span><strong>1.00× – 1.49×</strong></article>
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-diamond">Extreme</span><strong>1.50× – 1.99×</strong></article>
+            <article class="skill-league-card"><span class="skill-league-badge skill-league-master">Legendary</span><strong>2.00×+</strong></article>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed" id="leagues-example"></p>
+        </section>
+
+        <!-- Total Mastery Level System -->
+        <section class="space-y-5 pt-6 border-t border-slate-800" id="mastery-levels">
+          <div>
+            <h2 class="text-xl font-bold text-white" id="levels-title"></h2>
+            <p class="text-slate-300 text-sm leading-relaxed mt-2" id="levels-desc"></p>
+          </div>
+
+          <div class="bg-slate-900/80 p-4 rounded-lg flex justify-center text-slate-100 overflow-x-auto border border-white/5">
+            $$\text{Level} = \left\lfloor\sqrt{\frac{\text{Total Mastery PTS}}{10}}\right\rfloor + 1$$
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <article class="mastery-level-example"><strong>1 000 PTS</strong><span id="level-example-1"></span></article>
+            <article class="mastery-level-example"><strong>5 000 PTS</strong><span id="level-example-2"></span></article>
+            <article class="mastery-level-example"><strong>10 000 PTS</strong><span id="level-example-3"></span></article>
+            <article class="mastery-level-example"><strong>50 000 PTS</strong><span id="level-example-4"></span></article>
+            <article class="mastery-level-example"><strong>100 000 PTS</strong><span id="level-example-5"></span></article>
+          </div>
+
+          <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl text-sm leading-relaxed">
+            <strong class="text-amber-300" id="levels-scaling-title"></strong>
+            <span class="text-slate-300" id="levels-scaling-desc"></span>
+          </div>
+
+          <p class="text-slate-400 text-xs leading-relaxed" id="levels-progress-desc"></p>
         </section>
 
         <!-- Anti-TAS & Security -->
@@ -450,10 +496,28 @@
         document.getElementById('dummy-sec-bonus-desc').textContent = dict.about.dummySec.bonusDesc;
       }
 
-      // Calculator text
+      if (dict.about.leagues) {
+        document.getElementById('leagues-title').textContent = dict.about.leagues.title;
+        document.getElementById('leagues-desc').textContent = dict.about.leagues.desc;
+        document.getElementById('leagues-calibration-title').textContent = dict.about.leagues.calibrationTitle;
+        document.getElementById('leagues-calibration-desc').textContent = dict.about.leagues.calibrationDesc;
+        document.getElementById('leagues-example').textContent = dict.about.leagues.example;
+      }
+
+      if (dict.about.levels) {
+        document.getElementById('levels-title').textContent = dict.about.levels.title;
+        document.getElementById('levels-desc').textContent = dict.about.levels.desc;
+        document.getElementById('levels-scaling-title').textContent = dict.about.levels.scalingTitle;
+        document.getElementById('levels-scaling-desc').textContent = dict.about.levels.scalingDesc;
+        document.getElementById('levels-progress-desc').textContent = dict.about.levels.progressDesc;
+        [11, 23, 32, 71, 101].forEach((level, index) => {
+          document.getElementById(`level-example-${index + 1}`).textContent = `${dict.about.levels.levelLabel} ${level}`;
+        });
+      }
+
       if (dict.about.calc) {
         document.getElementById('calc-title').textContent = dict.about.calc.title;
-        document.getElementById('calc-desc').textContent  = dict.about.calc.desc;
+        document.getElementById('calc-desc').textContent = dict.about.calc.desc;
         document.getElementById('label-calc-base').textContent = dict.about.calc.base;
         document.getElementById('label-calc-wr').textContent = dict.about.calc.wr;
         document.getElementById('label-calc-player-time').textContent = dict.about.calc.playerTime;
@@ -464,7 +528,6 @@
         document.getElementById('res-label-total').textContent = dict.about.calc.resultTotal;
       }
 
-      // Calculator Logic
       const formatCalcTime = (t) => {
         const m = Math.floor(t / 60);
         const s = Math.floor(t % 60);
@@ -476,27 +539,22 @@
         const wr = parseInt(document.getElementById('slider-wr').value, 10);
         const pTime = parseInt(document.getElementById('slider-player-time').value, 10);
         const s = parseFloat(document.getElementById('slider-strictness').value);
-
         document.getElementById('val-calc-base').textContent = `${base} PTS`;
         document.getElementById('val-calc-wr').textContent = formatCalcTime(wr);
         document.getElementById('val-calc-player-time').textContent = formatCalcTime(pTime);
         document.getElementById('val-calc-strictness').textContent = s.toFixed(2);
-
         const pMaxBonus = base * 5.0;
         const timeRatio = pTime / wr;
         const gapPct = Math.max(0, (timeRatio - 1) * 100);
         const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
-        const pTotal = base + pSkill;
-
         document.getElementById('res-val-max-bonus').textContent = `+${pMaxBonus.toLocaleString()}`;
         document.getElementById('res-val-ratio').textContent = `${timeRatio.toFixed(2)}x (+${gapPct.toFixed(1)}%)`;
         document.getElementById('res-val-skill').textContent = `+${pSkill.toLocaleString()}`;
-        document.getElementById('res-val-total').textContent = `${pTotal.toLocaleString()} PTS`;
+        document.getElementById('res-val-total').textContent = `${(base + pSkill).toLocaleString()} PTS`;
       };
 
       ['slider-base', 'slider-wr', 'slider-player-time', 'slider-strictness'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', updateCalculator);
+        document.getElementById(id)?.addEventListener('input', updateCalculator);
       });
       updateCalculator();
 

@@ -49,7 +49,7 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="icon" type="image/png" href="icon.png">
   <script src="js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20260809-9">
+  <link rel="stylesheet" href="css/style.css?v=20260810-mobile-1">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -134,42 +134,8 @@
       </div>
     </section>
 
-    <div class="home-dashboard grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
-      <!-- Left Sidebar: Advertising Panel -->
-      <div class="sidebar-column md:col-span-1 space-y-6">
-        <aside class="ad-sidebar-panel glass-panel p-6 space-y-4" data-reveal>
-          <div class="text-[10px] font-mono uppercase tracking-widest text-slate-500 border-b border-white/[0.05] pb-2">
-            Реклама / Advertisement
-          </div>
-          <!-- Рекламный блок 1 (R-A-19696361-1) -->
-          <div id="yandex-rtb-search-slot" class="transition-all duration-300">
-            <!-- Yandex.RTB R-A-19696361-1 -->
-            <div id="yandex_rtb_R-A-19696361-1"></div>
-            <script>
-              window.yaContextCb = window.yaContextCb || [];
-              window.yaContextCb.push(() => {
-                Ya.Context.AdvManager.render({
-                  "blockId": "R-A-19696361-1",
-                  "renderTo": "yandex_rtb_R-A-19696361-1"
-                });
-              });
-            </script>
-          </div>
-
-          <!-- Рекламный блок 2 (Дополнительный слот для заполнения высоты на ПК) -->
-          <div id="yandex-rtb-search-slot-2" class="hidden md:block">
-            <div id="yandex_rtb_sidebar_2"></div>
-          </div>
-
-          <!-- Рекламный блок 3 (Нижний слот сайдбара на ПК) -->
-          <div id="yandex-rtb-search-slot-3" class="hidden md:block">
-            <div id="yandex_rtb_sidebar_3"></div>
-          </div>
-        </aside>
-      </div>
-
-      <!-- Right Column: Leaderboard Panel -->
-      <section id="leaderboard-panel" class="leaderboard-panel glass-panel p-8 md:col-span-2">
+    <div class="home-dashboard max-w-7xl mx-auto mb-12">
+      <section id="leaderboard-panel" class="leaderboard-panel glass-panel p-8">
         <div class="panel-label" id="global-telemetry-label"></div>
         <div
           class="leaderboard-toolbar flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
@@ -180,6 +146,16 @@
 
           <div class="text-sm text-slate-400 max-w-sm text-right" id="status-message">
           </div>
+        </div>
+
+        <div class="mobile-leaderboard-sort">
+          <label for="mobile-ranking-sort">Сортировка</label>
+          <select id="mobile-ranking-sort" onchange="requestSort(this.value)">
+            <option value="newPtsTotal">Total Mastery</option>
+            <option value="newPtsSkill">Skill PTS</option>
+            <option value="newPtsBase">Base PTS</option>
+            <option value="rank">Место</option>
+          </select>
         </div>
 
         <div class="overflow-x-auto">

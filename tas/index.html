@@ -31,7 +31,7 @@
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
   <script src="../js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="../css/style.css?v=20260803-30">
+  <link rel="stylesheet" href="../css/style.css?v=20260810-mobile-1">
   <script>
     tailwind.config = {
       theme: {
@@ -103,6 +103,17 @@
               class="w-full bg-white/[0.03] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500/50"
             />
           </div>
+        </div>
+
+        <div class="tas-mobile-sort">
+          <label for="tas-mobile-sort-select">Сортировка</label>
+          <select id="tas-mobile-sort-select">
+            <option value="count">Всего удалено</option>
+            <option value="name">Имя игрока</option>
+            <option value="wr1">#1 WRs</option>
+            <option value="top10">#2–10</option>
+            <option value="top50">#11–50</option>
+          </select>
         </div>
 
         <!-- Table Container -->

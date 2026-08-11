@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
   <script src="../js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="../css/style.css?v=20260807-12">
+  <link rel="stylesheet" href="../css/style.css?v=20260810-mobile-1">
   <link rel="stylesheet" href="../css/tee-skin-renderer.css">
   <script>
     tailwind.config = {
@@ -94,6 +94,17 @@
                 </button>
               </div>
               <p class="text-primary font-medium tracking-wide uppercase text-sm" id="player-title"></p>
+              <div id="player-skill-league" class="player-skill-league" aria-live="polite"></div>
+              <div id="player-mastery-level" class="mastery-level-card" aria-live="polite">
+                <div class="mastery-level-head">
+                  <span id="mastery-level-label" class="mastery-level-badge"></span>
+                  <span id="mastery-level-progress-text" class="mastery-level-progress-text"></span>
+                </div>
+                <div class="mastery-level-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                  <div id="mastery-level-progress" class="mastery-level-progress"></div>
+                </div>
+                <span id="mastery-level-next" class="mastery-level-next"></span>
+              </div>
             </header>
           </div>
         </div>
@@ -202,9 +213,9 @@
   <script defer src="../data/map_min_times.js?v=a1601ea"></script>
   <script defer src="../data/custom_map_records.js?v=a1601ea"></script>
   <script defer src="../js/i18n.js"></script>
-  <script defer src="../js/api.js?v=20260809-1"></script>
+  <script defer src="../js/api.js?v=20260810-2"></script>
   <script defer src="../js/app.js?v=20260807-3"></script>
   <script defer src="../js/tee-skin-renderer.umd.js"></script>
-  <script defer src="../js/page-player.js?v=20260809-1"></script>
+  <script defer src="../js/page-player.js?v=20260810-2"></script>
 </body>
 </html>

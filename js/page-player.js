@@ -160,6 +160,41 @@
       document.getElementById('val-skill').textContent    = data.newPtsSkill.toLocaleString();
       document.getElementById('val-total').textContent    = data.newPtsTotal.toLocaleString();
 
+      const league = data.skillLeague || window.api.getSkillLeague(data.newPtsBase, data.newPtsSkill);
+      const leagueEl = document.getElementById('player-skill-league');
+      if (leagueEl) {
+        const rankDict = dict.player.skillLeague || {};
+        const leagueName = rankDict[league.id] || league.id;
+        const ratioText = league.ratio === null ? '—' : `${league.ratio.toFixed(2)}×`;
+        const detailText = league.isProvisional
+          ? (rankDict.provisionalHint || `Full league unlocks at ${league.minBasePts.toLocaleString()} Base PTS`)
+          : `${rankDict.ratioLabel || 'Skill / Base'}: ${ratioText}`;
+
+        leagueEl.innerHTML = '';
+        const badge = document.createElement('span');
+        badge.className = `skill-league-badge skill-league-${league.id}`;
+        badge.textContent = leagueName;
+        const detail = document.createElement('span');
+        detail.className = 'skill-league-detail';
+        detail.textContent = detailText;
+        leagueEl.append(badge, detail);
+      }
+
+      const mastery = data.masteryLevel || window.api.getMasteryLevel(data.newPtsTotal);
+      const masteryDict = dict.player.masteryLevel || {};
+      const masteryLabel = document.getElementById('mastery-level-label');
+      const masteryProgressText = document.getElementById('mastery-level-progress-text');
+      const masteryProgress = document.getElementById('mastery-level-progress');
+      const masteryTrack = masteryProgress?.parentElement;
+      const masteryNext = document.getElementById('mastery-level-next');
+      if (masteryLabel) masteryLabel.textContent = `${masteryDict.level || 'Level'} ${mastery.level}`;
+      if (masteryProgressText) masteryProgressText.textContent = `${Math.floor(mastery.progressPercent)}%`;
+      if (masteryProgress) masteryProgress.style.width = `${mastery.progressPercent}%`;
+      if (masteryTrack) masteryTrack.setAttribute('aria-valuenow', String(Math.round(mastery.progressPercent)));
+      if (masteryNext) {
+        masteryNext.textContent = `${mastery.pointsToNext.toLocaleString()} ${masteryDict.toNext || 'Mastery PTS to next level'}`;
+      }
+
       const shareBtn = document.getElementById('share-profile-btn');
       if (shareBtn) {
         shareBtn.addEventListener('click', () => {

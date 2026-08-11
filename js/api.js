@@ -57,6 +57,62 @@ async function getMapRanking(mapName) {
 
 const playerCache = new Map();
 
+// Skill league is based on the weighted Skill PTS / Base PTS ratio.
+// Players need enough Base PTS to prevent one fast finish from granting a top league.
+const SKILL_LEAGUE_MIN_BASE_PTS = 1000;
+const SKILL_LEAGUES = [
+  { id: 'master', minRatio: 2.0 },
+  { id: 'diamond', minRatio: 1.5 },
+  { id: 'platinum', minRatio: 1.0 },
+  { id: 'gold', minRatio: 0.6 },
+  { id: 'silver', minRatio: 0.3 },
+  { id: 'bronze', minRatio: 0.0 },
+];
+
+function getSkillLeague(basePts, skillPts) {
+  const base = Number(basePts);
+  const skill = Number(skillPts);
+  const ratio = Number.isFinite(base) && base > 0 && Number.isFinite(skill) && skill >= 0
+    ? skill / base
+    : null;
+
+  if (ratio === null) {
+    return { id: 'unranked', ratio: null, isProvisional: false, minBasePts: SKILL_LEAGUE_MIN_BASE_PTS };
+  }
+
+  if (base < SKILL_LEAGUE_MIN_BASE_PTS) {
+    return { id: 'provisional', ratio, isProvisional: true, minBasePts: SKILL_LEAGUE_MIN_BASE_PTS };
+  }
+
+  const league = SKILL_LEAGUES.find(item => ratio >= item.minRatio) || SKILL_LEAGUES[SKILL_LEAGUES.length - 1];
+  return { id: league.id, ratio, isProvisional: false, minBasePts: SKILL_LEAGUE_MIN_BASE_PTS };
+}
+
+// Progressive Mastery level. The required points grow quadratically,
+// so early levels are quick while high levels remain meaningful.
+// Level 100 starts at 98,010 Total Mastery PTS.
+function getMasteryLevel(totalPts) {
+  const total = Math.max(0, Number(totalPts) || 0);
+  const level = Math.floor(Math.sqrt(total / 10)) + 1;
+  const currentLevelPts = 10 * Math.pow(level - 1, 2);
+  const nextLevelPts = 10 * Math.pow(level, 2);
+  const earnedThisLevel = total - currentLevelPts;
+  const requiredThisLevel = nextLevelPts - currentLevelPts;
+  const progress = requiredThisLevel > 0
+    ? Math.min(1, Math.max(0, earnedThisLevel / requiredThisLevel))
+    : 0;
+
+  return {
+    level,
+    totalPts: total,
+    currentLevelPts,
+    nextLevelPts,
+    pointsToNext: Math.max(0, nextLevelPts - total),
+    progress,
+    progressPercent: progress * 100,
+  };
+}
+
 // Fetch player data from DDStats and calculate Map Mastery PTS
 // Returns: { name, oldPts, newPtsBase, newPtsSkill, newPtsTotal, finishDetails }
 async function fetchPlayerPts(playerName) {
@@ -201,6 +257,8 @@ async function fetchPlayerPts(playerName) {
 
     const newPtsTotal = newPtsBase + newPtsSkill;
 
+    const skillLeague = getSkillLeague(newPtsBase, newPtsSkill);
+    const masteryLevel = getMasteryLevel(newPtsTotal);
     const result = {
       name: data.profile?.name || playerName,
       profile: data.profile || null,
@@ -211,6 +269,8 @@ async function fetchPlayerPts(playerName) {
       newPtsBase,
       newPtsSkill,
       newPtsTotal,
+      skillLeague,
+      masteryLevel,
       finishDetails,
     };
 
@@ -423,4 +483,6 @@ window.api = {
   fetchPlayerPts,
   getTopPlayersLive,
   getMapLeaderboardLive,
+  getSkillLeague,
+  getMasteryLevel,
 };
