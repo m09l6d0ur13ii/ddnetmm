@@ -114,6 +114,13 @@
     setTxt('stat-base', dict.player.statBase);
     setTxt('stat-skill', dict.player.statSkill);
     setTxt('stat-total', dict.player.statTotal);
+    setTxt('stat-base-sub', dict.player.statBaseSub || '');
+    setTxt('stat-skill-sub', dict.player.statSkillSub || '');
+    setTxt('stat-total-sub', dict.player.statTotalSub || '');
+    setTxt('rank-header-tag', dict.player.rankSublabel || 'Ранг');
+    setTxt('rank-header-label', dict.player.rankLabel || 'Ранг скилла');
+    setTxt('level-header-tag', dict.player.levelSublabel || 'Уровень');
+    setTxt('level-header-label', dict.player.levelLabel || 'Уровень мастерства');
     setTxt('table-map', dict.player.mapName || dict.player.map || 'Карта');
     setTxt('table-server', dict.player.mapServer || dict.player.category || 'Сервер');
     setTxt('table-time', dict.player.mapTime || dict.player.time || 'Время');
@@ -192,7 +199,11 @@
       if (masteryProgress) masteryProgress.style.width = `${mastery.progressPercent}%`;
       if (masteryTrack) masteryTrack.setAttribute('aria-valuenow', String(Math.round(mastery.progressPercent)));
       if (masteryNext) {
-        masteryNext.textContent = `${mastery.pointsToNext.toLocaleString()} ${masteryDict.toNext || 'Mastery PTS to next level'}`;
+        const nextLevelNum = mastery.level + 1;
+        const ptsRemaining = mastery.pointsToNext.toLocaleString();
+        masteryNext.textContent = currentLang === 'en'
+          ? `${ptsRemaining} PTS to Level ${nextLevelNum}`
+          : `${ptsRemaining} PTS до ${nextLevelNum} уровня`;
       }
 
       const shareBtn = document.getElementById('share-profile-btn');

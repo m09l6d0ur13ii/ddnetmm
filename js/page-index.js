@@ -45,6 +45,18 @@
     renderTable();
   };
 
+  function getSortValue(player, key) {
+    if (key === 'level') {
+      return player.newPtsTotal || 0;
+    }
+    if (key === 'league') {
+      const base = player.newPtsBase || 0;
+      const skill = player.newPtsSkill || 0;
+      return base > 0 ? skill / base : 0;
+    }
+    return player[key] || 0;
+  }
+
   // ── Render global leaderboard table ───────────────────────────────────────
   function renderTable() {
     const tbody = document.getElementById('leaderboard-body');
@@ -52,7 +64,7 @@
     tbody.innerHTML = '';
 
     if (playersData.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${getDict().home.empty}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">${getDict().home.empty}</td></tr>`;
       return;
     }
 
@@ -61,9 +73,26 @@
       mobileSelect.value = sortConfig.key;
     }
 
+    const setArrow = (id, targetKey) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (sortConfig.key === targetKey) {
+        el.textContent = sortConfig.direction === 'asc' ? '▲' : '▼';
+        el.style.opacity = '1';
+      } else {
+        el.textContent = '';
+        el.style.opacity = '0.3';
+      }
+    };
+    setArrow('icon-arrow-1', 'newPtsBase');
+    setArrow('icon-arrow-2', 'newPtsSkill');
+    setArrow('icon-arrow-3', 'newPtsTotal');
+    setArrow('icon-arrow-level', 'level');
+    setArrow('icon-arrow-league', 'league');
+
     const sortedData = [...playersData].sort((a, b) => {
-      const aVal = a[sortConfig.key] || 0;
-      const bVal = b[sortConfig.key] || 0;
+      const aVal = getSortValue(a, sortConfig.key);
+      const bVal = getSortValue(b, sortConfig.key);
       if (aVal !== bVal) {
         return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
       }
@@ -76,8 +105,8 @@
     sortedData.slice(0, renderLimit).forEach((p, idx) => {
       if (idx > 0) {
         const prevP = sortedData[idx - 1];
-        const prevVal = prevP[sortConfig.key] || 0;
-        const curVal = p[sortConfig.key] || 0;
+        const prevVal = getSortValue(prevP, sortConfig.key);
+        const curVal = getSortValue(p, sortConfig.key);
         if (curVal !== prevVal) {
           currentDisplayRank++;
         }
@@ -90,15 +119,37 @@
       let rankHtml = `<span class="global-rank-badge">#${currentDisplayRank}</span>`;
       if (currentDisplayRank <= 3) rankHtml = `<span class="global-rank-badge ranking-position-${currentDisplayRank}">#${currentDisplayRank}</span>`;
 
+      const mastery = p.masteryLevel || window.api.getMasteryLevel(p.newPtsTotal || 0);
+      const league = p.skillLeague || window.api.getSkillLeague(p.newPtsBase || 0, p.newPtsSkill || 0);
+      const dict = getDict();
+      const rankDict = (dict.player && dict.player.skillLeague) || {};
+      const leagueName = rankDict[league.id] || league.id;
+
       const staticBadge = p.isStatic ? `<span title="${currentLang === 'en' ? 'Cached data' : 'Кэшированные данные'}" style="font-size:0.7em;color:#9a9a9a;margin-left:4px;">📦</span>` : '';
+
+      const ptsToNextText = currentLang === 'en'
+        ? `${mastery.pointsToNext.toLocaleString()} PTS to Level ${mastery.level + 1}`
+        : `${mastery.pointsToNext.toLocaleString()} PTS до ${mastery.level + 1} ур.`;
+
+      const levelBadgeHtml = `
+        <div class="mastery-level-pill transition-all" title="${ptsToNextText} (${Math.floor(mastery.progressPercent)}%)">
+          <span class="level-pill-tag">LVL ${mastery.level}</span>
+          <div class="level-pill-track">
+            <div class="level-pill-bar" style="width:${mastery.progressPercent}%"></div>
+          </div>
+        </div>
+      `;
+      const leagueBadgeHtml = `<span class="skill-league-badge skill-league-${league.id} text-xs px-2.5 py-0.5">${escapeHtml(leagueName)}</span>`;
 
       tr.innerHTML = `
         <td class="p-4">${rankHtml}</td>
         <td class="p-4 font-bold text-lg">
-          <a href="/player?name=${encodeURIComponent(p.name)}" class="text-white hover:text-blue-400 transition-colors">
+          <a href="/player?name=${encodeURIComponent(p.name)}" class="text-white hover:text-amber-400 transition-colors">
             ${escapeHtml(p.name)}
           </a>${staticBadge}
         </td>
+        <td class="p-4 text-center">${levelBadgeHtml}</td>
+        <td class="p-4 text-center">${leagueBadgeHtml}</td>
         <td class="p-4 text-right font-mono text-emerald-400/80">${(p.newPtsBase || 0).toLocaleString()}</td>
         <td class="p-4 text-right font-mono text-purple-400/80">${(p.newPtsSkill || 0).toLocaleString()}</td>
         <td class="p-4 text-right font-mono font-bold text-amber-400 text-lg">${(p.newPtsTotal || 0).toLocaleString()}</td>
@@ -200,6 +251,8 @@
     setTxt('home-leaderboard-title', dict.home.leaderboardTitle);
     setTxt('table-rank', dict.home.tableRank);
     setTxt('table-player', dict.home.tablePlayer);
+    setTxt('table-level', dict.home.tableLevel || (currentLang === 'en' ? 'Level' : 'Уровень'));
+    setTxt('table-league', dict.home.tableLeague || (currentLang === 'en' ? 'Rank' : 'Ранг'));
     setTxt('table-base', dict.home.tableBase);
     setTxt('table-skill', dict.home.tableSkill);
     setTxt('table-total', dict.home.tableTotal);

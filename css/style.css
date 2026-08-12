@@ -1856,7 +1856,7 @@ a:hover {
     text-align: left !important;
   }
 
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5),
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(7),
   .page-player .premium-table-row td:nth-child(1),
   .page-player .premium-table-row td:nth-child(6),
   .page-map .premium-table-row td:nth-child(5),
@@ -1872,14 +1872,22 @@ a:hover {
   }
 
   .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(3)::before {
-    content: "Base";
+    content: "Level";
   }
 
   .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(4)::before {
-    content: "Skill";
+    content: "League";
   }
 
   .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5)::before {
+    content: "Base";
+  }
+
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(6)::before {
+    content: "Skill";
+  }
+
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(7)::before {
     content: "Total";
   }
 
@@ -1974,9 +1982,9 @@ a:hover {
     width: 100%;
   }
 
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(3),
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(4),
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5) {
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5),
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(6),
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(7) {
     grid-column: span 2;
     flex-direction: column;
     justify-content: center;
@@ -1989,20 +1997,20 @@ a:hover {
     font-variant-numeric: tabular-nums;
   }
 
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(3)::before,
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(4)::before,
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5)::before {
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5)::before,
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(6)::before,
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(7)::before {
     color: #ffffff;
     font-size: 0.72rem;
     line-height: 1;
   }
 
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(3),
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(4) {
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5),
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(6) {
     border-right: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(5) {
+  .page-home #leaderboard-body:not(.banlist-mode) .premium-table-row td:nth-child(7) {
     background: rgba(255, 165, 0, 0.08);
   }
 
@@ -3414,8 +3422,115 @@ table thead th {
   padding: 1.25rem !important;
 }
 
+.player-hero-name,
 .page-player #player-name {
-  overflow-wrap: anywhere;
+  font-size: clamp(2rem, 5vw, 4.2rem) !important;
+  font-weight: 900;
+  line-height: 1.05 !important;
+  letter-spacing: -0.04em;
+  color: #f6f2e9 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: none !important;
+  white-space: normal;
+  max-width: 100%;
+}
+
+.player-badges-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .player-badges-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.player-badge-card {
+  min-height: 5.2rem;
+  background: rgba(15, 17, 21, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  transition: border-color 0.25s, transform 0.25s ease;
+}
+
+.player-badge-card:hover {
+  border-color: rgba(255, 157, 46, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.badge-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-card-tag {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.badge-card-sublabel {
+  color: #85878d;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* ========================= Mastery Level Pill Badge ========================= */
+.mastery-level-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.6rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(15, 23, 42, 0.82));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  cursor: help;
+  user-select: none;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.mastery-level-pill:hover {
+  border-color: rgba(52, 211, 153, 0.85);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.level-pill-tag {
+  color: #34d399;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.level-pill-track {
+  width: 2.2rem;
+  height: 0.35rem;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.level-pill-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+  transition: width 0.3s ease;
 }
 
 .page-player .player-table-scroll {

@@ -154,7 +154,9 @@
             <option value="newPtsTotal">Total Mastery</option>
             <option value="newPtsSkill">Skill PTS</option>
             <option value="newPtsBase">Base PTS</option>
-            <option value="rank">Место</option>
+            <option value="level">Уровень / Level</option>
+            <option value="league">Ранг / Skill League</option>
+            <option value="rank">Место / Rank</option>
           </select>
         </div>
 
@@ -167,6 +169,14 @@
                   <div class="flex items-center gap-1" id="table-rank"></div>
                 </th>
                 <th class="p-4 font-semibold" id="table-player"></th>
+                <th class="p-4 font-semibold text-center cursor-pointer hover:text-white transition-colors"
+                  onclick="requestSort('level')">
+                  <div class="flex items-center justify-center gap-1"><span id="table-level"></span> <span id="icon-arrow-level"></span></div>
+                </th>
+                <th class="p-4 font-semibold text-center cursor-pointer hover:text-white transition-colors"
+                  onclick="requestSort('league')">
+                  <div class="flex items-center justify-center gap-1"><span id="table-league"></span> <span id="icon-arrow-league"></span></div>
+                </th>
                 <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('newPtsBase')">
                   <div class="flex items-center justify-end gap-1"><span id="table-base"></span> <span
