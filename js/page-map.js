@@ -173,7 +173,53 @@
         document.getElementById('map-name').textContent     = data.mapName;
         document.getElementById('val-tbest').textContent    = formatTime(data.tBest);
         document.getElementById('val-s').textContent        = data.s.toFixed(2);
+        
+        if (window.api.getMapAverageTime) {
+          const avgTime = window.api.getMapAverageTime(data.leaderboard);
+          document.getElementById('val-avg').textContent = avgTime ? formatTime(avgTime) : '—';
+        }
+        
         setupMapPreview(data.mapName);
+
+        const renderDecayChart = () => {
+          const chartContainer = document.getElementById('map-decay-chart-container');
+          const wrapper = document.getElementById('map-decay-svg-wrapper');
+          if (!chartContainer || !wrapper || !data.tBest || !data.s) return;
+          
+          const mapInfoObj = (window.mapsData || []).find(m => (m.map || m.name || '').toLowerCase() === data.mapName.toLowerCase());
+          const mapBasePts = mapInfoObj ? (mapInfoObj.points || 0) : 0;
+          if (mapBasePts === 0) return; 
+
+          chartContainer.classList.remove('hidden');
+
+          const wrPts = Math.floor(mapBasePts * 5.0);
+          const midPts = Math.floor((mapBasePts * 5.0) * Math.exp(-data.s * 0.5));
+          document.getElementById('val-decay-wr').textContent = '+' + wrPts;
+          document.getElementById('val-decay-mid').textContent = '+' + midPts;
+
+          const w = 400;
+          const h = 180;
+          let pathD = `M 0,${h} `;
+          let first = true;
+          for (let x = 0; x <= w; x += 10) {
+            const ratio = 1.0 + (x / w) * 1.5; 
+            const pts = (mapBasePts * 5.0) * Math.exp(-data.s * (ratio - 1));
+            const y = h - (pts / wrPts) * (h - 30) - 15;
+            if (first) {
+              pathD += `L ${x},${y} `;
+              first = false;
+            } else {
+              pathD += `L ${x},${y} `;
+            }
+          }
+          
+          wrapper.innerHTML = `
+            <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}">
+              <path d="${pathD}" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          `;
+        };
+        renderDecayChart();
 
         // Render Personal Record Card if myNickname is set
         const renderMyRecordCard = () => {
@@ -215,7 +261,7 @@
                     <div class="text-sm text-slate-300 font-medium">${t.myRecordNotFinished || 'Карта ещё не пройдена вашим никнеймом'}</div>
                   </div>
                 </div>
-                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold transition-all">Открыть мой профиль</a>
+                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold transition-all">${t.myProfileBtn || 'Мой профиль 👤'}</a>
               </div>
             `;
             card.classList.remove('hidden');
@@ -264,8 +310,8 @@
             <div class="mt-3 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-300 text-xs sm:text-sm font-semibold flex items-center gap-3">
               <span class="text-xl shrink-0">⚠️</span>
               <div>
-                <strong>${currentLang === 'en' ? 'Solo finish on Team map!' : 'Вы прошли эту карту соло (без команды)!'}</strong>
-                <p class="text-rose-200/80 font-normal mt-0.5">${currentLang === 'en' ? 'According to DDNet Map Mastery rules, Skill PTS on team servers are awarded ONLY for Duo/Team finishes. No bonus PTS are given for solo finishes — you should practice teamplay!' : 'По правилам DDNet Map Mastery на командных серверах бонусные очки Skill PTS начисляются только за совместное (Duo/Team) прохождение. Вам стоит больше тренировать командную игру!'}</p>
+                <strong>${t.myRecordSoloWarningTitle || (currentLang === 'en' ? 'Solo finish on Team map!' : 'Вы прошли эту карту соло (без команды)!')}</strong>
+                <p class="text-rose-200/80 font-normal mt-0.5">${t.myRecordSoloWarningDesc || (currentLang === 'en' ? 'According to DDNet Map Mastery rules, Skill PTS on team servers are awarded ONLY for Duo/Team finishes. No bonus PTS are given for solo finishes — you should practice teamplay!' : 'По правилам DDNet Map Mastery на командных серверах бонусные очки Skill PTS начисляются только за совместное (Duo/Team) прохождение. Вам стоит больше тренировать командную игру!')}</p>
               </div>
             </div>
           ` : '';
@@ -277,10 +323,10 @@
                   <div class="w-10 h-10 rounded-xl ${isSoloOnTeamMap ? 'bg-rose-500/20 border-rose-500/40 text-rose-400' : 'bg-amber-500/20 border-amber-500/40 text-amber-400'} border flex items-center justify-center font-bold text-lg shrink-0">${isSoloOnTeamMap ? '🚫' : '⭐'}</div>
                   <div>
                     <div class="text-xs font-bold ${isSoloOnTeamMap ? 'text-rose-400' : 'text-amber-400'} uppercase tracking-widest">${t.myRecordTitle || 'Ваш личный результат'} — <a href="/player?name=${encodeURIComponent(myNick)}" class="underline hover:text-amber-300">${escapeHtml(myNick)}</a></div>
-                    <div class="text-lg font-black text-white font-mono">#${rank} место в мире ${isSoloOnTeamMap ? '<span class="text-xs text-rose-400 font-bold ml-1">(Соло)</span>' : ''}</div>
+                    <div class="text-lg font-black text-white font-mono">#${rank} ${t.myRecordRankInWorld || (currentLang === 'en' ? 'global rank' : 'место в мире')} ${isSoloOnTeamMap ? '<span class="text-xs text-rose-400 font-bold ml-1">(' + (t.soloRuns || 'Solo') + ')</span>' : ''}</div>
                   </div>
                 </div>
-                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 ${isSoloOnTeamMap ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40' : 'bg-amber-500 hover:bg-amber-600 text-slate-950'} rounded-xl text-xs font-extrabold transition-all shadow-md">Мой профиль 👤</a>
+                <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 ${isSoloOnTeamMap ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40' : 'bg-amber-500 hover:bg-amber-600 text-slate-950'} rounded-xl text-xs font-extrabold transition-all shadow-md">${t.myProfileBtn || 'Мой профиль 👤'}</a>
               </div>
 
               ${warningHtml}
@@ -470,6 +516,41 @@
         } else {
           if (dummyTabsContainer) dummyTabsContainer.classList.add('hidden');
           renderLeaderboardRows(data.leaderboard);
+        }
+
+        const mapYieldCalcInput = document.getElementById('calc-time-input');
+        const mapYieldCalcResult = document.getElementById('calc-yield-result');
+        if (mapYieldCalcInput && mapYieldCalcResult) {
+          const parseTimeInputToSeconds = (val) => {
+            if (!val) return 0;
+            const parts = val.split(':');
+            if (parts.length === 2) {
+              const m = parseInt(parts[0], 10) || 0;
+              const s = parseFloat(parts[1]) || 0;
+              return m * 60 + s;
+            } else if (parts.length === 3) {
+              const h = parseInt(parts[0], 10) || 0;
+              const m = parseInt(parts[1], 10) || 0;
+              const s = parseFloat(parts[2]) || 0;
+              return h * 3600 + m * 60 + s;
+            }
+            return parseFloat(val) || 0;
+          };
+
+          mapYieldCalcInput.addEventListener('input', (e) => {
+            const timeInSecs = parseTimeInputToSeconds(e.target.value);
+            const curTbest = data.tBest || 0;
+            const curStrictness = data.s || 2.0;
+            const curBasePts = (mapInfo && mapInfo.points) ? mapInfo.points : 0;
+            if (timeInSecs > 0 && curTbest > 0) {
+              const ratio = timeInSecs / curTbest;
+              const decay = Math.exp(-curStrictness * (Math.max(1, ratio) - 1));
+              const total = Math.floor(curBasePts * 5.0 * decay);
+              mapYieldCalcResult.textContent = `+${total} Skill PTS`;
+            } else {
+              mapYieldCalcResult.textContent = '0';
+            }
+          });
         }
 
         document.getElementById('loading').classList.add('hidden');

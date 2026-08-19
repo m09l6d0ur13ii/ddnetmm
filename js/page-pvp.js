@@ -182,6 +182,27 @@
 
     commonMaps.sort((a, b) => b.timeDiff - a.timeDiff);
 
+    // --- Win Probability Prediction ---
+    const probContainer = document.getElementById('h2h-probability-container');
+    if (probContainer && window.api.calculateWinProbability) {
+      const prob = window.api.calculateWinProbability(d1, d2);
+      
+      document.getElementById('prob-p1-name').textContent = d1.name;
+      document.getElementById('prob-p2-name').textContent = d2.name;
+      
+      const prob1 = Math.round(prob[0] * 100);
+      const prob2 = Math.round(prob[1] * 100);
+      
+      document.getElementById('prob-p1-val').textContent = prob1 + '%';
+      document.getElementById('prob-p2-val').textContent = prob2 + '%';
+      
+      document.getElementById('prob-bar-p1').style.width = prob1 + '%';
+      document.getElementById('prob-bar-p2').style.width = prob2 + '%';
+      
+      probContainer.classList.remove('hidden');
+      probContainer.classList.add('flex');
+    }
+
     document.getElementById('p1-card-name').textContent  = d1.name;
     document.getElementById('p1-card-total').textContent = d1.newPtsTotal.toLocaleString() + ' PTS';
     document.getElementById('p1-card-base').textContent  = '+' + d1.newPtsBase.toLocaleString();

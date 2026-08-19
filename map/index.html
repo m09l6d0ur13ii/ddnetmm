@@ -122,7 +122,7 @@
         <span id="enriched-banner-text"></span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="metric-card glass-panel p-6 flex items-center gap-6 transition-transform cursor-default">
           <div class="metric-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
@@ -150,6 +150,41 @@
             <div class="text-3xl font-bold font-mono text-white drop-shadow-md" id="val-s"></div>
           </div>
         </div>
+        <!-- Average Time Card -->
+        <div class="metric-card glass-panel p-6 flex items-center gap-6 transition-transform cursor-default">
+          <div class="metric-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="color:#ffa500;">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </div>
+          <div class="metric-copy">
+            <div class="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-1" id="stat-avg">Avg Time</div>
+            <div class="text-3xl font-bold font-mono text-white drop-shadow-md" id="val-avg">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Points Decay Curve -->
+      <div id="map-decay-chart-container" class="glass-panel mt-6 p-6 flex flex-col md:flex-row items-center gap-6 hidden border border-white/[0.05]">
+        <div class="flex-1 w-full text-center md:text-left">
+          <h2 class="text-2xl font-bold mb-2 text-primary" id="decay-chart-title" data-i18n="map.decayTitle">Points Decay Curve</h2>
+          <p class="text-slate-400 text-sm mb-4" id="decay-chart-desc" data-i18n="map.decayDesc">Визуализация зависимости получаемых Skill PTS от времени прохождения.</p>
+          <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto md:mx-0">
+            <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+              <div class="text-[0.65rem] text-slate-500 font-bold uppercase tracking-widest">WR Time (1.0x)</div>
+              <div class="text-emerald-400 font-bold font-mono text-lg" id="val-decay-wr"></div>
+            </div>
+            <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+              <div class="text-[0.65rem] text-slate-500 font-bold uppercase tracking-widest">At 1.5x WR</div>
+              <div class="text-amber-400 font-bold font-mono text-lg" id="val-decay-mid"></div>
+            </div>
+          </div>
+        </div>
+        <div id="map-decay-svg-wrapper" class="shrink-0" style="width:100%; max-width:400px; height:180px;"></div>
       </div>
 
       <!-- Toggle Tabs for Dummy Maps (Solo vs Team) -->
@@ -162,7 +197,7 @@
             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span>Solo Runs</span> (<span id="count-dummy-solo">0</span>)
+          <span data-i18n="map.soloRuns">Solo Runs</span> (<span id="count-dummy-solo">0</span>)
         </button>
         <button type="button" id="tab-dummy-team" aria-pressed="false"
           style="padding:0.4em 1em;font-size:1.1em;font-weight:bold;background:rgba(255,255,255,0.05);color:#9a9a9a;border:1px solid rgba(255,255,255,0.15);cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;">
@@ -173,7 +208,7 @@
             <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
           </svg>
-          <span>Team Runs</span> (<span id="count-dummy-team">0</span>)
+          <span data-i18n="map.teamRuns">Team Runs</span> (<span id="count-dummy-team">0</span>)
         </button>
       </div>
 
@@ -213,33 +248,20 @@
   </div>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer"
-          class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="../data/maps.js?v=a1601ea"></script>
+  <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../data/map_records.js?v=a1601ea"></script>
+  <script defer src="../data/map_stats.js?v=a1601ea"></script>
+  <script defer src="../data/blacklist.js?v=a1601ea"></script>
   <script defer src="../data/map_enriched.js?v=a1601ea"></script>
   <script defer src="../data/map_min_times.js?v=a1601ea"></script>
-  <script defer src="../data/ignored_finishes.js?v=a1601ea"></script>
-  <script defer src="../data/blacklist.js?v=a1601ea"></script>
+  <script defer src="../data/custom_map_records.js?v=a1601ea"></script>
   <script defer src="../js/i18n.js"></script>
-  <script defer src="../js/api.js?v=20260809-1"></script>
+  <script defer src="../js/api.js?v=20260810-2"></script>
   <script defer src="../js/app.js?v=20260807-3"></script>
-  <script defer src="../js/page-map.js?v=20260809-3"></script>
+  <script defer src="../js/page-map.js?v=20260809-2"></script>
 </body>
 
 </html>

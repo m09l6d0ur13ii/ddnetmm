@@ -5,5 +5,7 @@ window.mapMinTimesData = {
   "exanimus": 456,
   "1hook": 88,
   "linear": 42,
-  "rush clouds 2": 30
+  "rush clouds 2": 30,
+  "grandma": 970,
+  "yoko 2.1": 45
 };

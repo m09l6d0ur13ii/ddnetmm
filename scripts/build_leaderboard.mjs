@@ -76,7 +76,7 @@ function calculatePoints(playerData, mapRecords) {
 async function run() {
     console.log("1. Fetching all maps...");
     const allMaps = await fetchJson('https://ddstats.tw/maps/json');
-    
+
     let mapRecords = {};
     if (fs.existsSync(MAP_RECORDS_FILE)) {
         mapRecords = JSON.parse(fs.readFileSync(MAP_RECORDS_FILE, 'utf8'));
@@ -85,14 +85,14 @@ async function run() {
     console.log("2. Collecting unique players from top 100 of all maps...");
     const playerAppearances = {};
     const CONCURRENCY = 10;
-    
+
     for (let i = 0; i < allMaps.length; i += CONCURRENCY) {
         const batch = allMaps.slice(i, i + CONCURRENCY);
         const promises = batch.map(async (m) => {
             try {
                 const data = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(m.map)}`);
                 if (!data) return;
-                
+
                 const processRankings = (rankings) => {
                     if (!rankings) return;
                     for (const r of rankings) {
@@ -101,10 +101,10 @@ async function run() {
                         }
                     }
                 };
-                
+
                 processRankings(data.rankings);
                 processRankings(data.team_rankings);
-                
+
                 // Update map record just in case
                 if (data.rankings && data.rankings.length > 0) {
                     mapRecords[m.map] = data.rankings[0].time;
@@ -117,9 +117,9 @@ async function run() {
         if (i % 500 === 0 && i > 0) console.log(`   ...scanned ${i} maps`);
         await new Promise(r => setTimeout(r, 100)); // rate limit
     }
-    
+
     fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
-    
+
     // Filter players who appear at least 3 times in top 100s to reduce the pool slightly (removes one-hit wonders on dead maps)
     const uniquePlayers = Object.keys(playerAppearances).filter(name => playerAppearances[name] >= 3);
     console.log(`Found ${Object.keys(playerAppearances).length} unique players. Filtered to ${uniquePlayers.length} core players (>= 3 top100s).`);
@@ -127,14 +127,14 @@ async function run() {
 
     console.log("3. Fetching player stats and building leaderboard...");
     const leaderboard = [];
-    
+
     for (let i = 0; i < uniquePlayers.length; i += CONCURRENCY) {
         const batch = uniquePlayers.slice(i, i + CONCURRENCY);
         const promises = batch.map(async (name) => {
             try {
                 const data = await fetchJson(`https://ddstats.tw/player/json?player=${encodeURIComponent(name)}`);
                 if (!data || data.error) return;
-                
+
                 const pts = calculatePoints(data, mapRecords);
                 if (pts.newPtsTotal > 0) {
                     leaderboard.push({ name, ...pts });
@@ -152,7 +152,7 @@ async function run() {
         }
         await new Promise(r => setTimeout(r, 100));
     }
-    
+
     leaderboard.sort((a, b) => b.newPtsTotal - a.newPtsTotal);
     fs.writeFileSync(LEADERBOARD_FILE, JSON.stringify(leaderboard, null, 2));
     console.log(`Leaderboard successfully generated with ${leaderboard.length} players!`);

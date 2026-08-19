@@ -38,9 +38,9 @@ async function run() {
         console.error("Failed to load maps list!");
         return;
     }
-    
+
     console.log(`Found ${allMaps.length} maps. Starting crawler...`);
-    
+
     let records = {};
     if (fs.existsSync(DATA_FILE)) {
         try {
@@ -52,16 +52,16 @@ async function run() {
     }
 
     const CONCURRENCY = 10;
-    
+
     for (let i = 0; i < allMaps.length; i += CONCURRENCY) {
         const batch = allMaps.slice(i, i + CONCURRENCY);
-        
+
         const promises = batch.map(async (m) => {
             const mapName = m.map;
             if (records[mapName] !== undefined) {
                 return; // Already cached
             }
-            
+
             try {
                 const mapData = await fetchJson(`https://ddstats.tw/map/json?map=${encodeURIComponent(mapName)}`);
                 if (mapData && mapData.rankings && mapData.rankings.length > 0) {
@@ -73,19 +73,19 @@ async function run() {
                 console.error(`Failed to fetch ${mapName}:`, err.message);
             }
         });
-        
+
         await Promise.all(promises);
-        
+
         // Save progress every 100 maps
         if (i > 0 && i % 100 === 0) {
             console.log(`Processed ${i} / ${allMaps.length} maps...`);
             fs.writeFileSync(DATA_FILE, JSON.stringify(records, null, 2));
         }
-        
+
         // Small delay to prevent rate limit (10 reqs per 200ms = 50 reqs/sec)
         await new Promise(r => setTimeout(r, 200));
     }
-    
+
     fs.writeFileSync(DATA_FILE, JSON.stringify(records, null, 2));
     console.log(`Crawler finished! Saved ${Object.keys(records).length} records to ${DATA_FILE}`);
 }

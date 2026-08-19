@@ -126,6 +126,25 @@
         <!-- Winner Banner -->
         <div id="h2h-winner-banner" class="hidden text-center p-4 rounded-xl border font-bold text-lg sm:text-xl transition-all"></div>
 
+        <!-- Win Probability Predictor -->
+        <div id="h2h-probability-container" class="mt-4 mb-6 p-4 rounded-xl border border-blue-500/30 bg-blue-900/10 hidden items-center justify-between gap-4">
+          <div class="text-center w-1/3">
+            <div id="prob-p1-val" class="text-2xl font-black text-blue-400">50%</div>
+            <div id="prob-p1-name" class="text-xs text-slate-400 truncate">Player 1</div>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="text-[0.65rem] uppercase tracking-widest text-slate-500 font-bold mb-2">Matchmaking Prediction</div>
+            <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex">
+              <div id="prob-bar-p1" class="h-full bg-blue-500 transition-all duration-1000" style="width: 50%"></div>
+              <div id="prob-bar-p2" class="h-full bg-red-500 transition-all duration-1000" style="width: 50%"></div>
+            </div>
+          </div>
+          <div class="text-center w-1/3">
+            <div id="prob-p2-val" class="text-2xl font-black text-red-400">50%</div>
+            <div id="prob-p2-name" class="text-xs text-slate-400 truncate">Player 2</div>
+          </div>
+        </div>
+
         <!-- Scoreboard & Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           
@@ -236,21 +255,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../data/map_records.js?v=a1601ea"></script>

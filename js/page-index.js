@@ -10,21 +10,21 @@
   let currentTab = 'global';
 
   function getLoadMoreBtnText(limit) {
-    if (limit < 250) return currentLang === 'en' ? 'Show Top 250' : 'Показать Топ 250';
-    if (limit < 500) return currentLang === 'en' ? 'Show Top 500' : 'Показать Топ 500';
-    return currentLang === 'en' ? 'Show full leaderboard' : 'Показать весь топ';
+    const dict = getDict();
+    if (limit < 250) return dict.home.showTop250 || (currentLang === 'en' ? 'Show Top 250' : 'Показать Топ 250');
+    if (limit < 500) return dict.home.showTop500 || (currentLang === 'en' ? 'Show Top 500' : 'Показать Топ 500');
+    return dict.home.showFull || (currentLang === 'en' ? 'Show full leaderboard' : 'Показать весь топ');
   }
 
   function updateExpansionControls() {
+    const dict = getDict();
     const container = document.getElementById('load-more-container');
     const button = document.getElementById('load-more-btn');
     const info = document.getElementById('pagination-info');
     const shown = displayLimit === Infinity ? playersData.length : Math.min(displayLimit, playersData.length);
 
     if (info) {
-      info.textContent = currentLang === 'en'
-        ? `Showing Top ${shown}`
-        : `Показан Топ ${shown}`;
+      info.textContent = `${dict.home.showingTop || (currentLang === 'en' ? 'Showing Top' : 'Показан Топ')} ${shown}`;
     }
     if (button) button.textContent = getLoadMoreBtnText(displayLimit);
     if (container) {
@@ -187,6 +187,18 @@
       });
       setTxt('status-message', '');
 
+      // Populate Global Stats Dashboard
+      if (window.leaderboardData && window.mapsData) {
+        setTxt('stat-total-players', window.leaderboardData.length.toLocaleString());
+        setTxt('stat-total-wrs', window.mapsData.length.toLocaleString());
+        const totalBase = window.mapsData.reduce((sum, m) => sum + (m.pBase || 0), 0);
+        const maxSkill = window.mapsData.reduce((sum, m) => sum + Math.round((m.pBase || 0) * (m.s || 1.0)), 0);
+        setTxt('stat-total-skill', (totalBase + maxSkill).toLocaleString());
+        
+        const dash = document.getElementById('global-dashboard');
+        if (dash) dash.classList.remove('hidden');
+      }
+
       // Warn if all data is cached (DDStats unreachable)
       const allStatic = playersData.length > 0 && playersData.every(p => p.isStatic);
       if (allStatic) {
@@ -245,7 +257,7 @@
     setTxt('home-about-btn', dict.home.aboutBtn);
     setTxt('home-compare-btn', dict.home.compareBtn);
     setTxt('player-scan-label', currentLang === 'en' ? 'PLAYER SEARCH / 01' : 'ПОИСК ИГРОКА / 01');
-    setTxt('global-telemetry-label', currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ');
+    setTxt('global-telemetry-label', dict.home.globalTelemetryLabel || (currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ'));
 
     setTxt('search-title', currentLang === 'en' ? 'Find Player' : 'Найти игрока');
     setTxt('home-leaderboard-title', dict.home.leaderboardTitle);
@@ -262,25 +274,19 @@
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) loadMoreBtn.textContent = getLoadMoreBtnText(displayLimit);
 
-    const toolsText = currentLang === 'en' ? {
-      title: 'Search and compare', label: 'PLAYER TOOLS', mapTitle: 'Find a map',
-      mapDesc: 'Open map records, times and leaderboard', mapPlaceholder: 'Map name, e.g. Kintaro', mapBtn: 'Open map',
-      pvpDesc: 'Open the comparison tool and see who performs better', pvpBtn: 'Go and try'
-    } : {
-      title: 'Поиск и сравнение', label: 'ИНСТРУМЕНТЫ ИГРОКА', mapTitle: 'Найти карту',
-      mapDesc: 'Откройте рекорды, времена и рейтинг карты', mapPlaceholder: 'Название карты, например Kintaro', mapBtn: 'Открыть карту',
-      pvpDesc: 'Откройте сравнение и узнайте, кто показывает лучший результат', pvpBtn: 'Перейти и попробовать'
-    };
-    setTxt('home-tools-title', toolsText.title);
-    setTxt('home-tools-label', toolsText.label);
-    setTxt('home-map-search-title', toolsText.mapTitle);
-    setTxt('home-map-search-desc', toolsText.mapDesc);
-    setTxt('home-map-search-btn', toolsText.mapBtn);
-    setTxt('home-pvp-desc', toolsText.pvpDesc);
-    setTxt('home-pvp-btn', toolsText.pvpBtn);
+    setTxt('home-tools-title', dict.home.toolsTitle || (currentLang === 'en' ? 'Player Tools' : 'Инструменты игрока'));
+    setTxt('home-tools-label', dict.home.toolsLabel || (currentLang === 'en' ? 'SEARCH & COMPARE' : 'ПОИСК И СРАВНЕНИЕ'));
+    setTxt('home-map-search-title', dict.home.mapSearchTitle || (currentLang === 'en' ? 'Find a map' : 'Найти карту'));
+    setTxt('home-map-search-desc', dict.home.mapSearchDesc || (currentLang === 'en' ? 'Open map records, times and leaderboard' : 'Откройте рекорды, времена и рейтинг карты'));
+    setTxt('home-map-search-btn', dict.home.mapSearchBtn || (currentLang === 'en' ? 'Open Map' : 'Открыть карту'));
+    setTxt('home-pvp-desc', dict.home.pvpDesc || (currentLang === 'en' ? 'Compare head-to-head performance on common maps' : 'Сравните результаты двух игроков на общих картах'));
+    setTxt('home-pvp-btn', dict.home.pvpBtn || (currentLang === 'en' ? 'Open PvP ⚔️' : 'Открыть PvP ⚔️'));
+    setTxt('home-tas-title', dict.home.tasTitle || (currentLang === 'en' ? 'TAS Ban List' : 'TAS Ban List'));
+    setTxt('home-tas-desc', dict.home.tasDesc || (currentLang === 'en' ? 'Registry of banned players and purged records' : 'Реестр заблокированных читеров и аннулированных ТАС-рекордов'));
+    setTxt('home-tas-btn', dict.home.tasBtn || (currentLang === 'en' ? 'Open Ban List 🛡️' : 'Открыть список 🛡️'));
 
     const homeMapInput = document.querySelector('.home-map-search-form input');
-    if (homeMapInput) homeMapInput.placeholder = toolsText.mapPlaceholder;
+    if (homeMapInput) homeMapInput.placeholder = dict.home.mapSearchPlaceholder || (currentLang === 'en' ? 'Search map (e.g. Kintaro)...' : 'Поиск карты (например: Kintaro)...');
 
     const homeMapForm = document.querySelector('.home-map-search-form');
     if (homeMapForm) {

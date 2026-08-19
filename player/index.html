@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,22 @@
   <link rel="canonical" href="https://ddnetmm.ru/player">
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
-      (function(m,e,t,r,i,k,a){
-          m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-          m[i].l=1*new Date();
-          for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-          k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111228237', 'ym');
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=111228237', 'ym');
 
-      ym(111228237, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    ym(111228237, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
   </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
   <!-- /Yandex.Metrika counter -->
 
   <meta name="description" content="Профиль игрока DDNet Map Mastery — статистика Base PTS, Skill PTS и Total Mastery.">
-  
+
   <!-- Open Graph / Facebook / Discord -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Player Profile — DDNet Map Mastery">
@@ -51,6 +54,7 @@
     }
   </script>
 </head>
+
 <body class="page-player site-loading antialiased text-slate-200 font-sans min-h-screen">
   <div id="site-loader" role="status" aria-live="polite" aria-label="Загрузка сайта">
     <div class="site-loader-card">
@@ -72,7 +76,7 @@
       <h2 class="text-2xl font-bold text-red-500" id="player-error"></h2>
     </div>
 
-    <div id="content" class="inner-page-shell hidden space-y-4">
+    <div id="content" class="inner-page-shell hidden space-y-6">
       <div id="breadcrumbs-container"></div>
 
       <!-- Header Card -->
@@ -80,17 +84,22 @@
         <div class="flex flex-col xl:flex-row items-start justify-between gap-6">
           <!-- Main Player Info -->
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 min-w-0 flex-1">
-            <div id="player-tee-container" class="shrink-0 flex items-center justify-center min-w-[96px] min-h-[96px] p-2 bg-black/30 border border-white/10 rounded-2xl shadow-inner"></div>
+            <div id="player-tee-container"
+              class="shrink-0 flex items-center justify-center min-w-[96px] min-h-[96px] p-2 bg-black/30 border border-white/10 rounded-2xl shadow-inner">
+            </div>
             <div class="space-y-3 min-w-0 flex-1">
               <div class="flex items-center gap-3 flex-wrap">
                 <h1 class="player-hero-name" id="player-name"></h1>
-                <button
-                  id="share-profile-btn"
+                <button id="share-profile-btn"
                   style="align-self:flex-start;margin-top:0.4rem;padding:0.45em 0.9em;font-size:0.82em;background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.4);font-weight:700;border-radius:0.6rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.4em;transition:all 0.2s;"
                   onmouseover="this.style.background='#ffa500';this.style.color='#111';"
-                  onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                  onmouseout="this.style.background='rgba(255,165,0,0.15)';this.style.color='#ffa500';">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </svg>
                   <span id="share-profile-text"></span>
                 </button>
               </div>
@@ -100,8 +109,11 @@
                 <!-- Skill Rank Card -->
                 <div class="player-badge-card p-3 flex flex-col justify-between">
                   <div class="badge-card-header flex items-center justify-between mb-1.5">
-                    <span class="badge-card-tag text-[0.7rem] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5" id="rank-header-tag"></span>
-                    <span class="badge-card-sublabel text-[0.68rem] text-slate-400 font-semibold" id="rank-header-label"></span>
+                    <span
+                      class="badge-card-tag text-[0.7rem] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5"
+                      id="rank-header-tag"></span>
+                    <span class="badge-card-sublabel text-[0.68rem] text-slate-400 font-semibold"
+                      id="rank-header-label"></span>
                   </div>
                   <div id="player-skill-league" class="player-skill-league" aria-live="polite"></div>
                 </div>
@@ -109,8 +121,11 @@
                 <!-- Mastery Level Card -->
                 <div class="player-badge-card p-3 flex flex-col justify-between">
                   <div class="badge-card-header flex items-center justify-between mb-1.5">
-                    <span class="badge-card-tag text-[0.7rem] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5" id="level-header-tag"></span>
-                    <span class="badge-card-sublabel text-[0.68rem] text-slate-400 font-semibold" id="level-header-label"></span>
+                    <span
+                      class="badge-card-tag text-[0.7rem] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5"
+                      id="level-header-tag"></span>
+                    <span class="badge-card-sublabel text-[0.68rem] text-slate-400 font-semibold"
+                      id="level-header-label"></span>
                   </div>
                   <div id="player-mastery-level" class="mastery-level-card" aria-live="polite">
                     <div class="mastery-level-head">
@@ -128,36 +143,163 @@
           </div>
 
           <!-- Summary Metric Cards -->
-          <div class="player-metrics grid grid-cols-1 sm:grid-cols-3 gap-4 w-full xl:w-auto shrink-0">
-            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[140px]">
-              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider" id="stat-base"></div>
+          <div class="player-metrics grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 w-full xl:w-auto shrink-0">
+            <!-- Base PTS -->
+            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[120px] cursor-help"
+              data-i18n-title="player.metricsTooltipBase">
+              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider"><span id="stat-base"></span></div>
               <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-400" id="val-base"></div>
               <div class="text-[0.68rem] text-slate-400 font-medium mt-0.5" id="stat-base-sub"></div>
             </div>
-            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[140px]">
-              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider" id="stat-skill"></div>
+            <!-- Skill PTS -->
+            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[120px] cursor-help"
+              data-i18n-title="player.metricsTooltipSkill">
+              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider"><span id="stat-skill"></span></div>
               <div class="text-2xl sm:text-3xl font-black font-mono text-purple-400" id="val-skill"></div>
               <div class="text-[0.68rem] text-slate-400 font-medium mt-0.5" id="stat-skill-sub"></div>
             </div>
-            <div class="gold-card p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[150px]">
-              <div class="text-xs text-amber-400 font-bold uppercase tracking-wider" id="stat-total"></div>
+            <!-- Total PTS -->
+            <div class="gold-card p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[130px] cursor-help"
+              data-i18n-title="player.metricsTooltipTotal">
+              <div class="text-xs text-amber-400 font-bold uppercase tracking-wider"><span id="stat-total"></span></div>
               <div class="text-3xl sm:text-4xl font-black font-mono text-amber-400" id="val-total"></div>
               <div class="text-[0.68rem] text-amber-200/70 font-medium mt-0.5" id="stat-total-sub"></div>
             </div>
+            <!-- Completion Card -->
+            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[120px] relative overflow-hidden cursor-help"
+              data-i18n-title="player.completionTooltip">
+              <div class="text-xs text-cyan-400 font-bold uppercase tracking-wider" data-i18n="player.completion">Прохождение</div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-400 z-10" id="val-completion">0%</div>
+              <div class="text-[0.68rem] text-cyan-200/70 font-medium mt-0.5 z-10" id="val-completion-maps">0</div>
+              <div class="absolute bottom-0 left-0 h-1 bg-cyan-500/20 w-full">
+                <div id="val-completion-bar" class="h-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-all duration-1000 w-0"></div>
+              </div>
+            </div>
+            <!-- Playtime Card -->
+            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[120px] cursor-help"
+              data-i18n-title="player.playtimeTooltip">
+              <div class="text-xs text-rose-400 font-bold uppercase tracking-wider" data-i18n="player.grind">Гринд</div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-rose-400" id="val-playtime">0h</div>
+              <div class="text-[0.68rem] text-rose-200/70 font-medium mt-0.5" data-i18n="player.onlineHours">Часов онлайна</div>
+            </div>
+            <!-- Hardest Map Card -->
+            <div class="metric-card glass-panel p-5 flex flex-col justify-center items-center gap-1 text-center min-w-[120px] cursor-help"
+              data-i18n-title="player.hardestMapTooltip">
+              <div class="text-xs text-orange-400 font-bold uppercase tracking-wider" data-i18n="player.hardestMap">Пик сложности</div>
+              <div class="text-sm sm:text-base font-black font-mono text-white mt-1 w-full truncate px-1" id="val-hardest-map">-</div>
+              <div class="mt-1 flex items-center justify-center gap-2">
+                <span id="val-hardest-server" class="px-1.5 py-[1px] rounded bg-white/10 text-[0.65rem]">-</span>
+                <span id="val-hardest-pts" class="text-orange-400 font-bold text-xs">0 PTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Badges Row -->
+        <div id="player-badges-container" class="pt-4 border-t border-white/5 hidden">
+          <div id="player-badges" class="flex flex-wrap gap-3">
+            <!-- Populated by JS -->
           </div>
         </div>
       </div>
 
+      <!-- Player Radar Chart -->
+      <div id="player-radar-container"
+        class="glass-panel p-6 md:p-8 border border-white/[0.05] hidden flex-col md:flex-row gap-6 items-center">
+        <div class="flex-1 w-full text-center md:text-left">
+          <h2 class="text-2xl font-bold mb-4 text-amber-400" data-i18n="player.radarTitle">Радар & Стабильность</h2>
+          <p class="text-slate-400 text-sm mb-6" data-i18n="player.radarDesc">Визуальный анализ метрик игрока: Speed, Grind, Endurance, Skill и постоянство результатов.</p>
+
+          <div class="inline-block glass-panel px-4 py-3 border border-indigo-500/30 bg-indigo-900/20 text-center rounded-xl cursor-help"
+            data-i18n-title="player.consistencyTooltip">
+            <div class="text-[0.65rem] text-indigo-400 font-bold uppercase tracking-wider mb-1" data-i18n="player.consistencyLabel">Consistency Score</div>
+            <div class="text-3xl font-black font-mono text-indigo-300" id="val-consistency">--%</div>
+            <div class="text-xs text-indigo-200/50 font-medium mt-1" data-i18n="player.consistencySub">Оценка стабильности времени</div>
+          </div>
+        </div>
+        <div id="player-radar-svg" class="shrink-0" style="width: 250px; height: 250px; position: relative;"></div>
+      </div>
+
+      <!-- Mod Specialization -->
+      <div id="player-mod-spec-container"
+        class="glass-panel p-6 md:p-8 border border-white/[0.05] hidden">
+        <h2 class="text-2xl font-bold mb-4 text-purple-400" data-i18n="player.modSpecTitle">Специализация модов</h2>
+        <div id="mod-spec-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Recommended Underfarmed Maps -->
+      <div id="player-recommend-container"
+        class="glass-panel p-6 md:p-8 border border-white/[0.05] hidden">
+        <h2 class="text-2xl font-bold mb-1 text-emerald-400 flex items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+          </svg>
+          <span data-i18n="player.easyPtsTitle">Легкий PTS (Рекомендации)</span>
+        </h2>
+        <p class="text-slate-400 text-sm mb-6" data-i18n="player.easyPtsDesc">Список не пройденных вами карт, где можно заработать максимальное количество очков с минимальными усилиями.</p>
+        <div id="player-recommend-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Points History Chart -->
+      <div id="player-chart-container" class="glass-panel p-6 md:p-8 border border-white/[0.05] hidden">
+        <h2 class="text-2xl font-bold mb-4" id="player-chart-title" data-i18n="player.pointsHistory">Points History</h2>
+        <div id="player-chart-svg" style="width: 100%; height: 200px; position: relative;"></div>
+      </div>
+
+      <!-- Activity Heatmap -->
+      <div id="player-heatmap-container"
+        class="glass-panel p-6 md:p-8 border border-white/[0.05] hidden">
+        <h2 class="text-2xl font-bold mb-4 text-cyan-400" data-i18n="player.activityHeatmap">Activity Heatmap</h2>
+        <div id="player-heatmap-svg"
+          class="overflow-x-auto overflow-y-hidden whitespace-nowrap hide-scrollbar pb-2">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Player Rival -->
+      <div id="player-rival-container"
+        class="glass-panel p-6 md:p-8 border border-rose-500/[0.2] bg-rose-900/[0.05] hidden flex justify-between items-center flex-wrap gap-4">
+        <div>
+          <h2 class="text-2xl font-bold mb-1 text-rose-400 flex items-center gap-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+              </path>
+            </svg>
+            <span data-i18n="player.rivalTitle">Предлагаемый соперник</span>
+          </h2>
+          <p class="text-slate-400 text-sm" data-i18n="player.rivalDesc">Игрок с похожим рангом PTS. Бросьте вызов!</p>
+        </div>
+        <div class="flex items-center gap-4 bg-black/40 px-4 py-3 rounded-lg border border-white/10">
+          <div class="text-right">
+            <div id="rival-name" class="font-bold text-white text-lg"></div>
+            <div id="rival-pts" class="text-rose-400 font-mono text-sm font-bold"></div>
+          </div>
+          <a id="rival-pvp-btn" href="#"
+            class="btn-primary py-2 px-4 bg-rose-600 hover:bg-rose-500 border-none shadow-[0_0_15px_rgba(225,29,72,0.3)]"
+            data-i18n="player.pvpMatchup">
+            PvP Matchup
+          </a>
+        </div>
+      </div>
+
       <!-- Maps List -->
-      <div class="glass-panel overflow-hidden mt-12">
-        <div class="p-6 md:p-8 border-b border-white/[0.05] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="glass-panel overflow-hidden">
+        <div
+          class="p-6 md:p-8 border-b border-white/[0.05] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <h2 class="text-2xl font-bold flex items-center gap-3" id="player-maps-title"></h2>
 
           <!-- Control Panel: Filter, Search, Sort -->
           <div class="flex items-center gap-3 flex-wrap w-full md:w-auto">
             <!-- Server Category Filter -->
-            <select id="map-filter-server" style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;font-weight:600;outline:none;">
-              <option value="ALL">Все категории / All</option>
+            <select id="map-filter-server"
+              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid #ffa500;font-weight:600;outline:none;">
+              <option value="ALL" data-i18n="player.filterAllCategories">Все категории</option>
               <option value="Novice">Novice</option>
               <option value="Moderate">Moderate</option>
               <option value="Brutal">Brutal</option>
@@ -170,20 +312,17 @@
             </select>
 
             <!-- Search Map Input -->
-            <input
-              type="text"
-              id="map-search-input"
-              placeholder="Поиск карты / Search map..."
-              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);width:12em;box-sizing:border-box;font-weight:600;"
-            />
+            <input type="text" id="map-search-input" data-i18n-placeholder="player.filterSearchPlaceholder" placeholder="Поиск карты..."
+              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);width:12em;box-sizing:border-box;font-weight:600;" />
 
             <!-- Sort Option -->
-            <select id="map-sort-order" style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);font-weight:600;outline:none;">
-              <option value="skill-desc">Skill Bonus ↓</option>
-              <option value="skill-asc">Skill Bonus ↑</option>
-              <option value="time-asc">Время / Time ↑</option>
-              <option value="time-desc">Время / Time ↓</option>
-              <option value="name-asc">Название A-Z</option>
+            <select id="map-sort-order"
+              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);font-weight:600;outline:none;">
+              <option value="skill-desc" data-i18n="player.sortSkillDesc">Skill Bonus ↓</option>
+              <option value="skill-asc" data-i18n="player.sortSkillAsc">Skill Bonus ↑</option>
+              <option value="time-asc" data-i18n="player.sortTimeAsc">Время ↑</option>
+              <option value="time-desc" data-i18n="player.sortTimeDesc">Время ↓</option>
+              <option value="name-asc" data-i18n="player.sortNameAsc">Название A-Z</option>
             </select>
           </div>
         </div>
@@ -210,21 +349,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="../data/maps.js?v=a1601ea"></script>
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
@@ -240,4 +365,5 @@
   <script defer src="../js/tee-skin-renderer.umd.js"></script>
   <script defer src="../js/page-player.js?v=20260810-2"></script>
 </body>
+
 </html>

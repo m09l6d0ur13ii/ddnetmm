@@ -4970,3 +4970,34 @@ select option {
   outline: 3px solid #ffffff;
   outline-offset: 3px;
 }
+
+/* 60fps Animation for Achievement Cards */
+.foil-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.foil-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: sweep 4s infinite cubic-bezier(0.19, 1, 0.22, 1);
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+

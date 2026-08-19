@@ -20,7 +20,7 @@
   <noscript><div><img src="https://mc.yandex.ru/watch/111228237" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
   <meta name="description" content="Настройки пользователя DDNet Map Mastery — персональный никнейм, язык интерфейса и избранные игроки.">
-  
+
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
@@ -40,7 +40,7 @@
 
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
     <div class="inner-page-shell max-w-3xl mx-auto space-y-8">
-      
+
       <div id="breadcrumbs-container"></div>
 
       <header class="inner-page-hero space-y-2">
@@ -54,7 +54,7 @@
 
       <!-- Settings Form Card -->
       <form id="settings-form" class="glass-panel p-6 sm:p-10 space-y-8 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md">
-        
+
         <!-- Field 1: My Nickname -->
         <section class="space-y-3 border-b border-white/[0.08] pb-6">
           <label for="settings-mynick-input" class="block font-bold text-white text-lg flex items-center gap-2">
@@ -96,7 +96,7 @@
           <label class="block font-bold text-white text-lg flex items-center gap-2">
             <span>⭐</span> <span id="lbl-settings-favs">Избранные игроки</span>
           </label>
-          
+
           <div class="flex items-center gap-2 max-w-md">
             <input
               type="text"
@@ -109,6 +109,7 @@
               type="button"
               id="settings-fav-add-btn"
               class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition-all"
+              data-i18n="settings.addBtn"
             >
               + Добавить
             </button>
@@ -140,24 +141,11 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/components/autocomplete.js?v=1"></script>
   <script defer src="../js/app.js?v=20260807-3"></script>
   <script defer src="../js/page-settings.js"></script>
 </body>

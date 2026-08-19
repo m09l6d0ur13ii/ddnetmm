@@ -20,7 +20,7 @@
   <!-- /Yandex.Metrika counter -->
 
   <meta name="description" content="Почему DDNet Map Mastery лучше оригинальной системы — математическая формула, экспоненциальная кривая Skill Bonus и 5-уровневая защита от TAS-ботов.">
-  
+
   <!-- Open Graph / Facebook / Discord -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="About — DDNet Map Mastery">
@@ -99,7 +99,7 @@
   <!-- Main Content -->
   <main class="min-h-screen p-4 md:p-8 animate-fade-in">
     <div class="inner-page-shell max-w-4xl mx-auto space-y-8">
-      
+
       <div id="breadcrumbs-container"></div>
 
       <!-- Header Banner -->
@@ -369,6 +369,9 @@
         <!-- Dummy & Team Modes -->
         <section class="space-y-4 pt-6 border-t border-slate-800">
           <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2" id="dummy-sec-title">
+        <!-- Dummy & Team Modes -->
+        <section class="space-y-4 pt-6 border-t border-slate-800">
+          <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2" id="dummy-sec-title">
           </h2>
           <p class="text-slate-300 text-sm leading-relaxed" id="dummy-sec-intro">
           </p>
@@ -400,28 +403,15 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/components/autocomplete.js?v=1"></script>
   <script defer src="../js/app.js?v=20260807-3"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderHeader('about');
-      
+
       const dict = getDict();
       document.documentElement.lang = currentLang;
 
@@ -433,18 +423,18 @@
           { label: aboutLabel }
         ]);
       }
-      
+
       const titlePrefix = currentLang === 'en' ? 'Why is the new system ' : 'Почему новая система ';
       const titleSuffix = currentLang === 'en' ? 'better?' : 'лучше?';
       document.getElementById('about-title-container').innerHTML = `${titlePrefix}<span class="text-primary">${titleSuffix}</span>`;
-      
+
       document.getElementById('about-intro').textContent = dict.about.intro;
-      
+
       document.getElementById('card1-title').textContent = dict.about.card1.title;
       document.getElementById('card1-p1').textContent = dict.about.card1.p1;
       document.getElementById('card1-p2').textContent = dict.about.card1.p2;
       document.getElementById('card1-p3').textContent = dict.about.card1.p3;
-      
+
       document.getElementById('card2-title').textContent = dict.about.card2.title;
       document.getElementById('card2-p1').textContent = dict.about.card2.p1;
       document.getElementById('card2-p2').textContent = dict.about.card2.p2;

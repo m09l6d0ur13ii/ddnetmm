@@ -125,11 +125,11 @@
           <div class="home-action-heading">
             <span class="home-action-icon" aria-hidden="true">🛡️</span>
             <div>
-              <h3>TAS Ban List</h3>
-              <p>Реестр заблокированных игроков и аннулированных рекордов</p>
+              <h3 id="home-tas-title">TAS Ban List</h3>
+              <p id="home-tas-desc"></p>
             </div>
           </div>
-          <a href="/tas" class="home-action-link">Открыть список</a>
+          <a href="/tas" class="home-action-link" id="home-tas-btn"></a>
         </article>
       </div>
     </section>
@@ -149,14 +149,14 @@
         </div>
 
         <div class="mobile-leaderboard-sort">
-          <label for="mobile-ranking-sort" id="mobile-ranking-sort-label">Сортировка</label>
+          <label for="mobile-ranking-sort" id="mobile-ranking-sort-label" data-i18n="home.mobileSortLabel">Сортировка</label>
           <select id="mobile-ranking-sort" onchange="requestSort(this.value)">
-            <option value="newPtsTotal">Total Mastery</option>
-            <option value="newPtsSkill">Skill PTS</option>
-            <option value="newPtsBase">Base PTS</option>
-            <option value="level">Уровень / Level</option>
-            <option value="league">Ранг / Skill League</option>
-            <option value="rank">Место / Rank</option>
+            <option value="newPtsTotal" data-i18n="home.mobileSortOptions.newPtsTotal">Total Mastery</option>
+            <option value="newPtsSkill" data-i18n="home.mobileSortOptions.newPtsSkill">Skill PTS</option>
+            <option value="newPtsBase" data-i18n="home.mobileSortOptions.newPtsBase">Base PTS</option>
+            <option value="level" data-i18n="home.mobileSortOptions.level">Level</option>
+            <option value="league" data-i18n="home.mobileSortOptions.league">Skill League</option>
+            <option value="rank" data-i18n="home.mobileSortOptions.rank">Rank</option>
           </select>
         </div>
 
@@ -171,26 +171,38 @@
                 <th class="p-4 font-semibold" id="table-player"></th>
                 <th class="p-4 font-semibold text-center cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('level')">
-                  <div class="flex items-center justify-center gap-1"><span id="table-level"></span> <span id="icon-arrow-level"></span></div>
+                  <div class="flex items-center justify-center gap-1 cursor-help" data-i18n-title="home.tableLevelTooltip">
+                    <span id="table-level"></span> 
+                    <span id="icon-arrow-level"></span>
+                  </div>
                 </th>
                 <th class="p-4 font-semibold text-center cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('league')">
-                  <div class="flex items-center justify-center gap-1"><span id="table-league"></span> <span id="icon-arrow-league"></span></div>
+                  <div class="flex items-center justify-center gap-1 cursor-help" data-i18n-title="home.tableLeagueTooltip">
+                    <span id="table-league"></span> 
+                    <span id="icon-arrow-league"></span>
+                  </div>
                 </th>
                 <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('newPtsBase')">
-                  <div class="flex items-center justify-end gap-1"><span id="table-base"></span> <span
-                      id="icon-arrow-1"></span></div>
+                  <div class="flex items-center justify-end gap-1 cursor-help" data-i18n-title="home.tableBaseTooltip">
+                    <span id="table-base"></span> 
+                    <span id="icon-arrow-1"></span>
+                  </div>
                 </th>
                 <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('newPtsSkill')">
-                  <div class="flex items-center justify-end gap-1"><span id="table-skill"></span> <span
-                      id="icon-arrow-2"></span></div>
+                  <div class="flex items-center justify-end gap-1 cursor-help" data-i18n-title="home.tableSkillTooltip">
+                    <span id="table-skill"></span> 
+                    <span id="icon-arrow-2"></span>
+                  </div>
                 </th>
                 <th class="p-4 font-semibold text-right cursor-pointer hover:text-white transition-colors"
                   onclick="requestSort('newPtsTotal')">
-                  <div class="flex items-center justify-end gap-1 text-emerald-400"><span id="table-total"></span> <span
-                      id="icon-arrow-3"></span></div>
+                  <div class="flex items-center justify-end gap-1 text-emerald-400 cursor-help" data-i18n-title="home.tableTotalTooltip">
+                    <span id="table-total"></span> 
+                    <span id="icon-arrow-3"></span>
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -218,9 +230,9 @@
     <section class="max-w-7xl mx-auto mt-12 mb-8 space-y-6" id="faq-section">
       <div class="section-heading flex items-center gap-3 border-b border-white/[0.08] pb-3">
         <span class="text-xs font-mono uppercase tracking-widest text-amber-500 font-bold bg-amber-500/10 px-2.5 py-1 rounded">02</span>
-        <h2 class="text-2xl font-bold text-white" id="home-faq-title">База знаний & FAQ</h2>
+        <h2 class="text-2xl font-bold text-white" id="home-faq-title" data-i18n="faq.title"></h2>
         <span class="h-px flex-1 bg-white/[0.08]"></span>
-        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest">KNOWLEDGE BASE</span>
+        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest" data-i18n="home.faqSubtitle">KNOWLEDGE BASE</span>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6" id="faq-accordion-grid">
@@ -244,7 +256,7 @@
 
       <div class="text-center pt-2">
         <a href="/about#scoring" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
-          <span id="faq-more-link">Узнать больше о математической формуле и алгоритмах защиты</span> &rarr;
+          <span id="faq-more-link" data-i18n="home.faqMore"></span> &rarr;
         </a>
       </div>
     </section>
@@ -252,22 +264,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer"
-          class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
   <script defer src="data/maps.js?v=a1601ea"></script>
   <script defer src="data/unique_players.js?v=a1601ea"></script>

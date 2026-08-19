@@ -29,7 +29,7 @@ async function run() {
         const lb = JSON.parse(fs.readFileSync(LEADERBOARD_JSON, 'utf8'));
         const lowerList = new Set(list.map(b => b.toLowerCase()));
         const filteredLb = lb.filter(p => !lowerList.has(String(p.name).toLowerCase()));
-        
+
         fs.writeFileSync(LEADERBOARD_JSON, JSON.stringify(filteredLb, null, 2));
         fs.writeFileSync(LEADERBOARD_JS, 'window.leaderboardData = ' + JSON.stringify(filteredLb) + ';');
         console.log(`Filtered leaderboard: ${lb.length} -> ${filteredLb.length} players. Saved leaderboard.js.`);

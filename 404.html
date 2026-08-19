@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Страница не найдена (404) — DDNet Map Mastery</title>
+  <title>Page Not Found (404) — DDNet Map Mastery</title>
   <link rel="canonical" href="https://ddnetmm.ru/404">
-  
+
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
       (function(m,e,t,r,i,k,a){
@@ -24,7 +24,7 @@
   <script src="js/tailwindcss.js"></script>
   <link rel="stylesheet" href="css/style.css?v=20260810-mobile-1">
 </head>
-<body class="page-404 bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="page-404 bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
   <div id="header-container"></div>
 
   <main class="flex-grow flex items-center justify-center p-4 sm:p-8">
@@ -32,36 +32,36 @@
       <div id="breadcrumbs-container"></div>
 
       <div class="error-card glass-panel p-8 sm:p-10 text-center space-y-6 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-2xl">
-        <div class="error-code text-7xl font-black text-amber-500 font-mono tracking-tight drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">404</div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Страница не найдена</h1>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Запрашиваемая страница внутри проекта DDNet Map Mastery не существует или была перемещена. Вы можете воспользоваться поиском или перейти к основным разделам сайта:
+        <div class="error-code text-7xl font-black text-amber-500 font-mono tracking-tight drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]" id="err-code">404</div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white" id="err-title">Страница не найдена</h1>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed" id="err-desc">
+          Запрашиваемая страница внутри проекта DDNet Map Mastery не существует или была перемещена.
         </p>
 
         <!-- Navigation Quick Links -->
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-          <a href="/" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+          <a href="/" id="err-link-home" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
             🏠 Главная
           </a>
-          <a href="/about" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+          <a href="/maps" id="err-link-maps" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+            🗺️ База карт
+          </a>
+          <a href="/about" id="err-link-about" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
             📖 О проекте
           </a>
-          <a href="/pvp" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+          <a href="/pvp" id="err-link-pvp" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
             ⚔️ PvP Дуэль
           </a>
-          <a href="/compare" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+          <a href="/compare" id="err-link-compare" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
             📊 Сравнение
           </a>
-          <a href="/tas" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
+          <a href="/tas" id="err-link-tas" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
             🛡️ TAS Ban List
-          </a>
-          <a href="/privacy" class="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-amber-500/10 text-slate-200 hover:text-white font-medium text-xs sm:text-sm transition-all text-center">
-            🔒 Privacy
           </a>
         </div>
 
         <div class="pt-4 border-t border-white/10">
-          <a href="/" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+          <a href="/" id="err-btn-home" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]">
             На главную страницу
           </a>
         </div>
@@ -69,36 +69,47 @@
     </div>
   </main>
 
-  <footer class="border-t border-white/[0.08] bg-slate-900/60 py-8 text-slate-400 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-medium text-slate-300">DDNet Map Mastery &copy; 2026</p>
-        <p class="text-slate-500 text-xs mt-1">Альтернативный рейтинг и система очков для сообщества DDNet.</p>
-      </div>
-      <div class="flex flex-wrap items-center gap-6">
-        <a href="/" class="hover:text-white transition-colors">Главная</a>
-        <a href="/about" class="hover:text-white transition-colors">О проекте</a>
-        <a href="/compare" class="hover:text-white transition-colors">Сравнение</a>
-        <a href="/privacy" class="hover:text-white transition-colors">Политика конфиденциальности</a>
-        <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-container"></div>
 
+  <script src="data/maps.js"></script>
   <script defer src="js/i18n.js"></script>
+  <script defer src="js/components/autocomplete.js?v=1"></script>
   <script defer src="js/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      initLang();
       renderHeader();
+      renderFooter();
       const dict = getDict();
+      const err = dict.error404 || {};
+      const isEn = currentLang === 'en';
+
+      document.title = `${err.title || 'Page Not Found'} (404) — DDNet Map Mastery`;
+
       if (typeof renderBreadcrumbs === 'function') {
-        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Главная';
-        const errLabel = dict.breadcrumbs ? dict.breadcrumbs.error404 : 'Ошибка 404';
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : (isEn ? 'Home' : 'Главная');
+        const errLabel = dict.breadcrumbs ? dict.breadcrumbs.error404 : (isEn ? 'Error 404' : 'Ошибка 404');
         renderBreadcrumbs([
           { label: homeLabel, url: '/' },
           { label: errLabel }
         ]);
       }
+
+      const setTxt = (id, text) => {
+        const el = document.getElementById(id);
+        if (el && text) el.textContent = text;
+      };
+
+      setTxt('err-code', err.code || '404');
+      setTxt('err-title', err.title || (isEn ? 'Page Not Found' : 'Страница не найдена'));
+      setTxt('err-desc', err.desc || (isEn ? 'The requested page does not exist or has been moved.' : 'Запрашиваемая страница не существует или была перемещена.'));
+      setTxt('err-link-home', err.home || (isEn ? '🏠 Home' : '🏠 Главная'));
+      setTxt('err-link-maps', isEn ? '🗺️ Maps Explorer' : '🗺️ База карт');
+      setTxt('err-link-about', err.about || (isEn ? '📖 About' : '📖 О проекте'));
+      setTxt('err-link-pvp', err.pvp || (isEn ? '⚔️ PvP Duel' : '⚔️ PvP Дуэль'));
+      setTxt('err-link-compare', err.compare || (isEn ? '📊 System Comparison' : '📊 Сравнение'));
+      setTxt('err-link-tas', err.tas || (isEn ? '🛡️ TAS Ban List' : '🛡️ TAS Ban List'));
+      setTxt('err-btn-home', err.backHome || (isEn ? 'Back to Homepage' : 'На главную страницу'));
     });
   </script>
 </body>
