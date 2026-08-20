@@ -94,7 +94,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.textContent = val;
     }
   });
@@ -103,7 +103,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.innerHTML = val;
     }
   });
@@ -112,7 +112,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.placeholder = val;
     }
   });
@@ -121,7 +121,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('[data-i18n-title]').forEach(el => {
     const key = el.getAttribute('data-i18n-title');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.title = val;
     }
   });
@@ -130,7 +130,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
     const key = el.getAttribute('data-i18n-aria-label');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.setAttribute('aria-label', val);
     }
   });
@@ -139,7 +139,7 @@ function applyTranslations(root = document) {
   root.querySelectorAll('option[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const val = t(key);
-    if (val !== undefined && typeof val === 'string') {
+    if (val !== undefined && typeof val === 'string' && val.trim() !== '') {
       el.textContent = val;
     }
   });
@@ -187,12 +187,292 @@ function renderFooter(activePage = '') {
     }
   }
 }
-window.renderFooter = renderFooter;
+function getSettings() {
+  try {
+    const raw = localStorage.getItem('ddnetmm_settings');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        myNickname: String(parsed.myNickname || ''),
+        favorites: Array.isArray(parsed.favorites) ? parsed.favorites : []
+      };
+    }
+  } catch (e) { }
+  return { myNickname: '', favorites: [] };
+}
+window.getSettings = getSettings;
+
+function saveSettings(settings) {
+  try {
+    const prev = getSettings();
+    const merged = { ...prev, ...settings };
+    localStorage.setItem('ddnetmm_settings', JSON.stringify(merged));
+  } catch (e) { }
+}
+window.saveSettings = saveSettings;
+
+let tempFavorites = [];
+
+function renderSettingsModal() {
+  let modal = document.getElementById('settings-modal');
+  if (modal) return modal;
+
+  const dict = getDict();
+  const s = dict.settings || {};
+  const isEn = currentLang === 'en';
+
+  const modalHtml = `
+    <div id="settings-modal" class="hidden fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+      <div class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-slate-950/95 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_40px_rgba(245,158,11,0.15)] space-y-6 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+              ⚙️
+            </div>
+            <div>
+              <h2 id="settings-modal-title" class="text-xl font-black text-white tracking-tight">${s.title || (isEn ? 'User Settings' : 'Настройки пользователя')}</h2>
+              <p class="text-xs text-slate-400 mt-0.5">${s.subtitle || (isEn ? 'Personalize profile, language and bookmarks' : 'Персонализация профиля, языка и быстрых закладок')}</p>
+            </div>
+          </div>
+          <button type="button" id="settings-modal-close-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition-all cursor-pointer" aria-label="Close">
+            &times;
+          </button>
+        </div>
+
+        <!-- Form content -->
+        <div class="space-y-5">
+          
+          <!-- My Nickname -->
+          <div class="space-y-2">
+            <label for="settings-nick-input" class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+              ${s.myNickLabel || (isEn ? 'My DDNet Nickname' : 'Мой никнейм в DDNet')}
+            </label>
+            <div class="relative">
+              <input type="text" id="settings-nick-input" placeholder="${s.myNickPlaceholder || (isEn ? 'Enter your in-game nickname...' : 'Введите ваш игровой ник...')}" class="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:bg-white/[0.08] text-white font-medium text-sm outline-none transition-all placeholder:text-slate-500" autocomplete="off">
+            </div>
+            <p class="text-[0.7rem] text-slate-400 leading-relaxed">
+              ${s.myNickHelp || (isEn ? 'Specify your nickname for 1-click header access ("My Profile") and personal record badges on map pages.' : 'Укажите ваш ник для быстрого перехода в профиль из шапки сайта ("Мой профиль") и отображения персональных результатов на картах.')}
+            </p>
+          </div>
+
+          <!-- Language Segmented Toggle -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+              ${s.langLabel || (isEn ? 'Interface Language' : 'Язык интерфейса')}
+            </label>
+            <div class="grid grid-cols-2 gap-2 p-1 bg-white/[0.03] border border-white/10 rounded-2xl">
+              <button type="button" id="settings-lang-ru" class="py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${currentLang === 'ru' ? 'bg-amber-500 text-slate-950 shadow-md font-black' : 'text-slate-400 hover:text-white'}">
+                <span>🇷🇺</span> <span>Русский (RU)</span>
+              </button>
+              <button type="button" id="settings-lang-en" class="py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${currentLang === 'en' ? 'bg-amber-500 text-slate-950 shadow-md font-black' : 'text-slate-400 hover:text-white'}">
+                <span>🇬🇧</span> <span>English (EN)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Favorite Players -->
+          <div class="space-y-2.5">
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+              <span>${s.favoritesLabel || (isEn ? 'Favorite Players' : 'Избранные игроки (быстрый доступ)')}</span>
+              <span id="settings-fav-count-badge" class="text-[0.65rem] text-amber-400 font-mono font-bold">0</span>
+            </label>
+            
+            <div class="flex gap-2">
+              <input type="text" id="settings-fav-input" placeholder="${s.favoritesPlaceholder || (isEn ? 'Add player to favorites...' : 'Добавить игрока в избранное...')}" class="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:bg-white/[0.08] text-white font-medium text-xs outline-none transition-all placeholder:text-slate-500" autocomplete="off">
+              <button type="button" id="settings-fav-add-btn" class="px-4 py-2.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer">
+                ${s.addBtn || '+ Добавить'}
+              </button>
+            </div>
+
+            <!-- Chips Container -->
+            <div id="settings-fav-chips" class="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="border-t border-white/10 pt-4 flex items-center justify-between gap-3">
+          <div id="settings-toast" class="text-xs font-bold text-emerald-400 hidden flex items-center gap-1.5">
+            <span>✓</span> <span>${s.savedNotice || (isEn ? 'Settings saved!' : 'Настройки сохранены!')}</span>
+          </div>
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" id="settings-cancel-btn" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-all cursor-pointer">
+              ${s.cancelBtn || (isEn ? 'Cancel' : 'Отмена')}
+            </button>
+            <button type="button" id="settings-save-btn" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer">
+              ${s.saveBtn || (isEn ? 'Save Settings' : 'Сохранить настройки')}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  modal = document.getElementById('settings-modal');
+
+  // Autocomplete bindings
+  if (window.setupPlayerAutocomplete) {
+    window.setupPlayerAutocomplete('settings-nick-input');
+    window.setupPlayerAutocomplete('settings-fav-input', () => {
+      addFavoriteFromInput();
+    });
+  }
+
+  // Event handlers
+  const closeBtn = document.getElementById('settings-modal-close-btn');
+  const cancelBtn = document.getElementById('settings-cancel-btn');
+  const saveBtn = document.getElementById('settings-save-btn');
+  const favAddBtn = document.getElementById('settings-fav-add-btn');
+  const favInput = document.getElementById('settings-fav-input');
+  const langRuBtn = document.getElementById('settings-lang-ru');
+  const langEnBtn = document.getElementById('settings-lang-en');
+
+  const addFavoriteFromInput = () => {
+    const val = favInput.value.trim();
+    if (!val) return;
+    if (!tempFavorites.some(f => f.toLowerCase() === val.toLowerCase())) {
+      tempFavorites.push(val);
+      if (window.api && typeof window.api.fetchPlayerPts === 'function') {
+        window.api.fetchPlayerPts(val).catch(() => {});
+      }
+      renderFavoriteChips();
+    }
+    favInput.value = '';
+  };
+
+  if (favAddBtn) favAddBtn.onclick = addFavoriteFromInput;
+  if (favInput) {
+    favInput.onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addFavoriteFromInput();
+      }
+    };
+  }
+
+  let selectedLang = currentLang;
+  if (langRuBtn) {
+    langRuBtn.onclick = () => {
+      selectedLang = 'ru';
+      langRuBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-md font-black';
+      langEnBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-400 hover:text-white';
+    };
+  }
+  if (langEnBtn) {
+    langEnBtn.onclick = () => {
+      selectedLang = 'en';
+      langEnBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-md font-black';
+      langRuBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-400 hover:text-white';
+    };
+  }
+
+  if (saveBtn) {
+    saveBtn.onclick = () => {
+      const nickVal = (document.getElementById('settings-nick-input')?.value || '').trim();
+      saveSettings({
+        myNickname: nickVal,
+        favorites: tempFavorites
+      });
+
+      tempFavorites.forEach(f => {
+        if (window.api && typeof window.api.fetchPlayerPts === 'function') {
+          window.api.fetchPlayerPts(f).catch(() => {});
+        }
+      });
+
+      const toast = document.getElementById('settings-toast');
+      if (toast) {
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2000);
+      }
+
+      if (typeof renderHeader === 'function') renderHeader();
+
+      setTimeout(() => {
+        closeSettingsModal();
+        if (selectedLang !== currentLang) {
+          setLang(selectedLang);
+        } else {
+          // Re-render local page hooks if applicable
+          if (typeof renderTable === 'function') renderTable();
+          if (typeof renderMapFavorites === 'function') renderMapFavorites();
+        }
+      }, 400);
+    };
+  }
+
+  if (closeBtn) closeBtn.onclick = closeSettingsModal;
+  if (cancelBtn) cancelBtn.onclick = closeSettingsModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeSettingsModal();
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeSettingsModal();
+    }
+  });
+
+  return modal;
+}
+
+function renderFavoriteChips() {
+  const container = document.getElementById('settings-fav-chips');
+  const countBadge = document.getElementById('settings-fav-count-badge');
+  if (!container) return;
+
+  if (countBadge) countBadge.textContent = tempFavorites.length;
+
+  if (tempFavorites.length === 0) {
+    container.innerHTML = `<span class="text-xs text-slate-500 italic py-1">${currentLang === 'en' ? 'No favorite players added yet' : 'Нет добавленных избранных игроков'}</span>`;
+    return;
+  }
+
+  container.innerHTML = tempFavorites.map((name, idx) => `
+    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all shadow-sm hover:border-amber-500/60">
+      <span>⭐</span>
+      <span>${escapeHtml(name)}</span>
+      <button type="button" onclick="removeFavoriteByIndex(${idx})" class="w-4 h-4 rounded-full bg-amber-500/20 hover:bg-rose-500/30 text-amber-300 hover:text-rose-300 flex items-center justify-center text-xs ml-0.5 transition-colors cursor-pointer" title="${currentLang === 'en' ? 'Remove' : 'Удалить'}">
+        &times;
+      </button>
+    </span>
+  `).join('');
+}
+
+window.removeFavoriteByIndex = function (index) {
+  if (index >= 0 && index < tempFavorites.length) {
+    tempFavorites.splice(index, 1);
+    renderFavoriteChips();
+  }
+};
 
 function openSettingsModal() {
-  window.location.href = '/settings';
+  const modal = renderSettingsModal();
+  const settings = getSettings();
+  const nickInput = document.getElementById('settings-nick-input');
+  if (nickInput) nickInput.value = settings.myNickname || '';
+
+  tempFavorites = [...(settings.favorites || [])];
+  renderFavoriteChips();
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 }
 window.openSettingsModal = openSettingsModal;
+
+function closeSettingsModal() {
+  const modal = document.getElementById('settings-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+window.closeSettingsModal = closeSettingsModal;
 
 const keyboardLayouts = {
   en: "`qwertyuiop[]asdfghjkl;'zxcvbnm,./",
@@ -490,16 +770,24 @@ function renderSettingsModal() {
             </div>
           </div>
 
-          <!-- Favorites List -->
-          <div class="space-y-2">
-            <label class="block text-sm font-bold text-amber-400">${t.favoritesLabel || 'Избранные игроки'}</label>
+          <!-- Favorites List & Add Input -->
+          <div class="space-y-3">
+            <label class="block text-sm font-bold text-amber-400">${t.favoritesLabel || (currentLang === 'en' ? 'Favorite Players (Quick Access)' : 'Избранные игроки (быстрый доступ)')}</label>
+            
+            <div class="flex items-center gap-2">
+              <input type="text" id="modal-add-fav-input" placeholder="${currentLang === 'en' ? 'Add player name...' : 'Имя игрока для избранного...'}" class="flex-1 bg-white/[0.04] border border-white/15 rounded-xl px-3.5 py-2 text-slate-100 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-xs" autocomplete="off">
+              <button type="button" id="modal-add-fav-btn" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md flex items-center gap-1 shrink-0 cursor-pointer" style="border-radius: 0.75rem;">
+                <span>➕</span> <span>${currentLang === 'en' ? 'Add' : 'Добавить'}</span>
+              </button>
+            </div>
+
             <div id="modal-favs-chips" class="flex flex-wrap gap-2 pt-1"></div>
           </div>
 
           <!-- Submit Buttons -->
           <div class="pt-4 border-t border-white/10 flex justify-end gap-3">
-            <button type="button" onclick="closeSettingsModal()" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 font-bold rounded-xl text-sm transition-all">${currentLang === 'en' ? 'Cancel' : 'Отмена'}</button>
-            <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)]">${t.saveBtn || 'Сохранить'}</button>
+            <button type="button" onclick="closeSettingsModal()" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-sm transition-all border border-white/10 cursor-pointer" style="border-radius: 0.85rem;">${currentLang === 'en' ? 'Cancel' : 'Отмена'}</button>
+            <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer" style="border-radius: 0.85rem;">${t.saveBtn || (currentLang === 'en' ? 'Save Settings' : 'Сохранить настройки')}</button>
           </div>
         </form>
 
@@ -521,6 +809,35 @@ function renderSettingsModal() {
       const inp = document.getElementById('modal-mynick-input');
       if (inp) inp.value = val;
     });
+    window.setupPlayerAutocomplete('modal-add-fav-input', (val) => {
+      const inp = document.getElementById('modal-add-fav-input');
+      if (inp) inp.value = val;
+    });
+  }
+
+  // Add Favorite Player button logic
+  const addFavBtn = document.getElementById('modal-add-fav-btn');
+  const addFavInp = document.getElementById('modal-add-fav-input');
+  const handleAddFav = () => {
+    if (!addFavInp) return;
+    const name = addFavInp.value.trim();
+    if (!name) return;
+    const currentFavs = [...(getSettings().favorites || [])];
+    if (!currentFavs.some(f => f.toLowerCase() === name.toLowerCase())) {
+      currentFavs.push(name);
+      saveSettings({ favorites: currentFavs });
+      populateSettingsModal();
+    }
+    addFavInp.value = '';
+  };
+  if (addFavBtn) addFavBtn.onclick = handleAddFav;
+  if (addFavInp) {
+    addFavInp.onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAddFav();
+      }
+    };
   }
 
   // Refresh data button click
@@ -974,10 +1291,10 @@ function renderHeader(activePage = 'home') {
 
         <!-- Header Tools & Settings -->
         <div class="site-header-tools flex items-center gap-2">
-          <a href="/settings" class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-slate-300 hover:text-amber-400 transition-all flex items-center gap-1.5 text-xs font-bold ${activePage === 'settings' ? 'text-amber-400 border-amber-500/50 bg-amber-500/10' : ''}" title="${h.settings || (isEn ? 'Settings' : 'Настройки')}" aria-label="${h.settings || 'Settings'}">
+          <button type="button" onclick="openSettingsModal()" class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-slate-300 hover:text-amber-400 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer" title="${h.settings || (isEn ? 'Settings' : 'Настройки')}" aria-label="${h.settings || 'Settings'}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             <span class="hidden md:inline">${h.settings || (isEn ? 'Settings' : 'Настройки')}</span>
-          </a>
+          </button>
         </div>
       </div>
     </header>

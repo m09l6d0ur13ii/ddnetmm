@@ -36,11 +36,11 @@
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
-  <script src="../js/tailwindcss.js"></script>
   <link rel="stylesheet" href="../css/style.css?v=20260810-mobile-1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script src="../js/tailwindcss.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -227,32 +227,32 @@
           <div class="grid md:grid-cols-2 gap-6 bg-slate-900/50 p-6 rounded-xl border border-white/10">
             <div class="space-y-4">
               <div>
-                <div class="flex justify-between text-xs text-slate-300 mb-1">
-                  <span id="label-calc-base">Base PTS</span>
-                  <span id="val-calc-base" class="font-mono text-primary font-bold">100 PTS</span>
+                <div class="flex justify-between text-xs text-slate-300 mb-1.5">
+                  <span id="label-calc-base" class="font-medium">Base PTS</span>
+                  <span id="val-calc-base" class="font-mono text-amber-400 font-bold">100 PTS</span>
                 </div>
-                <input type="range" id="slider-base" min="10" max="1000" step="10" value="100" class="w-full accent-amber-500 bg-slate-800 rounded">
+                <input type="range" id="slider-base" min="10" max="1000" step="10" value="100" class="calc-range-slider">
               </div>
               <div>
-                <div class="flex justify-between text-xs text-slate-300 mb-1">
-                  <span id="label-calc-wr">Мировой рекорд (WR)</span>
-                  <span id="val-calc-wr" class="font-mono text-primary font-bold">05:00</span>
+                <div class="flex justify-between text-xs text-slate-300 mb-1.5">
+                  <span id="label-calc-wr" class="font-medium">Мировой рекорд (WR)</span>
+                  <span id="val-calc-wr" class="font-mono text-amber-400 font-bold">05:00</span>
                 </div>
-                <input type="range" id="slider-wr" min="30" max="3600" step="10" value="300" class="w-full accent-amber-500 bg-slate-800 rounded">
+                <input type="range" id="slider-wr" min="30" max="3600" step="10" value="300" class="calc-range-slider">
               </div>
               <div>
-                <div class="flex justify-between text-xs text-slate-300 mb-1">
-                  <span id="label-calc-player-time">Время игрока</span>
-                  <span id="val-calc-player-time" class="font-mono text-primary font-bold">06:00</span>
+                <div class="flex justify-between text-xs text-slate-300 mb-1.5">
+                  <span id="label-calc-player-time" class="font-medium">Время игрока</span>
+                  <span id="val-calc-player-time" class="font-mono text-amber-400 font-bold">06:00</span>
                 </div>
-                <input type="range" id="slider-player-time" min="30" max="3600" step="10" value="360" class="w-full accent-amber-500 bg-slate-800 rounded">
+                <input type="range" id="slider-player-time" min="30" max="3600" step="10" value="360" class="calc-range-slider">
               </div>
               <div>
-                <div class="flex justify-between text-xs text-slate-300 mb-1">
-                  <span id="label-calc-strictness">Строгость (S)</span>
-                  <span id="val-calc-strictness" class="font-mono text-primary font-bold">2.0</span>
+                <div class="flex justify-between text-xs text-slate-300 mb-1.5">
+                  <span id="label-calc-strictness" class="font-medium">Строгость (S)</span>
+                  <span id="val-calc-strictness" class="font-mono text-purple-300 font-bold">2.00</span>
                 </div>
-                <input type="range" id="slider-strictness" min="1.0" max="4.0" step="0.1" value="2.0" class="w-full accent-amber-500 bg-slate-800 rounded">
+                <input type="range" id="slider-strictness" min="0.5" max="3.0" step="0.05" value="2.0" class="calc-range-slider">
               </div>
             </div>
 
@@ -366,9 +366,6 @@
           </div>
         </section>
 
-        <!-- Dummy & Team Modes -->
-        <section class="space-y-4 pt-6 border-t border-slate-800">
-          <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2" id="dummy-sec-title">
         <!-- Dummy & Team Modes -->
         <section class="space-y-4 pt-6 border-t border-slate-800">
           <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2" id="dummy-sec-title">
@@ -519,44 +516,96 @@
       }
 
       const formatCalcTime = (t) => {
-        const m = Math.floor(t / 60);
-        const s = Math.floor(t % 60);
+        const totalSec = Math.max(0, Math.round(t));
+        const m = Math.floor(totalSec / 60);
+        const s = totalSec % 60;
         return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
       };
 
       const updateCalculator = () => {
-        const base = parseInt(document.getElementById('slider-base').value, 10);
-        const wr = parseInt(document.getElementById('slider-wr').value, 10);
-        const pTime = parseInt(document.getElementById('slider-player-time').value, 10);
-        const s = parseFloat(document.getElementById('slider-strictness').value);
-        document.getElementById('val-calc-base').textContent = `${base} PTS`;
-        document.getElementById('val-calc-wr').textContent = formatCalcTime(wr);
-        document.getElementById('val-calc-player-time').textContent = formatCalcTime(pTime);
-        document.getElementById('val-calc-strictness').textContent = s.toFixed(2);
+        const baseEl = document.getElementById('slider-base');
+        const wrEl = document.getElementById('slider-wr');
+        const pTimeEl = document.getElementById('slider-player-time');
+        const sEl = document.getElementById('slider-strictness');
+
+        if (!baseEl || !wrEl || !pTimeEl || !sEl) return;
+
+        const base = parseInt(baseEl.value, 10) || 100;
+        const wr = Math.max(1, parseInt(wrEl.value, 10) || 300);
+        const pTime = Math.max(1, parseInt(pTimeEl.value, 10) || 360);
+        const s = parseFloat(sEl.value) || 2.0;
+
+        const valBase = document.getElementById('val-calc-base');
+        const valWr = document.getElementById('val-calc-wr');
+        const valPTime = document.getElementById('val-calc-player-time');
+        const valS = document.getElementById('val-calc-strictness');
+
+        if (valBase) valBase.textContent = `${base} PTS`;
+        if (valWr) valWr.textContent = formatCalcTime(wr);
+        if (valPTime) valPTime.textContent = formatCalcTime(pTime);
+        if (valS) valS.textContent = s.toFixed(2);
+
         const pMaxBonus = base * 5.0;
         const timeRatio = pTime / wr;
+        const effectiveRatio = Math.max(1, timeRatio);
         const gapPct = Math.max(0, (timeRatio - 1) * 100);
-        const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
-        document.getElementById('res-val-max-bonus').textContent = `+${pMaxBonus.toLocaleString()}`;
-        document.getElementById('res-val-ratio').textContent = `${timeRatio.toFixed(2)}x (+${gapPct.toFixed(1)}%)`;
-        document.getElementById('res-val-skill').textContent = `+${pSkill.toLocaleString()}`;
-        document.getElementById('res-val-total').textContent = `${(base + pSkill).toLocaleString()} PTS`;
+        const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (effectiveRatio - 1)));
+
+        const resMax = document.getElementById('res-val-max-bonus');
+        const resRatio = document.getElementById('res-val-ratio');
+        const resSkill = document.getElementById('res-val-skill');
+        const resTotal = document.getElementById('res-val-total');
+
+        if (resMax) resMax.textContent = `+${pMaxBonus.toLocaleString()}`;
+        if (resRatio) {
+          if (timeRatio <= 1.0) {
+            resRatio.textContent = `1.00x (WR 👑)`;
+            resRatio.className = 'font-mono font-bold text-amber-400';
+          } else {
+            resRatio.textContent = `${timeRatio.toFixed(2)}x (+${gapPct.toFixed(1)}%)`;
+            resRatio.className = 'font-mono font-bold text-amber-400';
+          }
+        }
+        if (resSkill) resSkill.textContent = `+${pSkill.toLocaleString()}`;
+        if (resTotal) resTotal.textContent = `${(base + pSkill).toLocaleString()} PTS`;
       };
 
       ['slider-base', 'slider-wr', 'slider-player-time', 'slider-strictness'].forEach(id => {
-        document.getElementById(id)?.addEventListener('input', updateCalculator);
+        const input = document.getElementById(id);
+        if (input) {
+          input.addEventListener('input', updateCalculator);
+          input.addEventListener('change', updateCalculator);
+        }
       });
       updateCalculator();
 
       document.getElementById('footer-summary').textContent = dict.about.footerSummary;
 
-      if (typeof window.renderMathInElement === 'function') renderMathInElement(document.getElementById('scoring'), {
-        delimiters: [
-          {left: '$$', right: '$$', display: true},
-          {left: '$', right: '$', display: false}
-        ],
-        throwOnError: false
-      });
+      const renderAllFormulas = () => {
+        if (typeof window.renderMathInElement === 'function') {
+          const target = document.getElementById('scoring') || document.body;
+          window.renderMathInElement(target, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });
+          return true;
+        }
+        return false;
+      };
+
+      if (!renderAllFormulas()) {
+        window.addEventListener('load', renderAllFormulas);
+        let retries = 0;
+        const timer = setInterval(() => {
+          retries++;
+          if (renderAllFormulas() || retries > 50) {
+            clearInterval(timer);
+          }
+        }, 100);
+      }
     });
   </script>
 </body>

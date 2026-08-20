@@ -37,7 +37,8 @@
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="icon" type="image/png" href="../icon.png">
   <script src="../js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="../css/style.css?v=20260810-mobile-1">
+  <link rel="stylesheet" href="../css/style.css?v=20260820-pvp-1">
+  <link rel="stylesheet" href="../css/tee-skin-renderer.css">
   <script>
     tailwind.config = {
       theme: {
@@ -66,159 +67,260 @@
       
       <div id="breadcrumbs-container"></div>
 
-      <header class="inner-page-hero pvp-hero text-center space-y-4">
-        <div class="pvp-title-kicker">HEAD-TO-HEAD // DUEL MODE</div>
-        <h1 class="text-4xl md:text-6xl font-black" id="pvp-title">
+      <header class="inner-page-hero pvp-hero text-center space-y-3">
+        <div class="pvp-title-kicker" id="pvp-kicker">⚔️ ДУЭЛЬНЫЙ РЕЖИМ // 1 НА 1</div>
+        <h1 class="text-3xl md:text-5xl font-black flex items-center justify-center gap-3" id="pvp-title">
           <span id="pvp-title-text">Player vs Player</span>
           <span class="pvp-title-mark" aria-hidden="true">⚔</span>
         </h1>
-        <p class="text-slate-400 text-lg max-w-2xl mx-auto" id="pvp-subtitle">
-          Введите никнеймы двух игроков для сравнения результатов на общих картах.
+        <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto" id="pvp-subtitle">
+          Сравнение результатов двух игроков на общих картах, дуэль времени и аналитика скилла.
         </p>
       </header>
 
       <!-- Player Input Form -->
-      <section class="pvp-launcher glass-panel p-6 max-w-3xl mx-auto">
-        <form id="pvp-form" class="grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
-          <div class="sm:col-span-2 space-y-1">
-            <label for="pvp-player1-input" id="lbl-pvp-p1" class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono"></label>
-            <div class="relative">
-              <input type="text" id="pvp-player1-input" placeholder="Xardas" class="w-full p-2.5" />
+      <section class="pvp-launcher glass-panel p-6 sm:p-8 max-w-4xl mx-auto border border-white/10 rounded-2xl shadow-2xl space-y-6">
+        <form id="pvp-form" class="space-y-6">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Player 1 Box -->
+            <div class="w-full flex-1 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label for="pvp-player1-input" id="lbl-pvp-p1" class="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5 shrink-0">
+                  <span>👤</span> <span>Игрок 1</span>
+                </label>
+                <div id="pvp-p1-quick-select" class="flex flex-wrap items-center justify-end gap-1.5 overflow-hidden">
+                </div>
+              </div>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="pvp-player1-input"
+                  placeholder="stone"
+                  autocomplete="off"
+                  class="w-full px-4 py-3 bg-slate-900/90 hover:bg-slate-900 focus:bg-slate-950 border border-cyan-500/30 focus:border-cyan-400 rounded-xl text-white font-bold text-base outline-none transition-all shadow-inner focus:ring-2 focus:ring-cyan-500/20"
+                />
+              </div>
             </div>
+
+            <!-- VS Badge -->
+            <div class="shrink-0 flex flex-col items-center justify-center my-1 md:my-0">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-amber-500 flex items-center justify-center font-black text-slate-950 text-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] border border-amber-300/40 select-none">
+                VS
+              </div>
+            </div>
+
+            <!-- Player 2 Box -->
+            <div class="w-full flex-1 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label for="pvp-player2-input" id="lbl-pvp-p2" class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono flex items-center gap-1.5 shrink-0">
+                  <span>👤</span> <span>Игрок 2</span>
+                </label>
+                <div id="pvp-p2-quick-select" class="flex flex-wrap items-center justify-end gap-1.5 overflow-hidden">
+                </div>
+              </div>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="pvp-player2-input"
+                  placeholder="m09l6d0ur13ii"
+                  autocomplete="off"
+                  class="w-full px-4 py-3 bg-slate-900/90 hover:bg-slate-900 focus:bg-slate-950 border border-rose-500/30 focus:border-rose-400 rounded-xl text-white font-bold text-base outline-none transition-all shadow-inner focus:ring-2 focus:ring-rose-500/20"
+                />
+              </div>
+            </div>
+
           </div>
 
-          <div class="pvp-versus pb-2" aria-label="versus"><span>VS</span></div>
-
-          <div class="sm:col-span-2 space-y-1">
-            <label for="pvp-player2-input" id="lbl-pvp-p2" class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono"></label>
-            <div class="relative">
-              <input type="text" id="pvp-player2-input" placeholder="tw1zenn" class="w-full p-2.5" />
-            </div>
-          </div>
-
-          <div class="sm:col-span-5 text-center pt-2">
+          <div class="text-center pt-2">
             <button
               type="submit"
               id="pvp-submit-btn"
-              style="padding:0.6em 2em;font-size:1.05em;font-weight:bold;background:#ffa500;color:#111111;border:none;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.5);"
+              class="w-full sm:w-auto px-10 py-3.5 rounded-xl font-black text-slate-950 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_25px_rgba(245,158,11,0.45)] cursor-pointer text-sm uppercase tracking-wider inline-flex items-center justify-center gap-2"
             >
-              Сравнить
+              <span>Сравнить результаты</span>
+              <span>⚔️</span>
             </button>
           </div>
         </form>
       </section>
 
-      <!-- Loading Indicator -->
-      <div id="pvp-loading" class="text-center py-12 hidden">
-        <div class="inline-block text-primary animate-spin">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+      <!-- Featured Matchups Showcase (Visible when no duel loaded) -->
+      <section id="pvp-featured-matchups" class="max-w-4xl mx-auto space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <span>🔥</span>
+            <span data-i18n="pvp.featuredDuels">Популярные дуэли</span>
+          </h3>
+          <span class="text-xs text-slate-500 font-medium">Нажмите на любую пару для быстрого сравнения</span>
         </div>
-        <p class="mt-4 text-slate-400 font-medium" id="pvp-loading-text"></p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="featured-duels-grid">
+        </div>
+      </section>
+
+      <!-- Loading Indicator -->
+      <div id="pvp-loading" class="text-center py-16 hidden">
+        <div class="inline-block text-primary animate-spin">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+        </div>
+        <p class="mt-4 text-slate-400 font-medium text-lg" id="pvp-loading-text">Загрузка и расчёт данных дуэли...</p>
       </div>
 
       <!-- Error Box -->
-      <div id="pvp-error" class="hidden glass-panel p-6 text-center text-red-400 border border-red-500/50 max-w-2xl mx-auto font-bold">
+      <div id="pvp-error" class="hidden glass-panel p-6 text-center text-red-400 border border-red-500/50 max-w-2xl mx-auto font-bold rounded-xl">
       </div>
 
       <!-- Results Container -->
       <div id="pvp-results" class="hidden space-y-8">
         
         <!-- Winner Banner -->
-        <div id="h2h-winner-banner" class="hidden text-center p-4 rounded-xl border font-bold text-lg sm:text-xl transition-all"></div>
+        <div id="h2h-winner-banner" class="hidden text-center p-5 rounded-2xl border font-bold text-lg sm:text-2xl transition-all shadow-lg"></div>
 
         <!-- Win Probability Predictor -->
-        <div id="h2h-probability-container" class="mt-4 mb-6 p-4 rounded-xl border border-blue-500/30 bg-blue-900/10 hidden items-center justify-between gap-4">
-          <div class="text-center w-1/3">
-            <div id="prob-p1-val" class="text-2xl font-black text-blue-400">50%</div>
-            <div id="prob-p1-name" class="text-xs text-slate-400 truncate">Player 1</div>
-          </div>
-          <div class="flex-1 flex flex-col items-center">
-            <div class="text-[0.65rem] uppercase tracking-widest text-slate-500 font-bold mb-2">Matchmaking Prediction</div>
-            <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex">
-              <div id="prob-bar-p1" class="h-full bg-blue-500 transition-all duration-1000" style="width: 50%"></div>
-              <div id="prob-bar-p2" class="h-full bg-red-500 transition-all duration-1000" style="width: 50%"></div>
+        <div id="h2h-probability-container" class="p-6 rounded-2xl border border-white/10 bg-slate-900/80 backdrop-blur-md hidden flex-col gap-4 shadow-2xl">
+          <div class="flex items-center justify-between gap-4">
+            <div class="text-left w-1/3">
+              <div id="prob-p1-val" class="text-3xl sm:text-4xl font-black text-cyan-400 font-mono tracking-tight drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]">50%</div>
+              <div id="prob-p1-name" class="text-sm font-bold text-slate-200 truncate mt-0.5">Player 1</div>
+            </div>
+            <div class="flex-1 text-center">
+              <div class="text-[0.72rem] uppercase tracking-widest text-amber-400/90 font-black mb-1 font-mono" id="prob-title">⚡ ПРЕДСКАЗАНИЕ МАТЧА ⚡</div>
+              <div id="prob-status" class="text-xs text-slate-300 font-medium"></div>
+            </div>
+            <div class="text-right w-1/3">
+              <div id="prob-p2-val" class="text-3xl sm:text-4xl font-black text-rose-400 font-mono tracking-tight drop-shadow-[0_0_12px_rgba(244,63,94,0.6)]">50%</div>
+              <div id="prob-p2-name" class="text-sm font-bold text-slate-200 truncate mt-0.5">Player 2</div>
             </div>
           </div>
-          <div class="text-center w-1/3">
-            <div id="prob-p2-val" class="text-2xl font-black text-red-400">50%</div>
-            <div id="prob-p2-name" class="text-xs text-slate-400 truncate">Player 2</div>
+
+          <div class="pvp-prob-track">
+            <div id="prob-bar-p1" class="pvp-prob-bar-p1" style="width: 50%"></div>
+            <div id="prob-bar-p2" class="pvp-prob-bar-p2" style="width: 50%"></div>
           </div>
         </div>
 
-        <!-- Scoreboard & Cards -->
+        <!-- Scoreboard & Cards Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           
           <!-- Player 1 Summary Card -->
-          <div id="p1-card" class="glass-panel p-6 border-2 flex flex-col justify-between text-center space-y-4 transition-all">
-            <div id="p1-winner-badge-container"></div>
+          <div id="p1-card" class="glass-panel p-6 border-2 border-white/10 rounded-2xl flex flex-col justify-between text-center space-y-4 transition-all relative overflow-hidden">
+            <div id="p1-winner-badge-container" class="min-h-[28px] flex items-center justify-center"></div>
+            
+            <!-- Player 1 Tee Avatar -->
+            <div id="p1-tee-container" class="h-28 flex items-center justify-center relative my-1"></div>
+
             <div>
-              <h2 class="text-2xl font-black text-amber-400" id="p1-card-name"></h2>
-              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1" id="p1-card-label"></div>
-            </div>
-            <div class="space-y-2 py-2">
-              <div class="text-3xl font-black font-mono text-amber-400" id="p1-card-total"></div>
-              <div class="text-xs text-slate-300">
-                Base: <span id="p1-card-base" class="font-mono text-emerald-400 font-bold"></span> | 
-                Skill: <span id="p1-card-skill" class="font-mono text-purple-400 font-bold"></span>
+              <h2 class="text-2xl font-black text-white hover:text-amber-400 transition-colors">
+                <a id="p1-card-link" href="#" class="no-underline text-inherit"></a>
+              </h2>
+              <div class="flex items-center justify-center gap-2 mt-2" id="p1-badges-row">
+                <span id="p1-league-badge"></span>
+                <span id="p1-level-pill"></span>
               </div>
             </div>
-            <div class="p-2 text-sm font-bold border rounded" id="p1-wins-box">
-              <span id="p1-wins-label"></span>: <span id="p1-wins" class="text-xl font-mono font-black">0</span>
+
+            <div class="space-y-2 py-2 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3">
+              <div class="text-3xl font-black font-mono text-amber-400" id="p1-card-total"></div>
+              <div class="text-xs text-slate-300 flex justify-around">
+                <span>Base: <strong id="p1-card-base" class="font-mono text-emerald-400"></strong></span>
+                <span>Skill: <strong id="p1-card-skill" class="font-mono text-purple-400"></strong></span>
+              </div>
+            </div>
+
+            <div class="p-3 text-sm font-bold border rounded-xl" id="p1-wins-box">
+              <div class="text-xs text-slate-400 uppercase tracking-wider mb-1" id="p1-wins-label">Побед на картах</div>
+              <div class="flex items-center justify-center gap-2">
+                <span id="p1-wins" class="text-2xl font-mono font-black text-emerald-400">0</span>
+                <span id="p1-winrate" class="text-xs px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold">0%</span>
+              </div>
             </div>
           </div>
 
           <!-- Scoreboard Middle Box -->
-          <div class="glass-panel p-6 flex flex-col justify-center items-center text-center space-y-3 bg-slate-900/90 border border-slate-700">
-            <div class="text-xs uppercase tracking-widest text-slate-400 font-bold" id="h2h-score-label"></div>
-            <div class="text-5xl font-black font-mono tracking-wider flex items-center justify-center gap-3">
+          <div class="glass-panel p-6 flex flex-col justify-center items-center text-center space-y-4 bg-slate-900/90 border border-slate-700/80 rounded-2xl shadow-xl">
+            <div class="text-xs uppercase tracking-widest text-slate-400 font-black" id="h2h-score-label">СЧЁТ ДУЭЛИ</div>
+            
+            <div class="text-5xl sm:text-6xl font-black font-mono tracking-wider flex items-center justify-center gap-4 py-2">
               <span id="score-p1" class="transition-colors">0</span>
-              <span class="text-slate-400 text-3xl">:</span>
+              <span class="text-slate-500 text-3xl font-sans">:</span>
               <span id="score-p2" class="transition-colors">0</span>
             </div>
-            <div class="text-sm text-slate-300 font-medium pt-2">
-              <span id="common-count-label"></span>: <strong id="common-count" class="text-white font-bold">0</strong>
+
+            <div class="space-y-2 pt-2 border-t border-white/[0.05] w-full">
+              <div class="text-sm text-slate-300 font-semibold">
+                <span id="common-count-label">Общих карт</span>: <strong id="common-count" class="text-white font-bold font-mono">0</strong>
+              </div>
+              <div id="h2h-lead-delta" class="text-xs font-bold text-amber-400 font-mono"></div>
             </div>
           </div>
 
           <!-- Player 2 Summary Card -->
-          <div id="p2-card" class="glass-panel p-6 border-2 flex flex-col justify-between text-center space-y-4 transition-all">
-            <div id="p2-winner-badge-container"></div>
+          <div id="p2-card" class="glass-panel p-6 border-2 border-white/10 rounded-2xl flex flex-col justify-between text-center space-y-4 transition-all relative overflow-hidden">
+            <div id="p2-winner-badge-container" class="min-h-[28px] flex items-center justify-center"></div>
+            
+            <!-- Player 2 Tee Avatar -->
+            <div id="p2-tee-container" class="h-28 flex items-center justify-center relative my-1"></div>
+
             <div>
-              <h2 class="text-2xl font-black text-amber-400" id="p2-card-name"></h2>
-              <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1" id="p2-card-label"></div>
-            </div>
-            <div class="space-y-2 py-2">
-              <div class="text-3xl font-black font-mono text-amber-400" id="p2-card-total"></div>
-              <div class="text-xs text-slate-300">
-                Base: <span id="p2-card-base" class="font-mono text-emerald-400 font-bold"></span> | 
-                Skill: <span id="p2-card-skill" class="font-mono text-purple-400 font-bold"></span>
+              <h2 class="text-2xl font-black text-white hover:text-amber-400 transition-colors">
+                <a id="p2-card-link" href="#" class="no-underline text-inherit"></a>
+              </h2>
+              <div class="flex items-center justify-center gap-2 mt-2" id="p2-badges-row">
+                <span id="p2-league-badge"></span>
+                <span id="p2-level-pill"></span>
               </div>
             </div>
-            <div class="p-2 text-sm font-bold border rounded" id="p2-wins-box">
-              <span id="p2-wins-label"></span>: <span id="p2-wins" class="text-xl font-mono font-black">0</span>
+
+            <div class="space-y-2 py-2 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3">
+              <div class="text-3xl font-black font-mono text-amber-400" id="p2-card-total"></div>
+              <div class="text-xs text-slate-300 flex justify-around">
+                <span>Base: <strong id="p2-card-base" class="font-mono text-emerald-400"></strong></span>
+                <span>Skill: <strong id="p2-card-skill" class="font-mono text-purple-400"></strong></span>
+              </div>
+            </div>
+
+            <div class="p-3 text-sm font-bold border rounded-xl" id="p2-wins-box">
+              <div class="text-xs text-slate-400 uppercase tracking-wider mb-1" id="p2-wins-label">Побед на картах</div>
+              <div class="flex items-center justify-center gap-2">
+                <span id="p2-wins" class="text-2xl font-mono font-black text-emerald-400">0</span>
+                <span id="p2-winrate" class="text-xs px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold">0%</span>
+              </div>
             </div>
           </div>
 
         </div>
 
+        <!-- Category Duel Breakdown Grid -->
+        <div class="glass-panel p-6 border border-white/10 rounded-2xl space-y-4" id="pvp-spec-section">
+          <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/[0.05] pb-3">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2" id="pvp-spec-title">
+              <span>📊</span>
+              <span>Сравнение по категориям</span>
+            </h3>
+            <span class="text-xs text-slate-400 font-mono" id="pvp-spec-subtitle">Категориальный перевес</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" id="pvp-spec-grid">
+          </div>
+        </div>
+
         <!-- Common Maps Table -->
-        <div class="glass-panel overflow-hidden">
+        <div class="glass-panel overflow-hidden border border-white/10 rounded-2xl">
           <div class="p-6 border-b border-white/[0.05] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <h3 class="text-xl font-bold text-white" id="pvp-table-heading"></h3>
               
-              <!-- Filter Buttons / Pills -->
-              <div class="flex flex-wrap items-center gap-2 mt-3" id="pvp-filter-container">
-                <button type="button" data-pvp-filter="all" id="btn-pvp-filter-all" class="px-3 py-1 text-xs font-bold rounded-lg border transition-all bg-amber-500 text-slate-950 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+              <!-- Filter Buttons / Pills (Separate Rounded Buttons) -->
+              <div class="flex flex-wrap items-center gap-2.5 mt-3" id="pvp-filter-container">
+                <button type="button" data-pvp-filter="all" id="btn-pvp-filter-all" class="pvp-filter-btn active active-all">
                   Все (0)
                 </button>
-                <button type="button" data-pvp-filter="p1" id="btn-pvp-filter-p1" class="px-3 py-1 text-xs font-bold rounded-lg border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:border-emerald-500/50">
+                <button type="button" data-pvp-filter="p1" id="btn-pvp-filter-p1" class="pvp-filter-btn">
                   Player 1 (0)
                 </button>
-                <button type="button" data-pvp-filter="p2" id="btn-pvp-filter-p2" class="px-3 py-1 text-xs font-bold rounded-lg border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:border-emerald-500/50">
+                <button type="button" data-pvp-filter="p2" id="btn-pvp-filter-p2" class="pvp-filter-btn">
                   Player 2 (0)
                 </button>
-                <button type="button" data-pvp-filter="tie" id="btn-pvp-filter-tie" class="px-3 py-1 text-xs font-bold rounded-lg border transition-all bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500">
+                <button type="button" data-pvp-filter="tie" id="btn-pvp-filter-tie" class="pvp-filter-btn">
                   Ничьи (0)
                 </button>
               </div>
@@ -227,20 +329,45 @@
             <input
               type="text"
               id="pvp-map-search"
-              placeholder=""
-              style="padding:0.4em 0.8em;font-size:0.85em;background:#111111;color:#ffffff;border:1px solid rgba(255,255,255,0.2);width:14em;box-sizing:border-box;font-weight:600;"
+              placeholder="Поиск карты..."
+              class="px-4 py-2 text-sm bg-slate-900/90 border border-white/10 focus:border-amber-400 rounded-xl text-white font-semibold outline-none transition-all w-full md:w-64 placeholder-slate-500 shadow-inner"
             />
           </div>
 
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse whitespace-nowrap">
+            <table class="w-full text-left border-collapse whitespace-nowrap pvp-maps-table">
               <thead>
                 <tr class="bg-white/[0.02] border-b border-white/[0.05] text-slate-400 text-sm tracking-wide">
-                  <th class="p-4 font-semibold" id="th-map"></th>
-                  <th class="p-4 font-semibold" id="th-server"></th>
-                  <th class="p-4 font-semibold text-right" id="th-p1-name"></th>
-                  <th class="p-4 font-semibold text-right" id="th-p2-name"></th>
-                  <th class="p-4 font-semibold text-center" id="th-diff"></th>
+                  <th class="p-4 font-semibold cursor-pointer select-none transition-colors hover:text-white group" data-sort="mapName">
+                    <div class="flex items-center gap-1.5">
+                      <span id="th-map">Карта</span>
+                      <span class="sort-indicator text-xs opacity-40 group-hover:opacity-100 transition-opacity">↕</span>
+                    </div>
+                  </th>
+                  <th class="p-4 font-semibold cursor-pointer select-none transition-colors hover:text-white group" data-sort="server">
+                    <div class="flex items-center gap-1.5">
+                      <span id="th-server">Сервер</span>
+                      <span class="sort-indicator text-xs opacity-40 group-hover:opacity-100 transition-opacity">↕</span>
+                    </div>
+                  </th>
+                  <th class="p-4 font-semibold cursor-pointer select-none transition-colors hover:text-white group text-right" data-sort="t1">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <span id="th-p1-name">Игрок 1</span>
+                      <span class="sort-indicator text-xs opacity-40 group-hover:opacity-100 transition-opacity">↕</span>
+                    </div>
+                  </th>
+                  <th class="p-4 font-semibold cursor-pointer select-none transition-colors hover:text-white group text-right" data-sort="t2">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <span id="th-p2-name">Игрок 2</span>
+                      <span class="sort-indicator text-xs opacity-40 group-hover:opacity-100 transition-opacity">↕</span>
+                    </div>
+                  </th>
+                  <th class="p-4 font-semibold cursor-pointer select-none transition-colors hover:text-white group text-center active-sort" data-sort="diff">
+                    <div class="flex items-center justify-center gap-1.5">
+                      <span id="th-diff">Победитель & Разница</span>
+                      <span class="sort-indicator text-xs text-amber-400 font-bold">↓</span>
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody id="pvp-table-body">
@@ -257,13 +384,17 @@
   <!-- Footer -->
   <div id="footer-container"></div>
 
+  <script defer src="../data/maps.js?v=a1601ea"></script>
   <script defer src="../data/unique_players.js?v=a1601ea"></script>
   <script defer src="../data/map_records.js?v=a1601ea"></script>
   <script defer src="../data/map_stats.js?v=a1601ea"></script>
   <script defer src="../data/blacklist.js?v=a1601ea"></script>
+  <script defer src="../data/map_min_times.js?v=a1601ea"></script>
+  <script defer src="../data/custom_map_records.js?v=a1601ea"></script>
   <script defer src="../js/i18n.js"></script>
-  <script defer src="../js/api.js?v=20260809-1"></script>
+  <script defer src="../js/api.js?v=20260810-2"></script>
   <script defer src="../js/app.js?v=20260807-3"></script>
-  <script defer src="../js/page-pvp.js?v=20260809-1"></script>
+  <script defer src="../js/tee-skin-renderer.umd.js"></script>
+  <script defer src="../js/page-pvp.js?v=20260820-pvp-2"></script>
 </body>
 </html>

@@ -451,9 +451,18 @@
             let rankHtml = `<span class="ranking-position-badge">#${displayRank}</span>`;
             if (displayRank <= 3) rankHtml = `<span class="ranking-position-badge ranking-position-${displayRank}">#${displayRank}</span>`;
 
-            const playersHtml = group.players.map(pName =>
-              `<a href="/player?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}</a>`
-            ).join(' <span class="text-amber-400 font-bold px-0.5">&amp;</span> ');
+            const favs = (typeof getSettings === 'function' ? getSettings().favorites : []).map(f => f.toLowerCase());
+            const hasFavorite = group.players.some(p => favs.includes(p.toLowerCase()));
+            if (hasFavorite) {
+              tr.classList.add('favorite-player-row');
+              tr.style.background = 'rgba(245, 158, 11, 0.05)';
+            }
+
+            const playersHtml = group.players.map(pName => {
+              const isPNameFav = favs.includes(pName.toLowerCase());
+              const favStar = isPNameFav ? '<span class="text-amber-400 text-xs ml-0.5" title="Избранный игрок">⭐</span>' : '';
+              return `<a href="/player?name=${encodeURIComponent(pName)}" class="text-white hover:text-amber-400 transition-colors whitespace-nowrap">${escapeHtml(pName)}${favStar}</a>`;
+            }).join(' <span class="text-amber-400 font-bold px-0.5">&amp;</span> ');
 
             tr.innerHTML = `
               <td class="p-4">${rankHtml}</td>
@@ -475,6 +484,220 @@
           loadMoreButton.onclick = appendBatch;
           appendBatch();
         };
+
+        const renderMapFavorites = () => {
+          const btn = document.getElementById('btn-fav-records');
+          const countEl = document.getElementById('fav-records-count');
+          const modal = document.getElementById('map-favorites-modal');
+          const listEl = document.getElementById('fav-modal-list');
+          const closeBtn = document.getElementById('fav-modal-close');
+          const closeBottomBtn = document.getElementById('btn-close-fav-modal');
+          const openSettingsBtn = document.getElementById('btn-open-settings-from-fav');
+          const refreshModalBtn = document.getElementById('fav-modal-refresh-btn');
+
+          if (!btn || !modal || !listEl) return;
+
+          const settings = typeof getSettings === 'function' ? getSettings() : { favorites: [], myNickname: '' };
+          const favs = Array.isArray(settings.favorites) ? settings.favorites : [];
+          const myNick = settings.myNickname ? settings.myNickname.trim() : '';
+          const myLower = myNick.toLowerCase();
+
+          btn.classList.remove('hidden');
+          if (countEl) countEl.textContent = favs.length;
+
+          // Cache of favorite players' fetched profile data
+          if (!window._mapFavProfilesCache) {
+            window._mapFavProfilesCache = new Map();
+          }
+          const favProfilesCache = window._mapFavProfilesCache;
+
+          // Find my personal time on this map if available
+          let myTime = null;
+          if (myNick && data && Array.isArray(data.leaderboard)) {
+            const myRun = data.leaderboard.find(r => {
+              const pNames = (Array.isArray(r.players) ? r.players : String(r.player || '').split(/[,/&]+/)).map(n => n.trim().toLowerCase());
+              return pNames.includes(myLower);
+            });
+            if (myRun) myTime = myRun.time;
+          }
+          if (!myTime && typeof getUserProfileCache === 'function') {
+            const cache = getUserProfileCache();
+            const finish = (cache?.finishes || []).find(f => (f.map || f.mapName || '').toLowerCase() === (data.mapName || '').toLowerCase());
+            if (finish) myTime = finish.time;
+          }
+
+          const renderFavCards = () => {
+            if (favs.length === 0) {
+              listEl.innerHTML = `
+                <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10 text-center space-y-3">
+                  <div class="text-3xl">⭐</div>
+                  <div class="text-white font-bold text-sm">${dict.map?.noFavsTitle || (currentLang === 'en' ? 'No favorite players yet' : 'У вас пока нет избранных игроков')}</div>
+                  <p class="text-xs text-slate-400 max-w-sm mx-auto">${dict.map?.noFavsDesc || (currentLang === 'en' ? 'Add rivals or friends to favorites in Settings to compare your times on every map.' : 'Добавьте друзей или соперников в избранное в настройках, чтобы сравнивать времена на любой карте.')}</p>
+                  <button type="button" onclick="document.getElementById('map-favorites-modal').classList.add('hidden'); openSettingsModal();" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all cursor-pointer">
+                    ⚙️ ${dict.map?.openSettingsBtn || (currentLang === 'en' ? 'Open Settings' : 'Открыть настройки')}
+                  </button>
+                </div>
+              `;
+              return;
+            }
+
+            const mapBasePts = mapInfo ? (mapInfo.points || 0) : 0;
+            const pMaxBonus = mapBasePts * 5.0;
+
+            listEl.innerHTML = favs.map(favName => {
+              const favLower = favName.toLowerCase();
+              let run = (data.leaderboard || []).find(r => {
+                const pNames = (Array.isArray(r.players) ? r.players : String(r.player || '').split(/[,/&]+/)).map(n => n.trim().toLowerCase());
+                return pNames.includes(favLower);
+              });
+
+              const cachedProfile = favProfilesCache.get(favLower);
+              let isFetching = !run && !cachedProfile;
+
+              if (!run && cachedProfile && Array.isArray(cachedProfile.finishDetails)) {
+                const finish = cachedProfile.finishDetails.find(f => (f.mapName || f.map || '').toLowerCase() === (data.mapName || '').toLowerCase());
+                if (finish) {
+                  run = {
+                    time: finish.time,
+                    rank: finish.rank || '—',
+                    players: [favName]
+                  };
+                }
+              }
+
+              let timeFormatted = '<span class="text-slate-500 font-normal">' + (currentLang === 'en' ? 'Not finished' : 'Не пройдено') + '</span>';
+              let rankBadge = '<span class="text-[0.65rem] text-slate-500">—</span>';
+              let skillPtsText = '';
+              let compHtml = '';
+
+              if (isFetching) {
+                timeFormatted = `<span class="text-amber-400/70 text-xs flex items-center gap-1"><span class="animate-spin text-[0.7rem]">⏳</span> ${currentLang === 'en' ? 'Checking...' : 'Проверка...'}</span>`;
+              } else if (run) {
+                const timeVal = run.time;
+                timeFormatted = `<span class="text-amber-300 font-mono font-bold">${formatTime(timeVal)}</span>`;
+                rankBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 font-mono text-[0.68rem] font-bold">#${run.rank || '—'}</span>`;
+
+                const timeRatio = data.tBest > 0 ? timeVal / data.tBest : 1;
+                const pSkill = Math.floor(pMaxBonus * Math.exp(-data.s * (Math.max(1, timeRatio) - 1)));
+                skillPtsText = `<span class="text-emerald-400 font-mono font-bold text-xs">+${pSkill} PTS</span>`;
+
+                if (myTime) {
+                  const diffSec = myTime - timeVal;
+                  if (Math.abs(diffSec) < 0.01) {
+                    compHtml = `<span class="text-slate-400 text-[0.68rem]">${currentLang === 'en' ? 'Equal time' : 'Одинаковое время'}</span>`;
+                  } else if (diffSec > 0) {
+                    compHtml = `<span class="text-rose-400 text-[0.68rem] font-bold">-${formatTime(diffSec)} ${currentLang === 'en' ? 'slower than you' : 'медленнее вас'}</span>`;
+                  } else {
+                    compHtml = `<span class="text-emerald-400 text-[0.68rem] font-bold">+${formatTime(Math.abs(diffSec))} ${currentLang === 'en' ? 'faster than you' : 'быстрее вас'}</span>`;
+                  }
+                } else {
+                  const gapPct = Math.max(0, (timeRatio - 1) * 100);
+                  compHtml = `<span class="text-slate-400 text-[0.68rem] font-mono">+${gapPct.toFixed(1)}% WR</span>`;
+                }
+              }
+
+              const pvpUrl = `/pvp?p1=${encodeURIComponent(myNick || 'stone')}&p2=${encodeURIComponent(favName)}`;
+              const playerUrl = `/player?name=${encodeURIComponent(favName)}`;
+
+              return `
+                <div class="glass-panel p-3.5 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-amber-500/40 hover:bg-white/[0.04] transition-all flex items-center justify-between gap-3" id="fav-modal-card-${encodeURIComponent(favLower)}">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-sm shrink-0">⭐</div>
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2">
+                        <a href="${playerUrl}" class="text-white font-bold text-sm hover:text-amber-400 transition-colors truncate block max-w-[160px] sm:max-w-[220px]" title="${escapeHtml(favName)}">
+                          ${escapeHtml(favName)}
+                        </a>
+                        ${rankBadge}
+                      </div>
+                      <div class="flex items-center gap-2 mt-0.5">
+                        ${compHtml}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="text-right shrink-0">
+                    <div>${timeFormatted}</div>
+                    <div>${skillPtsText}</div>
+                  </div>
+
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <a href="${pvpUrl}" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 text-xs font-bold transition-all flex items-center gap-1" title="${currentLang === 'en' ? 'Duel PvP' : 'PvP Дуэль'}">
+                      ⚔️ <span class="hidden sm:inline">PvP</span>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          };
+
+          const fetchMissingFavorites = async (forceRefresh = false) => {
+            const missing = favs.filter(favName => {
+              const favLower = favName.toLowerCase();
+              if (forceRefresh) return true;
+              const inLeaderboard = (data.leaderboard || []).some(r => {
+                const pNames = (Array.isArray(r.players) ? r.players : String(r.player || '').split(/[,/&]+/)).map(n => n.trim().toLowerCase());
+                return pNames.includes(favLower);
+              });
+              return !inLeaderboard && !favProfilesCache.has(favLower);
+            });
+
+            if (missing.length === 0) return;
+
+            await Promise.all(missing.map(async (name) => {
+              try {
+                if (window.api && typeof window.api.fetchPlayerPts === 'function') {
+                  const res = await window.api.fetchPlayerPts(name, forceRefresh);
+                  if (res) {
+                    favProfilesCache.set(name.toLowerCase(), res);
+                  }
+                }
+              } catch (err) {
+                console.warn(`Could not load favorite player profile for ${name}`, err);
+              }
+            }));
+
+            renderFavCards();
+          };
+
+          const openModal = () => {
+            renderFavCards();
+            fetchMissingFavorites();
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          };
+
+          const closeModal = () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+          };
+
+          if (refreshModalBtn) {
+            refreshModalBtn.onclick = async () => {
+              const icon = document.getElementById('fav-modal-refresh-icon');
+              if (icon) icon.classList.add('animate-spin');
+              refreshModalBtn.disabled = true;
+              await fetchMissingFavorites(true);
+              if (icon) icon.classList.remove('animate-spin');
+              refreshModalBtn.disabled = false;
+            };
+          }
+
+          btn.onclick = openModal;
+          if (closeBtn) closeBtn.onclick = closeModal;
+          if (closeBottomBtn) closeBottomBtn.onclick = closeModal;
+          if (openSettingsBtn) {
+            openSettingsBtn.onclick = () => {
+              closeModal();
+              if (typeof openSettingsModal === 'function') openSettingsModal();
+            };
+          }
+          modal.onclick = (e) => {
+            if (e.target === modal) closeModal();
+          };
+        };
+
+        renderMapFavorites();
 
         if (isDummy && dummyTabsContainer) {
           dummyTabsContainer.classList.remove('hidden');

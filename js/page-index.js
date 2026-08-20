@@ -57,13 +57,167 @@
     return player[key] || 0;
   }
 
+  const favoritePlayersCache = new Map();
+  let loadingFavorites = false;
+
+  async function loadFavoritePlayers(forceRefresh = false) {
+    const favSettings = (typeof getSettings === 'function' ? getSettings() : { favorites: [] });
+    const rawFavs = favSettings.favorites || [];
+    if (rawFavs.length === 0) return [];
+
+    const missing = [];
+
+    rawFavs.forEach(favName => {
+      const lower = favName.toLowerCase();
+      if (forceRefresh) {
+        missing.push(favName);
+        return;
+      }
+      if (favoritePlayersCache.has(lower)) return;
+
+      // Check loaded playersData
+      const fromPlayers = playersData.find(p => (p.name || '').toLowerCase() === lower);
+      if (fromPlayers) {
+        favoritePlayersCache.set(lower, fromPlayers);
+        return;
+      }
+
+      // Check full static leaderboardData
+      if (window.leaderboardData) {
+        const idx = window.leaderboardData.findIndex(p => (p.name || '').toLowerCase() === lower);
+        if (idx !== -1) {
+          const p = { ...window.leaderboardData[idx], rank: idx + 1 };
+          favoritePlayersCache.set(lower, p);
+          return;
+        }
+      }
+
+      missing.push(favName);
+    });
+
+    if (missing.length > 0) {
+      loadingFavorites = true;
+      if (currentTab === 'favorites') renderTable();
+
+      await Promise.all(missing.map(async (name) => {
+        try {
+          if (window.api && typeof window.api.fetchPlayerPts === 'function') {
+            const res = await window.api.fetchPlayerPts(name, forceRefresh);
+            if (res) {
+              let rank = '—';
+              if (window.leaderboardData) {
+                const idx = window.leaderboardData.findIndex(p => (p.name || '').toLowerCase() === name.toLowerCase());
+                if (idx !== -1) rank = idx + 1;
+              }
+              const pObj = {
+                name: res.name,
+                rank: rank,
+                level: res.masteryLevel ? res.masteryLevel.level : (typeof getMasteryLevel === 'function' ? getMasteryLevel(res.newPtsTotal).level : 1),
+                league: res.skillLeague ? res.skillLeague.id : (typeof getSkillLeague === 'function' ? getSkillLeague(res.newPtsBase, res.newPtsSkill).id : 'bronze'),
+                newPtsBase: res.newPtsBase || 0,
+                newPtsSkill: res.newPtsSkill || 0,
+                newPtsTotal: res.newPtsTotal || 0,
+                skin: res.skinName || 'default',
+                skinColorBody: res.skinColorBody,
+                skinColorFeet: res.skinColorFeet
+              };
+              favoritePlayersCache.set(name.toLowerCase(), pObj);
+            }
+          }
+        } catch (err) {
+          console.warn(`Could not load favorite player ${name}`, err);
+        }
+      }));
+
+      loadingFavorites = false;
+      if (currentTab === 'favorites') renderTable();
+    }
+  }
+
   // ── Render global leaderboard table ───────────────────────────────────────
   function renderTable() {
     const tbody = document.getElementById('leaderboard-body');
     tbody.classList.remove('banlist-mode');
     tbody.innerHTML = '';
 
-    if (playersData.length === 0) {
+    const favSettings = (typeof getSettings === 'function' ? getSettings() : { favorites: [] });
+    const favsList = (favSettings.favorites || []).map(f => f.toLowerCase());
+    const favCountEl = document.getElementById('home-fav-count');
+    if (favCountEl) favCountEl.textContent = favsList.length;
+
+    let dataToRender = playersData;
+    if (currentTab === 'favorites') {
+      if (favsList.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center">
+              <div class="max-w-md mx-auto space-y-3">
+                <div class="text-3xl">⭐</div>
+                <div class="text-white font-bold text-base">${currentLang === 'en' ? 'No favorite players yet' : 'У вас пока нет избранных игроков'}</div>
+                <p class="text-xs text-slate-400 leading-relaxed">${currentLang === 'en' ? 'Add players to favorites in Settings to quickly track their ranking and scores.' : 'Добавьте игроков в избранное в настройках, чтобы быстро отслеживать их позиции в таблице.'}</p>
+                <button type="button" onclick="openSettingsModal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all cursor-pointer shadow-md">
+                  ⚙️ ${currentLang === 'en' ? 'Open Settings' : 'Открыть настройки'}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const favListObjs = [];
+      favsList.forEach(lower => {
+        if (favoritePlayersCache.has(lower)) {
+          favListObjs.push(favoritePlayersCache.get(lower));
+        } else {
+          const fromPlayers = playersData.find(p => (p.name || '').toLowerCase() === lower);
+          if (fromPlayers) {
+            favoritePlayersCache.set(lower, fromPlayers);
+            favListObjs.push(fromPlayers);
+          } else if (window.leaderboardData) {
+            const idx = window.leaderboardData.findIndex(p => (p.name || '').toLowerCase() === lower);
+            if (idx !== -1) {
+              const p = { ...window.leaderboardData[idx], rank: idx + 1 };
+              favoritePlayersCache.set(lower, p);
+              favListObjs.push(p);
+            }
+          }
+        }
+      });
+
+      if (favListObjs.length < favsList.length && !loadingFavorites) {
+        loadFavoritePlayers();
+      }
+
+      if (loadingFavorites && favListObjs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-slate-400">
+              <div class="flex items-center justify-center gap-2 text-sm font-bold">
+                <span class="animate-spin text-amber-400">⏳</span>
+                <span>${currentLang === 'en' ? 'Loading favorite players...' : 'Загрузка избранных игроков...'}</span>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      if (favListObjs.length === 0 && !loadingFavorites) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-slate-400 text-sm font-medium">
+              ${currentLang === 'en' ? 'None of your favorite players are in the current loaded leaderboard.' : 'Ваши избранные игроки не найдены среди загруженных мест таблицы.'}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      dataToRender = favListObjs;
+    }
+
+    if (dataToRender.length === 0) {
       tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">${getDict().home.empty}</td></tr>`;
       return;
     }
@@ -90,7 +244,7 @@
     setArrow('icon-arrow-level', 'level');
     setArrow('icon-arrow-league', 'league');
 
-    const sortedData = [...playersData].sort((a, b) => {
+    const sortedData = [...dataToRender].sort((a, b) => {
       const aVal = getSortValue(a, sortConfig.key);
       const bVal = getSortValue(b, sortConfig.key);
       if (aVal !== bVal) {
@@ -143,10 +297,13 @@
 
       tr.innerHTML = `
         <td class="p-4">${rankHtml}</td>
-        <td class="p-4 font-bold text-lg">
-          <a href="/player?name=${encodeURIComponent(p.name)}" class="text-white hover:text-amber-400 transition-colors">
-            ${escapeHtml(p.name)}
-          </a>${staticBadge}
+        <td class="p-4 font-bold text-lg player-name-cell">
+          <div class="player-tee-watermark" data-skin="${escapeHtml(p.skin || 'default')}" data-color-body="${p.skinColorBody ?? ''}" data-color-feet="${p.skinColorFeet ?? ''}"></div>
+          <div class="player-name-content flex items-center gap-2">
+            <a href="/player?name=${encodeURIComponent(p.name)}" class="player-link text-slate-400 hover:text-white transition-colors">
+              ${escapeHtml(p.name)}
+            </a>${staticBadge}
+          </div>
         </td>
         <td class="p-4 text-center">${levelBadgeHtml}</td>
         <td class="p-4 text-center">${leagueBadgeHtml}</td>
@@ -157,6 +314,143 @@
       fragment.appendChild(tr);
     });
     tbody.appendChild(fragment);
+    queueWatermarkRendering();
+  }
+
+  // ── Tee Skin Avatar Rendering for Leaderboard ─────────────────────────────
+  const skinUrlCache = new Map();
+
+  async function resolveSkinUrl(skinName) {
+    let skin = (skinName && skinName !== 'null' && skinName !== 'undefined') ? skinName : 'default';
+    if (skinUrlCache.has(skin)) return skinUrlCache.get(skin);
+
+    const localUrl = `data/skins/${encodeURIComponent(skin)}.png`;
+    const remoteUrl = `https://skins.ddstats.tw/${encodeURIComponent(skin)}.png`;
+    const defaultUrl = `data/skins/default.png`;
+
+    const check = (url) => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+
+    let finalUrl = localUrl;
+    if (!(await check(localUrl))) {
+      if (await check(remoteUrl)) {
+        finalUrl = remoteUrl;
+      } else {
+        finalUrl = defaultUrl;
+      }
+    }
+    skinUrlCache.set(skin, finalUrl);
+    return finalUrl;
+  }
+
+  const skinCanvasCache = new Map();
+
+  async function renderTeeWatermark(container, skinName, colorBody, colorFeet) {
+    if (!container || container.getAttribute('data-rendered')) return;
+    container.setAttribute('data-rendered', 'true');
+
+    let skin = (skinName && skinName !== 'null' && skinName !== 'undefined') ? skinName : 'default';
+    const body = (colorBody !== undefined && colorBody !== null && colorBody !== '') ? Number(colorBody) : null;
+    const feet = (colorFeet !== undefined && colorFeet !== null && colorFeet !== '') ? Number(colorFeet) : null;
+
+    const cacheKey = `${skin}_${body}_${feet}`;
+    if (skinCanvasCache.has(cacheKey)) {
+      const srcCanvas = skinCanvasCache.get(cacheKey);
+      if (srcCanvas) {
+        const c = document.createElement('canvas');
+        c.width = srcCanvas.width;
+        c.height = srcCanvas.height;
+        c.className = 'tee-watermark-canvas';
+        const ctx = c.getContext('2d');
+        ctx.drawImage(srcCanvas, 0, 0);
+        container.innerHTML = '';
+        container.appendChild(c);
+      }
+      return;
+    }
+
+    try {
+      const skinUrl = await resolveSkinUrl(skin);
+
+      if (window.TeeSkinRenderer && window.TeeSkinRenderer.renderer && window.TeeSkinRenderer.renderer.TeeRenderer) {
+        const dummy = document.createElement('div');
+        const config = {
+          skinUrl,
+          followMouse: false,
+          eyes: 'normal',
+          direction: 'right',
+        };
+        if (body !== null) {
+          config.colorBody = body;
+          config.useCustomColor = true;
+        }
+        if (feet !== null) {
+          config.colorFeet = feet;
+          config.useCustomColor = true;
+        }
+
+        const teeRenderer = new window.TeeSkinRenderer.renderer.TeeRenderer(dummy, config);
+        await teeRenderer.loadSkin(skinUrl, true);
+
+        const masterCanvas = document.createElement('canvas');
+        masterCanvas.width = 96;
+        masterCanvas.height = 96;
+        teeRenderer.renderToCanvas(masterCanvas, { size: 96, direction: 'right', eyes: 'normal' });
+        skinCanvasCache.set(cacheKey, masterCanvas);
+
+        const c = document.createElement('canvas');
+        c.width = 96;
+        c.height = 96;
+        c.className = 'tee-watermark-canvas';
+        const ctx = c.getContext('2d');
+        ctx.drawImage(masterCanvas, 0, 0);
+        container.innerHTML = '';
+        container.appendChild(c);
+      } else {
+        const img = document.createElement('img');
+        img.src = skinUrl;
+        img.className = 'w-10 h-10 object-contain opacity-70';
+        container.innerHTML = '';
+        container.appendChild(img);
+      }
+    } catch (e) {
+      console.warn('Failed to render leaderboard Tee watermark:', e);
+    }
+  }
+
+  function queueWatermarkRendering() {
+    const watermarks = document.querySelectorAll('.player-tee-watermark:not([data-rendered])');
+    if (watermarks.length === 0) return;
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            observer.unobserve(el);
+            if (!el.getAttribute('data-rendered')) {
+              const skin = el.getAttribute('data-skin');
+              const body = el.getAttribute('data-color-body');
+              const feet = el.getAttribute('data-color-feet');
+              renderTeeWatermark(el, skin, body, feet);
+            }
+          }
+        });
+      }, { rootMargin: '300px' });
+
+      watermarks.forEach(el => observer.observe(el));
+    } else {
+      watermarks.forEach(el => {
+        const skin = el.getAttribute('data-skin');
+        const body = el.getAttribute('data-color-body');
+        const feet = el.getAttribute('data-color-feet');
+        renderTeeWatermark(el, skin, body, feet);
+      });
+    }
   }
 
   const setTxt = (id, txt) => {
@@ -427,9 +721,46 @@
       });
     }
 
+    // Tab Switching: All vs Favorites
+    const tabAll = document.getElementById('tab-all-players');
+    const tabFav = document.getElementById('tab-fav-players');
+
+    const refreshFavBtn = document.getElementById('home-fav-refresh-btn');
+
+    const switchLeaderboardTab = (tab) => {
+      currentTab = tab;
+      if (tab === 'favorites') {
+        if (refreshFavBtn) refreshFavBtn.classList.remove('hidden');
+        if (tabFav) tabFav.classList.add('active');
+        if (tabAll) tabAll.classList.remove('active');
+        loadFavoritePlayers();
+      } else {
+        if (refreshFavBtn) refreshFavBtn.classList.add('hidden');
+        if (tabAll) tabAll.classList.add('active');
+        if (tabFav) tabFav.classList.remove('active');
+      }
+      renderTable();
+      updateExpansionControls();
+    };
+
+    if (tabAll) tabAll.onclick = () => switchLeaderboardTab('global');
+    if (tabFav) tabFav.onclick = () => switchLeaderboardTab('favorites');
+
+    if (refreshFavBtn) {
+      refreshFavBtn.onclick = async () => {
+        const icon = document.getElementById('home-fav-refresh-icon');
+        if (icon) icon.classList.add('animate-spin');
+        refreshFavBtn.disabled = true;
+        await loadFavoritePlayers(true);
+        if (icon) icon.classList.remove('animate-spin');
+        refreshFavBtn.disabled = false;
+      };
+    }
+
     const banlist = window.blacklistData || [];
     setTxt('banlist-count', banlist.length);
 
     loadLeaderboard();
   });
 })();
+

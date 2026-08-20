@@ -212,21 +212,23 @@ function getMasteryLevel(totalPts) {
  * @param {string} playerName
  * @returns {Promise<{name: string, profile: Object, skinName: string, skinColorBody: string, skinColorFeet: string, oldPts: number, newPtsBase: number, newPtsSkill: number, newPtsTotal: number, skillLeague: Object, masteryLevel: Object, finishDetails: Array<Object>}>}
  */
-async function fetchPlayerPts(playerName) {
+async function fetchPlayerPts(playerName, forceRefresh = false) {
   const cacheKey = String(playerName || '').trim().toLowerCase();
   if (window.isBlacklisted && window.isBlacklisted(playerName)) {
     const err = new Error(`Player ${playerName} is blacklisted`);
     err.isBlacklisted = true;
     throw err;
   }
-  if (playerCache.has(cacheKey)) {
-    return playerCache.get(cacheKey);
-  }
+  if (!forceRefresh) {
+    if (playerCache.has(cacheKey)) {
+      return playerCache.get(cacheKey);
+    }
 
-  const idbCached = await getIDBCache(cacheKey);
-  if (idbCached) {
-    playerCache.set(cacheKey, idbCached);
-    return idbCached;
+    const idbCached = await getIDBCache(cacheKey);
+    if (idbCached) {
+      playerCache.set(cacheKey, idbCached);
+      return idbCached;
+    }
   }
 
   const request = (async () => {
@@ -334,11 +336,19 @@ async function fetchPlayerPts(playerName) {
         }
 
         let teamPartner = null;
+        let teamPartners = [];
         if (finish.team_rank) {
           if (Array.isArray(finish.team_rank.players)) {
-            teamPartner = finish.team_rank.players.filter(p => String(p).toLowerCase() !== playerName.toLowerCase()).join(' & ');
+            teamPartners = finish.team_rank.players
+              .map(p => typeof p === 'string' ? p : (p.name || p.player || ''))
+              .filter(p => p && p.toLowerCase() !== playerName.toLowerCase());
+            teamPartner = teamPartners.join(' & ');
           } else if (finish.team_rank.player) {
-            teamPartner = String(finish.team_rank.player);
+            const p = String(finish.team_rank.player);
+            if (p.toLowerCase() !== playerName.toLowerCase()) {
+              teamPartners = [p];
+              teamPartner = p;
+            }
           }
         }
 
@@ -365,6 +375,7 @@ async function fetchPlayerPts(playerName) {
           record: tBest,
           rank: mmRank,
           teamPartner,
+          teamPartners,
           isTeamRank: Boolean(finish.team_rank),
           timestamp: finishTs || 0
         });
@@ -613,34 +624,34 @@ async function getMapLeaderboardLive(mapQuery, limit = 999999) {
 }
 
 /**
- * Calculates a list of 'underfarmed' maps (uncompleted by player) 
- * sorted by easiest potential PTS yield (High Base PTS, Low Strictness).
- * @param {Array<Object>} finishDetails Player's completed maps list
- * @param {number} limit Number of suggestions
+ * Finds underfarmed maps that provide the easiest Skill PTS bonus for the player.
+ * Prioritizes low-star farmable maps (1-3 stars, high s) and excludes extreme Insane/Brutal 5-star maps.
+ * @param {Array<Object>} finishDetails Array of finishes the player already has
+ * @param {number} limit Max number of recommendations (default 6)
  * @returns {Array<Object>} List of suggested maps
  */
-function getUnderfarmedMaps(finishDetails, limit = 10) {
+function getUnderfarmedMaps(finishDetails, limit = 6) {
   if (typeof window === 'undefined' || !window.mapsData) {
-    return []; // Requires global map data loaded in browser
+    return [];
   }
   const completedMaps = new Set((finishDetails || []).map(f => String(f.mapName).toLowerCase()));
 
-  // Difficulty multiplier per server category: harder = lower multiplier so they don't show up as "easy farm"
-  const SERVER_PENALTY = {
-    'Novice': 1.0,
-    'Moderate': 0.85,
-    'Brutal': 0.35,
-    'Insane': 0.15,  // Tentrom lives here — heavily penalised
-    'Solo': 0.9,
-    'Dummy': 0.8,
-    'Oldschool': 0.7,
-    'DDmaX': 0.6,
-    'DDmaX.Pro': 0.45,
-    'DDmaX.Next': 0.45,
-    'DDmaX.Easy': 0.95,
-    'DDmaX.Nut': 0.5,
+  const SERVER_WEIGHT = {
+    'Novice': 1.3,
+    'Moderate': 1.1,
+    'Dummy': 1.0,
+    'Solo': 1.0,
     'Race': 1.0,
-    'Event': 0.7,
+    'Oldschool': 0.85,
+    'DDmaX': 0.85,
+    'DDmaX.Easy': 1.1,
+    'DDmaX.Next': 0.8,
+    'DDmaX.Pro': 0.7,
+    'DDmaX.Nut': 0.7,
+    'Brutal': 0.3,
+    'Insane': 0.0, // Insane maps are excluded from Easy PTS
+    'Event': 0.5,
+    'Fun': 0.0
   };
 
   const potentialMaps = [];
@@ -652,28 +663,58 @@ function getUnderfarmedMaps(finishDetails, limit = 10) {
     const pBase = Number(map.points) || 0;
     if (pBase <= 0) continue;
 
-    const stats = (window.mapStatsData && window.mapStatsData[mapName]) || {};
-    // s = strictness: HIGH s means many people cluster near WR -> easier to get Skill PTS
-    // LOW s means spread-out times -> hard to get Skill PTS bonus
-    const s = Number(stats.s) || 0.5;
+    const serverRaw = (map.server || 'Novice').trim();
+    const serverLower = serverRaw.toLowerCase();
+    if (serverLower.includes('insane') || serverLower === 'fun') continue;
 
-    // finishCount: more finishes = map is completable by more players = "easier"
-    const finishCount = Number(stats.finishCount || stats.n || 0);
-    const accessFactor = Math.min(1.0, Math.log10(Math.max(1, finishCount)) / 4); // 0→0, 10k→1
+    const stars = Number(map.stars) || 1;
+    // For easy farming, prefer 1-3 star maps (avoid 4-5 star endurance walls)
+    if (stars > 3 && serverLower !== 'novice') continue;
 
-    const serverKey = (map.server || '').replace(/\s+/g, '');
-    const penalty = SERVER_PENALTY[serverKey] ?? SERVER_PENALTY[map.server] ?? 0.6;
+    const s = Number(map.s) || ((window.mapStatsData && window.mapStatsData[mapName]?.s) ?? 0.8);
+    const weight = SERVER_WEIGHT[serverRaw] ?? (serverLower.startsWith('ddmax') ? 0.85 : 0.7);
 
-    // Better formula: high pBase + high s (many good runs = easier) + many finishers + easy server
-    const farmScore = pBase * s * (0.4 + 0.6 * accessFactor) * penalty;
+    // Star factor: 1 star = 1.0, 2 stars = 0.85, 3 stars = 0.6
+    const starFactor = stars === 1 ? 1.0 : (stars === 2 ? 0.85 : 0.6);
+    const farmScore = (pBase * 0.8 + s * 5) * starFactor * weight;
+
+    let serverNorm = serverRaw;
+    if (serverNorm.toLowerCase().startsWith('ddmax')) serverNorm = 'DDmaX';
 
     potentialMaps.push({
       mapName: mapName,
-      server: map.server || 'Unknown',
+      server: serverNorm,
       pBase: pBase,
+      stars: stars,
       s: s,
-      farmScore: farmScore
+      farmScore: farmScore,
+      maxSkill: pBase * 5
     });
+  }
+
+  // If a veteran player has completed literally all farmable maps (like Mokou 98.8%),
+  // suggest remaining maps sorted by lowest difficulty stars
+  if (potentialMaps.length === 0) {
+    for (const map of window.mapsData) {
+      const mapName = map.map;
+      if (completedMaps.has(mapName.toLowerCase())) continue;
+      const pBase = Number(map.points) || 0;
+      if (pBase <= 0) continue;
+      const stars = Number(map.stars) || 5;
+      const s = Number(map.s) || 0.5;
+      let serverNorm = (map.server || 'Insane').trim();
+      if (serverNorm.toLowerCase().startsWith('ddmax')) serverNorm = 'DDmaX';
+      potentialMaps.push({
+        mapName: mapName,
+        server: serverNorm,
+        pBase: pBase,
+        stars: stars,
+        s: s,
+        farmScore: (10 - stars) * 10 + pBase,
+        maxSkill: pBase * 5,
+        isChallenge: true
+      });
+    }
   }
 
   return potentialMaps.sort((a, b) => b.farmScore - a.farmScore).slice(0, limit);
@@ -681,82 +722,494 @@ function getUnderfarmedMaps(finishDetails, limit = 10) {
 
 /**
  * Calculates custom player badges/achievements based on finish history.
- * @param {Object} playerData Player data containing finishDetails
- * @returns {Array<Object>} List of earned badges
+ * Returns rich achievement objects with tiers, categories, progress tracking, and unlocked status.
+ * @param {Object|Array} playerData Player data containing finishDetails or finishes array
+ * @returns {Array<Object>} List of achievements
  */
 function getPlayerBadges(playerData) {
-  const finishes = playerData.finishDetails || [];
-  const badges = [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
+  const newPtsTotal = (playerData && playerData.newPtsTotal) || finishes.reduce((a, f) => a + (f.pBase || 0) + (f.pSkill || 0), 0);
+  const newPtsBase = (playerData && playerData.newPtsBase) || finishes.reduce((a, f) => a + (f.pBase || 0), 0);
+  const newPtsSkill = (playerData && playerData.newPtsSkill) || finishes.reduce((a, f) => a + (f.pSkill || 0), 0);
+  const skillRatio = newPtsBase > 0 ? (newPtsSkill / newPtsBase) : 0;
 
   let top1 = 0;
   let top10 = 0;
+  let subSecCount = 0;
   let oldschoolCount = 0;
   let brutalCount = 0;
+  let insaneCount = 0;
+  let dummyCount = 0;
+  let raceCount = 0;
   let soloCount = 0;
+  let teamPartnerCount = 0;
+  let ddmaxCount = 0;
+  let maxMapPts = 0;
 
   for (const f of finishes) {
     if (f.rank === 1) top1++;
-    if (typeof f.rank === 'number' && f.rank <= 10) top10++;
+    if (typeof f.rank === 'number' && f.rank > 0 && f.rank <= 10) top10++;
+    if (f.timeRatio && f.timeRatio <= 1.05) subSecCount++;
+    if ((f.pBase || 0) > maxMapPts) maxMapPts = f.pBase || 0;
 
     const server = (f.server || '').toLowerCase();
     if (server.includes('oldschool')) oldschoolCount++;
     if (server.includes('brutal')) brutalCount++;
+    if (server.includes('insane')) insaneCount++;
+    if (server.includes('dummy')) dummyCount++;
+    if (server.includes('race')) raceCount++;
     if (server.includes('solo')) soloCount++;
+    if (server.includes('ddmax')) ddmaxCount++;
+    if (f.teamPartner) teamPartnerCount++;
   }
 
-  if (top1 > 0) {
-    badges.push({ id: 'wr_hunter', name: 'WR Hunter', desc: 'Достиг топ-1 хотя бы на одной карте', icon: '🏆', color: 'text-amber-400', bg: 'bg-amber-500/20', border: 'border-amber-500/30' });
-  } else if (top10 >= 10) {
-    badges.push({ id: 'top10_regular', name: 'Top-10 Regular', desc: '10+ финишей в топ-10', icon: '⭐', color: 'text-yellow-400', bg: 'bg-yellow-500/20', border: 'border-yellow-500/30' });
-  }
-
-  if (oldschoolCount >= 20) {
-    badges.push({ id: 'oldschool_veteran', name: 'Oldschool Veteran', desc: '20+ пройденных Oldschool карт', icon: '⏳', color: 'text-orange-400', bg: 'bg-orange-500/20', border: 'border-orange-500/30' });
-  }
-
-  if (brutalCount >= 30) {
-    badges.push({ id: 'brutal_specialist', name: 'Brutal Specialist', desc: '30+ пройденных Brutal карт', icon: '🔥', color: 'text-red-400', bg: 'bg-red-500/20', border: 'border-red-500/30' });
-  }
-
-  if (soloCount >= 50) {
-    badges.push({ id: 'lone_wolf', name: 'Lone Wolf', desc: '50+ пройденных Solo карт', icon: '🐺', color: 'text-slate-300', bg: 'bg-slate-500/20', border: 'border-slate-500/30' });
-  }
-
-  let insaneCount = 0;
-  let dummyCount = 0;
-  let raceCount = 0;
-  for (const f of finishes) {
-    const s = (f.server || '').toLowerCase();
-    if (s.includes('insane')) insaneCount++;
-    if (s.includes('dummy')) dummyCount++;
-    if (s.includes('race')) raceCount++;
-  }
-
-  if (insaneCount >= 20) {
-    badges.push({ id: 'insane_specialist', name: 'Insane Specialist', desc: '20+ пройденных Insane карт', icon: '💀', color: 'text-fuchsia-400', bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/30' });
-  }
-  if (dummyCount >= 20) {
-    badges.push({ id: 'dummy_specialist', name: 'Dummy Specialist', desc: '20+ пройденных Dummy карт', icon: '🤖', color: 'text-cyan-400', bg: 'bg-cyan-500/20', border: 'border-cyan-500/30' });
-  }
-  if (raceCount >= 50) {
-    badges.push({ id: 'race_specialist', name: 'Race Specialist', desc: '50+ пройденных Race карт', icon: '🏎️', color: 'text-sky-400', bg: 'bg-sky-500/20', border: 'border-sky-500/30' });
-  }
-
-  if (playerData.newPtsTotal >= 50000) {
-    badges.push({ id: 'grandmaster', name: 'Grandmaster', desc: 'Набрано более 50,000 Total PTS', icon: '👑', color: 'text-purple-400', bg: 'bg-purple-500/20', border: 'border-purple-500/30' });
-  }
-
-  const playtime = estimatePlaytime(finishes);
-  if (playtime >= 360000) { // 100 hours
-    badges.push({ id: 'dedicated_grinder', name: 'Dedicated Grinder', desc: '100+ часов фарма', icon: '☕', color: 'text-emerald-400', bg: 'bg-emerald-500/20', border: 'border-emerald-500/30' });
-  }
-
+  const playtimeHours = Math.round(estimatePlaytime(finishes));
   const consistency = getPlayerConsistencyScore(playerData);
-  if (consistency >= 0.8) {
-    badges.push({ id: 'perfectionist', name: 'Perfectionist', desc: 'Идеальная стабильность времени на картах', icon: '🎯', color: 'text-indigo-400', bg: 'bg-indigo-500/20', border: 'border-indigo-500/30' });
-  }
+  const consistencyPct = Math.round(consistency * 100);
 
-  return badges;
+  const rawBadges = [
+    // --- Speed & World Records ---
+    {
+      id: 'wr_legend',
+      name: 'WR Legend',
+      desc: 'Achieve Rank 1 on 50 or more maps',
+      descRu: 'Достичь топ-1 на 50 или более картах',
+      icon: '👑',
+      category: 'speed',
+      tier: 'legendary',
+      current: top1,
+      target: 50,
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/15',
+      border: 'border-amber-500/40'
+    },
+    {
+      id: 'wr_master',
+      name: 'WR Master',
+      desc: 'Achieve Rank 1 on 10 or more maps',
+      descRu: 'Достичь топ-1 на 10 или более картах',
+      icon: '🏆',
+      category: 'speed',
+      tier: 'diamond',
+      current: top1,
+      target: 10,
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/15',
+      border: 'border-cyan-500/40'
+    },
+    {
+      id: 'wr_hunter',
+      name: 'WR Hunter',
+      desc: 'Achieve Rank 1 on at least 1 map',
+      descRu: 'Достичь топ-1 хотя бы на 1 карте',
+      icon: '🥇',
+      category: 'speed',
+      tier: 'gold',
+      current: top1,
+      target: 1,
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/15',
+      border: 'border-amber-500/40'
+    },
+    {
+      id: 'top10_regular',
+      name: 'Top-10 Regular',
+      desc: 'Earn 25 or more Top-10 DDNet finishes',
+      descRu: '25 или более финишей в топ-10 DDNet',
+      icon: '⭐',
+      category: 'speed',
+      tier: 'gold',
+      current: top10,
+      target: 25,
+      color: 'text-yellow-400',
+      bg: 'bg-yellow-500/15',
+      border: 'border-yellow-500/40'
+    },
+    {
+      id: 'top10_challenger',
+      name: 'Speed Challenger',
+      desc: 'Earn 5 or more Top-10 DDNet finishes',
+      descRu: '5 или более финишей в топ-10 DDNet',
+      icon: '⚡',
+      category: 'speed',
+      tier: 'silver',
+      current: top10,
+      target: 5,
+      color: 'text-blue-400',
+      bg: 'bg-blue-500/15',
+      border: 'border-blue-500/40'
+    },
+    {
+      id: 'precision_master',
+      name: 'Sub-Second Precision',
+      desc: 'Finish within 1.05x of WR time on 10+ maps',
+      descRu: 'Финиш в пределах 1.05x от рекорда мира на 10+ картах',
+      icon: '🎯',
+      category: 'speed',
+      tier: 'diamond',
+      current: subSecCount,
+      target: 10,
+      color: 'text-purple-400',
+      bg: 'bg-purple-500/15',
+      border: 'border-purple-500/40'
+    },
+    {
+      id: 'perfectionist',
+      name: 'Laser Focus',
+      desc: 'Maintain a 80%+ Consistency Score across runs',
+      descRu: 'Стабильность времени (Consistency Score) 80% и выше',
+      icon: '🎯',
+      category: 'speed',
+      tier: 'diamond',
+      current: consistencyPct,
+      target: 80,
+      unit: '%',
+      color: 'text-indigo-400',
+      bg: 'bg-indigo-500/15',
+      border: 'border-indigo-500/40'
+    },
+
+    // --- Category Specialists ---
+    {
+      id: 'insane_master',
+      name: 'Insane Master',
+      desc: 'Complete 50 or more Insane maps',
+      descRu: '50+ пройденных Insane карт',
+      icon: '💀',
+      category: 'category',
+      tier: 'legendary',
+      current: insaneCount,
+      target: 50,
+      color: 'text-fuchsia-400',
+      bg: 'bg-fuchsia-500/15',
+      border: 'border-fuchsia-500/40'
+    },
+    {
+      id: 'insane_specialist',
+      name: 'Insane Specialist',
+      desc: 'Complete 20 or more Insane maps',
+      descRu: '20+ пройденных Insane карт',
+      icon: '☠️',
+      category: 'category',
+      tier: 'gold',
+      current: insaneCount,
+      target: 20,
+      color: 'text-pink-400',
+      bg: 'bg-pink-500/15',
+      border: 'border-pink-500/40'
+    },
+    {
+      id: 'brutal_slayer',
+      name: 'Brutal Slayer',
+      desc: 'Complete 50 or more Brutal maps',
+      descRu: '50+ пройденных Brutal карт',
+      icon: '🔥',
+      category: 'category',
+      tier: 'diamond',
+      current: brutalCount,
+      target: 50,
+      color: 'text-red-400',
+      bg: 'bg-red-500/15',
+      border: 'border-red-500/40'
+    },
+    {
+      id: 'brutal_specialist',
+      name: 'Brutal Specialist',
+      desc: 'Complete 25 or more Brutal maps',
+      descRu: '25+ пройденных Brutal карт',
+      icon: '💥',
+      category: 'category',
+      tier: 'gold',
+      current: brutalCount,
+      target: 25,
+      color: 'text-orange-400',
+      bg: 'bg-orange-500/15',
+      border: 'border-orange-500/40'
+    },
+    {
+      id: 'dummy_maestro',
+      name: 'Dummy Maestro',
+      desc: 'Complete 25 or more Dummy maps simultaneously',
+      descRu: '25+ пройденных Dummy карт',
+      icon: '🤖',
+      category: 'category',
+      tier: 'diamond',
+      current: dummyCount,
+      target: 25,
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/15',
+      border: 'border-cyan-500/40'
+    },
+    {
+      id: 'dummy_specialist',
+      name: 'Dummy Specialist',
+      desc: 'Complete 10 or more Dummy maps',
+      descRu: '10+ пройденных Dummy карт',
+      icon: '🦾',
+      category: 'category',
+      tier: 'silver',
+      current: dummyCount,
+      target: 10,
+      color: 'text-teal-400',
+      bg: 'bg-teal-500/15',
+      border: 'border-teal-500/40'
+    },
+    {
+      id: 'race_legend',
+      name: 'Race Demon',
+      desc: 'Complete 100 or more Race maps',
+      descRu: '100+ пройденных Race карт',
+      icon: '🏎️',
+      category: 'category',
+      tier: 'diamond',
+      current: raceCount,
+      target: 100,
+      color: 'text-sky-400',
+      bg: 'bg-sky-500/15',
+      border: 'border-sky-500/40'
+    },
+    {
+      id: 'race_specialist',
+      name: 'Race Specialist',
+      desc: 'Complete 50 or more Race maps',
+      descRu: '50+ пройденных Race карт',
+      icon: '🏁',
+      category: 'category',
+      tier: 'silver',
+      current: raceCount,
+      target: 50,
+      color: 'text-blue-400',
+      bg: 'bg-blue-500/15',
+      border: 'border-blue-500/40'
+    },
+    {
+      id: 'oldschool_legend',
+      name: 'Oldschool Legend',
+      desc: 'Complete 50 or more Oldschool maps',
+      descRu: '50+ пройденных Oldschool карт',
+      icon: '⏳',
+      category: 'category',
+      tier: 'diamond',
+      current: oldschoolCount,
+      target: 50,
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/15',
+      border: 'border-amber-500/40'
+    },
+    {
+      id: 'oldschool_veteran',
+      name: 'Oldschool Veteran',
+      desc: 'Complete 20 or more Oldschool maps',
+      descRu: '20+ пройденных Oldschool карт',
+      icon: '🏛️',
+      category: 'category',
+      tier: 'silver',
+      current: oldschoolCount,
+      target: 20,
+      color: 'text-yellow-400',
+      bg: 'bg-yellow-500/15',
+      border: 'border-yellow-500/40'
+    },
+    {
+      id: 'lone_wolf',
+      name: 'Lone Wolf',
+      desc: 'Complete 100 or more Solo maps',
+      descRu: '100+ пройденных Solo карт',
+      icon: '🐺',
+      category: 'category',
+      tier: 'gold',
+      current: soloCount,
+      target: 100,
+      color: 'text-slate-300',
+      bg: 'bg-slate-500/15',
+      border: 'border-slate-500/40'
+    },
+    {
+      id: 'dynamic_duo',
+      name: 'Dynamic Duo',
+      desc: 'Complete 50+ Team maps with teammates',
+      descRu: '50+ финишей в команде с напарником на Team картах',
+      icon: '🤝',
+      category: 'category',
+      tier: 'gold',
+      current: teamPartnerCount,
+      target: 50,
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-500/15',
+      border: 'border-emerald-500/40'
+    },
+    {
+      id: 'ddmax_connoisseur',
+      name: 'DDmaX Connoisseur',
+      desc: 'Complete 25 or more DDmaX maps',
+      descRu: '25+ пройденных карт серии DDmaX',
+      icon: '⚔️',
+      category: 'category',
+      tier: 'silver',
+      current: ddmaxCount,
+      target: 25,
+      color: 'text-violet-400',
+      bg: 'bg-violet-500/15',
+      border: 'border-violet-500/40'
+    },
+
+    // --- Mastery & PTS ---
+    {
+      id: 'ddnet_titan',
+      name: 'DDNet Titan',
+      desc: 'Accumulate 100,000+ Total Mastery PTS',
+      descRu: 'Набрать 100 000+ Total Mastery PTS',
+      icon: '👑',
+      category: 'mastery',
+      tier: 'legendary',
+      current: newPtsTotal,
+      target: 100000,
+      unit: ' PTS',
+      color: 'text-amber-300',
+      bg: 'bg-amber-500/20',
+      border: 'border-amber-400/50'
+    },
+    {
+      id: 'grandmaster',
+      name: 'Grandmaster',
+      desc: 'Accumulate 50,000+ Total Mastery PTS',
+      descRu: 'Набрать 50 000+ Total Mastery PTS',
+      icon: '🔮',
+      category: 'mastery',
+      tier: 'diamond',
+      current: newPtsTotal,
+      target: 50000,
+      unit: ' PTS',
+      color: 'text-purple-400',
+      bg: 'bg-purple-500/15',
+      border: 'border-purple-500/40'
+    },
+    {
+      id: 'master',
+      name: 'Master of Maps',
+      desc: 'Accumulate 25,000+ Total Mastery PTS',
+      descRu: 'Набрать 25 000+ Total Mastery PTS',
+      icon: '💎',
+      category: 'mastery',
+      tier: 'gold',
+      current: newPtsTotal,
+      target: 25000,
+      unit: ' PTS',
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/15',
+      border: 'border-cyan-500/40'
+    },
+    {
+      id: 'veteran',
+      name: 'PTS Veteran',
+      desc: 'Accumulate 10,000+ Total Mastery PTS',
+      descRu: 'Набрать 10 000+ Total Mastery PTS',
+      icon: '🛡️',
+      category: 'mastery',
+      tier: 'silver',
+      current: newPtsTotal,
+      target: 10000,
+      unit: ' PTS',
+      color: 'text-slate-300',
+      bg: 'bg-slate-500/15',
+      border: 'border-slate-500/40'
+    },
+    {
+      id: 'skill_prodigy',
+      name: 'Skill Prodigy',
+      desc: 'Achieve a Skill / Base ratio of 2.0x or higher',
+      descRu: 'Соотношение Skill / Base более 2.0x при 5k+ Base PTS',
+      icon: '📈',
+      category: 'mastery',
+      tier: 'diamond',
+      current: Number(skillRatio.toFixed(2)),
+      target: 2.0,
+      unit: 'x',
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-500/15',
+      border: 'border-emerald-500/40'
+    },
+    {
+      id: 'apex_predator',
+      name: 'Apex Predator',
+      desc: 'Achieve a Skill / Base ratio of 3.0x or higher',
+      descRu: 'Соотношение Skill / Base более 3.0x (Apex скорость)',
+      icon: '🚀',
+      category: 'mastery',
+      tier: 'legendary',
+      current: Number(skillRatio.toFixed(2)),
+      target: 3.0,
+      unit: 'x',
+      color: 'text-rose-400',
+      bg: 'bg-rose-500/20',
+      border: 'border-rose-500/50'
+    },
+
+    // --- Grind & Dedication ---
+    {
+      id: 'world_explorer',
+      name: 'World Explorer',
+      desc: 'Complete 1,000 or more unique DDNet maps',
+      descRu: '1 000+ пройденных уникальных карт DDNet',
+      icon: '🗺️',
+      category: 'grind',
+      tier: 'diamond',
+      current: finishes.length,
+      target: 1000,
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/15',
+      border: 'border-cyan-500/40'
+    },
+    {
+      id: 'pathfinder',
+      name: 'Pathfinder',
+      desc: 'Complete 500 or more unique DDNet maps',
+      descRu: '500+ пройденных уникальных карт DDNet',
+      icon: '🧭',
+      category: 'grind',
+      tier: 'gold',
+      current: finishes.length,
+      target: 500,
+      color: 'text-amber-400',
+      bg: 'bg-amber-500/15',
+      border: 'border-amber-500/40'
+    },
+    {
+      id: 'time_lord',
+      name: 'Time Lord',
+      desc: 'Accumulate 500+ estimated hours of gameplay',
+      descRu: '500+ расчетных часов онлайна на картах',
+      icon: '⏱️',
+      category: 'grind',
+      tier: 'diamond',
+      current: playtimeHours,
+      target: 500,
+      unit: 'h',
+      color: 'text-purple-400',
+      bg: 'bg-purple-500/15',
+      border: 'border-purple-500/40'
+    },
+    {
+      id: 'dedicated_grinder',
+      name: 'Dedicated Grinder',
+      desc: 'Accumulate 100+ estimated hours of gameplay',
+      descRu: '100+ расчетных часов онлайна на картах',
+      icon: '☕',
+      category: 'grind',
+      tier: 'gold',
+      current: playtimeHours,
+      target: 100,
+      unit: 'h',
+      color: 'text-emerald-400',
+      bg: 'bg-emerald-500/15',
+      border: 'border-emerald-500/40'
+    }
+  ];
+
+  return rawBadges.map(b => ({
+    ...b,
+    unlocked: b.current >= b.target
+  }));
 }
 
 /**
@@ -765,36 +1218,43 @@ function getPlayerBadges(playerData) {
  * @returns {Array<number>} Array of normalized metrics [0.0 - 1.0] for the radar
  */
 function getPlayerRadarStats(playerData) {
-  const finishes = playerData.finishDetails || [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
   if (finishes.length === 0) return [0, 0, 0, 0];
 
-  // Speed: Average of (1 / timeRatio) (cap at 1.0)
-  let speedSum = 0;
-  let enduranceSum = 0;
-
-  for (const f of finishes) {
-    const ratio = f.timeRatio || 1.0;
-    speedSum += Math.min(1.0, 1.0 / ratio);
-
-    // Endurance approximation: long maps have high base PTS
-    // Let's say map with 30 PTS is max endurance.
-    if (f.pBase > 0) {
-      enduranceSum += Math.min(1.0, f.pBase / 30);
-    }
+  // Speed: Average efficiency of top qualifying/speedrun finishes (capped at 1.0)
+  const valid = finishes.filter(f => f.timeRatio && f.timeRatio >= 1.0);
+  let speed = 0;
+  if (valid.length > 0) {
+    const sortedEff = valid.map(f => Math.min(1.0, 1.0 / f.timeRatio)).sort((a, b) => b - a);
+    const topSample = sortedEff.slice(0, Math.max(5, Math.ceil(sortedEff.length * 0.5)));
+    speed = topSample.reduce((acc, v) => acc + v, 0) / topSample.length;
   }
 
-  const speed = speedSum / finishes.length;
-  const endurance = enduranceSum / finishes.length;
+  // Endurance: high base PTS / brutal & insane maps performance
+  let enduranceSum = 0;
+  for (const f of finishes) {
+    if (f.pBase > 0) {
+      enduranceSum += Math.min(1.0, f.pBase / 25);
+    }
+  }
+  const endurance = Math.min(1.0, enduranceSum / Math.max(1, Math.min(finishes.length, 300)));
 
   // Skill: Total Skill PTS vs Base PTS ratio mapped to [0, 1]
-  const skillRatio = playerData.newPtsBase > 0 ? (playerData.newPtsSkill / playerData.newPtsBase) : 0;
-  const skillNormalized = Math.min(1.0, skillRatio / 2.0); // 2.0 is Master league
+  const pBase = (playerData && playerData.newPtsBase) || finishes.reduce((a, f) => a + (f.pBase || 0), 0);
+  const pSkill = (playerData && playerData.newPtsSkill) || finishes.reduce((a, f) => a + (f.pSkill || 0), 0);
+  const skillRatio = pBase > 0 ? (pSkill / pBase) : 0;
+  const skillNormalized = Math.min(1.0, skillRatio / 2.5); // 2.5x is top tier
 
-  // Grind / Activity: Maps finished
-  // Assuming a max of ~1000 maps for 1.0
-  const grind = Math.min(1.0, finishes.length / 1000);
+  // Grind: Maps finished out of ~2400 total DDNet maps
+  const totalMapsCount = (typeof window !== 'undefined' && window.mapsData && window.mapsData.length) || 2400;
+  const grind = Math.min(1.0, finishes.length / totalMapsCount);
 
-  return [speed, skillNormalized, endurance, grind];
+  return [
+    Number(speed.toFixed(3)),
+    Number(skillNormalized.toFixed(3)),
+    Number(endurance.toFixed(3)),
+    Number(grind.toFixed(3))
+  ];
 }
 
 /**
@@ -843,16 +1303,36 @@ function getPlayerGlobalRank(playerName) {
 
 /**
  * Calculates a player's server/mod specialization (Novice, Brutal, etc.)
- * @param {Object} playerData Player data
+ * Normalizes fragmented sub-servers (e.g. DDmaX.Pro/Next into DDmaX) and computes category completion stats.
+ * @param {Object|Array} playerData Player data or finishes array
  * @returns {Array<Object>} Sorted array of server specializations
  */
 function getPlayerServerSpecialization(playerData) {
-  const finishes = playerData.finishDetails || [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
   if (finishes.length === 0) return [];
+
+  const normalizeServer = (srv) => {
+    if (!srv) return 'Other';
+    const s = String(srv).trim();
+    const l = s.toLowerCase();
+    if (l.startsWith('ddmax')) return 'DDmaX';
+    if (l.includes('novice')) return 'Novice';
+    if (l.includes('moderate')) return 'Moderate';
+    if (l.includes('brutal')) return 'Brutal';
+    if (l.includes('insane')) return 'Insane';
+    if (l.includes('dummy')) return 'Dummy';
+    if (l.includes('race')) return 'Race';
+    if (l.includes('solo')) return 'Solo';
+    if (l.includes('oldschool')) return 'Oldschool';
+    if (l === 'fun') return null; // ignore 0-point fun runs
+    if (l.includes('event')) return 'Event';
+    return s;
+  };
 
   const stats = {};
   for (const f of finishes) {
-    const srv = f.server || 'Unknown';
+    const srv = normalizeServer(f.server);
+    if (!srv) continue;
     if (!stats[srv]) stats[srv] = { server: srv, count: 0, pBase: 0, pSkill: 0, pTotal: 0 };
     stats[srv].count++;
     stats[srv].pBase += (f.pBase || 0);
@@ -860,7 +1340,22 @@ function getPlayerServerSpecialization(playerData) {
     stats[srv].pTotal += ((f.pBase || 0) + (f.pSkill || 0));
   }
 
+  // Count total maps in each category from mapsData to show completion %
+  const allMaps = (typeof window !== 'undefined' && window.mapsData) || [];
+  const categoryTotals = {};
+  for (const m of allMaps) {
+    const srv = normalizeServer(m.server);
+    if (!srv) continue;
+    categoryTotals[srv] = (categoryTotals[srv] || 0) + 1;
+  }
+
   return Object.values(stats)
+    .filter(s => s.pTotal > 0 || s.count > 0)
+    .map(s => ({
+      ...s,
+      totalMaps: categoryTotals[s.server] || s.count,
+      pct: Math.min(100, Math.round((s.count / Math.max(1, categoryTotals[s.server] || s.count)) * 100))
+    }))
     .sort((a, b) => b.pTotal - a.pTotal);
 }
 
@@ -915,18 +1410,40 @@ function getPlayerRecentActivity(playerData, days = 7) {
 }
 
 /**
- * Finds the hardest map (highest Base PTS) the player has completed.
- * @param {Object} playerData The player's fetched data
+ * Finds the hardest map (highest Base PTS / Difficulty category) the player has completed.
+ * @param {Object|Array} playerData The player's fetched data or finishes array
  * @returns {Object|null} The finish object of the hardest map, or null if none
  */
 function getHardestMapCompleted(playerData) {
-  const finishes = playerData.finishDetails || [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
   if (finishes.length === 0) return null;
+
+  const categoryWeight = {
+    'insane': 6,
+    'brutal': 5,
+    'dummy': 4,
+    'oldschool': 3,
+    'moderate': 2,
+    'race': 2,
+    'solo': 2,
+    'ddmax': 2,
+    'novice': 1,
+  };
 
   let hardest = finishes[0];
   for (const f of finishes) {
-    if (f.pBase > hardest.pBase) {
+    const curP = f.pBase || 0;
+    const bestP = hardest.pBase || 0;
+    if (curP > bestP) {
       hardest = f;
+    } else if (curP === bestP) {
+      const curCat = (f.server || '').toLowerCase();
+      const bestCat = (hardest.server || '').toLowerCase();
+      const curWeight = categoryWeight[curCat] || 0;
+      const bestWeight = categoryWeight[bestCat] || 0;
+      if (curWeight > bestWeight || (curWeight === bestWeight && (f.pSkill || 0) > (hardest.pSkill || 0))) {
+        hardest = f;
+      }
     }
   }
   return hardest;
@@ -1170,32 +1687,45 @@ function getPlayerProgressionTimeline(playerData) {
 }
 
 /**
- * Calculates a Consistency Score (0.0 to 1.0) based on the variance of the player's timeRatio.
- * Lower variance (highly consistent ratios) means higher score.
- * @param {Object} playerData 
+ * Calculates a Consistency Score (0.0 to 1.0) based on speed efficiency and dispersion.
+ * Evaluates the player's consistent execution near World Record speeds across qualifying runs.
+ * @param {Object|Array} playerData Player data or finishes array
  * @returns {number} Score from 0.0 to 1.0
  */
 function getPlayerConsistencyScore(playerData) {
-  const finishes = playerData.finishDetails || [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
+  if (finishes.length === 0) return 0.5;
+
   const valid = finishes.filter(f => f.timeRatio && f.timeRatio >= 1.0);
-  if (valid.length < 5) return 0.5; // Default for low sample size
+  if (valid.length < 3) return 0.5;
 
-  const mean = valid.reduce((acc, f) => acc + f.timeRatio, 0) / valid.length;
-  const variance = valid.reduce((acc, f) => acc + Math.pow(f.timeRatio - mean, 2), 0) / valid.length;
+  // Speed efficiency E_i = 1 / timeRatio (clamped between 0.05 and 1.0)
+  const efficiencies = valid.map(f => Math.max(0.05, Math.min(1.0, 1.0 / f.timeRatio)));
+  efficiencies.sort((a, b) => b - a);
+
+  // Focus on top 60% of finishes to avoid casual/afk runs ruining the consistency metric
+  const sampleSize = Math.max(5, Math.ceil(efficiencies.length * 0.6));
+  const sample = efficiencies.slice(0, sampleSize);
+
+  const mean = sample.reduce((acc, v) => acc + v, 0) / sample.length;
+  const variance = sample.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / sample.length;
   const stdDev = Math.sqrt(variance);
-  const cv = stdDev / mean;
 
-  const score = Math.max(0, 1.0 - cv);
+  // High consistency is a combination of low standard deviation and high average pace
+  const stability = Math.max(0, 1.0 - (stdDev * 1.6));
+  const pace = Math.pow(mean, 0.4);
+  const score = Math.max(0.15, Math.min(0.99, (stability * 0.6) + (pace * 0.4)));
+
   return Number(score.toFixed(3));
 }
 
 /**
  * Estimates the player's total playtime in hours based on their map completions.
- * @param {Object} playerData
+ * @param {Object|Array} playerData
  * @returns {number} Estimated playtime in hours
  */
 function estimatePlaytime(playerData) {
-  const finishes = playerData.finishDetails || [];
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
   if (finishes.length === 0) return 0;
 
   let totalSeconds = 0;
@@ -1265,6 +1795,56 @@ function getTopPerformances(playerData, limit = 5) {
     .slice(0, limit);
 }
 
+/**
+ * Computes top teammates/partners with whom the player earned the highest Skill PTS in shared finishes.
+ * @param {Object|Array} playerData
+ * @param {number} limit
+ * @returns {Array<{name: string, totalSkillPts: number, mapCount: number, topMaps: Array<Object>}>}
+ */
+function getTopPartners(playerData, limit = 5) {
+  const finishes = Array.isArray(playerData) ? playerData : (playerData?.finishDetails || []);
+  const playerName = String(playerData?.name || '').toLowerCase();
+  const partnerMap = new Map();
+
+  finishes.forEach(finish => {
+    if (!finish.pSkill || finish.pSkill <= 0) return;
+
+    let partners = [];
+    if (Array.isArray(finish.teamPartners) && finish.teamPartners.length > 0) {
+      partners = finish.teamPartners.map(p => String(p).trim()).filter(Boolean);
+    } else if (finish.teamPartner) {
+      partners = finish.teamPartner.split(/&|,/).map(p => p.trim()).filter(Boolean);
+    }
+
+    partners.forEach(pName => {
+      if (!pName || pName.toLowerCase() === playerName) return;
+      const key = pName.toLowerCase();
+      if (!partnerMap.has(key)) {
+        partnerMap.set(key, {
+          name: pName,
+          totalSkillPts: 0,
+          mapCount: 0,
+          topMaps: []
+        });
+      }
+      const data = partnerMap.get(key);
+      data.totalSkillPts += finish.pSkill;
+      data.mapCount += 1;
+      if (data.topMaps.length < 3) {
+        data.topMaps.push({
+          mapName: finish.mapName,
+          pSkill: finish.pSkill,
+          server: finish.server
+        });
+      }
+    });
+  });
+
+  return Array.from(partnerMap.values())
+    .sort((a, b) => b.totalSkillPts - a.totalSkillPts || b.mapCount - a.mapCount)
+    .slice(0, limit);
+}
+
 window.api = {
   fetchPlayerPts,
   getTopPlayersLive,
@@ -1289,4 +1869,6 @@ window.api = {
   estimatePlaytime,
   getPlayerRival,
   getTopPerformances,
+  getTopPartners,
 };
+

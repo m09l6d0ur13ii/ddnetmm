@@ -49,7 +49,8 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="icon" type="image/png" href="icon.png">
   <script src="js/tailwindcss.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=20260810-mobile-1">
+  <link rel="stylesheet" href="css/style.css?v=20260820-tee">
+  <link rel="stylesheet" href="css/tee-skin-renderer.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -139,9 +140,27 @@
         <div class="panel-label" id="global-telemetry-label"></div>
         <div
           class="leaderboard-toolbar flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-white/[0.05] pb-4">
-          <div class="main-ranking-title flex items-center gap-2">
-            <h2 class="text-xl font-bold text-white" id="home-leaderboard-title"></h2>
-            <span id="leaderboard-loader" class="hidden"></span>
+          <div class="flex items-center gap-3 flex-wrap">
+            <div class="main-ranking-title flex items-center gap-2">
+              <h2 class="text-xl font-bold text-white" id="home-leaderboard-title"></h2>
+              <span id="leaderboard-loader" class="hidden"></span>
+            </div>
+            <!-- Leaderboard Mode Tabs: Global vs Favorites (Separate Buttons) -->
+            <div class="flex items-center gap-2.5 flex-wrap" id="leaderboard-filter-tabs">
+              <button type="button" id="tab-all-players" class="leaderboard-tab-btn active">
+                <span>🌐</span>
+                <span data-i18n="home.filterAll">Все игроки</span>
+              </button>
+              <button type="button" id="tab-fav-players" class="leaderboard-tab-btn">
+                <span>⭐</span>
+                <span data-i18n="home.filterFavorites">Избранные</span>
+                <span id="home-fav-count" class="tab-badge">0</span>
+              </button>
+              <button type="button" id="home-fav-refresh-btn" class="hidden leaderboard-refresh-btn" title="Обновить избранных">
+                <span id="home-fav-refresh-icon">🔄</span>
+                <span class="hidden sm:inline" id="home-fav-refresh-label">Обновить</span>
+              </button>
+            </div>
           </div>
 
           <div class="text-sm text-slate-400 max-w-sm text-right" id="status-message">
@@ -268,14 +287,15 @@
 
   <script defer src="data/maps.js?v=a1601ea"></script>
   <script defer src="data/unique_players.js?v=a1601ea"></script>
-  <script defer src="data/leaderboard.js?v=a1601ea"></script>
+  <script defer src="data/leaderboard.js?v=20260820-tee"></script>
   <script defer src="data/map_records.js?v=a1601ea"></script>
   <script defer src="data/map_stats.js?v=a1601ea"></script>
   <script defer src="data/blacklist.js?v=a1601ea"></script>
   <script defer src="js/i18n.js"></script>
   <script defer src="js/api.js?v=20260809-2"></script>
   <script defer src="js/app.js?v=20260807-3"></script>
-  <script defer src="js/page-index.js?v=20260809-3"></script>
+  <script defer src="js/tee-skin-renderer.umd.js"></script>
+  <script defer src="js/page-index.js?v=20260820-tee"></script>
 </body>
 
 </html>

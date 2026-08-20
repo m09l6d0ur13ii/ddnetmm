@@ -415,9 +415,8 @@ async function run() {
     await resolveCustomRecords(customMapRecords);
     console.log(`Loaded & resolved ${Object.keys(customMapRecords).length} custom map records:`, customMapRecords);
 
-    // Save JS files
-    const blacklistJsContent = `// Blacklist of cheaters/TASers loaded locally\nwindow.blacklistData = ${JSON.stringify(blacklistArray, null, 2)};\n\nconst blacklistNames = new Set(window.blacklistData.map(b =>\n  (typeof b === 'string' ? b : b.name).toLowerCase().trim()\n));\n\nwindow.isBlacklisted = function(name) {\n  if (!name || !window.blacklistData || !window.blacklistData.length) return false;\n  const players = String(name).split(/[,/&]+/).map(p => p.toLowerCase().trim()).filter(Boolean);\n  return players.some(player => blacklistNames.has(player));\n};\n`;
-    fs.writeFileSync(BLACKLIST_JS, blacklistJsContent);
+    // Build and save full blacklist data with record counts
+    await updateBlacklistData();
 
     fs.writeFileSync(MAP_MIN_TIMES_JS, `window.mapMinTimesData = ${JSON.stringify(mapMinTimes, null, 2)};\n`);
 
@@ -883,10 +882,20 @@ async function run() {
             const pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
             const pts = calculatePlayerPoints(pData, mapRecords, mapStats, blacklistSet);
             if (pts.newPtsTotal > 0) {
-                leaderboard.push({
+                const item = {
                     name: pName,
                     ...pts
-                });
+                };
+                if (pData.profile?.skin_name || pData.profile?.skin) {
+                    item.skin = pData.profile.skin_name || pData.profile.skin;
+                    if (pData.profile.skin_color_body !== undefined && pData.profile.skin_color_body !== null) {
+                        item.skinColorBody = pData.profile.skin_color_body;
+                    }
+                    if (pData.profile.skin_color_feet !== undefined && pData.profile.skin_color_feet !== null) {
+                        item.skinColorFeet = pData.profile.skin_color_feet;
+                    }
+                }
+                leaderboard.push(item);
             }
         } catch (e) { }
     }

@@ -67,13 +67,6 @@
     return 'bg-rose-500/10 text-rose-400 border-rose-500/30';
   };
 
-  const getFarmScoreBadgeClass = (score) => {
-    if (score >= 200) return 'bg-amber-500/20 text-amber-300 border-amber-500/40 font-black';
-    if (score >= 100) return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30 font-bold';
-    if (score >= 50)  return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30 font-bold';
-    return 'bg-slate-800 text-slate-400 border-white/10';
-  };
-
   const syncCategoryChips = (selectedServer) => {
     const chips = document.querySelectorAll('.cat-chip');
     chips.forEach(chip => {
@@ -131,7 +124,6 @@
 
     if (sortFilter) {
       const optMap = {
-        'farm_desc': mDict.sortFarmDesc,
         'base_desc': mDict.sortBaseDesc,
         'base_asc': mDict.sortBaseAsc,
         'strictness_desc': mDict.sortStrictnessDesc,
@@ -284,7 +276,7 @@
     const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const serverVal = serverFilter ? serverFilter.value : 'ALL';
     const starsVal = starsFilter ? starsFilter.value : 'ALL';
-    const sortVal = sortFilter ? sortFilter.value : 'farm_desc';
+    const sortVal = sortFilter ? sortFilter.value : 'base_desc';
 
     // Filter
     currentFilteredMaps = window.mapsData.filter(m => {
@@ -323,11 +315,7 @@
       const sA = Number(statsA.s) || Number(a.s) || 2.0;
       const sB = Number(statsB.s) || Number(b.s) || 2.0;
 
-      const farmA = pA > 0 ? Math.round((pA * 10) / sA) : 0;
-      const farmB = pB > 0 ? Math.round((pB * 10) / sB) : 0;
-
-      if (sortVal === 'farm_desc') return farmB - farmA || pB - pA || a.map.localeCompare(b.map);
-      if (sortVal === 'base_desc') return pB - pA || farmB - farmA || a.map.localeCompare(b.map);
+      if (sortVal === 'base_desc') return pB - pA || a.map.localeCompare(b.map);
       if (sortVal === 'base_asc') return pA - pB || a.map.localeCompare(b.map);
       if (sortVal === 'strictness_desc') return sB - sA || pB - pA;
       if (sortVal === 'strictness_asc') return sA - sB || pB - pA;
@@ -390,7 +378,7 @@
           if (searchClear) searchClear.classList.add('hidden');
           if (serverFilter) serverFilter.value = 'ALL';
           if (starsFilter) starsFilter.value = 'ALL';
-          if (sortFilter) sortFilter.value = 'farm_desc';
+          if (sortFilter) sortFilter.value = 'base_desc';
           syncCategoryChips('ALL');
           currentPage = 1;
           applyFiltersAndSort();
@@ -404,8 +392,6 @@
       const s = Number(stats.s) || Number(m.s) || 2.0;
       const pBase = Number(m.points) || 0;
       const stars = Number(m.stars) || 0;
-      const farmScore = pBase > 0 ? Math.round((pBase * 10) / s) : 0;
-      const maxPts = pBase * 6; // Base + 5x Base Skill Max
 
       const recordInfo = (window.mapRecordsData && window.mapRecordsData[m.map]) || null;
       let recordHtml = '';
@@ -449,18 +435,14 @@
 
           <!-- Bottom Card Stats -->
           <div class="mt-3">
-            <div class="grid grid-cols-3 gap-1.5 bg-black/30 p-2 rounded-xl border border-white/5 text-center">
+            <div class="grid grid-cols-2 gap-2 bg-black/30 p-2 rounded-xl border border-white/5 text-center">
               <div>
-                <div class="text-[0.62rem] text-slate-400 font-bold uppercase tracking-wider">Base</div>
+                <div class="text-[0.62rem] text-slate-400 font-bold uppercase tracking-wider">Base PTS</div>
                 <div class="font-bold text-emerald-400 text-xs font-mono">+${pBase}</div>
               </div>
               <div>
                 <div class="text-[0.62rem] text-slate-400 font-bold uppercase tracking-wider" title="Strictness Coefficient s">Strict s</div>
                 <div class="font-bold text-xs font-mono text-purple-300">${s.toFixed(2)}</div>
-              </div>
-              <div>
-                <div class="text-[0.62rem] text-amber-400/80 font-bold uppercase tracking-wider" title="Farm Score = (Base * 10) / s">Farm</div>
-                <div class="font-bold text-xs font-mono text-amber-400">${farmScore}</div>
               </div>
             </div>
 
