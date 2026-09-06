@@ -7,5 +7,6 @@ window.mapMinTimesData = {
   "linear": 42,
   "rush clouds 2": 30,
   "grandma": 970,
-  "yoko 2.1": 45
+  "yoko 2.1": 45,
+  "fly around": 170
 };

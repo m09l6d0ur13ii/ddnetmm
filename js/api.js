@@ -4,6 +4,27 @@
  * @returns {Promise<Array<Object>>}
  */
 async function getLeaderboardData() {
+  if (window.leaderboardData && window.leaderboardData.length > 0) {
+    return window.leaderboardData;
+  }
+  try {
+    const isSubfolder = window.location.pathname.includes('/map') ||
+      window.location.pathname.includes('/player') ||
+      window.location.pathname.includes('/compare') ||
+      window.location.pathname.includes('/pvp') ||
+      window.location.pathname.includes('/about') ||
+      window.location.pathname.includes('/privacy') ||
+      window.location.pathname.includes('/tas');
+    const prefix = isSubfolder ? '../' : './';
+    const resp = await fetch(`${prefix}data/leaderboard.json`);
+    if (resp.ok) {
+      const json = await resp.json();
+      if (Array.isArray(json) && json.length > 0) {
+        window.leaderboardData = json;
+        return json;
+      }
+    }
+  } catch (e) {}
   return window.leaderboardData || [];
 }
 

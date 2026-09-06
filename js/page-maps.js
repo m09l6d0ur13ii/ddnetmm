@@ -82,17 +82,17 @@
   const init = async () => {
     if (typeof initLang === 'function') initLang();
     if (typeof renderHeader === 'function') renderHeader('maps');
+    if (typeof renderFooter === 'function') renderFooter('maps');
 
     const dict = getDict();
     const mDict = dict.maps || {};
-    const isEn = currentLang === 'en';
 
     document.title = `${mDict.title || 'Maps Explorer'} — DDNet Map Mastery`;
 
     if (typeof renderBreadcrumbs === 'function') {
       renderBreadcrumbs([
-        { label: dict.breadcrumbs ? dict.breadcrumbs.home : (isEn ? 'Home' : 'Главная'), url: '/' },
-        { label: dict.breadcrumbs ? dict.breadcrumbs.maps : (isEn ? 'Maps Explorer' : 'База карт') }
+        { label: (dict.breadcrumbs && dict.breadcrumbs.home) || loc('Главная', 'Home', '首页'), url: '/' },
+        { label: (dict.breadcrumbs && dict.breadcrumbs.maps) || loc('База карт', 'Maps Explorer', '地图库') }
       ]);
     }
 
@@ -335,10 +335,9 @@
     if (currentPage > maxPages) currentPage = maxPages;
     if (currentPage < 1) currentPage = 1;
 
-    const isEn = currentLang === 'en';
     const dict = getDict();
     const mDict = dict.maps || {};
-    const totalTemplate = mDict.foundCount || (isEn ? 'Found: {count} maps' : 'Найдено: {count} карт');
+    const totalTemplate = mDict.foundCount || loc('Найдено: {count} карт', 'Found: {count} maps', '已找到：{count} 张地图');
     const totalText = totalTemplate.replace('{count}', total.toLocaleString());
 
     if (countDisplay) countDisplay.textContent = totalText;
@@ -360,13 +359,13 @@
         <div class="col-span-full text-center py-16 glass-panel border border-white/5 space-y-4">
           <div class="text-4xl">🗺️</div>
           <div class="text-lg font-bold text-slate-300">
-            ${mDict.noMapsFound || (isEn ? 'No maps match your filters' : 'Карты по выбранным фильтрам не найдены')}
+            ${mDict.noMapsFound || loc('Карты по выбранным фильтрам не найдены', 'No maps match your filters', '未找到符合筛选条件的地图')}
           </div>
           <p class="text-sm text-slate-500">
-            ${mDict.noMapsFoundSub || (isEn ? 'Try adjusting your search query or category filters.' : 'Попробуйте изменить поисковый запрос или сбросить фильтры.')}
+            ${mDict.noMapsFoundSub || loc('Попробуйте изменить поисковый запрос или сбросить фильтры.', 'Try adjusting your search query or category filters.', '请尝试调整搜索词或重置筛选条件。')}
           </p>
-          <button type="button" id="maps-reset-btn" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 text-sm font-bold transition-all">
-            ${mDict.resetFilters || (isEn ? 'Reset All Filters' : 'Сбросить все фильтры')}
+          <button type="button" id="maps-reset-btn" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 text-sm font-bold transition-all cursor-pointer">
+            ${mDict.resetFilters || loc('Сбросить все фильтры', 'Reset All Filters', '重置所有筛选')}
           </button>
         </div>
       `;
@@ -397,7 +396,7 @@
       let recordHtml = '';
       if (recordInfo && typeof recordInfo.time === 'number') {
         const wrHolder = recordInfo.name ? escapeHtml(recordInfo.name) : 'WR';
-        const wrTitle = `${mDict.wrTooltip || (isEn ? 'World Record' : 'Мировой рекорд')}: ${formatTime(recordInfo.time)} (${wrHolder})`;
+        const wrTitle = `${mDict.wrTooltip || loc('Мировой рекорд', 'World Record', '世界纪录')}: ${formatTime(recordInfo.time)} (${wrHolder})`;
         recordHtml = `
           <div class="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-xs text-slate-400" title="${wrTitle}">
             <span class="flex items-center gap-1 text-amber-400/90 font-medium truncate">
@@ -410,7 +409,7 @@
       }
 
       const starsStr = stars > 0 ? '★'.repeat(stars) : '';
-      const byPrefix = mDict.by || (isEn ? 'by' : 'автор:');
+      const byPrefix = mDict.by || loc('автор:', 'by', '作者：');
       const mapperText = m.mapper ? `${byPrefix} ${escapeHtml(m.mapper)}` : '';
 
       return `

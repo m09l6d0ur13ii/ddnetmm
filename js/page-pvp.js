@@ -205,11 +205,11 @@
         btn.type = 'button';
         if (item.isMe) {
           btn.className = 'text-[0.68rem] px-2 py-0.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/30 text-amber-300 font-bold border border-amber-500/40 hover:border-amber-400 transition-all cursor-pointer truncate max-w-[110px] shadow-[0_0_8px_rgba(245,158,11,0.2)] flex items-center gap-1';
-          btn.title = `Выбрать свой ник (${item.name})`;
+          btn.title = typeof loc === 'function' ? loc(`Выбрать свой ник (${item.name})`, `Select own nickname (${item.name})`, `选择我的昵称 (${item.name})`) : `Выбрать свой ник (${item.name})`;
           btn.innerHTML = `<span>⚡</span> <span>${escapeHtml(item.name)}</span>`;
         } else {
           btn.className = 'text-[0.68rem] px-2 py-0.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 hover:text-white border border-white/10 hover:border-white/25 transition-all cursor-pointer truncate max-w-[95px] flex items-center gap-1';
-          btn.title = `Выбрать ${item.name}`;
+          btn.title = typeof loc === 'function' ? loc(`Выбрать ${item.name}`, `Select ${item.name}`, `选择 ${item.name}`) : `Выбрать ${item.name}`;
           btn.innerHTML = `<span>⭐</span> <span>${escapeHtml(item.name)}</span>`;
         }
 
@@ -232,6 +232,9 @@
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof renderHeader === 'function') {
       renderHeader('pvp');
+    }
+    if (typeof renderFooter === 'function') {
+      renderFooter('pvp');
     }
 
     if (window.setupPlayerAutocomplete) {
@@ -286,7 +289,8 @@
 
         if (!p1 || !p2) return;
         if (p1.toLowerCase() === p2.toLowerCase()) {
-          showError(getDict().pvp ? getDict().pvp.errorDiff : (currentLang === 'en' ? 'Select two different players' : 'Выберите двух разных игроков'));
+          const dict = getDict();
+          showError(dict.pvp?.errorDiff || (typeof loc === 'function' ? loc('Выберите двух разных игроков', 'Select two different players', '请选择两名不同的玩家进行对比') : 'Выберите двух разных игроков'));
           return;
         }
 
@@ -305,26 +309,34 @@
       if (el) el.textContent = text;
     };
 
-    setTxt('pvp-back', pvp.back || (currentLang === 'en' ? 'Back' : 'На главную'));
+    const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
+
+    setTxt('pvp-kicker', pvp.kicker || l('⚔️ ДУЭЛЬНЫЙ РЕЖИМ // 1 НА 1', '⚔️ DUEL MODE // 1 ON 1', '⚔️ 1v1 对决模式 // 1 ON 1'));
+    setTxt('pvp-back', pvp.back || l('На главную', 'Back to Home', '返回首页'));
     setTxt('pvp-title-text', (pvp.title || 'Player vs Player').replace(/\s*⚔️?\s*/g, ' ').trim());
-    setTxt('pvp-subtitle', pvp.subtitle || (currentLang === 'en' ? 'Enter nicknames of two players to compare their times on common maps.' : 'Введите никнеймы двух игроков для сравнения результатов на общих картах.'));
-    setTxt('lbl-pvp-p1', pvp.player1 || (currentLang === 'en' ? 'Player 1' : 'Игрок 1'));
-    setTxt('lbl-pvp-p2', pvp.player2 || (currentLang === 'en' ? 'Player 2' : 'Игрок 2'));
-    setTxt('pvp-submit-btn', pvp.compareBtn || (currentLang === 'en' ? 'Compare ⚔️' : 'Сравнить ⚔️'));
-    setTxt('pvp-loading-text', pvp.loading || (currentLang === 'en' ? 'Loading duel data...' : 'Загрузка и расчёт данных дуэли...'));
+    setTxt('pvp-subtitle', pvp.subtitle || l('Сравнение результатов двух игроков на общих картах, дуэль времени и аналитика скилла.', 'Head-to-head map completion times, win statistics and skill analytics.', '对比两名玩家在共同通关地图上的用时胜负、实力胜率预测与分类表现。'));
+    setTxt('lbl-pvp-p1', pvp.player1 || l('Игрок 1', 'Player 1', '玩家 1'));
+    setTxt('lbl-pvp-p2', pvp.player2 || l('Игрок 2', 'Player 2', '玩家 2'));
+    setTxt('pvp-submit-text', pvp.compareBtn || l('Сравнить результаты ⚔️', 'Compare Matchup ⚔️', '开始对比 ⚔️'));
+    setTxt('pvp-loading-text', pvp.loading || l('Загрузка и расчёт данных дуэли...', 'Loading duel analytics...', '正在加载玩家对战数据...'));
 
-    setTxt('p1-wins-label', pvp.wins || (currentLang === 'en' ? 'Map Wins' : 'Побед на картах'));
-    setTxt('p2-wins-label', pvp.wins || (currentLang === 'en' ? 'Map Wins' : 'Побед на картах'));
+    setTxt('p1-wins-label', pvp.wins || l('Побед на картах', 'Map Wins', '胜出张数'));
+    setTxt('p2-wins-label', pvp.wins || l('Побед на картах', 'Map Wins', '胜出张数'));
 
-    setTxt('h2h-score-label', pvp.h2hScore || (currentLang === 'en' ? 'DUEL SCORE' : 'СЧЁТ ДУЭЛИ'));
-    setTxt('common-count-label', pvp.commonMaps || (currentLang === 'en' ? 'Common Maps' : 'Общих карт'));
+    setTxt('h2h-score-label', pvp.h2hScore || l('СЧЁТ ДУЭЛИ', 'DUEL SCORE', '对决总比分'));
+    setTxt('common-count-label', pvp.commonMaps || l('Общих карт', 'Common Maps', '共同通关地图'));
+
+    setTxt('prob-title', l('⚡ ПРЕДСКАЗАНИЕ МАТЧА ⚡', '⚡ MATCH PREDICTION ⚡', '⚡ 胜率预测 ⚡'));
+    setTxt('pvp-spec-title-text', l('Сравнение по категориям', 'Category Breakdown', '按分类对比'));
+    setTxt('pvp-spec-subtitle', l('Категориальный перевес', 'Category Advantage', '各分类优势分布'));
+    setTxt('pvp-featured-sub', l('Нажмите на любую пару для быстрого сравнения', 'Click any matchup to compare', '点击任意对决快速对比'));
 
     const searchInput = document.getElementById('pvp-map-search');
-    if (searchInput) searchInput.placeholder = pvp.searchPlaceholder || (currentLang === 'en' ? 'Search map...' : 'Поиск карты...');
+    if (searchInput) searchInput.placeholder = pvp.searchPlaceholder || l('Поиск карты...', 'Search map...', '搜索地图名称...');
 
-    setTxt('th-map', pvp.map || (currentLang === 'en' ? 'Map' : 'Карта'));
-    setTxt('th-server', pvp.server || (currentLang === 'en' ? 'Server' : 'Сервер'));
-    setTxt('th-diff', pvp.winner || (currentLang === 'en' ? 'Winner & Difference' : 'Победитель & Разница'));
+    setTxt('th-map', pvp.map || l('Карта', 'Map', '地图'));
+    setTxt('th-server', pvp.server || l('Сервер', 'Server', '服务器类型'));
+    setTxt('th-diff', pvp.winner || l('Победитель & Разница', 'Winner & Difference', '胜者与时间差距'));
   }
 
   function showError(msg) {
@@ -343,6 +355,7 @@
 
   async function runComparison(name1, name2) {
     const pvp = getDict().pvp || {};
+    const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
     const errBox = document.getElementById('pvp-error');
     if (errBox) errBox.classList.add('hidden');
     const resultsEl = document.getElementById('pvp-results');
@@ -369,8 +382,8 @@
       if (reqId !== activePvpRenderId) return;
       console.error(err);
       showError(err.isBlacklisted
-        ? (pvp.errorBlacklist || (currentLang === 'en' ? 'One of the players is blacklisted (TAS / Cheating)' : 'Один из игроков находится в чёрном списке (TAS / Читы)'))
-        : (pvp.errorFetch || (currentLang === 'en' ? 'Could not load player data from DDStats' : 'Не удалось загрузить данные игроков'))
+        ? (pvp.errorBlacklist || l('Один из игроков находится в чёрном списке (TAS / Читы)', 'One of the players is blacklisted (TAS / Cheating)', '其中一名玩家处于作弊封禁名单中（TAS / 外挂）'))
+        : (pvp.errorFetch || l('Не удалось загрузить данные игроков', 'Could not load player profiles from DDStats', '无法从 DDStats 获取玩家数据'))
       );
     }
   }
@@ -455,12 +468,13 @@
 
       const probStatus = document.getElementById('prob-status');
       if (probStatus) {
+        const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
         if (prob1 > 55) {
-          probStatus.textContent = currentLang === 'en' ? `${d1.name} has the theoretical edge` : `Фаворит по формуле: ${d1.name}`;
+          probStatus.textContent = l(`Фаворит по формуле: ${d1.name}`, `${d1.name} has the theoretical edge`, `模型预测看好：${d1.name}`);
         } else if (prob2 > 55) {
-          probStatus.textContent = currentLang === 'en' ? `${d2.name} has the theoretical edge` : `Фаворит по формуле: ${d2.name}`;
+          probStatus.textContent = l(`Фаворит по формуле: ${d2.name}`, `${d2.name} has the theoretical edge`, `模型预测看好：${d2.name}`);
         } else {
-          probStatus.textContent = currentLang === 'en' ? `Extremely close duel matchup` : `Равные шансы на победу`;
+          probStatus.textContent = l('Равные шансы на победу', 'Extremely close duel matchup', '双方势均力敌');
         }
       }
       
@@ -555,6 +569,8 @@
     const commonCountEl = document.getElementById('common-count');
     if (commonCountEl) commonCountEl.textContent = totalCommon;
 
+    const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
+
     const leadDeltaEl = document.getElementById('h2h-lead-delta');
     if (leadDeltaEl) {
       if (p1Wins > p2Wins) {
@@ -564,14 +580,14 @@
         leadDeltaEl.textContent = `${d2.name} +${p2Wins - p1Wins}`;
         leadDeltaEl.className = 'text-xs font-bold text-rose-400 font-mono';
       } else {
-        leadDeltaEl.textContent = currentLang === 'en' ? 'Tied' : 'Ничья';
+        leadDeltaEl.textContent = l('Ничья', 'Tied', '平局');
         leadDeltaEl.className = 'text-xs font-bold text-amber-400 font-mono';
       }
     }
 
     const tableHeading = document.getElementById('pvp-table-heading');
     if (tableHeading) {
-      tableHeading.innerHTML = `${pvp.duelTable || (currentLang === 'en' ? 'Duel on Common Maps' : 'Дуэль на общих картах')} (<span id="table-common-total">${totalCommon}</span>)`;
+      tableHeading.innerHTML = `${pvp.duelTable || l('Дуэль на общих картах', 'Common Maps Duel', '共同通关地图切磋榜')} (<span id="table-common-total">${totalCommon}</span>)`;
     }
 
     const card1 = document.getElementById('p1-card');
@@ -589,36 +605,36 @@
       const diff = p1Wins - p2Wins;
       if (winnerBanner) {
         winnerBanner.className = 'block text-center p-5 rounded-2xl border border-cyan-500/50 bg-gradient-to-r from-cyan-950/40 via-sky-900/30 to-cyan-950/40 text-cyan-300 font-bold text-lg sm:text-2xl shadow-[0_0_35px_rgba(6,182,212,0.25)] backdrop-blur-md';
-        winnerBanner.innerHTML = `🏆 <strong class="text-white">${escapeHtml(d1.name)}</strong> ${pvp.leadsBy || (currentLang === 'en' ? 'leads by' : 'лидирует с преимуществом в')} <strong class="text-cyan-400 font-black text-2xl sm:text-3xl px-1.5">+${diff}</strong> ${pvp.maps || (currentLang === 'en' ? 'maps' : 'карт')}!`;
+        winnerBanner.innerHTML = `🏆 <strong class="text-white">${escapeHtml(d1.name)}</strong> ${pvp.leadsBy || l('лидирует с преимуществом в', 'leads by', '领先优势达到')} <strong class="text-cyan-400 font-black text-2xl sm:text-3xl px-1.5">+${diff}</strong> ${pvp.maps || l('карт', 'maps', '张地图')}!`;
       }
       if (card1) card1.className = 'glass-panel p-6 pvp-card-winner rounded-2xl flex flex-col justify-between text-center space-y-4 relative overflow-hidden';
-      if (badge1) badge1.innerHTML = `<div class="pvp-winner-crown-badge">👑 ${pvp.winnerBadge || (currentLang === 'en' ? 'WINNER' : 'ПОБЕДИТЕЛЬ')}</div>`;
+      if (badge1) badge1.innerHTML = `<div class="pvp-winner-crown-badge">👑 ${pvp.winnerBadge || l('ПОБЕДИТЕЛЬ', 'WINNER', '胜出')}</div>`;
       if (box1) box1.className = 'bg-cyan-500/20 p-3 text-sm font-bold text-cyan-300 border border-cyan-500/50 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)]';
       if (score1El) score1El.className = 'text-cyan-400 font-black drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]';
 
       if (card2) card2.className = 'glass-panel p-6 pvp-card-defeated rounded-2xl flex flex-col justify-between text-center space-y-4';
-      if (badge2) badge2.innerHTML = `<div class="pvp-runnerup-badge">${currentLang === 'en' ? '🥈 RUNNER-UP' : '🥈 2-Е МЕСТО'}</div>`;
+      if (badge2) badge2.innerHTML = `<div class="pvp-runnerup-badge">${pvp.runnerupBadge || l('🥈 2-Е МЕСТО', '🥈 RUNNER-UP', '🥈 亚军')}</div>`;
       if (box2) box2.className = 'bg-slate-800/40 p-3 text-sm font-bold text-rose-400 border border-rose-500/30 rounded-xl';
       if (score2El) score2El.className = 'text-slate-400';
     } else if (p2Wins > p1Wins) {
       const diff = p2Wins - p1Wins;
       if (winnerBanner) {
         winnerBanner.className = 'block text-center p-5 rounded-2xl border border-rose-500/50 bg-gradient-to-r from-rose-950/40 via-pink-900/30 to-rose-950/40 text-rose-300 font-bold text-lg sm:text-2xl shadow-[0_0_35px_rgba(244,63,94,0.25)] backdrop-blur-md';
-        winnerBanner.innerHTML = `🏆 <strong class="text-white">${escapeHtml(d2.name)}</strong> ${pvp.leadsBy || (currentLang === 'en' ? 'leads by' : 'лидирует с преимуществом в')} <strong class="text-rose-400 font-black text-2xl sm:text-3xl px-1.5">+${diff}</strong> ${pvp.maps || (currentLang === 'en' ? 'maps' : 'карт')}!`;
+        winnerBanner.innerHTML = `🏆 <strong class="text-white">${escapeHtml(d2.name)}</strong> ${pvp.leadsBy || l('лидирует с преимуществом в', 'leads by', '领先优势达到')} <strong class="text-rose-400 font-black text-2xl sm:text-3xl px-1.5">+${diff}</strong> ${pvp.maps || l('карт', 'maps', '张地图')}!`;
       }
       if (card2) card2.className = 'glass-panel p-6 pvp-card-winner rounded-2xl flex flex-col justify-between text-center space-y-4 relative overflow-hidden';
-      if (badge2) badge2.innerHTML = `<div class="pvp-winner-crown-badge">👑 ${pvp.winnerBadge || (currentLang === 'en' ? 'WINNER' : 'ПОБЕДИТЕЛЬ')}</div>`;
+      if (badge2) badge2.innerHTML = `<div class="pvp-winner-crown-badge">👑 ${pvp.winnerBadge || l('ПОБЕДИТЕЛЬ', 'WINNER', '胜出')}</div>`;
       if (box2) box2.className = 'bg-rose-500/20 p-3 text-sm font-bold text-rose-300 border border-rose-500/50 rounded-xl shadow-[0_0_15px_rgba(244,63,94,0.3)]';
       if (score2El) score2El.className = 'text-rose-400 font-black drop-shadow-[0_0_12px_rgba(244,63,94,0.6)]';
 
       if (card1) card1.className = 'glass-panel p-6 pvp-card-defeated rounded-2xl flex flex-col justify-between text-center space-y-4';
-      if (badge1) badge1.innerHTML = `<div class="pvp-runnerup-badge">${currentLang === 'en' ? '🥈 RUNNER-UP' : '🥈 2-Е МЕСТО'}</div>`;
+      if (badge1) badge1.innerHTML = `<div class="pvp-runnerup-badge">${pvp.runnerupBadge || l('🥈 2-Е МЕСТО', '🥈 RUNNER-UP', '🥈 亚军')}</div>`;
       if (box1) box1.className = 'bg-slate-800/40 p-3 text-sm font-bold text-cyan-400 border border-cyan-500/30 rounded-xl';
       if (score1El) score1El.className = 'text-slate-400';
     } else {
       if (winnerBanner) {
         winnerBanner.className = 'block text-center p-5 rounded-2xl border border-amber-500/50 bg-amber-500/10 text-amber-300 font-bold text-lg sm:text-xl rounded-2xl';
-        winnerBanner.innerHTML = pvp.tie || (currentLang === 'en' ? '🤝 Equal score on common maps!' : '🤝 Ничья на общих картах!');
+        winnerBanner.innerHTML = pvp.tie || l('🤝 Ничья на общих картах!', '🤝 Equal score on common maps!', '🤝 共同地图上平分秋色！');
       }
       if (card1) card1.className = 'glass-panel p-6 border border-amber-500/40 rounded-2xl flex flex-col justify-between text-center space-y-4';
       if (card2) card2.className = 'glass-panel p-6 border border-amber-500/40 rounded-2xl flex flex-col justify-between text-center space-y-4';
@@ -652,7 +668,7 @@
         div.innerHTML = `
           <div class="flex items-center justify-between">
             <span class="server-badge ${getServerBadgeClass(cat)} font-black uppercase text-xs tracking-wider">${escapeHtml(cat)}</span>
-            <span class="text-xs font-mono font-bold text-slate-400 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.06]">${stats.total} ${currentLang === 'en' ? 'maps' : 'карт'}</span>
+            <span class="text-xs font-mono font-bold text-slate-400 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.06]">${stats.total} ${l('карт', 'maps', '张地图')}</span>
           </div>
           <div class="flex items-center justify-between text-xs font-mono font-bold">
             <span class="flex items-center gap-1.5 ${stats.p1 > stats.p2 ? 'text-cyan-300 font-black' : 'text-slate-400'}">
@@ -666,7 +682,7 @@
           </div>
           <div class="pvp-cat-track">
             <div class="pvp-cat-bar-p1" style="width: ${p1Pct}%" title="${escapeHtml(d1.name)}: ${stats.p1} (${p1Pct}%)"></div>
-            ${tieCount > 0 ? `<div class="pvp-cat-bar-tie" style="width: ${tiePct}%" title="Ничьи: ${tieCount}"></div>` : ''}
+            ${tieCount > 0 ? `<div class="pvp-cat-bar-tie" style="width: ${tiePct}%" title="${l('Ничьи', 'Ties', '平局')}: ${tieCount}"></div>` : ''}
             <div class="pvp-cat-bar-p2" style="width: ${p2Pct}%" title="${escapeHtml(d2.name)}: ${stats.p2} (${p2Pct}%)"></div>
           </div>
         `;
@@ -687,10 +703,10 @@
     const btnP2  = document.getElementById('btn-pvp-filter-p2');
     const btnTie = document.getElementById('btn-pvp-filter-tie');
 
-    if (btnAll) btnAll.textContent = `${pvp.filterAll || (currentLang === 'en' ? 'All maps' : 'Все карты')} (${totalCommon})`;
+    if (btnAll) btnAll.textContent = `${pvp.filterAll || l('Все карты', 'All maps', '全部地图')} (${totalCommon})`;
     if (btnP1)  btnP1.textContent  = `🏆 ${d1.name} (${p1Wins})`;
     if (btnP2)  btnP2.textContent  = `🏆 ${d2.name} (${p2Wins})`;
-    if (btnTie) btnTie.textContent = `🤝 ${pvp.filterTie || (currentLang === 'en' ? 'Ties' : 'Ничьи')} (${ties})`;
+    if (btnTie) btnTie.textContent = `🤝 ${pvp.filterTie || l('Ничьи', 'Ties', '平局')} (${ties})`;
 
     const filterBtns = document.querySelectorAll('[data-pvp-filter]');
     const updateFilterUI = () => {
@@ -790,7 +806,7 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">${pvp.noCommonMaps || (currentLang === 'en' ? 'No maps match your filter' : 'Нет карт для отображения')}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">${pvp.noCommonMaps || l('Нет карт для отображения', 'No maps match your filter', '两名玩家暂无共同通关的地图')}</td></tr>`;
         return;
       }
 
@@ -806,7 +822,7 @@
         } else if (m.winner === 2) {
           winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-400 text-xs font-bold border border-rose-500/30">🏆 ${escapeHtml(d2.name)} (+${diffStr})</span>`;
         } else {
-          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-slate-500/20 text-slate-300 text-xs font-bold">${pvp.equal || (currentLang === 'en' ? 'Equal' : 'Ничья')}</span>`;
+          winnerBadgeHtml = `<span class="px-2.5 py-1 rounded-md bg-slate-500/20 text-slate-300 text-xs font-bold">${pvp.equal || l('Ничья', 'Equal', '平局')}</span>`;
         }
 
         const t1Class = m.winner === 1 ? 'text-cyan-400 font-bold' : 'text-slate-300';

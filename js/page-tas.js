@@ -163,6 +163,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     renderHeader('tas');
+    if (typeof renderFooter === 'function') renderFooter('tas');
 
     const dict = getDict();
     document.documentElement.lang = currentLang;
@@ -179,20 +180,29 @@
     const t = dict.tas || {};
     const setTxt = (id, txt) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = txt;
+      if (el && txt) el.textContent = txt;
     };
 
-    setTxt('tas-back', t.back || 'Back');
+    const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
+
+    setTxt('tas-kicker-text', l('ANTI-CHEAT / INTEGRITY SYSTEM', 'ANTI-CHEAT / INTEGRITY SYSTEM', '反作弊与诚信系统'));
+    setTxt('tas-back', t.back || l('На главную', 'Back to Home', '返回首页'));
     setTxt('tas-page-title', t.title || 'TAS Ban List');
     setTxt('tas-page-subtitle', t.subtitle);
-    setTxt('lbl-stat-banned', t.totalBanned || 'Banned Cheaters');
-    setTxt('lbl-stat-deleted', t.totalDeleted || 'Total Purged Records');
+    setTxt('lbl-stat-banned', t.totalBanned || l('Читеров', 'Banned Cheaters', '封禁作弊者'));
+    setTxt('lbl-stat-deleted', t.totalDeleted || l('Удалено рекордов', 'Total Purged Records', '已清除记录总数'));
     setTxt('lbl-stat-wr1', t.wrCount || '#1 World Records');
     setTxt('lbl-stat-top10', t.top10Count || '#2-10 Ranks');
 
+    setTxt('th-tas-player', t.tablePlayer || l('Заблокированный игрок', 'Banned Player', '被封禁玩家'));
+    setTxt('th-tas-stats', t.tableStats || l('Всего удалено', 'Total Removed', '清除记录总数'));
+    setTxt('th-tas-wr1', t.tableWr1 || '#1 WRs');
+    setTxt('th-tas-top10', t.tableTop10 || '#2-10');
+    setTxt('th-tas-top50', t.tableTop50 || '#11-50');
+
     const searchInput = document.getElementById('tas-search-input');
     if (searchInput) {
-      searchInput.placeholder = t.searchPlaceholder || 'Search banned player...';
+      searchInput.placeholder = t.searchPlaceholder || l('Поиск заблокированного игрока...', 'Search banned player...', '搜索被封禁的玩家...');
       searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value;
         renderTasTable();

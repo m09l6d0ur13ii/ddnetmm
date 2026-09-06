@@ -113,13 +113,13 @@
 
       const dict = getDict();
       const p = dict.privacy || {};
-      const isEn = currentLang === 'en';
+      const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
 
       document.title = `${p.title || 'Privacy Policy'} — DDNet Map Mastery`;
 
       if (typeof renderBreadcrumbs === 'function') {
-        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : (isEn ? 'Home' : 'Главная');
-        const privacyLabel = dict.breadcrumbs ? dict.breadcrumbs.privacy : (isEn ? 'Privacy Policy' : 'Политика конфиденциальности');
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : l('Главная', 'Home', '首页');
+        const privacyLabel = dict.breadcrumbs ? dict.breadcrumbs.privacy : l('Политика конфиденциальности', 'Privacy Policy', '隐私政策');
         renderBreadcrumbs([
           { label: homeLabel, url: '/' },
           { label: privacyLabel }

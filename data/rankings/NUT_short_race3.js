@@ -1,1 +1,1 @@
-window.mapRankingCurrent = [{"player":"a & rroz","time":9.54,"timestamp":"2023-01-10T23:03:54","isTeamRank":true,"rank":1},{"player":"抢kekexing国3 & 抢kekexing国4","time":10.02,"timestamp":"2023-01-30T11:56:22","isTeamRank":true,"rank":2}];
+window.mapRankingCurrent = [{"player":"抢kekexing国3 & 抢kekexing国4","time":10.02,"timestamp":"2023-01-30T11:56:22","isTeamRank":true,"rank":1}];

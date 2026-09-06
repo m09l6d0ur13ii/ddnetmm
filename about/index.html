@@ -408,6 +408,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderHeader('about');
+      if (typeof renderFooter === 'function') renderFooter('about');
 
       const dict = getDict();
       document.documentElement.lang = currentLang;
@@ -421,8 +422,10 @@
         ]);
       }
 
-      const titlePrefix = currentLang === 'en' ? 'Why is the new system ' : 'Почему новая система ';
-      const titleSuffix = currentLang === 'en' ? 'better?' : 'лучше?';
+      const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
+
+      const titlePrefix = l('Почему новая система ', 'Why is the new system ', '为什么新系统');
+      const titleSuffix = l('лучше?', 'better?', '更好？');
       document.getElementById('about-title-container').innerHTML = `${titlePrefix}<span class="text-primary">${titleSuffix}</span>`;
 
       document.getElementById('about-intro').textContent = dict.about.intro;
@@ -438,17 +441,19 @@
       document.getElementById('card2-p3').textContent = dict.about.card2.p3;
 
       document.getElementById('tech-title').textContent = dict.about.techTitle;
-      document.getElementById('scoring-logic-label').textContent = currentLang === 'en' ? 'SCORING LOGIC' : 'ЛОГИКА НАЧИСЛЕНИЯ';
+      document.getElementById('scoring-logic-label').textContent = l('ЛОГИКА НАЧИСЛЕНИЯ', 'SCORING LOGIC', '积分计算逻辑');
       document.getElementById('home-base-pts-title').textContent = dict.home.basePtsTitle;
       document.getElementById('home-base-pts-desc').textContent = dict.home.basePtsDesc;
       document.getElementById('home-skill-pts-title').textContent = dict.home.skillPtsTitle;
       document.getElementById('home-skill-pts-desc').textContent = dict.home.skillPtsDesc;
-      document.getElementById('home-skill-pts-and').textContent = currentLang === 'en' ? 'and record' : 'и рекорда';
-      document.getElementById('home-skill-pts-where').textContent = currentLang === 'en' ? 'Where' : 'Где';
-      document.getElementById('home-skill-pts-and2').textContent = currentLang === 'en' ? 'and' : 'и';
-      document.getElementById('home-skill-pts-s-desc').textContent = currentLang === 'en'
-        ? 'dynamic strictness coefficient (0.5 to 3.0 based on variance)'
-        : 'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)';
+      document.getElementById('home-skill-pts-and').textContent = l('и рекорда', 'and record', '与世界纪录');
+      document.getElementById('home-skill-pts-where').textContent = l('Где', 'Where', '其中');
+      document.getElementById('home-skill-pts-and2').textContent = l('и', 'and', '且');
+      document.getElementById('home-skill-pts-s-desc').textContent = l(
+        'динамический коэффициент строгости (от 0.5 до 3.0 в зависимости от дисперсии)',
+        'dynamic strictness coefficient (0.5 to 3.0 based on variance)',
+        '动态严格度系数（根据时间离散度在 0.5 到 3.0 之间浮动）'
+      );
 
       document.getElementById('f1-title').textContent = dict.about.formula1Title;
       document.getElementById('f1-desc').textContent = dict.about.formula1Desc;

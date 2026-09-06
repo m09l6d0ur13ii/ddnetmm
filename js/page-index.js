@@ -11,20 +11,22 @@
 
   function getLoadMoreBtnText(limit) {
     const dict = getDict();
-    if (limit < 250) return dict.home.showTop250 || (currentLang === 'en' ? 'Show Top 250' : 'Показать Топ 250');
-    if (limit < 500) return dict.home.showTop500 || (currentLang === 'en' ? 'Show Top 500' : 'Показать Топ 500');
-    return dict.home.showFull || (currentLang === 'en' ? 'Show full leaderboard' : 'Показать весь топ');
+    const h = dict.home || {};
+    if (limit < 250) return h.showTop250 || (typeof loc === 'function' ? loc('Показать Топ 250', 'Show Top 250', '展示前 250 名') : 'Show Top 250');
+    if (limit < 500) return h.showTop500 || (typeof loc === 'function' ? loc('Показать Топ 500', 'Show Top 500', '展示前 500 名') : 'Show Top 500');
+    return h.showFull || (typeof loc === 'function' ? loc('Показать весь топ', 'Show full leaderboard', '展示完整天梯榜') : 'Show full leaderboard');
   }
 
   function updateExpansionControls() {
     const dict = getDict();
+    const h = dict.home || {};
     const container = document.getElementById('load-more-container');
     const button = document.getElementById('load-more-btn');
     const info = document.getElementById('pagination-info');
     const shown = displayLimit === Infinity ? playersData.length : Math.min(displayLimit, playersData.length);
 
     if (info) {
-      info.textContent = `${dict.home.showingTop || (currentLang === 'en' ? 'Showing Top' : 'Показан Топ')} ${shown}`;
+      info.textContent = `${h.showingTop || (typeof loc === 'function' ? loc('Показан Топ', 'Showing Top', '当前展示前') : 'Showing Top')} ${shown}`;
     }
     if (button) button.textContent = getLoadMoreBtnText(displayLimit);
     if (container) {
@@ -153,10 +155,10 @@
             <td colspan="7" class="p-8 text-center">
               <div class="max-w-md mx-auto space-y-3">
                 <div class="text-3xl">⭐</div>
-                <div class="text-white font-bold text-base">${currentLang === 'en' ? 'No favorite players yet' : 'У вас пока нет избранных игроков'}</div>
-                <p class="text-xs text-slate-400 leading-relaxed">${currentLang === 'en' ? 'Add players to favorites in Settings to quickly track their ranking and scores.' : 'Добавьте игроков в избранное в настройках, чтобы быстро отслеживать их позиции в таблице.'}</p>
+                <div class="text-white font-bold text-base">${loc('У вас пока нет избранных игроков', 'No favorite players yet', '暂无收藏的玩家')}</div>
+                <p class="text-xs text-slate-400 leading-relaxed">${loc('Добавьте игроков в избранное в настройках, чтобы быстро отслеживать их позиции в таблице.', 'Add players to favorites in Settings to quickly track their ranking and scores.', '在设置中添加收藏玩家，以便快速查看他们的天梯排名与积分。')}</p>
                 <button type="button" onclick="openSettingsModal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all cursor-pointer shadow-md">
-                  ⚙️ ${currentLang === 'en' ? 'Open Settings' : 'Открыть настройки'}
+                  ⚙️ ${loc('Открыть настройки', 'Open Settings', '打开设置')}
                 </button>
               </div>
             </td>
@@ -195,7 +197,7 @@
             <td colspan="7" class="p-8 text-center text-slate-400">
               <div class="flex items-center justify-center gap-2 text-sm font-bold">
                 <span class="animate-spin text-amber-400">⏳</span>
-                <span>${currentLang === 'en' ? 'Loading favorite players...' : 'Загрузка избранных игроков...'}</span>
+                <span>${dict.home.loadingFavorites || (typeof loc === 'function' ? loc('Загрузка избранных игроков...', 'Loading favorite players...', '正在加载收藏玩家...') : 'Loading favorite players...')}</span>
               </div>
             </td>
           </tr>
@@ -207,7 +209,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="7" class="p-8 text-center text-slate-400 text-sm font-medium">
-              ${currentLang === 'en' ? 'None of your favorite players are in the current loaded leaderboard.' : 'Ваши избранные игроки не найдены среди загруженных мест таблицы.'}
+              ${dict.home.noFavoritesFound || (typeof loc === 'function' ? loc('Ваши избранные игроки не найдены среди загруженных мест таблицы.', 'None of your favorite players are in the current loaded leaderboard.', '当前加载的天梯榜中未找到你收藏的玩家。') : 'None of your favorite players are in the current loaded leaderboard.')}
             </td>
           </tr>
         `;
@@ -279,11 +281,13 @@
       const rankDict = (dict.player && dict.player.skillLeague) || {};
       const leagueName = rankDict[league.id] || league.id;
 
-      const staticBadge = p.isStatic ? `<span title="${currentLang === 'en' ? 'Cached data' : 'Кэшированные данные'}" style="font-size:0.7em;color:#9a9a9a;margin-left:4px;">📦</span>` : '';
+      const staticBadge = p.isStatic ? `<span title="${loc('Кэшированные данные', 'Cached data', '本地缓存数据')}" style="font-size:0.7em;color:#9a9a9a;margin-left:4px;">📦</span>` : '';
 
-      const ptsToNextText = currentLang === 'en'
-        ? `${mastery.pointsToNext.toLocaleString()} PTS to Level ${mastery.level + 1}`
-        : `${mastery.pointsToNext.toLocaleString()} PTS до ${mastery.level + 1} ур.`;
+      const ptsToNextText = loc(
+        `${mastery.pointsToNext.toLocaleString()} PTS до ${mastery.level + 1} ур.`,
+        `${mastery.pointsToNext.toLocaleString()} PTS to Level ${mastery.level + 1}`,
+        `距离 ${mastery.level + 1} 级还需 ${mastery.pointsToNext.toLocaleString()} PTS`
+      );
 
       const levelBadgeHtml = `
         <div class="mastery-level-pill transition-all" title="${ptsToNextText} (${Math.floor(mastery.progressPercent)}%)">
@@ -477,7 +481,7 @@
 
     try {
       playersData = await window.api.getTopPlayersLive(displayLimit, (done, total) => {
-        setTxt('status-message', `${currentLang === 'en' ? 'Loading' : 'Загрузка'} ${done} / ${total}...`);
+        setTxt('status-message', `${loc('Загрузка', 'Loading', '正在加载')} ${done} / ${total}...`);
       });
       setTxt('status-message', '');
 
@@ -498,9 +502,11 @@
       if (allStatic) {
         const msgEl = document.getElementById('status-message');
         if (msgEl) {
-          msgEl.textContent = currentLang === 'en'
-            ? '⚠ DDStats unreachable — showing cached data'
-            : '⚠ DDStats недоступен — показаны кэшированные данные';
+          msgEl.textContent = loc(
+            '⚠ DDStats недоступен — показаны кэшированные данные',
+            '⚠ DDStats unreachable — showing cached data',
+            '⚠ DDStats 暂不可用 — 当前显示本地缓存数据'
+          );
           msgEl.style.color = '#f59e0b';
         }
       }
@@ -524,6 +530,7 @@
   // ── DOMContentLoaded ──────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     renderHeader('home');
+    if (typeof renderFooter === 'function') renderFooter('home');
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('[data-reveal]').forEach((element) => {
@@ -550,37 +557,43 @@
     setTxt('home-subtitle', dict.home.subtitle);
     setTxt('home-about-btn', dict.home.aboutBtn);
     setTxt('home-compare-btn', dict.home.compareBtn);
-    setTxt('player-scan-label', currentLang === 'en' ? 'PLAYER SEARCH / 01' : 'ПОИСК ИГРОКА / 01');
-    setTxt('global-telemetry-label', dict.home.globalTelemetryLabel || (currentLang === 'en' ? 'GLOBAL RANKING / ALL PLAYERS' : 'ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ'));
+    setTxt('player-scan-label', dict.home.searchLabel || loc('ПОИСК ИГРОКА / 01', 'PLAYER SEARCH / 01', '玩家搜索 / 01'));
+    setTxt('global-telemetry-label', dict.home.globalTelemetryLabel || loc('ОБЩИЙ РЕЙТИНГ / ВСЕ ИГРОКИ', 'GLOBAL RANKING / ALL PLAYERS', '全球排行 / 全部玩家'));
 
-    setTxt('search-title', currentLang === 'en' ? 'Find Player' : 'Найти игрока');
-    setTxt('home-leaderboard-title', dict.home.leaderboardTitle);
-    setTxt('table-rank', dict.home.tableRank);
-    setTxt('table-player', dict.home.tablePlayer);
-    setTxt('table-level', dict.home.tableLevel || (currentLang === 'en' ? 'Level' : 'Уровень'));
-    setTxt('table-league', dict.home.tableLeague || (currentLang === 'en' ? 'Rank' : 'Ранг'));
-    setTxt('table-base', dict.home.tableBase);
-    setTxt('table-skill', dict.home.tableSkill);
-    setTxt('table-total', dict.home.tableTotal);
-    setTxt('empty-state', dict.home.empty);
+    setTxt('search-title', dict.home.searchTitle || loc('Найти игрока', 'Find Player', '搜索玩家'));
+    setTxt('home-leaderboard-title', dict.home.leaderboardTitle || loc('Рейтинг игроков DDNet', 'DDNet Player Rankings', 'DDNet 玩家天梯榜'));
+    setTxt('label-tab-all', dict.home.filterAll || loc('Все игроки', 'All Players', '所有玩家'));
+    setTxt('label-tab-fav', dict.home.filterFavorites || loc('Избранные', 'Favorites', '收藏玩家'));
+    setTxt('home-fav-refresh-label', dict.home.refresh || loc('Обновить', 'Refresh', '刷新'));
+    setTxt('table-rank', dict.home.tableRank || loc('Ранг', 'Rank', '排名'));
+    setTxt('table-player', dict.home.tablePlayer || loc('Игрок', 'Player', '玩家'));
+    setTxt('table-level', dict.home.tableLevel || loc('Уровень', 'Level', '等级'));
+    setTxt('table-league', dict.home.tableLeague || loc('Ранг', 'Rank', '段位'));
+    setTxt('table-base', dict.home.tableBase || loc('Base PTS', 'Base PTS', '基础积分'));
+    setTxt('table-skill', dict.home.tableSkill || loc('Skill PTS', 'Skill PTS', '技巧积分'));
+    setTxt('table-total', dict.home.tableTotal || loc('Total PTS', 'Total PTS', '总积分'));
+    setTxt('empty-state', dict.home.empty || loc('Нет данных для отображения', 'No data to display', '暂无数据显示'));
     setTxt('status-message', '');
     
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) loadMoreBtn.textContent = getLoadMoreBtnText(displayLimit);
 
-    setTxt('home-tools-title', dict.home.toolsTitle || (currentLang === 'en' ? 'Player Tools' : 'Инструменты игрока'));
-    setTxt('home-tools-label', dict.home.toolsLabel || (currentLang === 'en' ? 'SEARCH & COMPARE' : 'ПОИСК И СРАВНЕНИЕ'));
-    setTxt('home-map-search-title', dict.home.mapSearchTitle || (currentLang === 'en' ? 'Find a map' : 'Найти карту'));
-    setTxt('home-map-search-desc', dict.home.mapSearchDesc || (currentLang === 'en' ? 'Open map records, times and leaderboard' : 'Откройте рекорды, времена и рейтинг карты'));
-    setTxt('home-map-search-btn', dict.home.mapSearchBtn || (currentLang === 'en' ? 'Open Map' : 'Открыть карту'));
-    setTxt('home-pvp-desc', dict.home.pvpDesc || (currentLang === 'en' ? 'Compare head-to-head performance on common maps' : 'Сравните результаты двух игроков на общих картах'));
-    setTxt('home-pvp-btn', dict.home.pvpBtn || (currentLang === 'en' ? 'Open PvP ⚔️' : 'Открыть PvP ⚔️'));
-    setTxt('home-tas-title', dict.home.tasTitle || (currentLang === 'en' ? 'TAS Ban List' : 'TAS Ban List'));
-    setTxt('home-tas-desc', dict.home.tasDesc || (currentLang === 'en' ? 'Registry of banned players and purged records' : 'Реестр заблокированных читеров и аннулированных ТАС-рекордов'));
-    setTxt('home-tas-btn', dict.home.tasBtn || (currentLang === 'en' ? 'Open Ban List 🛡️' : 'Открыть список 🛡️'));
+    setTxt('home-tools-title', dict.home.toolsTitle || loc('Инструменты игрока', 'Player Tools', '玩家实用工具'));
+    setTxt('home-tools-label', dict.home.toolsLabel || loc('ПОИСК И СРАВНЕНИЕ', 'SEARCH & COMPARE', '搜索与比拼'));
+    setTxt('home-map-search-title', dict.home.mapSearchTitle || loc('Найти карту', 'Find a map', '查找地图'));
+    setTxt('home-map-search-desc', dict.home.mapSearchDesc || loc('Откройте рекорды, времена и рейтинг карты', 'Open map records, times and leaderboard', '查看地图纪录、用时与排行榜'));
+    setTxt('home-map-search-btn', dict.home.mapSearchBtn || loc('Открыть карту', 'Open Map', '打开地图'));
+    setTxt('home-pvp-desc', dict.home.pvpDesc || loc('Сравните результаты двух игроков на общих картах', 'Compare head-to-head performance on common maps', '在共同完成的地图上对比两名玩家的表现'));
+    setTxt('home-pvp-btn', dict.home.pvpBtn || loc('Открыть PvP ⚔️', 'Open PvP ⚔️', '开启对决 ⚔️'));
+    setTxt('home-tas-title', dict.home.tasTitle || 'TAS Ban List');
+    setTxt('home-tas-desc', dict.home.tasDesc || loc('Реестр заблокированных читеров и аннулированных ТАС-рекордов', 'Registry of banned players and purged records', '违规封禁名单及已作废的TAS纪录列表'));
+    setTxt('home-tas-btn', dict.home.tasBtn || loc('Открыть список 🛡️', 'Open Ban List 🛡️', '查看封禁名单 🛡️'));
+
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.placeholder = dict.home.searchPlaceholder || loc('Введите никнейм игрока...', 'Enter player nickname...', '输入玩家昵称...');
 
     const homeMapInput = document.querySelector('.home-map-search-form input');
-    if (homeMapInput) homeMapInput.placeholder = dict.home.mapSearchPlaceholder || (currentLang === 'en' ? 'Search map (e.g. Kintaro)...' : 'Поиск карты (например: Kintaro)...');
+    if (homeMapInput) homeMapInput.placeholder = dict.home.mapSearchPlaceholder || loc('Поиск карты (например: Kintaro)...', 'Search map (e.g. Kintaro)...', '搜索地图（例如：Kintaro）...');
 
     const homeMapForm = document.querySelector('.home-map-search-form');
     if (homeMapForm) {
@@ -690,8 +703,8 @@
         } catch (err) {
           if (sErr) {
             sErr.textContent = (err.isBlacklisted || (window.isBlacklisted && window.isBlacklisted(val)))
-              ? (currentLang === 'en' ? 'Player is blacklisted (TAS / Cheating)' : 'Игрок заблокирован в системе (TAS / Читы)')
-              : (currentLang === 'en' ? 'Player not found or DDStats service temporarily unavailable' : 'Игрок не найден или сервис DDStats временно недоступен');
+              ? loc('Игрок заблокирован в системе (TAS / Читы)', 'Player is blacklisted (TAS / Cheating)', '该玩家已被封禁（TAS / 作弊）')
+              : loc('Игрок не найден или сервис DDStats временно недоступен', 'Player not found or DDStats service temporarily unavailable', '未找到玩家或DDStats服务暂时不可用');
             sErr.classList.remove('hidden');
           }
         } finally {

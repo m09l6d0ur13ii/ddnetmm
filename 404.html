@@ -82,13 +82,13 @@
       renderFooter();
       const dict = getDict();
       const err = dict.error404 || {};
-      const isEn = currentLang === 'en';
+      const l = typeof loc === 'function' ? loc : (ru, en, zh) => (currentLang === 'zh' ? (zh || en || ru) : (currentLang === 'en' ? (en || ru) : ru));
 
       document.title = `${err.title || 'Page Not Found'} (404) — DDNet Map Mastery`;
 
       if (typeof renderBreadcrumbs === 'function') {
-        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : (isEn ? 'Home' : 'Главная');
-        const errLabel = dict.breadcrumbs ? dict.breadcrumbs.error404 : (isEn ? 'Error 404' : 'Ошибка 404');
+        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : l('Главная', 'Home', '首页');
+        const errLabel = dict.breadcrumbs ? dict.breadcrumbs.error404 : l('Ошибка 404', 'Error 404', '404 错误');
         renderBreadcrumbs([
           { label: homeLabel, url: '/' },
           { label: errLabel }
@@ -101,15 +101,15 @@
       };
 
       setTxt('err-code', err.code || '404');
-      setTxt('err-title', err.title || (isEn ? 'Page Not Found' : 'Страница не найдена'));
-      setTxt('err-desc', err.desc || (isEn ? 'The requested page does not exist or has been moved.' : 'Запрашиваемая страница не существует или была перемещена.'));
-      setTxt('err-link-home', err.home || (isEn ? '🏠 Home' : '🏠 Главная'));
-      setTxt('err-link-maps', isEn ? '🗺️ Maps Explorer' : '🗺️ База карт');
-      setTxt('err-link-about', err.about || (isEn ? '📖 About' : '📖 О проекте'));
-      setTxt('err-link-pvp', err.pvp || (isEn ? '⚔️ PvP Duel' : '⚔️ PvP Дуэль'));
-      setTxt('err-link-compare', err.compare || (isEn ? '📊 System Comparison' : '📊 Сравнение'));
-      setTxt('err-link-tas', err.tas || (isEn ? '🛡️ TAS Ban List' : '🛡️ TAS Ban List'));
-      setTxt('err-btn-home', err.backHome || (isEn ? 'Back to Homepage' : 'На главную страницу'));
+      setTxt('err-title', err.title || l('Страница не найдена', 'Page Not Found', '页面未找到'));
+      setTxt('err-desc', err.desc || l('Запрашиваемая страница не существует или была перемещена.', 'The requested page does not exist or has been moved.', '您访问的页面不存在或已被移除。'));
+      setTxt('err-link-home', err.home ? `🏠 ${err.home}` : l('🏠 Главная', '🏠 Home', '🏠 首页'));
+      setTxt('err-link-maps', l('🗺️ База карт', '🗺️ Maps Explorer', '🗺️ 地图库'));
+      setTxt('err-link-about', err.about ? `📖 ${err.about}` : l('📖 О проекте', '📖 About', '📖 关于项目'));
+      setTxt('err-link-pvp', err.pvp ? `⚔️ ${err.pvp}` : l('⚔️ PvP Дуэль', '⚔️ PvP Duel', '⚔️ 1v1 对决'));
+      setTxt('err-link-compare', err.compare ? `📊 ${err.compare}` : l('📊 Сравнение', '📊 System Comparison', '📊 机制对比'));
+      setTxt('err-link-tas', err.tas ? `🛡️ ${err.tas}` : l('🛡️ TAS Ban List', '🛡️ TAS Ban List', '🛡️ TAS 封禁名单'));
+      setTxt('err-btn-home', err.backHome || l('На главную страницу', 'Back to Homepage', '返回网站首页'));
     });
   </script>
 </body>

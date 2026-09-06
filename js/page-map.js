@@ -55,7 +55,7 @@
       mapExtLink.href = viewerUrl;
       const textSpan = mapExtLink.querySelector('span');
       if (textSpan) {
-        textSpan.textContent = currentLang === 'en' ? 'View map' : 'Посмотреть карту';
+        textSpan.textContent = loc('Посмотреть карту', 'View map', '查看地图');
       }
 
       mapExtLink.addEventListener('click', (e) => {
@@ -113,6 +113,7 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     renderHeader('map');
+    if (typeof renderFooter === 'function') renderFooter('map');
     const dict = getDict();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -310,8 +311,8 @@
             <div class="mt-3 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-300 text-xs sm:text-sm font-semibold flex items-center gap-3">
               <span class="text-xl shrink-0">⚠️</span>
               <div>
-                <strong>${t.myRecordSoloWarningTitle || (currentLang === 'en' ? 'Solo finish on Team map!' : 'Вы прошли эту карту соло (без команды)!')}</strong>
-                <p class="text-rose-200/80 font-normal mt-0.5">${t.myRecordSoloWarningDesc || (currentLang === 'en' ? 'According to DDNet Map Mastery rules, Skill PTS on team servers are awarded ONLY for Duo/Team finishes. No bonus PTS are given for solo finishes — you should practice teamplay!' : 'По правилам DDNet Map Mastery на командных серверах бонусные очки Skill PTS начисляются только за совместное (Duo/Team) прохождение. Вам стоит больше тренировать командную игру!')}</p>
+                <strong>${t.myRecordSoloWarningTitle || loc('Вы прошли эту карту соло (без команды)!', 'Solo finish on Team map!', '你在组队地图上单人通关！')}</strong>
+                <p class="text-rose-200/80 font-normal mt-0.5">${t.myRecordSoloWarningDesc || loc('По правилам DDNet Map Mastery на командных серверах бонусные очки Skill PTS начисляются только за совместное (Duo/Team) прохождение. Вам стоит больше тренировать командную игру!', 'According to DDNet Map Mastery rules, Skill PTS on team servers are awarded ONLY for Duo/Team finishes. No bonus PTS are given for solo finishes — you should practice teamplay!', '根据 DDNet Map Mastery 规则，组队服务器上的 Skill PTS 仅在双人/团队通关时奖励。单人完成不给予加成积分——建议多加练习团队协作！')}</p>
               </div>
             </div>
           ` : '';
@@ -322,8 +323,8 @@
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-xl ${isSoloOnTeamMap ? 'bg-rose-500/20 border-rose-500/40 text-rose-400' : 'bg-amber-500/20 border-amber-500/40 text-amber-400'} border flex items-center justify-center font-bold text-lg shrink-0">${isSoloOnTeamMap ? '🚫' : '⭐'}</div>
                   <div>
-                    <div class="text-xs font-bold ${isSoloOnTeamMap ? 'text-rose-400' : 'text-amber-400'} uppercase tracking-widest">${t.myRecordTitle || 'Ваш личный результат'} — <a href="/player?name=${encodeURIComponent(myNick)}" class="underline hover:text-amber-300">${escapeHtml(myNick)}</a></div>
-                    <div class="text-lg font-black text-white font-mono">#${rank} ${t.myRecordRankInWorld || (currentLang === 'en' ? 'global rank' : 'место в мире')} ${isSoloOnTeamMap ? '<span class="text-xs text-rose-400 font-bold ml-1">(' + (t.soloRuns || 'Solo') + ')</span>' : ''}</div>
+                    <div class="text-xs font-bold ${isSoloOnTeamMap ? 'text-rose-400' : 'text-amber-400'} uppercase tracking-widest">${t.myRecordTitle || loc('Ваш личный результат', 'Your Result', '你的成绩')} — <a href="/player?name=${encodeURIComponent(myNick)}" class="underline hover:text-amber-300">${escapeHtml(myNick)}</a></div>
+                    <div class="text-lg font-black text-white font-mono">#${rank} ${t.myRecordRankInWorld || loc('место в мире', 'global rank', '全球排名')} ${isSoloOnTeamMap ? '<span class="text-xs text-rose-400 font-bold ml-1">(' + (t.soloRuns || 'Solo') + ')</span>' : ''}</div>
                   </div>
                 </div>
                 <a href="/player?name=${encodeURIComponent(myNick)}" class="px-4 py-2 ${isSoloOnTeamMap ? 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40' : 'bg-amber-500 hover:bg-amber-600 text-slate-950'} rounded-xl text-xs font-extrabold transition-all shadow-md">${t.myProfileBtn || 'Мой профиль 👤'}</a>
@@ -361,9 +362,11 @@
         }
 
         if (typeof renderBreadcrumbs === 'function') {
-          const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+          const homeLabel = (dict.breadcrumbs && dict.breadcrumbs.home) || loc('Главная', 'Home', '首页');
+          const mapsLabel = (dict.breadcrumbs && dict.breadcrumbs.maps) || loc('База карт', 'Maps Explorer', '地图库');
           renderBreadcrumbs([
             { label: homeLabel, url: '/' },
+            { label: mapsLabel, url: '/maps' },
             { label: data.mapName }
           ]);
         }
@@ -421,7 +424,7 @@
           const loadMoreButton = document.getElementById('btn-load-more');
 
           if (grouped.length === 0) {
-            const noRecText = (typeof getLang === 'function' && getLang() === 'en') ? 'No records in this category' : 'Нет рекордов в этой категории';
+            const noRecText = typeof loc === 'function' ? loc('Нет рекордов в этой категории', 'No records in this category', '该分类下暂无通关记录') : 'Нет рекордов в этой категории';
             tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">${noRecText}</td></tr>`;
             loadMoreContainer.classList.add('hidden');
             return;
@@ -531,10 +534,10 @@
               listEl.innerHTML = `
                 <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10 text-center space-y-3">
                   <div class="text-3xl">⭐</div>
-                  <div class="text-white font-bold text-sm">${dict.map?.noFavsTitle || (currentLang === 'en' ? 'No favorite players yet' : 'У вас пока нет избранных игроков')}</div>
-                  <p class="text-xs text-slate-400 max-w-sm mx-auto">${dict.map?.noFavsDesc || (currentLang === 'en' ? 'Add rivals or friends to favorites in Settings to compare your times on every map.' : 'Добавьте друзей или соперников в избранное в настройках, чтобы сравнивать времена на любой карте.')}</p>
+                  <div class="text-white font-bold text-sm">${dict.map?.noFavsTitle || loc('У вас пока нет избранных игроков', 'No favorite players yet', '暂无收藏的玩家')}</div>
+                  <p class="text-xs text-slate-400 max-w-sm mx-auto">${dict.map?.noFavsDesc || loc('Добавьте друзей или соперников в избранное в настройках, чтобы сравнивать времена на любой карте.', 'Add rivals or friends to favorites in Settings to compare your times on every map.', '在设置中添加对手或好友，以便在每张地图上比较你们的成绩。')}</p>
                   <button type="button" onclick="document.getElementById('map-favorites-modal').classList.add('hidden'); openSettingsModal();" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all cursor-pointer">
-                    ⚙️ ${dict.map?.openSettingsBtn || (currentLang === 'en' ? 'Open Settings' : 'Открыть настройки')}
+                    ⚙️ ${dict.map?.openSettingsBtn || loc('Открыть настройки', 'Open Settings', '打开设置')}
                   </button>
                 </div>
               `;
@@ -565,13 +568,13 @@
                 }
               }
 
-              let timeFormatted = '<span class="text-slate-500 font-normal">' + (currentLang === 'en' ? 'Not finished' : 'Не пройдено') + '</span>';
+              let timeFormatted = '<span class="text-slate-500 font-normal">' + loc('Не пройдено', 'Not finished', '未通关') + '</span>';
               let rankBadge = '<span class="text-[0.65rem] text-slate-500">—</span>';
               let skillPtsText = '';
               let compHtml = '';
 
               if (isFetching) {
-                timeFormatted = `<span class="text-amber-400/70 text-xs flex items-center gap-1"><span class="animate-spin text-[0.7rem]">⏳</span> ${currentLang === 'en' ? 'Checking...' : 'Проверка...'}</span>`;
+                timeFormatted = `<span class="text-amber-400/70 text-xs flex items-center gap-1"><span class="animate-spin text-[0.7rem]">⏳</span> ${loc('Проверка...', 'Checking...', '查询中...')}</span>`;
               } else if (run) {
                 const timeVal = run.time;
                 timeFormatted = `<span class="text-amber-300 font-mono font-bold">${formatTime(timeVal)}</span>`;
@@ -584,11 +587,11 @@
                 if (myTime) {
                   const diffSec = myTime - timeVal;
                   if (Math.abs(diffSec) < 0.01) {
-                    compHtml = `<span class="text-slate-400 text-[0.68rem]">${currentLang === 'en' ? 'Equal time' : 'Одинаковое время'}</span>`;
+                    compHtml = `<span class="text-slate-400 text-[0.68rem]">${loc('Одинаковое время', 'Equal time', '用时相同')}</span>`;
                   } else if (diffSec > 0) {
-                    compHtml = `<span class="text-rose-400 text-[0.68rem] font-bold">-${formatTime(diffSec)} ${currentLang === 'en' ? 'slower than you' : 'медленнее вас'}</span>`;
+                    compHtml = `<span class="text-rose-400 text-[0.68rem] font-bold">-${formatTime(diffSec)} ${loc('медленнее вас', 'slower than you', '比你慢')}</span>`;
                   } else {
-                    compHtml = `<span class="text-emerald-400 text-[0.68rem] font-bold">+${formatTime(Math.abs(diffSec))} ${currentLang === 'en' ? 'faster than you' : 'быстрее вас'}</span>`;
+                    compHtml = `<span class="text-emerald-400 text-[0.68rem] font-bold">+${formatTime(Math.abs(diffSec))} ${loc('быстрее вас', 'faster than you', '比你快')}</span>`;
                   }
                 } else {
                   const gapPct = Math.max(0, (timeRatio - 1) * 100);
@@ -622,7 +625,7 @@
                   </div>
 
                   <div class="flex items-center gap-1.5 shrink-0">
-                    <a href="${pvpUrl}" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 text-xs font-bold transition-all flex items-center gap-1" title="${currentLang === 'en' ? 'Duel PvP' : 'PvP Дуэль'}">
+                    <a href="${pvpUrl}" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 text-xs font-bold transition-all flex items-center gap-1" title="${loc('PvP Дуэль', 'Duel PvP', 'PvP 对决')}">
                       ⚔️ <span class="hidden sm:inline">PvP</span>
                     </a>
                   </div>

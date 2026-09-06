@@ -239,16 +239,31 @@ async function resolveCustomRecords(customMapRecords) {
 
 let apiCallCount = 0;
 let consecutiveBlockedCount = 0;
+let requestDelayMs = 600; // Default: ~1.6 requests per second (1-2 req/s)
+let lastRequestTime = 0;
 
-function fetchJson(url, retries = 1) {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchJson(url, retries = 2) {
     apiCallCount++;
+
+    // Strict rate limiter: enforce at least requestDelayMs between outgoing requests
+    const now = Date.now();
+    const elapsed = now - lastRequestTime;
+    if (elapsed < requestDelayMs) {
+        await sleep(requestDelayMs - elapsed);
+    }
+    lastRequestTime = Date.now();
+
     return new Promise((resolve) => {
         const executeFetch = (attempt) => {
             const req = https.get(url, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 MapMastery/2.0'
                 },
-                timeout: 5000
+                timeout: 8000
             }, (res) => {
                 let data = '';
                 res.on('data', chunk => data += chunk);
@@ -263,14 +278,14 @@ function fetchJson(url, retries = 1) {
                             console.error(`🛑 DDStats message: "Blocked. E-mail furo@posteo.net if this was a mistake."`);
                         }
 
-                        if (consecutiveBlockedCount >= 3) {
+                        if (consecutiveBlockedCount >= 5) {
                             console.error(`\n💥 ОШИБКА: DDStats API заблокировал IP (HTTP ${res.statusCode})!`);
-                            console.error(`🔌 Включай VPN, ёпта! Скрипт остановлен, чтобы не спамить.`);
+                            console.error(`🔌 Включай VPN или увеличь задержку (--delay 1000). Скрипт остановлен.`);
                             process.exit(1);
                         }
 
                         if (res.statusCode === 429 && attempt < retries) {
-                            const delay = (attempt + 1) * 2000;
+                            const delay = (attempt + 1) * 3000;
                             console.warn(`⏳ Rate limited (429). Waiting ${delay}ms...`);
                             setTimeout(() => executeFetch(attempt + 1), delay);
                             return;
@@ -295,7 +310,7 @@ function fetchJson(url, retries = 1) {
             req.on('timeout', () => {
                 req.destroy();
                 if (attempt < retries) {
-                    setTimeout(() => executeFetch(attempt + 1), 1000);
+                    setTimeout(() => executeFetch(attempt + 1), 2000);
                 } else {
                     resolve(null);
                 }
@@ -303,7 +318,7 @@ function fetchJson(url, retries = 1) {
 
             req.on('error', () => {
                 if (attempt < retries) {
-                    setTimeout(() => executeFetch(attempt + 1), 1000);
+                    setTimeout(() => executeFetch(attempt + 1), 2000);
                 } else {
                     resolve(null);
                 }
@@ -429,6 +444,22 @@ async function run() {
     let allMaps = null;
     const args = process.argv.slice(2);
     const isFastMode = args.includes('--fast');
+    const isForceMode = args.includes('--force');
+
+    let delayArgIdx = args.indexOf('--delay');
+    if (delayArgIdx !== -1 && args[delayArgIdx + 1]) {
+        requestDelayMs = parseInt(args[delayArgIdx + 1], 10) || 600;
+    }
+
+    let concArgIdx = args.indexOf('--concurrency');
+    let customConcurrency = null;
+    if (concArgIdx !== -1 && args[concArgIdx + 1]) {
+        customConcurrency = parseInt(args[concArgIdx + 1], 10) || null;
+    }
+
+    const CONCURRENCY = customConcurrency || (isFastMode ? 10 : 2);
+
+    console.log(`⏱ Rate limit: ${requestDelayMs}ms delay per request (~${(1000 / requestDelayMs).toFixed(1)} req/s, Concurrency: ${CONCURRENCY})`);
 
     if (isFastMode && fs.existsSync(MAPS_RAW_FILE)) {
         try {
@@ -459,12 +490,11 @@ async function run() {
     const mapRecords = {};
     const mapRankings = {};
     const mapRawTopFlooded = {};
-    const CONCURRENCY = 10;
     const harvestedTeammates = new Set();
 
     for (let i = 0; i < allMaps.length; i += CONCURRENCY) {
         const batch = allMaps.slice(i, i + CONCURRENCY);
-        const promises = batch.map(async (m) => {
+        await Promise.all(batch.map(async (m) => {
             const mapName = m.map;
             const safeName = safeRankingFilename(mapName);
             const localCacheFile = path.join(MAPS_CACHE_DIR, `${safeName}.json`);
@@ -472,7 +502,7 @@ async function run() {
             const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
             let data = null;
 
-            if (fs.existsSync(localCacheFile)) {
+            if (fs.existsSync(localCacheFile) && !isForceMode) {
                 try {
                     const stats = fs.statSync(localCacheFile);
                     if (isFastMode || Date.now() - stats.mtimeMs < THREE_DAYS_MS) {
@@ -562,18 +592,19 @@ async function run() {
                         rank: index + 1,
                         player: r.name,
                         time: r.time,
-                        timestamp: r.timestamp || null
+                        timestamp: r.timestamp || null,
+                        isTeamRank: false
                     }));
                 }
             } else {
                 mapRecords[mapName] = null;
                 mapRankings[mapName] = [];
             }
-        });
+        }));
 
-        await Promise.all(promises);
-        if (i > 0 && i % 200 === 0) {
-            console.log(`Fetched ${i}/${allMaps.length} map rankings...`);
+        if (i % 25 === 0 || i + CONCURRENCY >= allMaps.length) {
+            const progress = Math.min(i + CONCURRENCY, allMaps.length);
+            console.log(`   Maps: ${progress}/${allMaps.length} processed (${apiCallCount} requests made)...`);
         }
     }
 

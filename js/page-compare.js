@@ -35,6 +35,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     renderHeader('compare');
+    if (typeof renderFooter === 'function') renderFooter('compare');
 
     const dict = getDict();
     document.documentElement.lang = currentLang;

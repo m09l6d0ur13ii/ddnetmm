@@ -5,28 +5,59 @@ let currentLang = 'ru';
 function initLang() {
   let lang = 'ru';
   try {
-    if (localStorage.getItem('lang')) {
-      // Пользователь уже выбирал язык вручную — уважаем его выбор
-      lang = localStorage.getItem('lang');
+    const saved = localStorage.getItem('lang');
+    if (saved && (saved === 'ru' || saved === 'en' || saved === 'zh')) {
+      lang = saved;
+    } else if (document.cookie.includes('lang=zh')) {
+      lang = 'zh';
     } else if (document.cookie.includes('lang=en')) {
       lang = 'en';
     } else {
-      // Ничего не выбрано — определяем по языку браузера/системы
-      const browserLang = (navigator.languages && navigator.languages[0]) || navigator.language || 'ru';
-      lang = browserLang.toLowerCase().startsWith('en') ? 'en' : 'ru';
+      const browserLang = ((navigator.languages && navigator.languages[0]) || navigator.language || 'ru').toLowerCase();
+      if (browserLang.startsWith('zh')) {
+        lang = 'zh';
+      } else if (browserLang.startsWith('en')) {
+        lang = 'en';
+      } else {
+        lang = 'ru';
+      }
     }
   } catch (e) { }
-  currentLang = lang === 'en' ? 'en' : 'ru';
+  currentLang = (lang === 'en' || lang === 'zh') ? lang : 'ru';
+  if (typeof window !== 'undefined') {
+    window.currentLang = currentLang;
+  }
   if (document.documentElement) {
     document.documentElement.lang = currentLang;
   }
 }
+window.initLang = initLang;
+window.getLang = () => currentLang;
+initLang();
 
 function setLang(lang) {
-  currentLang = lang;
-  localStorage.setItem('lang', lang);
+  currentLang = (lang === 'en' || lang === 'zh') ? lang : 'ru';
+  if (typeof window !== 'undefined') {
+    window.currentLang = currentLang;
+  }
+  localStorage.setItem('lang', currentLang);
   window.location.reload();
 }
+window.setLang = setLang;
+
+/**
+ * Universal inline localization helper: returns string for current language
+ * @param {string} ru - Russian string
+ * @param {string} en - English string
+ * @param {string} [zh] - Chinese string
+ * @returns {string}
+ */
+function loc(ru, en, zh) {
+  if (currentLang === 'zh') return zh !== undefined ? zh : (en !== undefined ? en : ru);
+  if (currentLang === 'en') return en !== undefined ? en : ru;
+  return ru;
+}
+window.loc = loc;
 
 /**
  * @param {string} unsafe
@@ -64,17 +95,31 @@ function t(keyPath, fallback = '') {
     if (curr && typeof curr === 'object' && part in curr) {
       curr = curr[part];
     } else {
-      if (typeof dictionaries !== 'undefined' && dictionaries.ru) {
-        let fb = dictionaries.ru;
-        for (const p of parts) {
-          if (fb && typeof fb === 'object' && p in fb) {
-            fb = fb[p];
-          } else {
-            fb = undefined;
-            break;
+      if (typeof dictionaries !== 'undefined') {
+        if (currentLang === 'zh' && dictionaries.en) {
+          let fbEn = dictionaries.en;
+          for (const p of parts) {
+            if (fbEn && typeof fbEn === 'object' && p in fbEn) {
+              fbEn = fbEn[p];
+            } else {
+              fbEn = undefined;
+              break;
+            }
           }
+          if (fbEn !== undefined) return fbEn;
         }
-        if (fb !== undefined) return fb;
+        if (dictionaries.ru) {
+          let fbRu = dictionaries.ru;
+          for (const p of parts) {
+            if (fbRu && typeof fbRu === 'object' && p in fbRu) {
+              fbRu = fbRu[p];
+            } else {
+              fbRu = undefined;
+              break;
+            }
+          }
+          if (fbRu !== undefined) return fbRu;
+        }
       }
       return fallback;
     }
@@ -147,6 +192,16 @@ function applyTranslations(root = document) {
 window.applyTranslations = applyTranslations;
 window.applyI18n = applyTranslations;
 
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      applyTranslations();
+    });
+  } else {
+    applyTranslations();
+  }
+}
+
 /**
  * Universal Footer renderer
  * @param {string} [activePage='']
@@ -210,269 +265,6 @@ function saveSettings(settings) {
   } catch (e) { }
 }
 window.saveSettings = saveSettings;
-
-let tempFavorites = [];
-
-function renderSettingsModal() {
-  let modal = document.getElementById('settings-modal');
-  if (modal) return modal;
-
-  const dict = getDict();
-  const s = dict.settings || {};
-  const isEn = currentLang === 'en';
-
-  const modalHtml = `
-    <div id="settings-modal" class="hidden fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
-      <div class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-slate-950/95 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_40px_rgba(245,158,11,0.15)] space-y-6 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-        
-        <!-- Header -->
-        <div class="flex items-center justify-between border-b border-white/10 pb-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-              ⚙️
-            </div>
-            <div>
-              <h2 id="settings-modal-title" class="text-xl font-black text-white tracking-tight">${s.title || (isEn ? 'User Settings' : 'Настройки пользователя')}</h2>
-              <p class="text-xs text-slate-400 mt-0.5">${s.subtitle || (isEn ? 'Personalize profile, language and bookmarks' : 'Персонализация профиля, языка и быстрых закладок')}</p>
-            </div>
-          </div>
-          <button type="button" id="settings-modal-close-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition-all cursor-pointer" aria-label="Close">
-            &times;
-          </button>
-        </div>
-
-        <!-- Form content -->
-        <div class="space-y-5">
-          
-          <!-- My Nickname -->
-          <div class="space-y-2">
-            <label for="settings-nick-input" class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-              ${s.myNickLabel || (isEn ? 'My DDNet Nickname' : 'Мой никнейм в DDNet')}
-            </label>
-            <div class="relative">
-              <input type="text" id="settings-nick-input" placeholder="${s.myNickPlaceholder || (isEn ? 'Enter your in-game nickname...' : 'Введите ваш игровой ник...')}" class="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:bg-white/[0.08] text-white font-medium text-sm outline-none transition-all placeholder:text-slate-500" autocomplete="off">
-            </div>
-            <p class="text-[0.7rem] text-slate-400 leading-relaxed">
-              ${s.myNickHelp || (isEn ? 'Specify your nickname for 1-click header access ("My Profile") and personal record badges on map pages.' : 'Укажите ваш ник для быстрого перехода в профиль из шапки сайта ("Мой профиль") и отображения персональных результатов на картах.')}
-            </p>
-          </div>
-
-          <!-- Language Segmented Toggle -->
-          <div class="space-y-2">
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-              ${s.langLabel || (isEn ? 'Interface Language' : 'Язык интерфейса')}
-            </label>
-            <div class="grid grid-cols-2 gap-2 p-1 bg-white/[0.03] border border-white/10 rounded-2xl">
-              <button type="button" id="settings-lang-ru" class="py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${currentLang === 'ru' ? 'bg-amber-500 text-slate-950 shadow-md font-black' : 'text-slate-400 hover:text-white'}">
-                <span>🇷🇺</span> <span>Русский (RU)</span>
-              </button>
-              <button type="button" id="settings-lang-en" class="py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${currentLang === 'en' ? 'bg-amber-500 text-slate-950 shadow-md font-black' : 'text-slate-400 hover:text-white'}">
-                <span>🇬🇧</span> <span>English (EN)</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Favorite Players -->
-          <div class="space-y-2.5">
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
-              <span>${s.favoritesLabel || (isEn ? 'Favorite Players' : 'Избранные игроки (быстрый доступ)')}</span>
-              <span id="settings-fav-count-badge" class="text-[0.65rem] text-amber-400 font-mono font-bold">0</span>
-            </label>
-            
-            <div class="flex gap-2">
-              <input type="text" id="settings-fav-input" placeholder="${s.favoritesPlaceholder || (isEn ? 'Add player to favorites...' : 'Добавить игрока в избранное...')}" class="flex-1 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/15 focus:border-amber-400 focus:bg-white/[0.08] text-white font-medium text-xs outline-none transition-all placeholder:text-slate-500" autocomplete="off">
-              <button type="button" id="settings-fav-add-btn" class="px-4 py-2.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer">
-                ${s.addBtn || '+ Добавить'}
-              </button>
-            </div>
-
-            <!-- Chips Container -->
-            <div id="settings-fav-chips" class="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Footer Actions -->
-        <div class="border-t border-white/10 pt-4 flex items-center justify-between gap-3">
-          <div id="settings-toast" class="text-xs font-bold text-emerald-400 hidden flex items-center gap-1.5">
-            <span>✓</span> <span>${s.savedNotice || (isEn ? 'Settings saved!' : 'Настройки сохранены!')}</span>
-          </div>
-          <div class="flex items-center gap-2 ml-auto">
-            <button type="button" id="settings-cancel-btn" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-all cursor-pointer">
-              ${s.cancelBtn || (isEn ? 'Cancel' : 'Отмена')}
-            </button>
-            <button type="button" id="settings-save-btn" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer">
-              ${s.saveBtn || (isEn ? 'Save Settings' : 'Сохранить настройки')}
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-  modal = document.getElementById('settings-modal');
-
-  // Autocomplete bindings
-  if (window.setupPlayerAutocomplete) {
-    window.setupPlayerAutocomplete('settings-nick-input');
-    window.setupPlayerAutocomplete('settings-fav-input', () => {
-      addFavoriteFromInput();
-    });
-  }
-
-  // Event handlers
-  const closeBtn = document.getElementById('settings-modal-close-btn');
-  const cancelBtn = document.getElementById('settings-cancel-btn');
-  const saveBtn = document.getElementById('settings-save-btn');
-  const favAddBtn = document.getElementById('settings-fav-add-btn');
-  const favInput = document.getElementById('settings-fav-input');
-  const langRuBtn = document.getElementById('settings-lang-ru');
-  const langEnBtn = document.getElementById('settings-lang-en');
-
-  const addFavoriteFromInput = () => {
-    const val = favInput.value.trim();
-    if (!val) return;
-    if (!tempFavorites.some(f => f.toLowerCase() === val.toLowerCase())) {
-      tempFavorites.push(val);
-      if (window.api && typeof window.api.fetchPlayerPts === 'function') {
-        window.api.fetchPlayerPts(val).catch(() => {});
-      }
-      renderFavoriteChips();
-    }
-    favInput.value = '';
-  };
-
-  if (favAddBtn) favAddBtn.onclick = addFavoriteFromInput;
-  if (favInput) {
-    favInput.onkeydown = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        addFavoriteFromInput();
-      }
-    };
-  }
-
-  let selectedLang = currentLang;
-  if (langRuBtn) {
-    langRuBtn.onclick = () => {
-      selectedLang = 'ru';
-      langRuBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-md font-black';
-      langEnBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-400 hover:text-white';
-    };
-  }
-  if (langEnBtn) {
-    langEnBtn.onclick = () => {
-      selectedLang = 'en';
-      langEnBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 bg-amber-500 text-slate-950 shadow-md font-black';
-      langRuBtn.className = 'py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-400 hover:text-white';
-    };
-  }
-
-  if (saveBtn) {
-    saveBtn.onclick = () => {
-      const nickVal = (document.getElementById('settings-nick-input')?.value || '').trim();
-      saveSettings({
-        myNickname: nickVal,
-        favorites: tempFavorites
-      });
-
-      tempFavorites.forEach(f => {
-        if (window.api && typeof window.api.fetchPlayerPts === 'function') {
-          window.api.fetchPlayerPts(f).catch(() => {});
-        }
-      });
-
-      const toast = document.getElementById('settings-toast');
-      if (toast) {
-        toast.classList.remove('hidden');
-        setTimeout(() => toast.classList.add('hidden'), 2000);
-      }
-
-      if (typeof renderHeader === 'function') renderHeader();
-
-      setTimeout(() => {
-        closeSettingsModal();
-        if (selectedLang !== currentLang) {
-          setLang(selectedLang);
-        } else {
-          // Re-render local page hooks if applicable
-          if (typeof renderTable === 'function') renderTable();
-          if (typeof renderMapFavorites === 'function') renderMapFavorites();
-        }
-      }, 400);
-    };
-  }
-
-  if (closeBtn) closeBtn.onclick = closeSettingsModal;
-  if (cancelBtn) cancelBtn.onclick = closeSettingsModal;
-  modal.onclick = (e) => {
-    if (e.target === modal) closeSettingsModal();
-  };
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-      closeSettingsModal();
-    }
-  });
-
-  return modal;
-}
-
-function renderFavoriteChips() {
-  const container = document.getElementById('settings-fav-chips');
-  const countBadge = document.getElementById('settings-fav-count-badge');
-  if (!container) return;
-
-  if (countBadge) countBadge.textContent = tempFavorites.length;
-
-  if (tempFavorites.length === 0) {
-    container.innerHTML = `<span class="text-xs text-slate-500 italic py-1">${currentLang === 'en' ? 'No favorite players added yet' : 'Нет добавленных избранных игроков'}</span>`;
-    return;
-  }
-
-  container.innerHTML = tempFavorites.map((name, idx) => `
-    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all shadow-sm hover:border-amber-500/60">
-      <span>⭐</span>
-      <span>${escapeHtml(name)}</span>
-      <button type="button" onclick="removeFavoriteByIndex(${idx})" class="w-4 h-4 rounded-full bg-amber-500/20 hover:bg-rose-500/30 text-amber-300 hover:text-rose-300 flex items-center justify-center text-xs ml-0.5 transition-colors cursor-pointer" title="${currentLang === 'en' ? 'Remove' : 'Удалить'}">
-        &times;
-      </button>
-    </span>
-  `).join('');
-}
-
-window.removeFavoriteByIndex = function (index) {
-  if (index >= 0 && index < tempFavorites.length) {
-    tempFavorites.splice(index, 1);
-    renderFavoriteChips();
-  }
-};
-
-function openSettingsModal() {
-  const modal = renderSettingsModal();
-  const settings = getSettings();
-  const nickInput = document.getElementById('settings-nick-input');
-  if (nickInput) nickInput.value = settings.myNickname || '';
-
-  tempFavorites = [...(settings.favorites || [])];
-  renderFavoriteChips();
-
-  modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-window.openSettingsModal = openSettingsModal;
-
-function closeSettingsModal() {
-  const modal = document.getElementById('settings-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-}
-window.closeSettingsModal = closeSettingsModal;
 
 const keyboardLayouts = {
   en: "`qwertyuiop[]asdfghjkl;'zxcvbnm,./",
@@ -684,10 +476,11 @@ function populateSettingsModal() {
   const cacheInfo = document.getElementById('modal-cache-info');
   if (cacheInfo) {
     if (cache && cache.updatedAt) {
-      const dateStr = new Date(cache.updatedAt).toLocaleString(currentLang === 'en' ? 'en-US' : 'ru-RU');
-      cacheInfo.textContent = `${currentLang === 'en' ? 'Last profile update:' : 'Последнее обновление:'} ${dateStr} (${cache.finishes ? cache.finishes.length : 0} ${currentLang === 'en' ? 'maps' : 'карт'})`;
+      const dateLocale = currentLang === 'zh' ? 'zh-CN' : (currentLang === 'en' ? 'en-US' : 'ru-RU');
+      const dateStr = new Date(cache.updatedAt).toLocaleString(dateLocale);
+      cacheInfo.textContent = `${loc('Последнее обновление:', 'Last profile update:', '最近更新：')} ${dateStr} (${cache.finishes ? cache.finishes.length : 0} ${loc('карт', 'maps', '张地图')})`;
     } else {
-      cacheInfo.textContent = currentLang === 'en' ? 'Profile data not cached yet' : 'Данные профиля еще не закэшированы';
+      cacheInfo.textContent = loc('Данные профиля еще не закэшированы', 'Profile data not cached yet', '尚未缓存个人资料数据');
     }
   }
 
@@ -697,13 +490,13 @@ function populateSettingsModal() {
     let favs = [...s.favorites];
     const renderModalFavs = () => {
       if (favs.length === 0) {
-        favContainer.innerHTML = `<span class="text-xs text-slate-500 font-medium">${t.favoritesEmpty || 'No pinned players'}</span>`;
+        favContainer.innerHTML = `<span class="text-xs text-slate-500 font-medium">${t.favoritesEmpty || loc('Нет добавленных избранных игроков', 'No pinned players', '暂无收藏的玩家')}</span>`;
         return;
       }
       favContainer.innerHTML = favs.map((p, idx) => `
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-200">
           <a href="/player?name=${encodeURIComponent(p)}" class="hover:text-amber-400 transition-colors">${escapeHtml(p)}</a>
-          <button type="button" data-modal-fav-idx="${idx}" class="modal-remove-fav text-slate-500 hover:text-red-400 font-bold px-1">&times;</button>
+          <button type="button" data-modal-fav-idx="${idx}" class="modal-remove-fav text-slate-500 hover:text-red-400 font-bold px-1" title="${loc('Удалить', 'Remove', '移除')}">&times;</button>
         </span>
       `).join('');
 
@@ -728,56 +521,60 @@ function renderSettingsModal() {
 
   const html = `
     <div id="settings-modal" class="hidden fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in" role="dialog" aria-modal="true">
-      <div class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-2xl border border-white/15 bg-slate-900/90 shadow-2xl space-y-6">
+      <div class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-2xl border border-white/15 bg-slate-900/90 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
 
         <div class="flex items-center justify-between border-b border-white/10 pb-4">
           <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-            <span>⚙️</span> <span>${t.title || 'Настройки'}</span>
+            <span>⚙️</span> <span>${t.title || loc('Настройки', 'Settings', '设置')}</span>
           </h2>
-          <button type="button" onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-2xl font-bold p-1 leading-none">&times;</button>
+          <button type="button" onclick="closeSettingsModal()" class="text-slate-400 hover:text-white text-2xl font-bold p-1 leading-none cursor-pointer">&times;</button>
         </div>
 
         <form id="modal-settings-form" class="space-y-6">
           <!-- Nickname Field -->
           <div class="space-y-2">
-            <label for="modal-mynick-input" class="block text-sm font-bold text-amber-400">${t.myNickLabel || 'Мой никнейм в DDNet'}</label>
+            <label for="modal-mynick-input" class="block text-sm font-bold text-amber-400">${t.myNickLabel || loc('Мой никнейм в DDNet', 'My DDNet Nickname', '我的 DDNet 昵称')}</label>
             <input type="text" id="modal-mynick-input" placeholder="${t.myNickPlaceholder || 'Xardas'}" class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-2.5 text-slate-100 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm" autocomplete="off">
-            <p class="text-xs text-slate-400">${t.myNickHelp || 'Укажите ник для 1-click перехода в профиль и плашки рекорда на картах.'}</p>
+            <p class="text-xs text-slate-400">${t.myNickHelp || loc('Укажите ник для 1-click перехода в профиль и плашки рекорда на картах.', 'Specify your nickname for 1-click header access ("My Profile") and personal record badges on map pages.', '输入昵称即可在页头一键直达个人主页并在地图页面显示个人纪录标签。')}</p>
           </div>
 
           <!-- Refresh Data Button -->
           <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
             <div class="flex items-center justify-between">
               <span id="modal-cache-info" class="text-xs text-slate-400"></span>
-              <button type="button" id="modal-refresh-data-btn" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
-                <span>🔄</span> <span>${currentLang === 'en' ? 'Refresh Profile Data' : 'Обновить данные'}</span>
+              <button type="button" id="modal-refresh-data-btn" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                <span>🔄</span> <span>${loc('Обновить данные', 'Refresh Profile Data', '刷新资料数据')}</span>
               </button>
             </div>
           </div>
 
           <!-- Language Selector -->
           <div class="space-y-2">
-            <label class="block text-sm font-bold text-amber-400">${t.langLabel || 'Язык интерфейса'}</label>
-            <div class="grid grid-cols-2 gap-3">
-              <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-3 rounded-xl hover:border-amber-500/50 transition-all">
+            <label class="block text-sm font-bold text-amber-400">${t.langLabel || loc('Язык интерфейса', 'Interface Language', '界面语言')}</label>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-2.5 rounded-xl hover:border-amber-500/50 transition-all text-center">
                 <input type="radio" name="modal-settings-lang" value="ru" class="accent-amber-500">
-                <span class="font-bold text-xs">Русский (Russian)</span>
+                <span class="font-bold text-xs">${t.langRu || '🇷🇺 Русский'}</span>
               </label>
-              <label class="flex items-center gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-3 rounded-xl hover:border-amber-500/50 transition-all">
+              <label class="flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-2.5 rounded-xl hover:border-amber-500/50 transition-all text-center">
                 <input type="radio" name="modal-settings-lang" value="en" class="accent-amber-500">
-                <span class="font-bold text-xs">English (English)</span>
+                <span class="font-bold text-xs">${t.langEn || '🇬🇧 English'}</span>
+              </label>
+              <label class="flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer bg-white/[0.04] border border-white/10 p-2.5 rounded-xl hover:border-amber-500/50 transition-all text-center">
+                <input type="radio" name="modal-settings-lang" value="zh" class="accent-amber-500">
+                <span class="font-bold text-xs">${t.langZh || '🇨🇳 简体中文'}</span>
               </label>
             </div>
           </div>
 
           <!-- Favorites List & Add Input -->
           <div class="space-y-3">
-            <label class="block text-sm font-bold text-amber-400">${t.favoritesLabel || (currentLang === 'en' ? 'Favorite Players (Quick Access)' : 'Избранные игроки (быстрый доступ)')}</label>
+            <label class="block text-sm font-bold text-amber-400">${t.favoritesLabel || loc('Избранные игроки (быстрый доступ)', 'Favorite Players (Quick Access)', '收藏玩家（快速访问）')}</label>
             
             <div class="flex items-center gap-2">
-              <input type="text" id="modal-add-fav-input" placeholder="${currentLang === 'en' ? 'Add player name...' : 'Имя игрока для избранного...'}" class="flex-1 bg-white/[0.04] border border-white/15 rounded-xl px-3.5 py-2 text-slate-100 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-xs" autocomplete="off">
+              <input type="text" id="modal-add-fav-input" placeholder="${t.favoritesPlaceholder || loc('Имя игрока для избранного...', 'Add player name...', '输入要收藏的玩家昵称...')}" class="flex-1 bg-white/[0.04] border border-white/15 rounded-xl px-3.5 py-2 text-slate-100 placeholder:text-slate-500 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-xs" autocomplete="off">
               <button type="button" id="modal-add-fav-btn" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md flex items-center gap-1 shrink-0 cursor-pointer" style="border-radius: 0.75rem;">
-                <span>➕</span> <span>${currentLang === 'en' ? 'Add' : 'Добавить'}</span>
+                <span>➕</span> <span>${t.addBtn || loc('Добавить', 'Add', '添加')}</span>
               </button>
             </div>
 
@@ -786,8 +583,8 @@ function renderSettingsModal() {
 
           <!-- Submit Buttons -->
           <div class="pt-4 border-t border-white/10 flex justify-end gap-3">
-            <button type="button" onclick="closeSettingsModal()" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-sm transition-all border border-white/10 cursor-pointer" style="border-radius: 0.85rem;">${currentLang === 'en' ? 'Cancel' : 'Отмена'}</button>
-            <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer" style="border-radius: 0.85rem;">${t.saveBtn || (currentLang === 'en' ? 'Save Settings' : 'Сохранить настройки')}</button>
+            <button type="button" onclick="closeSettingsModal()" class="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-sm transition-all border border-white/10 cursor-pointer" style="border-radius: 0.85rem;">${t.cancelBtn || loc('Отмена', 'Cancel', '取消')}</button>
+            <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer" style="border-radius: 0.85rem;">${t.saveBtn || loc('Сохранить настройки', 'Save Settings', '保存设置')}</button>
           </div>
         </form>
 
@@ -849,14 +646,14 @@ function renderSettingsModal() {
       if (!nick) return;
 
       refreshBtn.disabled = true;
-      refreshBtn.innerHTML = `<span>⏳</span> <span>${currentLang === 'en' ? 'Updating...' : 'Загрузка...'}</span>`;
+      refreshBtn.innerHTML = `<span>⏳</span> <span>${loc('Загрузка...', 'Updating...', '更新中...')}</span>`;
 
       await refreshUserProfileCache(nick);
 
       refreshBtn.disabled = false;
-      refreshBtn.innerHTML = `<span>✅</span> <span>${currentLang === 'en' ? 'Updated!' : 'Обновлено!'}</span>`;
+      refreshBtn.innerHTML = `<span>✅</span> <span>${loc('Обновлено!', 'Updated!', '已更新！')}</span>`;
       setTimeout(() => {
-        refreshBtn.innerHTML = `<span>🔄</span> <span>${currentLang === 'en' ? 'Refresh Profile Data' : 'Обновить данные'}</span>`;
+        refreshBtn.innerHTML = `<span>🔄</span> <span>${loc('Обновить данные', 'Refresh Profile Data', '刷新资料数据')}</span>`;
       }, 2000);
       populateSettingsModal();
     };
@@ -1224,20 +1021,19 @@ window.setupPlayerAutocomplete = function (inputId, onSelect) {
  * @param {string} [activePage='home']
  */
 function renderHeader(activePage = 'home') {
-  const isEn = currentLang === 'en';
   const dict = getDict();
   const h = dict.header || {};
-  const playerPlaceholder = h.playerPlaceholder || (isEn ? 'Find player...' : 'Найти игрока...');
-  const playerTitle = h.playerTitle || (isEn ? 'PLAYER SEARCH / Find player' : 'ПОИСК ИГРОКА / Найти игрока');
-  const mapPlaceholder = h.mapPlaceholder || (isEn ? 'Find map...' : 'Найти карту...');
-  const mapTitle = h.mapTitle || (isEn ? 'MAP SEARCH / Open records, times and map ranking' : 'ПОИСК КАРТЫ / Откройте рекорды, времена и рейтинг карты');
+  const playerPlaceholder = h.playerPlaceholder || loc('Найти игрока...', 'Find player...', '搜索玩家...');
+  const playerTitle = h.playerTitle || loc('ПОИСК ИГРОКА / Найти игрока', 'PLAYER SEARCH / Find player', '玩家搜索 / 查找玩家');
+  const mapPlaceholder = h.mapPlaceholder || loc('Найти карту...', 'Find map...', '搜索地图...');
+  const mapTitle = h.mapTitle || loc('ПОИСК КАРТЫ / Откройте рекорды, времена и рейтинг карты', 'MAP SEARCH / Open records, times and map ranking', '地图搜索 / 查看纪录、用时与排行榜');
 
   const settings = getSettings();
   const myNick = settings.myNickname ? settings.myNickname.trim() : '';
 
   const myProfileHtml = myNick ? `
     <span class="site-nav-divider">/</span>
-    <a href="/player?name=${encodeURIComponent(myNick)}" class="site-nav-link site-profile-link inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 text-amber-400 font-bold transition-all text-xs" title="${h.myProfile || (isEn ? 'My Profile' : 'Мой профиль')}: ${escapeHtml(myNick)}">
+    <a href="/player?name=${encodeURIComponent(myNick)}" class="site-nav-link site-profile-link inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 text-amber-400 font-bold transition-all text-xs" title="${h.myProfile || loc('Мой профиль', 'My Profile', '我的主页')}: ${escapeHtml(myNick)}">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 shrink-0"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span class="truncate max-w-[100px]">${escapeHtml(myNick)}</span>
     </a>
@@ -1250,11 +1046,15 @@ function renderHeader(activePage = 'home') {
         <!-- Logo & Navigation -->
         <div class="site-nav flex items-center gap-2">
           <a href="/" class="site-nav-link${activePage === 'home' ? ' is-active' : ''}">
-            <span>${h.home || (isEn ? 'Home' : 'Главная')}</span>
+            <span>${h.home || loc('Главная', 'Home', '首页')}</span>
           </a>
           <span class="site-nav-divider">/</span>
           <a href="/maps" class="site-nav-link${activePage === 'maps' ? ' is-active' : ''}">
-            <span>${h.mapsExplorer || (isEn ? 'Maps Explorer' : 'База карт')}</span>
+            <span>${h.mapsExplorer || loc('База карт', 'Maps Explorer', '地图库')}</span>
+          </a>
+          <span class="site-nav-divider">/</span>
+          <a href="/creators" class="site-nav-link${activePage === 'creators' ? ' is-active' : ''}">
+            <span>${h.creators || loc('Создатели сайта', 'Creators', '创作者')}</span>
           </a>
           ${myProfileHtml}
           <span class="site-nav-divider">/</span>
@@ -1291,9 +1091,29 @@ function renderHeader(activePage = 'home') {
 
         <!-- Header Tools & Settings -->
         <div class="site-header-tools flex items-center gap-2">
-          <button type="button" onclick="openSettingsModal()" class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-slate-300 hover:text-amber-400 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer" title="${h.settings || (isEn ? 'Settings' : 'Настройки')}" aria-label="${h.settings || 'Settings'}">
+          <!-- Quick Language Switcher Dropdown -->
+          <div class="relative group" id="header-lang-dropdown">
+            <button type="button" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer" aria-label="Language Selector">
+              <span>${currentLang === 'zh' ? '🇨🇳' : (currentLang === 'en' ? '🇬🇧' : '🇷🇺')}</span>
+              <span class="font-mono text-[0.75rem] font-bold">${currentLang.toUpperCase()}</span>
+              <svg class="w-3 h-3 text-slate-400 group-hover:text-amber-400 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="absolute right-0 top-full mt-1.5 w-36 py-1.5 bg-slate-950/95 border border-amber-500/20 rounded-xl shadow-[0_15px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl hidden group-hover:block z-50 animate-fade-in">
+              <button type="button" onclick="setLang('ru')" class="w-full text-left px-3 py-2 text-xs flex items-center gap-2.5 hover:bg-amber-500/10 transition-colors cursor-pointer ${currentLang === 'ru' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-slate-300'}">
+                <span>🇷🇺</span> <span>Русский (RU)</span>
+              </button>
+              <button type="button" onclick="setLang('en')" class="w-full text-left px-3 py-2 text-xs flex items-center gap-2.5 hover:bg-amber-500/10 transition-colors cursor-pointer ${currentLang === 'en' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-slate-300'}">
+                <span>🇬🇧</span> <span>English (EN)</span>
+              </button>
+              <button type="button" onclick="setLang('zh')" class="w-full text-left px-3 py-2 text-xs flex items-center gap-2.5 hover:bg-amber-500/10 transition-colors cursor-pointer ${currentLang === 'zh' ? 'text-amber-400 font-bold bg-amber-500/10' : 'text-slate-300'}">
+                <span>🇨🇳</span> <span>简体中文 (ZH)</span>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" onclick="openSettingsModal()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 text-slate-300 hover:text-amber-400 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer" title="${h.settings || loc('Настройки', 'Settings', '设置')}" aria-label="${h.settings || 'Settings'}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            <span class="hidden md:inline">${h.settings || (isEn ? 'Settings' : 'Настройки')}</span>
+            <span class="hidden md:inline">${h.settings || loc('Настройки', 'Settings', '设置')}</span>
           </button>
         </div>
       </div>
@@ -1302,6 +1122,10 @@ function renderHeader(activePage = 'home') {
   const headerContainer = document.getElementById('header-container');
   if (headerContainer) {
     headerContainer.innerHTML = headerHtml;
+  }
+
+  if (typeof renderFooter === 'function') {
+    renderFooter(activePage);
   }
 
   setTimeout(() => {
@@ -1343,6 +1167,79 @@ function renderHeader(activePage = 'home') {
   }, 50);
 }
 
+/**
+ * Detect current page key from pathname
+ * @returns {string}
+ */
+function detectActivePage() {
+  if (typeof window === 'undefined' || !window.location) return '';
+  const pathname = (window.location.pathname || '').toLowerCase();
+  if (pathname === '/' || pathname === '/index.html' || pathname.endsWith('/ddnetmm/') || pathname.endsWith('/ddnetmm/index.html')) {
+    return 'home';
+  }
+  if (pathname.includes('/maps')) return 'maps';
+  if (pathname.includes('/map')) return 'map';
+  if (pathname.includes('/player')) return 'player';
+  if (pathname.includes('/about')) return 'about';
+  if (pathname.includes('/creators')) return 'creators';
+  if (pathname.includes('/compare')) return 'compare';
+  if (pathname.includes('/pvp')) return 'pvp';
+  if (pathname.includes('/tas')) return 'tas';
+  if (pathname.includes('/privacy')) return 'privacy';
+  return '';
+}
+
+/**
+ * Universal Footer renderer
+ * @param {string} [activePage='']
+ */
+function renderFooter(activePage = '') {
+  if (!activePage) {
+    activePage = detectActivePage();
+  }
+  const dict = getDict();
+  const f = dict.footer || {};
+
+  const footerHtml = `
+    <footer class="site-footer border-t border-white/[0.08] bg-slate-900/60 py-8 mt-12 text-slate-400 text-xs sm:text-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <p class="font-medium text-slate-300">${f.copyright || 'DDNet Map Mastery © 2026'}</p>
+          <p class="text-slate-500 text-xs mt-1">${f.tagline || loc('Альтернативный рейтинг и система очков для сообщества DDNet.', 'Alternative ranking and points system for the DDNet community.', '面向 DDNet 玩家社区的替代天梯排行与积分系统。')}</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-6">
+          <a href="/" class="hover:text-white transition-colors${activePage === 'home' ? ' text-amber-400 font-semibold' : ''}">${f.home || loc('Главная', 'Home', '首页')}</a>
+          <a href="/maps" class="hover:text-white transition-colors${activePage === 'maps' ? ' text-amber-400 font-semibold' : ''}">${f.maps || loc('База карт', 'Maps Explorer', '地图库')}</a>
+          <a href="/about" class="hover:text-white transition-colors${activePage === 'about' ? ' text-amber-400 font-semibold' : ''}">${f.about || loc('О проекте', 'About', '关于项目')}</a>
+          <a href="/creators" class="hover:text-white transition-colors${activePage === 'creators' ? ' text-amber-400 font-semibold' : ''}">${f.creators || loc('Создатели сайта', 'Creators', '创作者')}</a>
+          <a href="/compare" class="hover:text-white transition-colors${activePage === 'compare' ? ' text-amber-400 font-semibold' : ''}">${f.compare || loc('Сравнение', 'Compare', '对比')}</a>
+          <a href="/pvp" class="hover:text-white transition-colors${activePage === 'pvp' ? ' text-amber-400 font-semibold' : ''}">${f.pvp || loc('PvP Дуэль', 'PvP Duel', 'PvP 对决')}</a>
+          <a href="/tas" class="hover:text-white transition-colors${activePage === 'tas' ? ' text-amber-400 font-semibold' : ''}">${f.tas || 'TAS Ban List'}</a>
+          <a href="/privacy" class="hover:text-white transition-colors${activePage === 'privacy' ? ' text-amber-400 font-semibold' : ''}">${f.privacy || loc('Политика конфиденциальности', 'Privacy Policy', '隐私政策')}</a>
+          <a href="https://github.com/m09l6d0ur13ii/ddnetmm" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors inline-flex items-center gap-1.5">
+            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span>${f.github || 'GitHub'}</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  `;
+
+  const container = document.getElementById('footer-container');
+  if (container) {
+    container.innerHTML = footerHtml;
+  } else {
+    const existingFooters = document.querySelectorAll('footer');
+    if (existingFooters.length > 0) {
+      const lastFooter = existingFooters[existingFooters.length - 1];
+      lastFooter.outerHTML = footerHtml;
+    }
+  }
+}
+window.renderFooter = renderFooter;
+
 
 
 
@@ -1383,6 +1280,12 @@ if (document.readyState !== 'loading') {
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof applyTranslations === 'function') {
     applyTranslations();
+  }
+  if (typeof renderFooter === 'function') {
+    const footerContainer = document.getElementById('footer-container');
+    if (footerContainer && !footerContainer.querySelector('footer')) {
+      renderFooter();
+    }
   }
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

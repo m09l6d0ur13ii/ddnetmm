@@ -138,7 +138,7 @@
               id="pvp-submit-btn"
               class="w-full sm:w-auto px-10 py-3.5 rounded-xl font-black text-slate-950 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_25px_rgba(245,158,11,0.45)] cursor-pointer text-sm uppercase tracking-wider inline-flex items-center justify-center gap-2"
             >
-              <span>Сравнить результаты</span>
+              <span id="pvp-submit-text" data-i18n="pvp.compareBtn">Сравнить результаты</span>
               <span>⚔️</span>
             </button>
           </div>
@@ -152,7 +152,7 @@
             <span>🔥</span>
             <span data-i18n="pvp.featuredDuels">Популярные дуэли</span>
           </h3>
-          <span class="text-xs text-slate-500 font-medium">Нажмите на любую пару для быстрого сравнения</span>
+          <span id="pvp-featured-sub" class="text-xs text-slate-500 font-medium">Нажмите на любую пару для быстрого сравнения</span>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="featured-duels-grid">
         </div>
@@ -295,7 +295,7 @@
           <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/[0.05] pb-3">
             <h3 class="text-lg font-bold text-white flex items-center gap-2" id="pvp-spec-title">
               <span>📊</span>
-              <span>Сравнение по категориям</span>
+              <span id="pvp-spec-title-text">Сравнение по категориям</span>
             </h3>
             <span class="text-xs text-slate-400 font-mono" id="pvp-spec-subtitle">Категориальный перевес</span>
           </div>

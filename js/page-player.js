@@ -81,6 +81,7 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     renderHeader('player');
+    if (typeof renderFooter === 'function') renderFooter('player');
     const dict = getDict();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -117,19 +118,19 @@
     setTxt('stat-base-sub', dict.player.statBaseSub || '');
     setTxt('stat-skill-sub', dict.player.statSkillSub || '');
     setTxt('stat-total-sub', dict.player.statTotalSub || '');
-    setTxt('rank-header-tag', dict.player.rankSublabel || 'Ранг');
-    setTxt('rank-header-label', dict.player.rankLabel || 'Ранг скилла');
-    setTxt('level-header-tag', dict.player.levelSublabel || 'Уровень');
-    setTxt('level-header-label', dict.player.levelLabel || 'Уровень мастерства');
-    setTxt('table-map', dict.player.mapName || dict.player.map || 'Карта');
-    setTxt('table-server', dict.player.mapServer || dict.player.category || 'Сервер');
-    setTxt('table-time', dict.player.mapTime || dict.player.time || 'Время');
+    setTxt('rank-header-tag', dict.player.rankSublabel || loc('Ранг', 'Rank', '段位'));
+    setTxt('rank-header-label', dict.player.rankLabel || loc('Ранг скилла', 'Skill League', '段位等级'));
+    setTxt('level-header-tag', dict.player.levelSublabel || loc('Уровень', 'Level', '等级'));
+    setTxt('level-header-label', dict.player.levelLabel || loc('Уровень мастерства', 'Mastery Level', '熟练度等级'));
+    setTxt('table-map', dict.player.mapName || dict.player.map || loc('Карта', 'Map', '地图'));
+    setTxt('table-server', dict.player.mapServer || dict.player.category || loc('Сервер', 'Category', '分类'));
+    setTxt('table-time', dict.player.mapTime || dict.player.time || loc('Время', 'Time', '用时'));
     setTxt('table-base-col', dict.player.tableBase || 'Base');
     setTxt('table-skill-col', dict.player.tableSkill || 'Skill Bonus');
     setTxt('table-top-col', dict.player.tableTopDDNet || 'Top DDNet');
 
     const shareTextEl = document.getElementById('share-profile-text');
-    if (shareTextEl) shareTextEl.textContent = dict.player.shareBtn || 'Share Profile';
+    if (shareTextEl) shareTextEl.textContent = dict.player.shareBtn || loc('Поделиться профилем', 'Share Profile', '分享主页');
 
     // Blacklist check
     if (window.isBlacklisted && window.isBlacklisted(playerName)) {
@@ -137,12 +138,10 @@
       document.getElementById('player-error').innerHTML = `
         <div style="background:rgba(239,68,68,0.15);border:2px solid #ef4444;padding:1.5rem;text-align:center;margin:1.5rem 0;">
           <h2 style="font-size:1.5rem;font-weight:bold;color:#f87171;margin-bottom:0.5rem;">
-            ${currentLang === 'en' ? 'Player Banned' : 'Игрок заблокирован'}
+            ${loc('Игрок заблокирован', 'Player Banned', '玩家已被封禁')}
           </h2>
           <p style="color:#fca5a5;font-weight:500;">
-            ${currentLang === 'en'
-          ? 'This player is blacklisted in Map Mastery system (TAS / Cheating).'
-          : 'Этот никнейм находится в чёрном списке системы Map Mastery (TAS / Читы).'}
+            ${loc('Этот никнейм находится в чёрном списке системы Map Mastery (TAS / Читы).', 'This player is blacklisted in Map Mastery system (TAS / Cheating).', '该玩家处于 Map Mastery 系统的黑名单中（TAS / 作弊）。')}
           </p>
         </div>
       `;
@@ -176,7 +175,7 @@
       }
 
       if (typeof renderBreadcrumbs === 'function') {
-        const homeLabel = dict.breadcrumbs ? dict.breadcrumbs.home : 'Home';
+        const homeLabel = (dict.breadcrumbs && dict.breadcrumbs.home) || loc('Главная', 'Home', '首页');
         renderBreadcrumbs([
           { label: homeLabel, url: '/' },
           { label: data.name }
@@ -226,7 +225,7 @@
         if (progress && progress.total > 0) {
           document.getElementById('val-completion').textContent = `${progress.percentage.toFixed(1)}%`;
 
-          const mapsLabel = dict.player.mapsCount || (currentLang === 'en' ? 'Maps' : 'Карт');
+          const mapsLabel = dict.player.mapsCount || loc('Карт', 'Maps', '张地图');
           const wrCount = (data.finishDetails || []).filter(m => m.rank === 1).length;
           const mapEl = document.getElementById('val-completion-maps');
           if (mapEl) {
@@ -307,15 +306,13 @@
       if (masteryNext) {
         const nextLevelNum = mastery.level + 1;
         const ptsRemaining = mastery.pointsToNext.toLocaleString();
-        masteryNext.textContent = currentLang === 'en'
-          ? `${ptsRemaining} PTS to Level ${nextLevelNum}`
-          : `${ptsRemaining} PTS до ${nextLevelNum} уровня`;
+        masteryNext.textContent = loc(`${ptsRemaining} PTS до ${nextLevelNum} уровня`, `${ptsRemaining} PTS to Level ${nextLevelNum}`, `距 ${nextLevelNum} 级还需 ${ptsRemaining} 积分`);
       }
 
       const shareBtn = document.getElementById('share-profile-btn');
       if (shareBtn) {
         shareBtn.addEventListener('click', async () => {
-          if (shareTextEl) shareTextEl.textContent = currentLang === 'en' ? 'Generating...' : 'Генерация...';
+          if (shareTextEl) shareTextEl.textContent = loc('Генерация...', 'Generating...', '生成中...');
 
           try {
             if (window.api.generateProfileCard) {
@@ -336,8 +333,8 @@
           const cardText = `${data.name} | base: ${data.newPtsBase} | skill: ${data.newPtsSkill} | total: ${data.newPtsTotal} | https://ddnetmm.ru/player?name=${encodeURIComponent(data.name)}`;
           navigator.clipboard.writeText(cardText).then(() => {
             if (shareTextEl) {
-              const origText = dict.player.shareBtn || 'Share Profile';
-              shareTextEl.textContent = dict.player.copied || 'Скопировано!';
+              const origText = dict.player.shareBtn || loc('Поделиться профилем', 'Share Profile', '分享主页');
+              shareTextEl.textContent = dict.player.copied || loc('Скопировано!', 'Copied!', '已复制！');
               setTimeout(() => { shareTextEl.textContent = origText; }, 2000);
             }
           }).catch(err => {
@@ -357,13 +354,13 @@
             favBtn.style.background = 'rgba(245,158,11,0.2)';
             favBtn.style.color = '#fbbf24';
             favBtn.style.borderColor = 'rgba(245,158,11,0.5)';
-            if (favTextEl) favTextEl.textContent = currentLang === 'en' ? 'In Favorites' : 'В избранном';
+            if (favTextEl) favTextEl.textContent = loc('В избранном', 'In Favorites', '已收藏');
             if (favIconEl) favIconEl.textContent = '★';
           } else {
             favBtn.style.background = 'rgba(255,255,255,0.06)';
             favBtn.style.color = '#cbd5e1';
             favBtn.style.borderColor = 'rgba(255,255,255,0.12)';
-            if (favTextEl) favTextEl.textContent = currentLang === 'en' ? 'Favorite' : 'В избранное';
+            if (favTextEl) favTextEl.textContent = loc('В избранное', 'Favorite', '收藏玩家');
             if (favIconEl) favIconEl.textContent = '☆';
           }
         };
@@ -720,7 +717,7 @@
           // ---- X-axis month ticks ----
           let xTicks = '';
           const tickCount = Math.min(8, Math.max(3, Math.floor(chartW / 90)));
-          const dateLocale = currentLang === 'en' ? 'en-US' : 'ru-RU';
+          const dateLocale = currentLang === 'zh' ? 'zh-CN' : (currentLang === 'en' ? 'en-US' : 'ru-RU');
           for (let i = 0; i <= tickCount; i++) {
             const ts = minX + (maxX - minX) * i / tickCount;
             const xPx = sx(ts).toFixed(1);
@@ -772,7 +769,7 @@
         }
 
         const titleEl = document.getElementById('player-chart-title');
-        if (titleEl) titleEl.textContent = dict.player.pointsHistory || (currentLang === 'en' ? 'Points History' : 'История очков');
+        if (titleEl) titleEl.textContent = dict.player.pointsHistory || loc('История очков', 'Points History', '积分历史趋势');
       };
 
       renderPointsHistoryChart(data.finishDetails);
@@ -827,7 +824,7 @@
         let rects = '', monthLabels = '';
         const todayDow = now.getDay(); // 0=Sun
         let lastMonth = -1;
-        const heatLocale = currentLang === 'en' ? 'en-US' : 'ru-RU';
+        const heatLocale = currentLang === 'zh' ? 'zh-CN' : (currentLang === 'en' ? 'en-US' : 'ru-RU');
 
         for (let w = 0; w < weeks; w++) {
           for (let d = 0; d < daysInWeek; d++) {
@@ -848,31 +845,33 @@
               }
             }
 
-            const label = `${targetDate.toLocaleDateString(heatLocale)}: ${count} ${dict.player.mapsCount || (currentLang === 'en' ? 'maps' : 'карт')}`;
+            const label = `${targetDate.toLocaleDateString(heatLocale)}: ${count} ${dict.player.mapsCount || loc('карт', 'maps', '张地图')}`;
             rects += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2.5" fill="${getColor(count)}"><title>${label}</title></rect>`;
           }
         }
 
         // Day-of-week labels (Mon, Wed, Fri)
         const dayLabels = [1, 3, 5].map(d => {
-          const names = currentLang === 'en' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+          const names = currentLang === 'zh'
+            ? ['一', '二', '三', '四', '五', '六', '日']
+            : (currentLang === 'en' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']);
           return `<text x="${padLeft - 6}" y="${padTop + d * step + cellSize * 0.75}" fill="#64748b" font-size="9" text-anchor="end" font-family="sans-serif">${names[d]}</text>`;
         }).join('');
 
         // Legend
         const legendColors = ['rgba(255,255,255,0.06)', '#164e63', '#0e7490', '#0891b2', '#06b6d4'];
-        let legend = `<text x="${padLeft}" y="${svgH + 14}" fill="#64748b" font-size="9" font-family="sans-serif">${dict.player.less || (currentLang === 'en' ? 'Less' : 'Меньше')}</text>`;
+        let legend = `<text x="${padLeft}" y="${svgH + 14}" fill="#64748b" font-size="9" font-family="sans-serif">${dict.player.less || loc('Меньше', 'Less', '较少')}</text>`;
         legendColors.forEach((c, i) => {
           legend += `<rect x="${padLeft + 42 + i * (cellSize + 2.5)}" y="${svgH + 4}" width="${cellSize}" height="${cellSize}" rx="2" fill="${c}"/>`;
         });
-        legend += `<text x="${padLeft + 42 + legendColors.length * (cellSize + 2.5) + 6}" y="${svgH + 14}" fill="#64748b" font-size="9" font-family="sans-serif">${dict.player.more || (currentLang === 'en' ? 'More' : 'Больше')}</text>`;
+        legend += `<text x="${padLeft + 42 + legendColors.length * (cellSize + 2.5) + 6}" y="${svgH + 14}" fill="#64748b" font-size="9" font-family="sans-serif">${dict.player.more || loc('Больше', 'More', '较多')}</text>`;
 
         const svgHtml = `<svg viewBox="0 0 ${svgW} ${svgH + 20}" width="100%" class="w-full h-auto block" style="width:100%;height:auto;display:block;" preserveAspectRatio="xMidYMid meet">
           ${monthLabels}${dayLabels}${rects}${legend}
         </svg>`;
 
         if (badgeEl) {
-          badgeEl.textContent = `${totalCompletions.toLocaleString()} ${dict.player.mapsInLastYear || (currentLang === 'en' ? 'maps in the last year' : 'карт за последний год')}`;
+          badgeEl.textContent = `${totalCompletions.toLocaleString()} ${dict.player.mapsInLastYear || loc('карт за последний год', 'maps in the last year', '张地图（近一年完成）')}`;
         }
         wrapper.innerHTML = svgHtml;
       };
@@ -982,7 +981,7 @@
               <div>
                 <div class="flex items-center justify-between gap-2 mb-2.5">
                   <span class="px-2 py-0.5 rounded-md text-[0.68rem] font-mono font-black border ${badge.color}">${badge.label}</span>
-                  <span class="text-[0.68rem] font-bold text-slate-400 font-mono">${partner.mapCount} ${currentLang === 'en' ? 'maps' : 'карт'}</span>
+                  <span class="text-[0.68rem] font-bold text-slate-400 font-mono">${partner.mapCount} ${loc('карт', 'maps', '张地图')}</span>
                 </div>
                 <a href="${playerUrl}" class="text-base font-black text-white hover:text-amber-400 transition-colors block truncate" title="${escapeHtml(partner.name)}">
                   ${escapeHtml(partner.name)}
@@ -993,10 +992,10 @@
               </div>
 
               <div class="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
-                <a href="${playerUrl}" class="text-[0.7rem] font-bold text-slate-400 hover:text-white transition-colors" title="${currentLang === 'en' ? 'View Profile' : 'Открыть профиль'}">
-                  ${currentLang === 'en' ? 'Profile' : 'Профиль'} →
+                <a href="${playerUrl}" class="text-[0.7rem] font-bold text-slate-400 hover:text-white transition-colors" title="${loc('Открыть профиль', 'View Profile', '查看个人主页')}">
+                  ${loc('Профиль', 'Profile', '个人主页')} →
                 </a>
-                <a href="${pvpUrl}" class="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 text-[0.68rem] font-bold transition-all" title="${currentLang === 'en' ? 'Duel PvP' : 'Сравнить в PvP'}">
+                <a href="${pvpUrl}" class="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 text-[0.68rem] font-bold transition-all" title="${loc('Сравнить в PvP', 'Duel PvP', '在 PvP 中比拼')}">
                   ⚔️ PvP
                 </a>
               </div>
@@ -1113,7 +1112,7 @@
         tbody.innerHTML = '';
 
         if (list.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">${dict.player.noMapsMatch || (currentLang === 'en' ? 'No maps match filter' : 'Нет карт, соответствующих фильтру')}</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">${dict.player.noMapsMatch || loc('Нет карт, соответствующих фильтру', 'No maps match filter', '未找到符合筛选条件的地图')}</td></tr>`;
           return;
         }
 
@@ -1207,7 +1206,7 @@
           const txt = document.getElementById('share-profile-text');
           if (txt) {
             const old = txt.textContent;
-            txt.textContent = dict.player.copied || (currentLang === 'en' ? 'Copied!' : 'Скопировано!');
+            txt.textContent = dict.player.copied || loc('Скопировано!', 'Copied!', '已复制！');
             setTimeout(() => txt.textContent = old, 2000);
           }
         });
