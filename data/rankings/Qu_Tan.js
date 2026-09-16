@@ -1,0 +1,1 @@
+window.mapRankingCurrent = [{"player":"ProFi & Ұ","time":232.3,"timestamp":"2026-09-14T20:45:08","isTeamRank":true,"rank":1},{"player":"坤坤 & Mokou","time":277.46,"timestamp":"2026-09-15T07:18:25","isTeamRank":true,"rank":2}];

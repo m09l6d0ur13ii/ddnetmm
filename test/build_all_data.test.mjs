@@ -12,7 +12,7 @@ const scriptCode = fs.readFileSync(path.join(__dirname, '../scripts/build_all_da
 const testableCode = scriptCode
   .replace(/import .*? from '.*?';/g, '')
   .replace(/const __filename = fileURLToPath\(import\.meta\.url\);/g, 'const __filename = "/mock/path/script.mjs";')
-  .replace(/run\(\);/, '');
+  .replace(/run\(\);/g, '');
 
 const sandbox = {
   console: { warn: () => {}, error: () => {}, log: () => {} },
@@ -27,14 +27,14 @@ const evalCode = `
   (function(sandbox) {
     ${contextInit}
     ${testableCode}
-    return { sanitizeFilename, safeRankingFilename, parseTimeToSeconds, calcMapStats, isQualifyingRun };
+    return { sanitizeFilename, safeRankingFilename, parseTimeToSeconds, calcMapStats, isQualifyingRun, calculatePlayerPoints };
   })(sandbox);
 `;
 
 const functions = eval(evalCode);
 
 describe('scripts/build_all_data.mjs data parsing', () => {
-  const { sanitizeFilename, safeRankingFilename, parseTimeToSeconds, calcMapStats, isQualifyingRun } = functions;
+  const { sanitizeFilename, safeRankingFilename, parseTimeToSeconds, calcMapStats, isQualifyingRun, calculatePlayerPoints } = functions;
 
   describe('sanitizeFilename', () => {
     test('should replace invalid characters with underscore', () => {
@@ -110,6 +110,29 @@ describe('scripts/build_all_data.mjs data parsing', () => {
       assert.strictEqual(isQualifyingRun('Novice', 1, 2), false);
       assert.strictEqual(isQualifyingRun('Novice', 2, 1), true);
       assert.strictEqual(isQualifyingRun('Novice', 1, null), false);
+    });
+  });
+
+  describe('calculatePlayerPoints', () => {
+    test('should calculate base and skill points correctly', () => {
+      const mockPlayerData = {
+        finishes: [
+          {
+            map: { map: 'TestMap', points: 10, server: 'Solo' },
+            time: 100,
+            rank: 1
+          }
+        ]
+      };
+      const mockRecords = { TestMap: 100 };
+      const mockStats = { TestMap: { s: 2.0 } };
+      const blacklist = new Set();
+      const mapsMap = { TestMap: { map: 'TestMap', server: 'Solo' } };
+
+      const result = calculatePlayerPoints(mockPlayerData, mockRecords, mockStats, blacklist, mapsMap);
+      assert.strictEqual(result.newPtsBase, 10);
+      assert.strictEqual(result.newPtsSkill, 50); // 10 * 5 * exp(0) = 50
+      assert.strictEqual(result.newPtsTotal, 60);
     });
   });
 });

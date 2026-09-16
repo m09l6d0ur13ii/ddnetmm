@@ -1,1 +1,1 @@
-window.mapRankingCurrent = [{"player":"( & >﹏< & )","time":0.02,"timestamp":"2024-11-23T01:28:04","isTeamRank":true,"rank":1}];
+window.mapRankingCurrent = [{"player":"백백 & 우주하","time":0.02,"timestamp":"2021-09-03T02:23:28","isTeamRank":true,"rank":1},{"player":"( & >﹏< & )","time":0.02,"timestamp":"2024-11-23T01:28:04","isTeamRank":true,"rank":2}];

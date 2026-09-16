@@ -110,10 +110,17 @@ function loadPlayerList(blacklistSet) {
         }
     }
 
-    const names = cleanedLines
-        .map(line => line.trim())
-        .filter(line => line && !line.startsWith('#') && !line.startsWith('//'))
-        .filter((name, idx, arr) => arr.indexOf(name) === idx);
+    const seenNames = new Set();
+    const names = [];
+    for (const line of cleanedLines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('//')) continue;
+        const lower = trimmed.toLowerCase();
+        if (!seenNames.has(lower)) {
+            seenNames.add(lower);
+            names.push(trimmed);
+        }
+    }
 
     return names.map(name => ({ name }));
 }
@@ -239,31 +246,66 @@ async function resolveCustomRecords(customMapRecords) {
 
 let apiCallCount = 0;
 let consecutiveBlockedCount = 0;
-let requestDelayMs = 600; // Default: ~1.6 requests per second (1-2 req/s)
+let requestDelayMs = 350; // Default: ~2.8 requests per second
 let lastRequestTime = 0;
+let requestQueueChain = Promise.resolve();
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function fetchJson(url, retries = 2) {
-    apiCallCount++;
+async function scheduleNextRequest() {
+    let release;
+    const ticket = new Promise(resolve => { release = resolve; });
+    const previous = requestQueueChain;
+    requestQueueChain = requestQueueChain.then(() => ticket);
+    await previous;
 
-    // Strict rate limiter: enforce at least requestDelayMs between outgoing requests
     const now = Date.now();
     const elapsed = now - lastRequestTime;
     if (elapsed < requestDelayMs) {
         await sleep(requestDelayMs - elapsed);
     }
     lastRequestTime = Date.now();
+    release();
+}
+
+async function fetchJson(url, retries = 2) {
+    apiCallCount++;
+    await scheduleNextRequest();
 
     return new Promise((resolve) => {
         const executeFetch = (attempt) => {
+            let finished = false;
+            const finishWith = (val) => {
+                if (!finished) {
+                    finished = true;
+                    if (hardTimeout) clearTimeout(hardTimeout);
+                    resolve(val);
+                }
+            };
+            const retryWith = (delayMs = 2000) => {
+                if (!finished) {
+                    finished = true;
+                    if (hardTimeout) clearTimeout(hardTimeout);
+                    if (attempt < retries) {
+                        setTimeout(() => executeFetch(attempt + 1), delayMs);
+                    } else {
+                        resolve(null);
+                    }
+                }
+            };
+
+            const hardTimeout = setTimeout(() => {
+                try { req.destroy(); } catch (e) {}
+                retryWith(1500);
+            }, 8000);
+
             const req = https.get(url, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 MapMastery/2.0'
                 },
-                timeout: 8000
+                timeout: 7000
             }, (res) => {
                 let data = '';
                 res.on('data', chunk => data += chunk);
@@ -287,47 +329,40 @@ async function fetchJson(url, retries = 2) {
                         if (res.statusCode === 429 && attempt < retries) {
                             const delay = (attempt + 1) * 3000;
                             console.warn(`⏳ Rate limited (429). Waiting ${delay}ms...`);
-                            setTimeout(() => executeFetch(attempt + 1), delay);
+                            retryWith(delay);
                             return;
                         }
-                        return resolve(null);
+                        return finishWith(null);
                     }
 
                     // Reset count on non-blocked successful response
                     consecutiveBlockedCount = 0;
 
-                    if (res.statusCode !== 200) return resolve(null);
+                    if (res.statusCode !== 200) return finishWith(null);
 
                     try {
                         const parsed = JSON.parse(data);
-                        resolve(parsed);
+                        finishWith(parsed);
                     } catch (e) {
-                        resolve(null);
+                        finishWith(null);
                     }
                 });
             });
 
             req.on('timeout', () => {
-                req.destroy();
-                if (attempt < retries) {
-                    setTimeout(() => executeFetch(attempt + 1), 2000);
-                } else {
-                    resolve(null);
-                }
+                try { req.destroy(); } catch (e) {}
+                retryWith(2000);
             });
 
             req.on('error', () => {
-                if (attempt < retries) {
-                    setTimeout(() => executeFetch(attempt + 1), 2000);
-                } else {
-                    resolve(null);
-                }
+                retryWith(2000);
             });
         };
 
         executeFetch(0);
     });
 }
+
 
 function calcMapStats(times) {
     const n = times.length;
@@ -353,7 +388,9 @@ function isQualifyingRun(server, rank, teamRank) {
     return Boolean(teamRank && rank >= teamRank);
 }
 
-function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
+let mapsRawMap = {};
+
+function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet, mapsMap = mapsRawMap) {
     let oldPts = 0;
     let newPtsBase = 0;
     let newPtsSkill = 0;
@@ -362,7 +399,7 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
     const finishes = playerData.finishes || [];
     for (const finish of finishes) {
         const mapName = finish.map.name || finish.map.map;
-        const mapObj = (maps || []).find(m => (m.map || m.name || '').toLowerCase() === mapName.toLowerCase());
+        const mapObj = (mapsMap && (mapsMap[mapName] || mapsMap[mapName.toLowerCase()])) || null;
         const server = mapObj ? mapObj.server : (finish.map.server || 'Novice');
         if (!server || server.toLowerCase() === 'fun') continue;
         if (processedMaps.has(mapName)) continue;
@@ -379,8 +416,8 @@ function calculatePlayerPoints(playerData, mapRecords, mapStats, blacklistSet) {
                 tBest = finish.time / (1 + Math.log10(Math.max(1, rank)) * 0.5);
             }
 
-            const stats = mapStats[mapName] || { s: 2.0 };
-            const s = stats.s;
+            const stats = (mapStats && mapStats[mapName]) || { s: 2.0 };
+            const s = stats.s !== undefined ? stats.s : 2.0;
             const pMaxBonus = mapPts * 5.0;
             const timeRatio = finish.time / tBest;
             const pSkill = Math.floor(pMaxBonus * Math.exp(-s * (Math.max(1, timeRatio) - 1)));
@@ -415,6 +452,7 @@ function isFinishAllowed(pName, mName, timeSec, blacklistSet, mapMinTimes, ignor
 }
 
 async function run() {
+    try {
     console.log("=== 1. Loading Blacklist & Rules ===");
     const blacklistSet = loadBlacklist();
     const blacklistArray = Array.from(blacklistSet);
@@ -480,9 +518,16 @@ async function run() {
         console.error("Failed to fetch maps list");
         return;
     }
+    mapsRawMap = {};
+    for (const m of allMaps) {
+        if (m.map) {
+            mapsRawMap[m.map] = m;
+            mapsRawMap[m.map.toLowerCase()] = m;
+        }
+    }
     fs.writeFileSync(MAPS_RAW_FILE, JSON.stringify(allMaps, null, 2));
-    const compactMapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
-    const mapsForClient = allMaps.map(map => ({ ...map, s: compactMapStats[map.map || map.name]?.s || 2.0 }));
+    const mapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
+    const mapsForClient = allMaps.map(map => ({ ...map, s: mapStats[map.map || map.name]?.s || 2.0 }));
     fs.writeFileSync(MAPS_JS_FILE, 'window.mapsData = ' + JSON.stringify(mapsForClient) + ';');
     console.log(`Saved ${allMaps.length} maps into maps_raw.json & maps.js`);
 
@@ -631,9 +676,7 @@ async function run() {
     fs.writeFileSync(MAP_RANKINGS_JS, 'window.mapRankingsData = ' + JSON.stringify(mapRankings) + ';');
     console.log(`Saved map_records and map_rankings for ${Object.keys(mapRecords).length} maps`);
 
-    console.log("\n=== 3.5. Enriching Maps Flooded by TASers with Trusted Players Finishes ===");
-    const mapsRawMap = {};
-    for (const m of allMaps) { mapsRawMap[m.map] = m; }
+    // mapsRawMap is already populated above
 
     const enrichedMaps = {};
     let enrichedCount = 0;
@@ -666,9 +709,13 @@ async function run() {
             } catch (e) { }
         }
 
-        // Limit enrichment to cached profiles + top 500 players by PTS for optimal coverage without hitting rate limits
-        const cachedPlayers = allLegitPlayers.filter(p => fs.existsSync(path.join(PLAYERS_DIR, `${sanitizeFilename(p.name)}.json`)));
-        const topPlayers = cachedPlayers.concat(allLegitPlayers.slice(0, 500)).filter((p, idx, arr) => arr.findIndex(o => o.name.toLowerCase() === p.name.toLowerCase()) === idx);
+        // Limit enrichment to top 500 players by PTS for optimal coverage without hitting rate limits
+        let playerLimitArgIdx = args.indexOf('--players-limit');
+        let playerLimit = 500;
+        if (playerLimitArgIdx !== -1 && args[playerLimitArgIdx + 1]) {
+            playerLimit = parseInt(args[playerLimitArgIdx + 1], 10) || 500;
+        }
+        const topPlayers = allLegitPlayers.slice(0, playerLimit);
         console.log(`Enrichment source: player_list.txt (${allLegitPlayers.length} total harvested, ${topPlayers.length} active scanned)`);
 
         for (let i = 0; i < topPlayers.length; i += CONCURRENCY) {
@@ -846,6 +893,9 @@ async function run() {
 
         mapRankings[mName] = cleanList;
 
+        const mapTimes = cleanList.map(r => r.time);
+        mapStats[mName] = calcMapStats(mapTimes);
+
         // Flag map as enriched if it had min times, ignored finishes, custom records, or raw top flooded
         const hasCustomRecord = !!customMapRecords[mLower];
         const hasMinTimeLimit = !!mapMinTimes[mLower];
@@ -874,6 +924,15 @@ async function run() {
         console.log(`📋 Enriched Maps count: ${Object.keys(enrichedMaps).length}`);
     }
 
+    fs.writeFileSync(MAP_STATS_FILE, JSON.stringify(mapStats, null, 2));
+    fs.writeFileSync(MAP_STATS_JS, 'window.mapStatsData = ' + JSON.stringify(mapStats) + ';');
+
+    const updatedMapsForClient = allMaps.map(map => ({
+        ...map,
+        s: mapStats[map.map || map.name]?.s || 2.0
+    }));
+    fs.writeFileSync(MAPS_JS_FILE, 'window.mapsData = ' + JSON.stringify(updatedMapsForClient) + ';');
+
     fs.writeFileSync(MAP_RECORDS_FILE, JSON.stringify(mapRecords, null, 2));
     fs.writeFileSync(MAP_RECORDS_JS, 'window.mapRecordsData = ' + JSON.stringify(mapRecords) + ';');
 
@@ -897,7 +956,6 @@ async function run() {
     console.log("\n=== 4. Re-calculating Global Leaderboard ===");
     let leaderboard = [];
     const topPlayers = loadPlayerList(blacklistSet);
-    const mapStats = fs.existsSync(MAP_STATS_FILE) ? JSON.parse(fs.readFileSync(MAP_STATS_FILE, 'utf8')) : {};
     const playerFiles = new Set(fs.existsSync(PLAYERS_DIR) ? fs.readdirSync(PLAYERS_DIR).map(f => f.toLowerCase()) : []);
 
     for (const p of topPlayers) {
@@ -911,7 +969,7 @@ async function run() {
 
         try {
             const pData = JSON.parse(fs.readFileSync(localFile, 'utf8'));
-            const pts = calculatePlayerPoints(pData, mapRecords, mapStats, blacklistSet);
+            const pts = calculatePlayerPoints(pData, mapRecords, mapStats, blacklistSet, mapsRawMap);
             if (pts.newPtsTotal > 0) {
                 const item = {
                     name: pName,
@@ -928,19 +986,35 @@ async function run() {
                 }
                 leaderboard.push(item);
             }
-        } catch (e) { }
+        } catch (e) {
+            console.error(`Error calculating points for ${pName}:`, e);
+        }
     }
 
     leaderboard.sort((a, b) => b.newPtsTotal - a.newPtsTotal);
     fs.writeFileSync(LEADERBOARD_FILE, JSON.stringify(leaderboard, null, 2));
     fs.writeFileSync(LEADERBOARD_JS, 'window.leaderboardData = ' + JSON.stringify(leaderboard) + ';');
 
-    if (fs.existsSync(UNIQUE_PLAYERS_JSON)) {
-        const uniquePlayers = JSON.parse(fs.readFileSync(UNIQUE_PLAYERS_JSON, 'utf8'));
-        const cleanUnique = uniquePlayers.filter(name => !blacklistSet.has(String(name).toLowerCase().trim()));
-        fs.writeFileSync(UNIQUE_PLAYERS_JS, 'window.uniquePlayersData = ' + JSON.stringify(cleanUnique) + ';');
-        console.log(`Saved ${cleanUnique.length} unique players into unique_players.js`);
+    const uniquePlayersSet = new Set(
+        fs.existsSync(UNIQUE_PLAYERS_JSON) ? JSON.parse(fs.readFileSync(UNIQUE_PLAYERS_JSON, 'utf8')) : []
+    );
+    for (const p of leaderboard) {
+        if (p.name) uniquePlayersSet.add(p.name);
     }
+    for (const mName in mapRankings) {
+        for (const r of mapRankings[mName]) {
+            if (r.player) {
+                const parts = String(r.player).split(/[,/&]+/).map(p => p.trim());
+                parts.forEach(p => {
+                    if (p) uniquePlayersSet.add(p);
+                });
+            }
+        }
+    }
+    const cleanUnique = Array.from(uniquePlayersSet).filter(name => !blacklistSet.has(String(name).toLowerCase().trim())).sort();
+    fs.writeFileSync(UNIQUE_PLAYERS_JSON, JSON.stringify(cleanUnique, null, 2));
+    fs.writeFileSync(UNIQUE_PLAYERS_JS, 'window.uniquePlayersData = ' + JSON.stringify(cleanUnique) + ';');
+    console.log(`Saved ${cleanUnique.length} unique players into unique_players.json & unique_players.js`);
 
     console.log("\n=== 5. Updating Blacklist Data & Removed Finish Counts ===");
     await updateBlacklistData();
@@ -951,6 +1025,10 @@ async function run() {
         console.log(`   ≈ Player enrichment: ~${Math.max(0, apiCallCount - Object.keys(mapRecords).length - 1)} requests`);
     } else {
         console.log(`   ⚡ 100% offline build from disk cache (0 network requests made).`);
+    }
+    } catch (err) {
+        console.error("\n💥 Fatal pipeline build error:", err);
+        process.exit(1);
     }
 }
 

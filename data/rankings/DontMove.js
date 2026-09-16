@@ -1,1 +1,1 @@
-window.mapRankingCurrent = [{"player":"★ & ☆","time":12.12,"timestamp":"2021-04-08T18:22:27","isTeamRank":true,"rank":1}];
+window.mapRankingCurrent = [{"player":"마 & 머","time":12.12,"timestamp":"2022-01-28T10:22:32","isTeamRank":true,"rank":1},{"player":"★ & ☆","time":12.12,"timestamp":"2021-04-08T18:22:27","isTeamRank":true,"rank":2}];

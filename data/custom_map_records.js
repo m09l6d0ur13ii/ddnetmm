@@ -9,7 +9,7 @@ window.customMapRecordsData = {
     "mapName": "2 Days in the back"
   },
   "linear": {
-    "time": 34.46,
+    "time": 41.6,
     "player": "гурех, zlo0dey",
     "players": [
       "гурех",
